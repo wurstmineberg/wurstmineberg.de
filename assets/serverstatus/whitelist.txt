@@ -1,0 +1,1 @@
+/home/wurstmineberg/server/white-list.txt
