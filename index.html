@@ -73,7 +73,7 @@
           Therefore we can't really use awesome things like <a href="http://bukkit.org/">bukkit</a>.
           We also don't run any serverside mods for that reason …Sorry.</p>
          <p>If you're interested in playing with us, please see the IRC or Twitter section below. We're open, but fairly disorganized.</p>
-	<p class="text-primary" id="serverinfo">
+	<p class="lead" id="serverinfo">
 	</p>
       </div>
 
@@ -141,10 +141,10 @@
     <script>
       function getServerStatus(on,version) {
          if(on){
-             document.getElementById("serverinfo").innerHTML = "The server is currently running on version " + version + ", and <span id='peopleCount'>0</span> people are currently active.<br><span id='peopleList'></span>";
+             document.getElementById("serverinfo").innerHTML = "The server is currently <strong>online</strong> and running on version " + version + ", and <span id='peopleCount'>0</span> people are currently active.<br><span id='peopleList'></span>";
          }
          else{
-            document.getElementById("serverinfo").innerHTML = "The server is offline right now. For more information, consult the <a href='http://twitter.com/wurstmineberg'>Twitter account</a>.";
+            document.getElementById("serverinfo").innerHTML = "The server is <strong>offline</strong> right now. For more information, consult the <a href='http://twitter.com/wurstmineberg'>Twitter account</a>.";
          }
       }
       function getOnlineData(count,liste) {
