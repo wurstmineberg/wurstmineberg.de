@@ -156,7 +156,7 @@
       }
       function getOnlineData(count,liste) {
         document.getElementById("peopleCount").innerHTML = count;
-        document.getElementById("peopleList").innerHTML = liste.join(", ");
+        document.getElementById("peopleList").innerHTML = liste.map(function(Name){return "<img class='avatar' src='/assets/img/ava/" + Name + ".png' />" + Name;}).join(", ");
       }
       $.ajax("assets/serverstatus/status.json", {
         dataType: "json",
