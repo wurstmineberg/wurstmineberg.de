@@ -1,176 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title> Wurstmineberg
-    </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Info site for a minecraft server">
-    <meta name="author" content="">
-    <!-- Le styles -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <style>
-      body { padding-top: 60px; /* 60px to make the container go all the way
-      to the bottom of the topbar */ }
-    </style>
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
-      </script>
-    <![endif]-->
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="assets/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
-    <style>
-    	.avatar {
-    		margin-right: 5px;
-    	}
-    </style>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-42945671-1', 'wurstmannberg.de');
-  ga('send', 'pageview');
-
-</script>
-  </head>
-  <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
+    <head>
+        <meta charset="utf-8" />
+        <title> Wurstmineberg
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Info site for a minecraft server" />
+        <meta name="author" content="" />
+        <!-- Le styles -->
+        <link href="assets/css/bootstrap.css" rel="stylesheet" />
+        <style>
+            body {
+                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            }
+        </style>
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link href="assets/css/bootstrap-responsive.css" rel="stylesheet" />
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
+            </script>
+        <![endif]-->
+        <!-- Le fav and touch icons -->
+        <link rel="shortcut icon" href="assets/ico/favicon.ico" />
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png" />
+        <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png" />
+        <style>
+            .avatar {
+                margin-right: 5px;
+            }
+        </style>
+        <script>
+            (function(i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function() {
+                    (i[r].q = i[r].q || []).push(arguments)
+                },
+                i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-42945671-1', 'wurstmannberg.de');
+            ga('send', 'pageview');
+        </script>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="brand" href="#">Wurstmannberg</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li class="active"><a href="#" id="home"><i class="icon-home icon-white"></i> Home</a></li>
+                            <li><a href="about" id="about"><i class="icon-book icon-white"></i> About</a></li>
+                            <li><a href="people" target="" id="people"><i class="icon-user icon-white"></i> People</a></li>
+                        </ul>
+                        <form class="navbar-form pull-right">
+                        </form>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
         <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">Wurstmannberg</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active"><a href="#" id="home"><i class="icon-home icon-white"></i> Home</a></li>
-              <li><a href="about" id="about"><i class="icon-book icon-white"></i> About</a></li>
-              <li><a href="people" target="" id="people"><i class="icon-user icon-white"></i> People</a></li>
-            </ul>
-            <form class="navbar-form pull-right">
-            </form>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-        <h1>The Wurstmineberg Minecraft Server</h1>
-        <p>The Wurstmineberg Minecraft Server is whitelisted vanilla <a href="http://www.minecraft.net">Minecraft</a> server,
-	  and a subproject of the Wurstmannberg meta label, which doesn't
-          really mean anything anymore. Come to think of it, it never really did. Oh well, now it does.</p>
-         <p>The server usually runs the latest version of Minecraft, which means we also try to run the latest
-          <a href="http://www.minecraftwiki.net/wiki/Version_history/Development_versions">stable snapshots</a>. 
-          Therefore we can't really use awesome things like <a href="http://bukkit.org/">bukkit</a>.
-          We also don't run any serverside mods for that reason …Sorry.</p>
-         <p>If you're interested in playing with us, please see the IRC or Twitter section below. We're open, but fairly disorganized.</p>
-        <div class="well well-small">
-         <p class="lead text-center" id="serverinfo">loading server status…
-        </p>
-        </div>
-      </div>
-
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="span4">
-          <h2 id="overview">Overview map</h2>
-          <p>We set up the <a href="http://overviewer.org/">Minecraft Overviewer</a> to generate a daily overview map of our world.
-            It tends to drain a lot of resources, so we apologize for not running it every 10 minutes or so, and to ensure it
-            contains the least amount of suck, make sure to tell us <a href="http://www.reddit.com/r/wurstmineberg/comments/1kgem1/psa_the_great_where_you_atsurvey_of_wurstmineberg/">where you are</a>.</p>
-          <p><a class="btn" href="http://overview.wurstmannberg.de/">View overview »</a></p>
-        </div>
-        <div class="span4">
-          <h2 id="irc">IRC</h2>
-          <p>We use the bleeding edge of web technology. That's why our primary means of communication includes an
-           <abbr title=">20yr old technology">IRC</abbr> channel on <a href="http://freenode.net/">Freenode</a>. Feel free to join us there
-            if you're interested in playing on the server or just generally want to say hi and / or talk about… Stuff?</p>
-          <p><a class="btn" href="irc://chat.freenode.net/#wurstmineberg">Visit channel »</a></p>
-       </div>
-        <div class="span4">
-          <h2 id="subreddit">Subreddit</h2>
-          <p>Organizing events and announcing changes to our server is easier in a spot like our restricted
-            subreddit (meaning: "read only" for strangers). You'll find attempts to organize events, announcements
-            and probably some other stuff on the long run. We thought it would be a good place to update everyone on, well, everything.</p>
-          <p><a class="btn" href="http://www.reddit.com/r/wurstmineberg">View Subreddit »</a></p>
-        </div><div class="span4">
-          <h2 id="twitter">Twitter</h2>
-          <p>We accidentally did some stuff with <a href="www.floodgap.com/software/ttytter/">TTYtter</a> and now we have automated
-            tweets. Sometimes it's a death message, sometimes it's the server telling us that he's lonely, sometimes it's a list of
-            currently online players. It's emotional.</p>
-            <p>It's also the easiest way to get in touch with us.</p>
-          <p><a class="btn" href="https://twitter.com/wurstmineberg">Go to account »</a></p>
-        </div><div class="span4">
-          <h2 id="flattr">Costs</h2>
-          <p>Everything costs money, but our server fortunately doesn't cost that much.
-            However, it would be nice if Jemus42 wouldn't have to pay all by himself.
-            The server costs ~8€ per month, so a small tip would really be appreciated.</p>
-            <p>As of now, <a href="http://flattr.com">flattr</a> would be the way to go, at least as long as it's not mandatory.
-              Also see <a href="http://www.reddit.com/r/wurstmineberg/comments/1k5abo/psa_sollten_wir_ein_vserverupgrade_wollen_dies/">
-              this subreddit post</a> for more info.</p>
-          <p><a class="btn" href="http://flattr.com/thing/1751759/The-Wurstmineberg-Minecraft-Server"
-          target="_blank">Chip in »</a></p>
-          </div><div class="span4">
-          <h2>Custom Tools</h2>
-          <p>There are a lot of things running in the background to make the server manageable and work with
-            its output. These include a <s>logreader (a clusterfuck paved in BASH) and a</s> bot (python voodoo).
-            Documentation will be had and git-repos will be made. Sooner or later. 
-            For more information you can check out the links on the subreddit.</p>
-            <p><a class="btn" href="#">Don't really know where to send you yet »</a></p>
-          </div>
-      </div>
-      <hr>
-      <footer>
-        <p class="">© The People of Wurstmannberg.de 2012–2013</p>
-      </footer>
-    </div> <!-- /container -->
-
-    <style>
-      /* To push content below navbar */
-      @media (min-width: 980px) {
-        body {
-          margin-top: 41px;
-        }
-      }
-    </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
-    </script>
-    <script src="assets/js/bootstrap.js">
-    </script>
-    <script>
-      function getServerStatus(on,version) {
-        if(on){
-          document.getElementById("serverinfo").innerHTML = "The server is currently <strong>online</strong> and running on version " + version + ", and <span id='peopleCount'>0</span> people are currently active.<br><span id='peopleList'></span>";
-        }
-        else{
-          document.getElementById("serverinfo").innerHTML = "The server is <strong>offline</strong> right now. For more information, consult the <a href='http://twitter.com/wurstmineberg'>Twitter account</a>.";
-        }
-      }
-      function getOnlineData(count,liste) {
-        document.getElementById("peopleCount").innerHTML = count;
-        document.getElementById("peopleList").innerHTML = liste.map(function(Name){return "<img class='avatar' src='/assets/img/ava/" + Name + ".png' />" + Name;}).join(", ");
-      }
-      $.ajax("assets/serverstatus/status.json", {
-        dataType: "json",
-        error: function(request, status, error) {
-          document.getElementById("serverinfo").innerHTML = "An error occurred while checking the server status. For more information, consult the <a href='http://twitter.com/wurstmineberg'>Twitter account</a>.";
-        },
-        success: function(data) {
-          getServerStatus(data.on, data.version);
-          getOnlineData(data.count, data.list);
-        },
-      });
-    </script>
-  </body>
+            <!-- Main hero unit for a primary marketing message or call to action -->
+            <div class="hero-unit">
+                <h1>The Wurstmineberg Minecraft Server</h1>
+                <p>The Wurstmineberg Minecraft Server is whitelisted vanilla <a href="http://www.minecraft.net">Minecraft</a> server, and a subproject of the Wurstmannberg meta label, which doesn't really mean anything anymore. Come to think of it, it never really did. Oh well, now it does.</p>
+                <p>The server usually runs the latest version of Minecraft, which means we also try to run the latest <a href="http://www.minecraftwiki.net/wiki/Version_history/Development_versions">stable snapshots</a>. Therefore we can't really use awesome things like <a href="http://bukkit.org/">bukkit</a>. We also don't run any serverside mods for that reason …Sorry.</p>
+                <p>If you're interested in playing with us, please see the IRC or Twitter section below. We're open, but fairly disorganized.</p>
+                <div class="well well-small">
+                    <p class="lead text-center" id="serverinfo">loading server status…
+                    </p>
+                </div>
+            </div>
+            <!-- Example row of columns -->
+            <div class="row">
+                <div class="span4">
+                    <h2 id="overview">Overview map</h2>
+                    <p>We set up the <a href="http://overviewer.org/">Minecraft Overviewer</a> to generate a daily overview map of our world. It tends to drain a lot of resources, so we apologize for not running it every 10 minutes or so, and to ensure it contains the least amount of suck, make sure to tell us <a href="http://www.reddit.com/r/wurstmineberg/comments/1kgem1/psa_the_great_where_you_atsurvey_of_wurstmineberg/">where you are</a>.</p>
+                    <p><a class="btn" href="http://overview.wurstmannberg.de/">View overview »</a></p>
+                </div>
+                <div class="span4">
+                    <h2 id="irc">IRC</h2>
+                    <p>We use the bleeding edge of web technology. That's why our primary means of communication includes an <abbr title=">20yr old technology">IRC</abbr> channel on <a href="http://freenode.net/">Freenode</a>. Feel free to join us there if you're interested in playing on the server or just generally want to say hi and / or talk about… Stuff?</p>
+                    <p><a class="btn" href="irc://chat.freenode.net/#wurstmineberg">Visit channel »</a></p>
+                </div>
+                <div class="span4">
+                    <h2 id="subreddit">Subreddit</h2>
+                    <p>Organizing events and announcing changes to our server is easier in a spot like our restricted subreddit (meaning: "read only" for strangers). You'll find attempts to organize events, announcements and probably some other stuff on the long run. We thought it would be a good place to update everyone on, well, everything.</p>
+                    <p><a class="btn" href="http://www.reddit.com/r/wurstmineberg">View Subreddit »</a></p>
+                </div>
+                <div class="span4">
+                    <h2 id="twitter">Twitter</h2>
+                    <p>We accidentally did some stuff with <a href="www.floodgap.com/software/ttytter/">TTYtter</a> and now we have automated tweets. Sometimes it's a death message, sometimes it's the server telling us that he's lonely, sometimes it's a list of currently online players. It's emotional.</p>
+                    <p>It's also the easiest way to get in touch with us.</p>
+                    <p><a class="btn" href="https://twitter.com/wurstmineberg">Go to account »</a></p>
+                </div>
+                <div class="span4">
+                    <h2 id="flattr">Costs</h2>
+                    <p>Everything costs money, but our server fortunately doesn't cost that much. However, it would be nice if Jemus42 wouldn't have to pay all by himself. The server costs ~8€ per month, so a small tip would really be appreciated.</p>
+                    <p>As of now, <a href="http://flattr.com">flattr</a> would be the way to go, at least as long as it's not mandatory. Also see <a href="http://www.reddit.com/r/wurstmineberg/comments/1k5abo/psa_sollten_wir_ein_vserverupgrade_wollen_dies/"> this subreddit post</a> for more info.</p>
+                    <p><a class="btn" href="http://flattr.com/thing/1751759/The-Wurstmineberg-Minecraft-Server" target="_blank">Chip in »</a></p>
+                </div>
+                <div class="span4">
+                    <h2>Custom Tools</h2>
+                    <p>There are a lot of things running in the background to make the server manageable and work with its output. These include a <s>logreader (a clusterfuck paved in BASH) and a</s> bot (python voodoo). Documentation will be had and git-repos will be made. Sooner or later. For more information you can check out the links on the subreddit.</p>
+                    <p><a class="btn" href="#">Don't really know where to send you yet »</a></p>
+                </div>
+            </div>
+            <hr />
+            <footer>
+                <p class="">© The People of Wurstmannberg.de 2012–2013</p>
+            </footer>
+        </div> <!-- /container -->
+        <style>
+            /* To push content below navbar */
+            @media (min-width: 980px) {
+                body {
+                    margin-top: 41px;
+                }
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+        </script>
+        <script src="assets/js/bootstrap.js">
+        </script>
+        <script>
+            function getServerStatus(on,version) {
+                if (on) {
+                    document.getElementById("serverinfo").innerHTML = "The server is currently <strong>online</strong> and running on version " + version + ", and <span id='peopleCount'>0</span> people are currently active.<br><span id='peopleList'></span>";
+                } else {
+                    document.getElementById("serverinfo").innerHTML = "The server is <strong>offline</strong> right now. For more information, consult the <a href='http://twitter.com/wurstmineberg'>Twitter account</a>.";
+                }
+            }
+            function getOnlineData(count, liste) {
+                document.getElementById("peopleCount").innerHTML = count;
+                document.getElementById("peopleList").innerHTML = liste.map(function(Name) {
+                    return "<img class='avatar' src='/assets/img/ava/" + Name + ".png' />" + Name;
+                }).join(", ");
+            }
+            $.ajax("assets/serverstatus/status.json", {
+                dataType: "json",
+                error: function(request, status, error) {
+                    document.getElementById("serverinfo").innerHTML = "An error occurred while checking the server status. For more information, consult the <a href='http://twitter.com/wurstmineberg'>Twitter account</a>.";
+                },
+                success: function(data) {
+                    getServerStatus(data.on, data.version);
+                    getOnlineData(data.count, data.list);
+                },
+            });
+        </script>
+    </body>
 </html>
