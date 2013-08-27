@@ -146,6 +146,8 @@
             function getOnlineData(count, liste) {
                 if (count == 1) {
                     document.getElementById("peopleCount").innerHTML = count + " player is";
+                } else if (count == 0 ) {
+                    document.getElementById("peopleCount").innerHTML = " nobody is";
                 } else {
                     document.getElementById("peopleCount").innerHTML = count + " players are";
                 }
