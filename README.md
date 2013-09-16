@@ -13,23 +13,26 @@ Since stuff is organized nicely now, we can do
     
 And everything should be fine and dandy.
 
-## Things in this repo
+Things in this repo
+-------------------
+
 - The actual website files (html, bootstrap stuff)
 - The config file for the overviewer (contains base markers and other POIs)
 - Avatars of all users (used for /people.html, serverstatus and the overviewer base markers, so symlinks should be in place to make sure that works)
 
-## Things that will be in this repo
+Things that will be in this repo
+--------------------------------
+
 TODO
 
-## Things that do not belong in this repo
+Things that do not belong in this repo
+--------------------------------------
+
 - The overview files, because that would be just silly
-    
 
-## Bootstrap 3 version
 
-Maybe we do, maybe we don't.
-
-## Credits
+Credits
+-------
 
 - CSS/JS is [Bootstrap](http://getbootstrap.com/) (v2)
 - Basic index page layout was arranged via [Jetstrap](https://jetstrap.com/)
