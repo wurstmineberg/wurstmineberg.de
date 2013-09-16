@@ -34,5 +34,4 @@ Things that do not belong in this repo
 Credits
 -------
 
-- CSS/JS is [Bootstrap](http://getbootstrap.com/) (v2)
-- Basic index page layout was arranged via [Jetstrap](https://jetstrap.com/)
+- CSS/JS is [Bootstrap 3](http://getbootstrap.com/)
