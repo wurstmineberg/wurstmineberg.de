@@ -99,16 +99,16 @@
     <script>
         function getServerStatus(on,version) {
             if (on) {
-                document.getElementById("serverinfo").innerHTML = "The server is currently <strong>online</strong> and running on version <strong>" + version + "</strong>, and <span id='peopleCount'>(loading) of the (loading) whitelisted players are</span> currently active.<br /><span id='peopleList'></span>";
+                document.getElementById("serverinfo").innerHTML = "The server is currently <strong>online</strong> and running on version <a href='http://minecraft.gamepedia.com/Version_history" + ((version.indexOf("pre") != 1 || version.substring(2,3) == "w") ? "/Development_versions#" : "#") + version + "' style='font-weight: bold;'>" + version + "</a>, and <span id='peopleCount'>(loading) of the (loading) whitelisted players are</span> currently active.<br /><span id='peopleList'></span>";
             } else {
                 document.getElementById("serverinfo").innerHTML = "The server is <strong>offline</strong> right now. For more information, consult the <a href='http://twitter.com/wurstmineberg'>Twitter account</a>.";
             }
         }
         function getOnlineData(list, whitelist) {
             if (list.length == 1) {
-                document.getElementById("peopleCount").innerHTML = " one of the " + whitelist.length + " whitelisted players is";
+                document.getElementById("peopleCount").innerHTML = "one of the " + whitelist.length + " whitelisted players is";
             } else if (list.length == 0) {
-                document.getElementById("peopleCount").innerHTML = " none of the " + whitelist.length + " whitelisted players are";
+                document.getElementById("peopleCount").innerHTML = "none of the " + whitelist.length + " whitelisted players are";
             } else {
                 document.getElementById("peopleCount").innerHTML = list.length + " of the " + whitelist.length + " whitelisted players are";
             }
