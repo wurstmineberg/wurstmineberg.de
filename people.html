@@ -134,8 +134,14 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
 <script>
-    $.each($("h2"),function(){$(this).prepend("<a class='tag' href='#" + $(this).attr("id") + "' name='" + $(this).attr("id") + "'>&rArr;</a>");});
-    $("h2").hover(function(){$(this).children(".tag").css("display","inline");},function(){$(this).children(".tag").css("display","none");}
+    $.each($('h2'), function() {
+        $(this).prepend('<a class="tag" style="display: none;" href="#' + $(this).attr('id') + '" name="' + $(this).attr('id') + '">&rArr;</a>');
+    });
+    $('h2').hover(function() {
+        $(this).children('.tag').css('display', 'inline');
+    }, function() {
+        $(this).children('.tag').css('display', 'none');
+    });
     $.ajax('/assets/serverstatus/people.json', {
         dataType: 'json',
         error: function(request, status, error) {
