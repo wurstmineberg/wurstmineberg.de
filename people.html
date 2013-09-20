@@ -139,7 +139,7 @@
 
 <script>
     $.each($('h2'), function() {
-        $(this).append('&nbsp;<a class="tag" style="opacity:0; transition-duration:0.1s; transition-property:opacity;" href="#' + $(this).parent().attr('id') + '">¶</a>');
+        $(this).append('&nbsp;<a class="tag" style="opacity:0; transition-delay:0.5s; transition-property:opacity;" href="#' + $(this).parent().attr('id') + '">¶</a>');
     });
     $('h2').hover(function() {
         $(this).children('.tag').css('opacity', '1');
