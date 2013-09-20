@@ -1,0 +1,263 @@
+[
+    {
+        "description": "Creator of things, registerer of other things, fiddler of bash and payer of bills. Minecraft tools are slowly pouring into <a href=\"https://github.com/jemus42/minecraft-management-clusterfuck\">GitHub</a>, but since <a href=\"#fenhl\">Fenhl</a> went crazy with his voodoo, that's pretty much obsolete",
+        "id": "jemus42",
+        "irc": {
+            "nicks": [
+                "Jemus42"
+            ],
+            "nickserv": "Jemus42"
+        },
+        "minecraft": "Jemus42",
+        "name": "Jemus42",
+        "nicks": [
+            "Jemus"
+        ],
+        "reddit": "jemus42",
+        "status": "founding",
+        "twitter": "Jemus42",
+        "website": "http://quantenbrot.de/"
+    },
+    {
+        "description": "Only person on the server who knows how to make a building not look shitty",
+        "id": "benemitc",
+        "minecraft": "BenemitC",
+        "name": "BenemitC",
+        "nicks": [
+            "Bene"
+        ],
+        "reddit": "BenemitC",
+        "status": "founding",
+        "twitter": "BenemitC"
+    },
+    {
+        "description": "Wasn't online for a few months and hasn't been in contact for at least as long. His player file has been archived and removed from the active world directory.",
+        "id": "lukassuricate",
+        "minecraft": "LukasSuricate",
+        "name": "Suricate",
+        "status": "former"
+    },
+    {
+        "description": "Explainer of things, finder of stuff and knower of random things. One of the resident redstoners.",
+        "id": "l3viathan",
+        "irc": {
+            "nicks": [
+                "L3viathan",
+                "L3viathan|away"
+            ],
+            "nickserv": "L3viathan"
+        },
+        "minecraft": "l3viathan2142",
+        "name": "L3viathan",
+        "nicks": [
+            "l3viathan",
+            "l3vi",
+            "levi"
+        ],
+        "reddit": "l3vicraft",
+        "twitter": "L3viathan2142",
+        "website": "http://l3vi.de/"
+    },
+    {
+        "description": "Python voodooist, maintainer of <a href=\"http://fenhl.net/mc/wmb/proj/\">project pages</a> and <s>builder of community builds</s> professional procrastinator. Also one of the redstoners.",
+        "id": "fenhl",
+        "irc": {
+            "nicks": [
+                "Fenhl",
+                "__weak",
+                "FenuHel",
+                "FenuBook",
+                "batrnan",
+                "f8u13"
+            ],
+            "nickserv": "Fenhl"
+        },
+        "minecraft": "Fenhl",
+        "name": "Fenhl",
+        "reddit": "Fenhl",
+        "twitter": "Fenhl",
+        "website": "http://fenhl.net/"
+    },
+    {
+        "description": "Either online for days or offline for months at a time. Has played Minecraft <a href=\"http://www.minecraftwiki.net/wiki/Version_history/Alpha\">back in the day</a>.",
+        "id": "farthen",
+        "irc": {
+            "nicks": [
+                "Farthen"
+            ],
+            "nickserv": "Farthen"
+        },
+        "minecraft": "Farthen08",
+        "name": "Farthen",
+        "nicks": [
+            "Farthen"
+        ],
+        "reddit": "Farthen",
+        "twitter": "Farthen",
+        "website": "http://farthen.de/"
+    },
+    {
+        "description": "An elusive creature which is rarely seen online and once had spawn set to <a href=\"#fenhl\">Fenhl</a>'s base for several months. As casual as casual gets.",
+        "id": "viirus42",
+        "minecraft": "vIiRuS42",
+        "name": "viirus42",
+        "nicks": [
+            "viirus"
+        ],
+        "twitter": "viirus42"
+    },
+    {
+        "description": "Obvious troll",
+        "id": "naturalismus",
+        "irc": {
+            "nicks": [
+                "naturalismus",
+                "naturaliz",
+                "carl|away"
+            ],
+            "nickserv": "naturalismus"
+        },
+        "minecraft": "naturalismus",
+        "name": "naturalismus",
+        "twitter": "Naturalismus"
+    },
+    {
+        "description": "Pinguin der Herzen",
+        "id": "efrane",
+        "irc": {
+            "nicks": [
+                "eFrane"
+            ],
+            "nickserv": "eFrane"
+        },
+        "minecraft": "eFrane",
+        "name": "eFrane",
+        "reddit": "eFrane",
+        "twitter": "eFrane"
+    },
+    {
+        "id": "bediko",
+        "irc": {
+            "nicks": [
+                "Bediko",
+                "Bediko_"
+            ],
+            "nickserv": "Bediko"
+        },
+        "minecraft": "Bediko",
+        "name": "Bediko",
+        "twitter": "Bediko"
+    },
+    {
+        "id": "gilbster",
+        "irc": {
+            "nicks": [
+                "gilbster",
+                "ggggilbster"
+            ],
+            "nickserv": "gilbster"
+        },
+        "minecraft": "gilbster",
+        "name": "gilbster",
+        "twitter": "ggggilbster"
+    },
+    {
+        "description": "My hood is my castle",
+        "id": "papierschiff",
+        "irc": {
+            "nicks": [
+                "papierschiff",
+                "papierschiff_",
+                "papiersc_"
+            ],
+            "nickserv": "papierschiff"
+        },
+        "minecraft": "papierschiff",
+        "name": "papierschiff",
+        "reddit": "papierschiff",
+        "twitter": "papierschiff_",
+        "website": "http://papierschiff.org/"
+    },
+    {
+        "id": "tinuqin",
+        "irc": {
+            "nicks": [
+                "Tinuqin",
+                "Tinuqin1337"
+            ],
+            "nickserv": "Tinuqin"
+        },
+        "minecraft": "Tinuqin",
+        "name": "Tinuqin",
+        "reddit": "Tinuqin",
+        "twitter": "tinuqin"
+    },
+    {
+        "description": "Soop is bad at building nice looking houses, enderpearling and coming up with third things to end lists with. Redstone is cool.",
+        "id": "soop",
+        "irc": {
+            "nicks": [
+                "Soopopoop",
+                "soop"
+            ]
+        },
+        "minecraft": "Soopopoop",
+        "name": "Soop",
+        "website": "http://tomschildhauer.de/"
+    },
+    {
+        "id": "misterdanb",
+        "irc": {
+            "nicks": [
+                "misterdanb",
+                "misterdanb1"
+            ],
+            "nickserv": "misterdanb"
+        },
+        "minecraft": "misterdanb",
+        "name": "misterdanb",
+        "twitter": "misterdanb"
+    },
+    {
+        "id": "darkeagle",
+        "irc": {
+            "nicks": [
+                "DarkEagle"
+            ],
+            "nickserv": "DarkEagle"
+        },
+        "minecraft": "D4rkE4gle",
+        "name": "DarkEagle",
+        "reddit": "D4rkE4gle",
+        "twitter": "D4rkE4gle"
+    },
+    {
+        "description": "Kann nichts, macht nichts.",
+        "id": "bl1nk",
+        "irc": {
+            "nicks": [
+                "bl1nk"
+            ],
+            "nickserv": "bl1nk"
+        },
+        "minecraft": "blqnk",
+        "name": "bl1nk",
+        "reddit": "bl2nk",
+        "twitter": "bl1nk",
+        "website": "http://kuchen.io/"
+    },
+    {
+        "description": "umop-apisdn!",
+        "id": "dinnerbone",
+        "irc": {
+            "nicks": [
+                "Dinnerbone"
+            ],
+            "nickserv": "Dinnerbone"
+        },
+        "minecraft": "Dinnerbone",
+        "name": "Dinnerbone",
+        "twitter": "Dinnerbone",
+        "website": "http://dinnerbone.com/"
+    }
+]

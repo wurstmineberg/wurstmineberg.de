@@ -25,7 +25,19 @@
         .people-table td.text-info {
             white-space: nowrap;
         }
+        
+        .loading > td {
+            text-align: center;
+            font-style: italic;
+        }
     </style>
+    <script>
+        function url_domain(data) {
+            var a = document.createElement('a');
+            a.href = data;
+            return a.hostname;
+        }
+    </script>
 </head>
 <body>
 
@@ -59,15 +71,17 @@
             </div>
             <div class="panel-body">
                 <p class="lead">Here's a list of all the people on the whitelist. Players are ranked in order of whitelisting.</p>
-                <p>To keep player info updated, we kind of rely on the players themselves. To update us on what you'd like to see displayed, either contact Jemus42, comment on <a href="http://www.reddit.com/r/wurstmineberg/comments/1kgem1/psa_the_great_where_you_atsurvey_of_wurstmineberg/">the survey post</a> or make a <a href="https://github.com/wurstmineberg/wurstmineberg-web">pull request</a> yourself.</p>
+                <p>To keep player info updated, we kind of rely on the players themselves. To update us on what you'd like to see displayed, either contact Jemus42 or comment on <a href="http://www.reddit.com/r/wurstmineberg/comments/1kgem1/psa_the_great_where_you_atsurvey_of_wurstmineberg/">the survey post</a>.</p>
             </div>
         </div>
-
-        <h2 id="founding">Founding members</h2>
         <div class="table-responsive">
             <table class="table people-table">
-                <thead>
+                <tbody>
                     <tr>
+                        <th id="founding" colspan="7"><h2>Founding members</h2></th>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;</th>
                         <th>Name</th>
                         <th>Info</th>
                         <th>Minecraft</th>
@@ -75,10 +89,9 @@
                         <th><a href="http://www.reddit.com/r/wurstmineberg/">Reddit</a></th>
                         <th>Website</th>
                     </tr>
-                </thead>
-                <tbody>
                     <tr>
-                        <td class="text-info" id="jemus42"><img class="avatar img-rounded" src="/assets/img/ava/Jemus42.png" />Jemus42</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/Jemus42.png" /></td>
+                        <td class="text-info" id="jemus42">Jemus42</td>
                         <td>Creator of things, registerer of other things, fiddler of bash and payer of bills. Everything kind of sort of. </td>
                         <td>Jemus42</td>
                         <td><a href="https://twitter.com/Jemus42">@Jemus42</a></td>
@@ -86,22 +99,22 @@
                         <td><a href="http://quantenbrot.de/">quantenbrot.de</a></td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="benemitc"><img class="avatar img-rounded" src="/assets/img/ava/BenemitC.png" />BenemitC</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/BenemitC.png" /></td>
+                        <td class="text-info" id="benemitc">BenemitC</td>
                         <td>Only person on the server who knows how to make a building not look shitty</td>
                         <td>BenemitC</td>
                         <td><a href="https://twitter.com/BenemitC">@BenemitC</a></td>
                         <td><a href="https://reddit.com/u/BenemitC">BenemitC</a></td>
                         <td>—</td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h2 id="later">Later members</h2>
-        <div class="table-responsive">
-            <table class="table table-striped people-table">
-                <thead>
+                    <tr id="loading-founding" class="loading">
+                        <td colspan="7">loading…</td>
+                    </tr>
                     <tr>
+                        <th id="later" colspan="7"><h2>Later members</h2></th>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;</th>
                         <th>Name</th>
                         <th>Info</th>
                         <th>Minecraft</th>
@@ -109,10 +122,9 @@
                         <th><a href="http://www.reddit.com/r/wurstmineberg/">Reddit</a></th>
                         <th>Website</th>
                     </tr>
-                </thead>
-                <tbody>
                     <tr>
-                        <td class="text-info" id="l3viathan"><img class="avatar img-rounded" src="/assets/img/ava/l3viathan2142.png" />L3viathan</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/l3viathan2142.png" /></td>
+                        <td class="text-info" id="l3viathan">L3viathan</td>
                         <td>Explainer of things, finder of stuff and knower of random things. One of the resident redstoners.</td>
                         <td>l3viathan2142</td>
                         <td><a href="https://twitter.com/L3viathan2142">@L3viathan2142</a></td>
@@ -120,7 +132,8 @@
                         <td><a href="http://l3vi.de/">l3vi.de</a></td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="fenhl"><img class="avatar img-rounded" src="/assets/img/ava/Fenhl.png" />Fenhl</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/Fenhl.png" /></td>
+                        <td class="text-info" id="fenhl">Fenhl</td>
                         <td>Python voodooist, maintainer of <a href="http://fenhl.net/mc/wmb/proj/">project pages</a> and <s>builder of community builds</s> professional procrastinator. Also one of the redstoners.</td>
                         <td>Fenhl</td>
                         <td><a href="https://twitter.com/Fenhl">@Fenhl</a></td>
@@ -128,7 +141,8 @@
                         <td><a href="http://fenhl.net/">fenhl.net</a></td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="farthen"><img class="avatar img-rounded" src="/assets/img/ava/Farthen08.png" />Farthen</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/Farthen08.png" /></td>
+                        <td class="text-info" id="farthen">Farthen</td>
                         <td>Either online for days or offline for months at a time. Has played Minecraft <a href="http://minecraft.gamepedia.com/Alpha">back in the day</a>.</td>
                         <td>Farthen08</td>
                         <td><a href="https://twitter.com/Farthen">@Farthen</a></td>
@@ -136,7 +150,8 @@
                         <td><a href="http://farthen.de/">farthen.de</a></td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="viirus42"><img class="avatar img-rounded" src="/assets/img/ava/vIiRuS42.png" />viirus42</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/vIiRuS42.png" /></td>
+                        <td class="text-info" id="viirus42">viirus42</td>
                         <td>An elusive creature which is rarely seen online and once had spawn set to <a href="#fenhl">Fenhl</a>'s base for several months. As casual as casual gets.</td>
                         <td>vIiRuS42</td>
                         <td><a href="https://twitter.com/viirus42">@viirus42</a></td>
@@ -144,7 +159,8 @@
                         <td>—</td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="naturalismus"><img class="avatar img-rounded" src="/assets/img/ava/naturalismus.png" />naturalismus</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/naturalismus.png" /></td>
+                        <td class="text-info" id="naturalismus">naturalismus</td>
                         <td>Obvious troll</td>
                         <td>naturalismus</td>
                         <td><a href="https://twitter.com/Naturalismus">@Naturalismus</a></td>
@@ -152,7 +168,8 @@
                         <td>—</td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="efrane"><img class="avatar img-rounded" src="/assets/img/ava/eFrane.png" />eFrane</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/eFrane.png" /></td>
+                        <td class="text-info" id="efrane">eFrane</td>
                         <td>Pinguin der Herzen</td>
                         <td>eFrane</td>
                         <td><a href="https://twitter.com/eFrane">@eFrane</a></td>
@@ -160,15 +177,17 @@
                         <td>—</td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="bediko"><img class="avatar img-rounded" src="/assets/img/ava/Bediko.png" />Bediko</td>
-                        <td>Hier könnte Ihre Beschreibung stehen!</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/Bediko.png" /></td>
+                        <td class="text-info" id="bediko">Bediko</td>
+                        <td style="font-size: small; color: gray;">Hier könnte Ihre Beschreibung stehen! (To update your description, tell someone in <a href="irc://chat.freenode.net/#wurstmineberg">IRC</a>.)</td>
                         <td>Bediko</td>
                         <td><a href="https://twitter.com/Bediko">@Bediko</a></td>
                         <td>—</td>
                         <td>—</td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="gilbster"><img class="avatar img-rounded" src="/assets/img/ava/gilbster.png" />gilbster</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/gilbster.png" /></td>
+                        <td class="text-info" id="gilbster">gilbster</td>
                         <td>Hier könnte Ihre Beschreibung stehen!</td>
                         <td>gilbster</td>
                         <td><a href="https://twitter.com/ggggilbster">@ggggilbster</a></td>
@@ -176,7 +195,8 @@
                         <td>—</td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="papierschiff"><img class="avatar img-rounded" src="/assets/img/ava/papierschiff.png" />papierschiff</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/papierschiff.png" /></td>
+                        <td class="text-info" id="papierschiff">papierschiff</td>
                         <td>My hood is my castle</td>
                         <td>papierschiff</td>
                         <td><a href="https://twitter.com/papierschiff_">@papierschiff_</a></td>
@@ -184,7 +204,8 @@
                         <td><a href="http://papierschiff.org/">papierschiff.org</a></td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="tinuqin"><img class="avatar img-rounded" src="/assets/img/ava/Tinuqin.png" />Tinuqin</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/Tinuqin.png" /></td>
+                        <td class="text-info" id="tinuqin">Tinuqin</td>
                         <td>Hier könnte Ihre Beschreibung stehen!</td>
                         <td>Tinuqin</td>
                         <td><a href="https://twitter.com/Tinuqin">@Tinuqin</a></td>
@@ -192,7 +213,8 @@
                         <td>—</td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="soop"><img class="avatar img-rounded" src="/assets/img/ava/Soopopoop.png" />Soop</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/Soopopoop.png" /></td>
+                        <td class="text-info" id="soop">Soop</td>
                         <td>Soop is bad at building nice looking houses, enderpearling and coming up with third things to end lists with. Redstone is cool.</td>
                         <td>Soopopoop</td>
                         <td>—</td>
@@ -200,7 +222,8 @@
                         <td><a href="http://tomschildhauer.de/">tomschildhauer.de</a></td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="misterdanb"><img class="avatar img-rounded" src="/assets/img/ava/misterdanb.png" />misterdanb</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/misterdanb.png" /></td>
+                        <td class="text-info" id="misterdanb">misterdanb</td>
                         <td>Hier könnte Ihre Beschreibung stehen!</td>
                         <td>misterdanb</td>
                         <td><a href="https://twitter.com/misterdanb">@misterdanb</a></td>
@@ -208,7 +231,8 @@
                         <td>—</td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="darkeagle"><img class="avatar img-rounded" src="/assets/img/ava/D4rkE4gle.png" />DarkEagle</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/D4rkE4gle.png" /></td>
+                        <td class="text-info" id="darkeagle">DarkEagle</td>
                         <td>Hier könnte Ihre Beschreibung stehen!</td>
                         <td>D4rkE4gle</td>
                         <td><a href="https://twitter.com/D4rkE4gle">@D4rkE4gle</a></td>
@@ -216,22 +240,22 @@
                         <td>—</td>
                     </tr>
                     <tr>
-                        <td class="text-info" id="bl1nk"><img class="avatar img-rounded" src="/assets/img/ava/blqnk.png" />bl1nk</td>
+                        <td><img class="avatar img-rounded" src="/assets/img/ava/blqnk.png" /></td>
+                        <td class="text-info" id="bl1nk">bl1nk</td>
                         <td>Kann nichts, macht nichts.</td>
                         <td>blqnk</td>
                         <td><a href="https://twitter.com/bl1nk">@bl1nk</a></td>
                         <td><a href="https://reddit.com/u/bl2nk">bl2nk</a></td>
                         <td><a href="http://kuchen.io/">Kuchen.io</a></td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h2 id="former">Former members</h2>
-        <div class="table-responsive">
-            <table class="table people-table">
-                <thead>
+                    <tr id="loading-later" class="loading">
+                        <td colspan="7">loading…</td>
+                    </tr>
                     <tr>
+                        <th id="former" colspan="7"><h2>Former members</h2></th>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;</th>
                         <th>Name</th>
                         <th>Info</th>
                         <th>Minecraft</th>
@@ -239,9 +263,8 @@
                         <th><a href="http://www.reddit.com/r/wurstmineberg/">Reddit</a></th>
                         <th>Website</th>
                     </tr>
-                </thead>
-                <tbody>
                     <tr>
+                        <td>&nbsp;</td>
                         <td class="text-info" id="lukassuricate">Suricate</td>
                         <td>Wasn't online for a few months and hasn't been in contact for at least as long. His player file has been archived and removed from the active world directory.</td>
                         <td>LukasSuricate</td>
@@ -249,10 +272,12 @@
                         <td>-</td>
                         <td><a href="#">-</a></td>
                     </tr>
-                </body>
+                    <tr id="loading-former" class="loading">
+                        <td colspan="7">loading…</td>
+                    </tr>
+                </tbody>
             </table>
-        </tbody>
-
+        </div>
     </div> <!-- /row -->
     <hr/>
     <p class="muted text-center">The People of wurstmineberg.de 2012–2013</p>
@@ -264,5 +289,25 @@
 <script>
     $.each($("h2"),function(){$(this).prepend("<a class='tag' href='#" + $(this).attr("id") + "' name='" + $(this).attr("id") + "'>&rArr;</a>");});
     $("h2").hover(function(){$(this).children(".tag").css("display","inline");},function(){$(this).children(".tag").css("display","none");}
+    $.ajax('/assets/serverstatus/people.json', {
+        dataType: 'json',
+        error: function(request, status, error) {
+            $('.loading').html('error: could not load people.json');
+        },
+        success: function(data) {
+            data.forEach(function(person) {
+                var personStatus = 'status' in person ? person['status'] : 'later';
+                var name = 'name' in person ? person['name'] : person['id'];
+                var minecraft = 'minecraft' in person ? person['minecraft'] : null;
+                var ava = minecraft ? '<img class="avatar img-rounded" src="/assets/img/ava/' + minecraft + '.png" />' : '&nbsp;';
+                var description = 'description' in person ? '<td>' + person['description'] + '</td>' : '<td style="font-size: small; color: gray;">Hier könnte Ihre Beschreibung stehen! (To update your description, tell someone in <a href="irc://chat.freenode.net/#wurstmineberg">IRC</a>.)</td>' ;
+                var twitter = 'twitter' in person ? '<a href="https://twitter.com/' + person['twitter'] + '">@' + person['twitter'] + '</a>' : '—';
+                var reddit = 'reddit' in person ? '<a href="https://reddit.com/u/' + person['reddit'] + '">' + person['reddit'] + '</a>' : '—';
+                var website = 'website' in person ? '<a href="' + person['website'] + '">' + url_domain(person['website']) + '</a>' : '—';
+                $('.people-table tr#loading-' + personStatus).after('<tr><td>' + ava + '</td><td class="text-info" id="' + person['id'] + '">' + name + '</td>' + description + '<td>' + (minecraft ? minecraft : '—') + '</td><td>' + twitter + '</td><td>' + reddit + '</td><td>' + website + '</td></tr>');
+            });
+            $('.loading').remove();
+        }
+    });
 </body>
 </html>
