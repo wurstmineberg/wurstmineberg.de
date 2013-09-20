@@ -135,7 +135,7 @@
 
 <script>
     $.each($('h2'), function() {
-        $(this).prepend('<a class="tag" style="display: none;" href="#' + $(this).attr('id') + '" name="' + $(this).attr('id') + '">&rArr;</a>');
+        $(this).append('&nbsp;<a class="tag" style="display: none;" href="#' + $(this).attr('id') + '" name="' + $(this).attr('id') + '">¶</a>');
     });
     $('h2').hover(function() {
         $(this).children('.tag').css('display', 'inline');
