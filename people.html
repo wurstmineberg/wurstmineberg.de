@@ -151,7 +151,7 @@
                 var twitter = 'twitter' in person ? '<a href="https://twitter.com/' + person['twitter'] + '">@' + person['twitter'] + '</a>' : '—';
                 var reddit = 'reddit' in person ? '<a href="https://reddit.com/u/' + person['reddit'] + '">' + person['reddit'] + '</a>' : '—';
                 var website = 'website' in person ? '<a href="' + person['website'] + '">' + url_domain(person['website']) + '</a>' : '—';
-                $('#loading-' + personStatus).after('<tr><td>' + ava + '</td><td class="text-info" id="' + person['id'] + '">' + name + '</td>' + description + '<td>' + (minecraft ? minecraft : '—') + '</td><td>' + twitter + '</td><td>' + reddit + '</td><td>' + website + '</td></tr>');
+                $('#loading-' + personStatus).before('<tr><td>' + ava + '</td><td class="text-info" id="' + person['id'] + '">' + name + '</td>' + description + '<td>' + (minecraft ? minecraft : '—') + '</td><td>' + twitter + '</td><td>' + reddit + '</td><td>' + website + '</td></tr>');
             });
             $('.loading').remove();
         }
