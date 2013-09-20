@@ -146,6 +146,9 @@
     }, function() {
         $(this).children('.tag').css('display', 'none');
     });
+    $('.avatar').error(function() {
+      $(this).parent().html('&nbsp;');
+    });
     $.ajax('/assets/serverstatus/people.json', {
         dataType: 'json',
         error: function(request, status, error) {
