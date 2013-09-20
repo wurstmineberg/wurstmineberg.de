@@ -139,12 +139,12 @@
 
 <script>
     $.each($('h2'), function() {
-        $(this).append('&nbsp;<a class="tag" style="opacity:0; transistion-delay:0.5s; transition-property:opacity;" href="#' + $(this).parent().attr('id') + '">¶</a>');
+        $(this).append('&nbsp;<a class="tag" style="display: none;" href="#' + $(this).parent().attr('id') + '">¶</a>');
     });
     $('h2').hover(function() {
-        $(this).children('.tag').css('opacity', '1');
+        $(this).children('.tag').css('display', 'inline');
     }, function() {
-        $(this).children('.tag').css('opacity', '0');
+        $(this).children('.tag').css('display', 'none');
     });
     $('.avatar').error(function() {
       $(this).parent().html('&nbsp;');
