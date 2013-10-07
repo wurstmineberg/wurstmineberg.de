@@ -26,7 +26,7 @@ Things in this repo
 Things that will be in this repo
 --------------------------------
 
-If our overviewer config expands and possibly included some more cutsomization, we might get that in a separat repo, just to keep things a little better organized. After all, that's kind of the point.
+If our overviewer config expands and possibly included some more cutsomization, we might get that in a separate repo, just to keep things a little better organized. After all, that's kind of the point.
 
 Things that do not belong in this repo
 --------------------------------------
