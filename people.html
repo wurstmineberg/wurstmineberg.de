@@ -95,7 +95,7 @@
                         <th>Website</th>
                     </tr>
                     <tr id="loading-founding" class="loading">
-                        <td colspan="7">loading…</td>
+                        <td colspan="7">Is this thing on?</td>
                     </tr>
                     <tr>
                         <th id="later" colspan="7"><h2>Later members</h2></th>
@@ -110,7 +110,7 @@
                         <th>Website</th>
                     </tr>
                     <tr id="loading-later" class="loading">
-                        <td colspan="7">loading…</td>
+                        <td colspan="7">This isn't working…</td>
                     </tr>
                     <tr>
                         <th id="former" colspan="7"><h2>Former members</h2></th>
@@ -125,7 +125,7 @@
                         <th>Website</th>
                     </tr>
                     <tr id="loading-former" class="loading">
-                        <td colspan="7">loading…</td>
+                        <td colspan="7">Do you even JavaScript?</td>
                     </tr>
                 </tbody>
             </table>
@@ -139,6 +139,7 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
 <script>
+    $('.loading').children('td').html('loading…');
     $.each($('h2'), function() {
         $(this).append('&nbsp;<a class="tag" style="display: none;" href="#' + $(this).parent().attr('id') + '">¶</a>');
     });
@@ -150,7 +151,7 @@
     $.ajax('/assets/serverstatus/people.json', {
         dataType: 'json',
         error: function(request, status, error) {
-            $('.loading').html('error: could not load people.json');
+            $('.loading').children('td').html('error: could not load people.json');
         },
         success: function(data) {
             data.forEach(function(person) {
