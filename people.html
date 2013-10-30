@@ -112,17 +112,9 @@
 
 <script src="//code.jquery.com/jquery.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="/static/js/common.js"></script>
 
 <script>
-    $('.loading').children('td').html('loading…');
-    $.each($('h2'), function() {
-        $(this).append('&nbsp;<a class="tag" style="display: none;" href="#' + $(this).parent().attr('id') + '">¶</a>');
-    });
-    $('h2').hover(function() {
-        $(this).children('.tag').css('display', 'inline');
-    }, function() {
-        $(this).children('.tag').css('display', 'none');
-    });
     $.ajax('/assets/serverstatus/people.json', {
         dataType: 'json',
         error: function(request, status, error) {
