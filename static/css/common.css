@@ -1,0 +1,30 @@
+body {
+	padding-top:70px;
+}
+
+.avatar{
+	width:16px;
+	height:16px;
+}
+
+.avatar > img {
+    margin-right: 5px;
+    min-width: 32px;
+}
+
+.people-table td {
+    vertical-align: middle;
+}
+
+.people-table td.text-info {
+    white-space: nowrap;
+}
+
+.loading > td {
+    text-align: center;
+    font-style: italic;
+}
+
+a.tag:hover {
+    text-decoration: none;
+}
