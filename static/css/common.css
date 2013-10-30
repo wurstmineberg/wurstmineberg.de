@@ -28,3 +28,7 @@ body {
 a.tag:hover {
     text-decoration: none;
 }
+
+.tag {
+	display: none;
+}
