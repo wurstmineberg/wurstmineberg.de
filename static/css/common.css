@@ -2,6 +2,10 @@ body {
 	padding-top:70px;
 }
 
+h2 {
+	margin-top: 40;
+}
+
 .avatar{
 	width:16px;
 	height:16px;
