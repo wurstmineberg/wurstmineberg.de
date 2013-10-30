@@ -34,8 +34,10 @@ function configure_navigation() {
 
 function set_anchor_height() {
 	var navigation_height = $(".navbar").css("height");
-	$(".anchor").css("padding-top", navigation_height);
-	$(".anchor").css("margin-top", "-" + navigation_height);
+	var anchor = $(".anchor");
+
+	anchor.css("padding-top", "+=" + navigation_height);
+	anchor.css("margin-top", "-=" + navigation_height);
 }
 
 // Run by default
