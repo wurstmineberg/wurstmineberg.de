@@ -8,8 +8,8 @@ function linkify_headers() {
 	// Do the stuff to the headers to linkify them
 
 	$.each($('h2'), function() {
-		$(this).prepend('<a class="anchor" id="' + $(this).attr('id') + '-anchor"></a>');
-		$(this).append('&nbsp;<a class="tag" href="#' + $(this).attr('id') + '-anchor">¶</a>');
+		$(this).addClass("anchor");
+		$(this).append('&nbsp;<a class="tag" href="#' + $(this).attr('id') + '">¶</a>');
 	});
 	$('h2').hover(function() {
 		$(this).children('.tag').css('display', 'inline');
@@ -32,6 +32,13 @@ function configure_navigation() {
 	});
 }
 
+function set_anchor_height() {
+	var navigation_height = $(".navbar").css("height");
+	$(".anchor").css("padding-top", navigation_height);
+	$(".anchor").css("margin-top", "-" + navigation_height);
+}
+
 // Run by default
 linkify_headers();
 configure_navigation();
+set_anchor_height();

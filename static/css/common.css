@@ -28,15 +28,3 @@ body {
 a.tag:hover {
     text-decoration: none;
 }
-
-.tag {
-	display: inline;
-	position: relative;
-}
-
-.anchor {
-	display: block;
-	position: relative;
-	top: -70px;
-	visibility: hidden;
-}
