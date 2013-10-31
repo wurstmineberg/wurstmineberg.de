@@ -29,25 +29,30 @@ function display_user_data(person) {
     if (!description) {
         description = 'Hier könnte Ihre Beschreibung stehen! (To update your description, tell someone in <a href="irc://chat.freenode.net/#wurstmineberg">IRC</a>.)';
         $('#user-description').addClass('muted');
-    };
+    }
 
     $('#user-description').html(description);
 
     var social_links = $('#social-links');
     if ('reddit' in person) {
         social_links.removeClass('hidden');
-        social_links.append('<a class="social-link" href="' + reddit_user_link(person['reddit']) + '">Reddit</a>')
-    };
+        social_links.append('<a class="social-link" href="' + reddit_user_link(person['reddit']) + '">Reddit</a>');
+    }
 
     if ('twitter' in person) {
         social_links.removeClass('hidden');
-        social_links.append('<a class="social-link" href="' + twitter_user_link(person['twitter']) + '">Twitter</a>')
-    };
+        social_links.append('<a class="social-link" href="' + twitter_user_link(person['twitter']) + '">Twitter</a>');
+    }
 
     if ('website' in person) {
         social_links.removeClass('hidden');
-        social_links.append('<a class="social-link" href="' + person['website'] + '">Website</a>')
-    };
+        social_links.append('<a class="social-link" href="' + person['website'] + '">Website</a>');
+    }
+    
+    if ('wiki' in person) {
+        social_links.removeClass('hidden');
+        social_links.append('<a class="social-link" href="http://wiki.wurstmineberg.de/User:' + person['wiki'].replace(/ /g, '_') + '">Wiki</a>');
+    }
 }
 
 function load_user_data() {
