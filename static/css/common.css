@@ -63,6 +63,11 @@ a {
 	color: gray;
 }
 
+.social-link {
+	display: inline-block;
+	margin-right: 1em;
+}
+
 #username {
 	vertical-align: middle;
 	line-height: 32px;

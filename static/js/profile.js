@@ -31,6 +31,17 @@ function display_user_data(person) {
     };
 
     $('#user-description').html(description);
+
+    var social_links = $('#social-links');
+    if ('reddit' in person) {
+        social_links.removeClass('hidden');
+        social_links.append('<a class="social-link" href="' + reddit_user_link(person['reddit']) + '">Reddit</a>')
+    };
+
+    if ('twitter' in person) {
+        social_links.removeClass('hidden');
+        social_links.append('<a class="social-link" href="' + twitter_user_link(person['twitter']) + '">Twitter</a>')
+    };
 }
 
 function load_user_data() {

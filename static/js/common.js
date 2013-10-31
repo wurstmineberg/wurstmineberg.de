@@ -4,6 +4,14 @@ function url_domain(data) {
     return a.hostname;
 }
 
+function reddit_user_link(username) {
+	return 'https://reddit.com/u/' + username;
+}
+
+function twitter_user_link(username) {
+	return 'https://twitter.com/' + username;
+}
+
 function linkify_headers() {
 	// Do the stuff to the headers to linkify them
 
