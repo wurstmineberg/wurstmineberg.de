@@ -63,10 +63,16 @@ a {
 	color: gray;
 }
 
+#username {
+	vertical-align: middle;
+	line-height: 32px;
+}
+
 #avatar {
 	float: left;
 	margin-right: 1em;
 	display: inline-block;
+	height: 32px;
 }
 
 #head {

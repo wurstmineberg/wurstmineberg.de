@@ -24,7 +24,6 @@ function display_user_data(person) {
     $('#username').removeClass('hidden');
     $('#username').text(person['name']);
 
-
     var description = person['description']
     if (!description) {
         description = 'Hier könnte Ihre Beschreibung stehen! (To update your description, tell someone in <a href="irc://chat.freenode.net/#wurstmineberg">IRC</a>.)';
@@ -46,17 +45,17 @@ function load_user_data() {
 
             if (username != "") {
                 data.forEach(function(person) {
-                    if ('name' in person) {
-                        if (person['name'].toLowerCase() === username) {
+                    if ('id' in person) {
+                        if (person['id'].toLowerCase() === username) {
                             display_user_data(person);
                             return;
                         }
                     }
-
-                    $('.loading').html('Error: User with this name not found');
-
                 });
-            }            
+
+
+                $('.loading').html('Error: User with this name not found');
+            }
         }
     });
 }
