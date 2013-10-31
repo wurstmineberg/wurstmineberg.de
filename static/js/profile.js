@@ -18,6 +18,7 @@ function display_user_data(person) {
 
         head = 'https://minotar.net/avatar/' + person['minecraft'];
         $('#head').attr('src', head);
+        $('#head').attr('title', person['minecraft']);
         $('#head').removeClass('hidden');
     }
 
@@ -41,6 +42,11 @@ function display_user_data(person) {
     if ('twitter' in person) {
         social_links.removeClass('hidden');
         social_links.append('<a class="social-link" href="' + twitter_user_link(person['twitter']) + '">Twitter</a>')
+    };
+
+    if ('website' in person) {
+        social_links.removeClass('hidden');
+        social_links.append('<a class="social-link" href="' + person['website'] + '">Website</a>')
     };
 }
 
