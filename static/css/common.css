@@ -36,3 +36,34 @@ a.tag:hover {
 .tag {
 	display: none;
 }
+
+a {
+	position: relative;
+	z-index: 1;
+}
+
+.btn {
+	position: relative;
+	z-index: 1;
+}
+
+.hidden {
+	display: none;
+}
+
+.small {
+	font-size: small;
+}
+
+.muted {
+	color: gray;
+}
+
+#avatar {
+	float: left;
+	margin: 0 1em 1em 0;
+}
+
+#user-description {
+	font-size: normal;
+}
