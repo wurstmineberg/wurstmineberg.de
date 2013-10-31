@@ -1,5 +1,5 @@
 body {
-	padding-top:70px;
+	padding-top: 70px;
 }
 
 h2 {
@@ -55,15 +55,29 @@ a {
 	font-size: small;
 }
 
+.panel-heading {
+	overflow: auto;
+}
+
 .muted {
 	color: gray;
 }
 
 #avatar {
 	float: left;
+	margin-right: 1em;
+	display: inline-block;
+}
+
+#head {
+	float: left;
 	margin: 0 1em 1em 0;
 }
 
 #user-description {
 	font-size: normal;
+}
+
+.panel-heading {
+	display: block;
 }
