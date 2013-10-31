@@ -36,3 +36,13 @@ a.tag:hover {
 .tag {
 	display: none;
 }
+
+a {
+	position: relative;
+	z-index: 1;
+}
+
+.btn {
+	position: relative;
+	z-index: 1;
+}
