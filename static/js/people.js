@@ -26,7 +26,7 @@ $.ajax('/assets/serverstatus/people.json', {
         data.forEach(function(person) {
             if ('minecraft' in person) {
                 var ava = '/assets/img/ava/' + person['minecraft'] + '.png';
-                $('#' + person['id'] + ' > .avatar').html('<img class="img-rounded" />');
+                $('#' + person['id'] + ' > .avatar').html('<img class="" />');
                 $('#' + person['id'] + ' > .avatar > img').attr('src', ava).error(function() {
                     $('#' + person['id'] + ' > .avatar').html('&nbsp;');
                 });
