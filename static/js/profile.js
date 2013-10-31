@@ -23,7 +23,7 @@ function display_user_data(person) {
     }
 
     $('#username').removeClass('hidden');
-    $('#username').text(person['name']);
+    $('#username').text('name' in person ? person['name'] : person['id']);
 
     var description = person['description']
     if (!description) {
