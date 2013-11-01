@@ -73,6 +73,15 @@ a {
 	line-height: 32px;
 }
 
+#people-list {
+	vertical-align: middle;
+	line-height: 16px;
+}
+
+.avatar {
+	margin-right: 0.5em;
+}
+
 #avatar {
 	float: left;
 	margin-right: 1em;
