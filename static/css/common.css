@@ -73,6 +73,10 @@ a {
 	line-height: 32px;
 }
 
+.avatar {
+	margin-right: 1em;
+}
+
 #avatar {
 	float: left;
 	margin-right: 1em;
