@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <!--#include file="/static/html/header.html" -->
+</head>
+<body>
+    <!--#include file="/static/html/navigation.html" -->
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <img id="avatar" class="hidden" src="" alt="avatar" />
+                <h3 id="username" class="panel-title loading">Loading data…</h3>
+            </div>
+            <div class="panel-body">
+                <div class="lead">
+                    <img id="head" class="hidden img-rounded" src="" alt="head" />
+                    <div id="user-info">
+                        <p id="user-description" class="loading">Loading user data…</p>
+                        <p id="fav-item" class="hidden">Favorite item: </p>
+                        <p id="social-links" class="hidden"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--#include file="/static/html/footer.html" -->
+    <script src="/static/js/profile.js"></script>
+</body>
+</html>

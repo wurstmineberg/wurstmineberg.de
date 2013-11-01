@@ -1,5 +1,5 @@
 body {
-	padding-top:70px;
+	padding-top: 70px;
 }
 
 h2 {
@@ -45,4 +45,50 @@ a {
 .btn {
 	position: relative;
 	z-index: 1;
+}
+
+.hidden {
+	display: none;
+}
+
+.small {
+	font-size: small;
+}
+
+.panel-heading {
+	overflow: auto;
+}
+
+.muted {
+	color: gray;
+}
+
+.social-link {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+#username {
+	vertical-align: middle;
+	line-height: 32px;
+}
+
+#avatar {
+	float: left;
+	margin-right: 1em;
+	display: inline-block;
+	height: 32px;
+}
+
+#head {
+	float: left;
+	margin: 0 1em 1em 0;
+}
+
+#user-description {
+	font-size: normal;
+}
+
+.panel-heading {
+	display: block;
 }
