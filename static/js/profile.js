@@ -62,7 +62,7 @@ function display_user_data(person) {
     
     if ('wiki' in person) {
         social_links.removeClass('hidden');
-        social_links.append('<a class="social-link" href="http://wiki.wurstmineberg.de/User:' + person['wiki'].replace(/ /g, '_') + '">Wiki</a>');
+        social_links.append('<a class="social-link" href="' + wiki_user_link(person['wiki']) + '">Wiki</a>');
     }
 }
 

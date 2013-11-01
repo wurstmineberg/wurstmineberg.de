@@ -12,6 +12,11 @@ function twitter_user_link(username) {
 	return 'https://twitter.com/' + username;
 }
 
+function wiki_user_link(username) {
+	username = username.replace(/ /g, '_');
+    return 'http://wiki.wurstmineberg.de/User:' + username;
+}
+
 function linkify_headers() {
 	// Do the stuff to the headers to linkify them
 
