@@ -8,7 +8,7 @@ function get_user_name() {
 function display_user_data(person) {
     $('.loading').removeClass('loading');
     
-    var name = 'name' in person ? person['name'] : person['id']
+    var name = 'name' in person ? person['name'] : person['id'];
     var ava;
     var head;
     
