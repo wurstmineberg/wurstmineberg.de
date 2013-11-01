@@ -14,12 +14,8 @@ $.ajax('/assets/serverstatus/people.json', {
                 name = '<a href="/people/' + person['id'].toLowerCase() + '">' + person['id'] + '</a>';
             };
             
-            var minecraft = 'minecraft' in person ? person['minecraft'] : null;
-            var description = 'description' in person ? '<td>' + person['description'] + '</td>' : '<td style="font-size: small; color: gray;">Hier könnte Ihre Beschreibung stehen! (To update your description, tell someone in <a href="irc://chat.freenode.net/#wurstmineberg">IRC</a>.)</td>' ;
-            var twitter = 'twitter' in person ? '<a href="' + twitter_user_link(person['twitter']) + '">@' + person['twitter'] + '</a>' : '—';
-            var reddit = 'reddit' in person ? '<a href="' + reddit_user_link(person['reddit']) + '">' + person['reddit'] + '</a>' : '—';
-            var website = 'website' in person ? '<a href="' + person['website'] + '">' + url_domain(person['website']) + '</a>' : '—';
-            $('#loading-' + personStatus + "-table").before('<tr id="' + person['id'] + '"><td class="avatar">&nbsp;</td><td class="text-info">' + name + '</td>' + description + '<td>' + (minecraft ? minecraft : '—') + '</td><td>' + twitter + '</td><td>' + reddit + '</td><td>' + website + '</td></tr>');
+            var description = 'description' in person ? '<td class="description">' + person['description'] + '</td>' : '<td class="description small muted">Hier könnte Ihre Beschreibung stehen! (To update your description, tell someone in <a href="irc://chat.freenode.net/#wurstmineberg">IRC</a>.)</td>' ;
+            $('#loading-' + personStatus + "-table").before('<tr id="' + person['id'] + '"><td class="avatar">&nbsp;</td><td class="username">' + name + '</td>' + description + '</tr>');
         });
 
         $('.loading').remove();
