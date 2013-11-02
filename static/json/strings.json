@@ -1,0 +1,28 @@
+{
+	"stats": {
+		"general": {
+			"animalsBred": "Animals Bred",
+			"boatOneCm": "Distance by Boat",
+			"climbOneCm": "Distance Climbed",
+			"damageDealt": "Damage Dealt",
+			"damageTaken": "Damage Taken.",
+			"diveOneCm": "Distance Dove",
+			"leaveGame": "Games quit",
+			"deaths": "Number of Deaths",
+			"drop": "Items Dropped",
+			"fallOneCm": "Distance fallen",
+			"fishCaught": "Fish Caught",
+			"flyOneCm": "Distance Flown",
+			"horseOneCm": "Distance by Horse",
+			"jump": "Jumps",
+			"leaveGame": "Games quit",
+			"minecraftOneCm": "Distance by Minecart",
+			"mobKills": "Mob Kills",
+			"pigOneCm": "Distance by Pig",
+			"playerKills": "Player Kills",
+			"playOneMinute": "Time played",
+			"swimOneCm": "Distance Swum",
+			"walkOneCm": "Distance Walked"
+		}
+	}
+}
