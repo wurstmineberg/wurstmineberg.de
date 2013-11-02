@@ -20,6 +20,10 @@ h2 {
     vertical-align: middle;
 }
 
+.people-table td.username {
+	width: 120px;
+}
+
 .people-table td.text-info {
     white-space: nowrap;
 }
@@ -71,6 +75,11 @@ a {
 #username {
 	vertical-align: middle;
 	line-height: 32px;
+}
+
+#people-list {
+	vertical-align: middle;
+	line-height: 16px;
 }
 
 .avatar {

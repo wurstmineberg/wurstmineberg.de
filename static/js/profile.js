@@ -8,22 +8,30 @@ function get_user_name() {
 function display_user_data(person) {
     $('.loading').removeClass('loading');
     
+    var name = 'name' in person ? person['name'] : person['id'];
     var ava;
     var head;
     
+    $('#username').removeClass('hidden');
+    $('#username').text(name);
+
+
     if ('minecraft' in person) {
-        ava = '/assets/img/ava/' + person['minecraft'] + '.png';
+        var minecraft = person['minecraft'];
+
+        ava = '/assets/img/ava/' + minecraft + '.png';
         $('#avatar').attr('src', ava);
         $('#avatar').removeClass('hidden');
         
-        head = 'https://minotar.net/avatar/' + person['minecraft'];
+        head = 'https://minotar.net/avatar/' + minecraft;
         $('#head').attr('src', head);
-        $('#head').attr('title', person['minecraft']);
+        $('#head').attr('title', minecraft);
         $('#head').removeClass('hidden');
+
+        if (minecraft.toLowerCase() !== name.toLowerCase()) {
+            $('#username').html(name + ' <span class="muted"> (Minecraft: ' + minecraft + ')</span>');
+        };
     }
-    
-    $('#username').removeClass('hidden');
-    $('#username').text('name' in person ? person['name'] : person['id']);
     
     var description = person['description']
     if (!description) {
@@ -62,7 +70,7 @@ function display_user_data(person) {
     
     if ('wiki' in person) {
         social_links.removeClass('hidden');
-        social_links.append('<a class="social-link" href="http://wiki.wurstmineberg.de/User:' + person['wiki'].replace(/ /g, '_') + '">Wiki</a>');
+        social_links.append('<a class="social-link" href="' + wiki_user_link(person['wiki']) + '">Wiki</a>');
     }
 }
 
