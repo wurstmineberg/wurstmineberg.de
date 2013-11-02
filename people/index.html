@@ -25,60 +25,79 @@
             </div>
         </div>
 
-        <table class="table table-responsive stats-table stats-general-table">
-            <tbody>
-                <tr>
-                    <th>Stat</th>
-                    <th>Info</th>
-                </tr>
-                <tr id="loading-stat-general-table" class="loading-stat">
-                    <td colspan="7">Loading stat data…</td>
-                </tr>
-            </tbody>
-        </table>
+        <h2>Statistics</h2>
 
-        <table class="table table-responsive stats-table stats-blocks-table">
-            <tbody>
-                <tr>
-                    <th>Block</th>
-                    <th>Times Crafted</th>
-                    <th>Times Used</th>
-                    <th>Times Mined</th>
-                </tr>
-                <tr id="loading-stat-blocks-table" class="loading-stat">
-                    <td colspan="7">Loading stat data…</td>
-                </tr>
-            </tbody>
-        </table>
+        <ul id="pagination" class="pagination">
+            <li><a id="pagination-stats-general" class="pagination-item" href="#">General</a></li>
+            <li><a id="pagination-stats-blocks" class="pagination-item" href="#">Blocks</a></li>
+            <li><a id="pagination-stats-items" class="pagination-item" href="#">Items</a></li>
+            <li><a id="pagination-stats-mobs" class="pagination-item" href="#">Mobs</a></li>
+        </ul>
 
-        <table class="table table-responsive stats-table stats-items-table">
-            <tbody>
-                <tr>
-                    <th>Item</th>
-                    <th>Times Depleted</th>
-                    <th>Times Crafted</th>
-                    <th>Times Used</th>
-                </tr>
-                <tr id="loading-stat-items-table" class="loading-stat">
-                    <td colspan="7">Loading stat data…</td>
-                </tr>
-            </tbody>
-        </table>
+        <div id="stats-general" class="stats-section">
+            <h3>General</h3>
+            <table id="stats-general-table" class="table table-responsive stats-table">
+                <tbody>
+                    <tr>
+                        <th>Stat</th>
+                        <th>Info</th>
+                    </tr>
+                    <tr id="loading-stat-general-table" class="loading-stat">
+                        <td colspan="7">Loading stat data…</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-        <table class="table table-responsive stats-table stats-mobs-table">
-            <tbody>
-                <tr>
-                    <th>Mob</th>
-                    <th>Killed</th>
-                    <th>Killed By</th>
-                </tr>
-                <tr id="loading-stat-mobs-table" class="loading-stat">
-                    <td colspan="7">Loading stat data…</td>
-                </tr>
-            </tbody>
-        </table>
+        <div id="stats-blocks" class="stats-section hidden">
+            <h3>Blocks</h3>
+            <table id="stats-blocks-table" class="table table-responsive stats-table">
+                <tbody>
+                    <tr>
+                        <th>Block</th>
+                        <th>Times Crafted</th>
+                        <th>Times Used</th>
+                        <th>Times Mined</th>
+                    </tr>
+                    <tr id="loading-stat-blocks-table" class="loading-stat">
+                        <td colspan="7">Loading stat data…</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
+        <div id="stats-items" class="stats-section hidden">
+            <h3>Items</h3>
+            <table id="stats-items-table" class="table table-responsive stats-table">
+                <tbody>
+                    <tr>
+                        <th>Item</th>
+                        <th>Times Depleted</th>
+                        <th>Times Crafted</th>
+                        <th>Times Used</th>
+                    </tr>
+                    <tr id="loading-stat-items-table" class="loading-stat">
+                        <td colspan="7">Loading stat data…</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
+        <div id="stats-mobs" class="stats-section hidden">
+            <h3>Mobs</h3>
+            <table id="stats-mobs-table" class="table table-responsive stats-table">
+                <tbody>
+                    <tr>
+                        <th>Mob</th>
+                        <th>Killed</th>
+                        <th>Killed By</th>
+                    </tr>
+                    <tr id="loading-stat-mobs-table" class="loading-stat">
+                        <td colspan="7">Loading stat data…</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
     </div>
 
