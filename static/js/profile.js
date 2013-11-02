@@ -249,7 +249,7 @@ function display_stat_data(data) {
                         if (seconds) {
                             final_value += seconds + 's'
                         };
-                    } else if (key.starteWith('damage')) {
+                    } else if (stat[1].startsWith('damage')) {
                         final_value = (value / 2) + ' hearts';
                     }
 
