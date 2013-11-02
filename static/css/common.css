@@ -16,6 +16,10 @@ h2 {
     min-width: 32px;
 }
 
+.funding-progress-container {
+	height: 50px;
+}
+
 .funding-progressbar {
 	margin-top: 15px;
 }
