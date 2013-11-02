@@ -17,10 +17,14 @@ function wiki_user_link(username) {
     return 'http://wiki.wurstmineberg.de/User:' + username;
 }
 
-// Some string function to ease the parsing of substrings
+// Some string functions to ease the parsing of substrings
 String.prototype.startsWith = function(needle)
 {
     return(this.indexOf(needle) == 0);
+};
+
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
 function linkify_headers() {

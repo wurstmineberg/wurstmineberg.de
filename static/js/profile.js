@@ -104,11 +104,13 @@ function display_stat_data(data) {
     var loading_stat_block = $('#loading-stat-blocks-table');
     var loading_stat_general = $('#loading-stat-general-table');
     var loading_stat_mobs = $('#loading-stat-mobs-table');
+    var loading_stat_achievements = $('#loading-stat-achievements-table');
 
     var general = [];
     var items = [];
     var blocks = [];
     var mobs = [];
+    var achievements = [];
 
     $.each(data, function(key, value) {
         stat = key.split('.');
@@ -170,6 +172,12 @@ function display_stat_data(data) {
             } else {
                 general.push({'name': key, 'value': value});
             }
+        } else {
+        	if (stat[0] === 'achievement') {
+        		var name = key;
+
+        		achievements.push({'name': name, 'value': value});
+        	};
         }
     });
 
@@ -192,6 +200,13 @@ function display_stat_data(data) {
     blocks.sort(function(a, b) {
         return a['id'] - b['id'];
     });
+
+    achievements.sort(function(a, b) {
+        nameA = a['name'];
+        nameB = b['name'];
+        return nameA.localeCompare(nameB);
+    });
+
 
     $.each(general, function(index, dict) {
         key = dict['name'];
@@ -263,75 +278,13 @@ function display_stat_data(data) {
         }
     });
 
+    $.each(achievements, function(index, dict) {
+        name = dict['name'];
 
-/*
-    $.each(data, function(key, value) {
-        stat = key.split('.');
-        var name;
-
-        if (stat[0] === 'stat') {
-            if (stat[1] === 'craftItem' ||
-                stat[1] === 'useItem' ||
-                stat[1] === 'breakItem') {
-                var item = stat[2];
-                name = item;
-
-                var row = $('#item-row-' + item);
-                if (row.length == 0) {
-                    row = '<tr id="item-row-' + item + '" class="item-row"><td class="name"></td><td class="depleted">0</td><td class="crafted">0</td><td class="used">0</td></tr>';
-                    loading_stat_item.before(row);
-                    row = $('#item-row-' + item);
-                    row.children('.name').text(name);
-                }
-
-                if (row) {
-                    if (stat[1] === 'craftItem') {
-                        row.children('.crafted').text(value);
-                    } else if (stat[1] === 'useItem') {
-                        row.children('.used').text(value);
-                    } else if (stat[1] === 'breakItem') {
-                        row.children('.depleted').text(value);
-                    }
-                }
-
-            } else if (stat[1] === 'mineBlock') {
-                var item = stat[2];
-                name = item;
-
-                var row = $('#block-row-' + item);
-                if (row.length == 0) {
-                    row = '<tr id="block-row-' + item + '" class="block-row"><td class="name"></td><td class="crafted">0</td><td class="used">0</td><td class="mined">0</td></tr>';
-                    loading_stat_block.before(row);
-                    row = $('#block-row-' + item);
-                    row.children('.name').text(name);
-                }
-
-                if (row) {
-                    if (stat[1] === 'mineBlock') {
-                        row.children('.mined').text(value);
-                    }
-                }
-            } else if (stat[1] === 'killEntity' ||
-                       stat[1] === 'entityKilledBy') {
-                var mobname = stat[2];
-                var row = $('#mob-row-' + mobname);
-                if (row.length == 0) {
-                    row = '<tr id="mob-row-' + mobname + '" class="mob-row"><td class="name"></td><td class="killed">0</td><td class="killed-by">0</td></tr>';
-                    loading_stat_mobs.before(row);
-                    row = $('#mob-row-' + mobname);
-                    row.children('.name').text(mobname);
-                }
-
-                if (stat[1] === 'killEntity') {
-                    row.children('.killed').text(value);
-                } else if (stat[1] === 'entityKilledBy') {
-                    row.children('.killed-by').text(value);
-                }
-            } else {
-            }
-        }
+        row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td class="name">' + name + '</td><td class="value">' + dict['value'] + '</td></tr>';
+        loading_stat_achievements.before(row);
     });
-*/
+
     $('.loading-stat').remove();
 }
 
