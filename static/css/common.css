@@ -29,6 +29,10 @@ h2 {
 	line-height: 32px !important;
 }
 
+.stats-table td.image {
+	width: 32px !important;
+}
+
 .people-table td.username {
 	width: 120px;
 }
