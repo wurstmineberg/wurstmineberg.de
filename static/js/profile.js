@@ -192,11 +192,11 @@ function display_stat_data(data) {
 
 	            	if (key.endsWith('OneCm')) {
 	            		if (value > 1000000) {
-	            			final_value = (value / 1000000).toFixed(2) + ' km';
+	            			final_value = (value / 1000000).toFixed(2) + 'km';
 	            		} else if (value > 1000) {
-	            			final_value = (value / 1000).toFixed(2) + ' m';
+	            			final_value = (value / 1000).toFixed(2) + 'm';
 	            		} else {
-	            			final_value = value + ' cm';
+	            			final_value = value + 'cm';
 	            		}
 	            	} else if (key.endsWith('OneMinute')) {
 	            		// Yes, this is called 'minute' and actually reflects the value in seconds.
