@@ -119,16 +119,17 @@ function display_funding_data() {
 
             while (funding_total >= spending_monthly) {
                 month++;
-                if (month > 12) {
+                if (month >= 12) {
                     year++;
-                    month = 1;
+                    month = 0;
                 }
 
                 funding_total -= spending_monthly;
             }
 
             var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            $('.funding-month').html(months[month] + ' to ' + months[(month + 1) % 12] + ' ' + year);
+            var following_year = month == 11 ? year + 1 : year;
+            $('.funding-month').html(months[month] + ' to ' + months[(month + 1) % 12] + ' ' + following_year);
 
             var percent = 0;
             if (funding_total > 0.0) {
