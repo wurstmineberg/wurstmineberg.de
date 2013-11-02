@@ -179,7 +179,41 @@ function display_stat_data(data) {
             		} else {
             			final_value = value + ' cm';
             		}
-            	};
+            	} else if (key.endsWith('OneMinute')) {
+            		// Yes, this is called 'minute' and actually reflects the value in seconds.
+            		var seconds = value;
+            		var minutes = 0;
+            		var hours = 0;
+            		var days = 0;
+            		if (seconds >= 60) {
+            			minutes = Math.floor(seconds / 60);
+            			seconds = 0;
+            		}
+
+            		if (minutes >= 60) {
+            			hours = Math.floor(minutes / 60);
+            			minutes = minutes % 60;
+            		}
+
+            		if (hours >= 24) {
+            			days = Math.floor(hours / 60);
+            			hours = hours % 24;
+            		}
+
+            		final_value = '';
+            		if (days) {
+            			final_value += days + 'd ';
+            		}
+            		if (hours) {
+            			final_value += hours + 'h ';
+            		}
+            		if (minutes) {
+            			final_value += minutes + 'min'
+            		}
+            		if (seconds) {
+            			final_value += seconds + 's'
+            		};
+            	}
 
                 general.push({'name': key, 'value': final_value});
             }
