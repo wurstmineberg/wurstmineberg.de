@@ -170,13 +170,47 @@ function display_stat_data(data) {
                 };
 
             } else {
-                general.push({'name': key, 'value': value});
+            	var final_value = value;
+            	if (key.endsWith('OneCm')) {
+            		if (value > 1000000) {
+            			final_value = (value / 1000000).toFixed(2) + ' km';
+            		} else if (value > 1000) {
+            			final_value = (value / 1000).toFixed(2) + ' m';
+            		} else {
+            			final_value = value + ' cm';
+            		}
+            	};
+
+                general.push({'name': key, 'value': final_value});
             }
         } else {
         	if (stat[0] === 'achievement') {
         		var name = key;
 
-        		achievements.push({'name': name, 'value': value});
+        		var final_value = value;
+        		if (stat[1] === 'exploreAllBiomes') {
+        			if ('value' in value) {
+        				if (value['value'] === 1) {
+        					final_value = "Yes"
+        				} else {
+        					if ('progress' in value) {
+        						final_value = 'Progress: ';
+        						$.each(value['progress'], function(index, biome) {
+        							final_value += biome + ', ';
+        						});
+        						final_value = final_value.substring(0, final_value.length - 2);
+        					}
+        				}
+        			}
+        		} else {
+        			if (parseInt(value) >= 1) {
+        				final_value = 'Yes';
+        			} else {
+        				final_value = 'No'
+        			}
+        		}
+
+        		achievements.push({'name': name, 'value': final_value});
         	};
         }
     });
