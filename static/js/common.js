@@ -117,6 +117,9 @@ function display_funding_data() {
             var month = today.getMonth();
             var spending_monthly = Math.abs(data['spending_monthly']);
 
+            // Subtract the current month
+            funding_total -= spending_monthly;
+
             while (funding_total >= spending_monthly) {
                 month++;
                 if (month >= 12) {
@@ -128,18 +131,23 @@ function display_funding_data() {
             }
 
             var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            var following_year = month == 11 ? year + 1 : year;
-            $('.funding-month').html(months[month] + ' to ' + months[(month + 1) % 12] + ' ' + following_year);
 
-            var percent = 0;
-            if (funding_total > 0.0) {
-                percent = Math.floor(funding_total * 100 / spending_monthly);
-                $('.funding-progressbar').append('<div class="progress-bar progress-bar-success" style="width: ' + percent + '%;"><span class="sr-only">' + percent + '% funded</span></div>');
+            if (month == 11) {
+            	$('.funding-month').html(months[month] + ' ' + year + ' to ' + months[(month + 1) % 12] + ' ' + year + 1);
+            } else {
+            	$('.funding-month').html(months[month] + ' to ' + months[(month + 1) % 12] + ' ' + year);
             }
 
-            var expected_total = data['funding_monthly'];
+            var percent = 0;
 
-            if (percent < 100) {
+            var funded_for_one_month = !(month == today.getMonth() && year == today.getFullYear());
+
+            if (funded_for_one_month) {
+                percent = Math.floor(funding_total * 100 / spending_monthly);
+                $('.funding-progressbar').append('<div class="progress-bar progress-bar-success" style="width: ' + percent + '%;"><span class="sr-only">' + percent + '% funded</span></div>');
+            } else {
+            	var expected_total = funding_total;
+
                 data['history'].forEach(function(transaction) {
                     if (transaction['type'] == 'player-monthly') {
                         var transaction_year = transaction['date'].split('-')[0];
@@ -155,8 +163,14 @@ function display_funding_data() {
                     }
                 });
 
-                var expected_percent = Math.max(0, Math.min(100 - percent, Math.floor(expected_total * 100 / data['spending_monthly'])));
-                $('.funding-progressbar').append('<div class="progress-bar progress-bar-warning" style="width: ' + expected_percent + '%;"><span class="sr-only">' + expected_percent + '% expected</span></div>');
+                var expected_percent = Math.max(0, Math.min(100 - percent, Math.floor(expected_total * 100 / -data['spending_monthly'])));
+                var progress_bar_class = "progress-bar-warning";
+                if (expected_percent <= 50) {
+                	progress_bar_class = "progress-bar-danger";
+                }
+
+                $('.funding-progressbar').append('<div class="progress-bar progress-bar-success" style="width: ' + expected_percent + '%;"><span class="sr-only">' + expected_percent + '% expected</span></div>');
+                $('.funding-progressbar').append('<div class="progress-bar ' + progress_bar_class + '" style="width: ' + (100 - expected_percent) + '%;"><span class="sr-only">bla</span></div>');
             }
         }
     });
