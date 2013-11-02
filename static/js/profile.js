@@ -74,6 +74,28 @@ function display_user_data(person) {
     }
 }
 
+function display_stat_data(data) {
+	var loading_stat = $('.loading-stat');
+	$.each(data, function(stat, value) {
+
+		loading_stat.before('<tr id="' + value + '"><td>' + stat + '</td><td>' + value + '</td></tr>');
+	});
+
+	loading_stat.remove();
+}
+
+function load_stat_data(minecraft) {
+	$.ajax('/assets/world/stats/' + minecraft + '.json', {
+		dataType: 'json',
+		error: function(request, status, error) {
+			$('.loading-stat').html('<td colspan="7">Error: Could not load ' + minecraft + '.json</td>');
+		},
+		success: function(data) {
+			display_stat_data(data);
+		}
+	});
+}
+
 function load_user_data() {
     $.ajax('/assets/serverstatus/people.json', {
         dataType: 'json',
@@ -82,12 +104,15 @@ function load_user_data() {
         },
         success: function(data) {
             var username = get_user_name();
-            var user;
             
             if (username != "") {
                 data.forEach(function(person) {
                     if ('id' in person) {
                         if (person['id'].toLowerCase() === username) {
+                        	if ('minecraft' in person) {
+                        		load_stat_data(person['minecraft']);
+                        	};
+
                             display_user_data(person);
                             return;
                         }
@@ -99,5 +124,6 @@ function load_user_data() {
         }
     });
 }
+
 
 load_user_data();
