@@ -105,6 +105,166 @@ function display_stat_data(data) {
     var loading_stat_general = $('#loading-stat-general-table');
     var loading_stat_mobs = $('#loading-stat-mobs-table');
 
+    var general = [];
+    var items = [];
+    var blocks = [];
+    var mobs = [];
+
+    $.each(data, function(key, value) {
+        stat = key.split('.');
+        var name;
+
+        if (stat[0] === 'stat') {
+            if (stat[1] === 'craftItem' ||
+                stat[1] === 'useItem' ||
+                stat[1] === 'breakItem' ||
+                stat[1] === 'mineBlock') {
+                var id = parseInt(stat[2]);
+                var name = stat[2];
+                var actionIndex = stat[1];
+                var count = value;
+
+                var collection;
+                if (id >= 256) {
+                	collection = items;
+                } else {
+                	collection = blocks;
+                }
+
+                var found = false;
+                $.each(collection, function(key, value) {
+                    if (value['id'] === id) {
+                        value[actionIndex] = count;
+                        found = true;
+                        return;
+                    }
+                });
+
+                if (!found) {
+                	newEntry = {'name': name, 'id': id};
+                	newEntry[actionIndex] = count;
+                    collection.push(newEntry);
+                }
+
+            } else if (stat[1] === 'killEntity' ||
+                       stat[1] === 'entityKilledBy') {
+                var mobname = stat[2];
+                var actionIndex = stat[1];
+                var count = value;
+
+                var found = false;
+                $.each(mobs, function(key, value) {
+                    if (value['name'] === mobname) {
+                        value[actionIndex] = count;
+                        found = true;
+                        return;
+                    }
+                });
+
+                if (!found) {
+                	newEntry = {'name': mobname};
+                	newEntry[actionIndex] = count;
+                    mobs.push(newEntry);
+                };
+
+            } else {
+                general.push({'name': key, 'value': value});
+            }
+        }
+    });
+
+    general.sort(function(a, b) {
+        nameA = a['name'];
+        nameB = b['name'];
+        return nameA.localeCompare(nameB);
+    });
+
+    mobs.sort(function(a, b) {
+        nameA = a['name'];
+        nameB = b['name'];
+        return nameA.localeCompare(nameB);
+    });
+
+    items.sort(function(a, b) {
+        return a['id'] - b['id'];
+    });
+
+    blocks.sort(function(a, b) {
+        return a['id'] - b['id'];
+    });
+
+    $.each(general, function(index, dict) {
+        key = dict['name'];
+        value = dict['value'];
+
+        name = key.substring('stat.'.length, key.length);
+        var row = '<tr id="general-row-' + name + '" class="general-row"><td class="name">' + name + '</td><td class="info">' + value + '</td></tr>'
+        loading_stat_general.before(row);
+    });
+
+    $.each(mobs, function(index, dict) {
+        mobname = dict['name'];
+
+        row = '<tr id="mob-row-' + mobname + '" class="mob-row"><td class="name"></td><td class="killed">0</td><td class="killed-by">0</td></tr>';
+        loading_stat_mobs.before(row);
+        row = $('#mob-row-' + mobname);
+        row.children('.name').text(mobname);
+
+        if ('killEntity' in dict) {
+            row.children('.killed').text(dict['killEntity']);
+        }
+
+        if ('entityKilledBy' in dict) {
+            row.children('.killed-by').text(dict['entityKilledBy']);
+        }
+    });
+
+    $.each(items, function(index, dict) {
+        var name = dict['name'];
+        var id = dict['id'];
+
+        var row = '<tr id="item-row-' + id + '" class="item-row"><td class="name"></td><td class="depleted">0</td><td class="crafted">0</td><td class="used">0</td></tr>';
+        loading_stat_item.before(row);
+        row = $('#item-row-' + id);
+        row.children('.name').text(name);
+
+        if ('craftItem' in dict) {
+            row.children('.crafted').text(dict['craftItem']);
+        }
+
+        if ('useItem' in dict) {
+            row.children('.used').text(dict['useItem']);
+        }
+
+        if ('breakItem' in dict) {
+            row.children('.depleted').text(dict['breakItem']);
+        }
+    });
+
+    $.each(blocks, function(index, dict) {
+        var name = dict['name'];
+        var id = dict['id'];
+
+        var row = '<tr id="block-row-' + id + '" class="block-row"><td class="name"></td><td class="crafted">0</td><td class="used">0</td><td class="mined">0</td></tr>';
+        loading_stat_block.before(row);
+        row = $('#block-row-' + id);
+        row.children('.name').text(name);
+
+        if ('craftItem' in dict) {
+            row.children('.crafted').text(dict['craftItem']);
+        }
+
+        if ('useItem' in dict) {
+            row.children('.used').text(dict['useItem']);
+        }
+
+        if ('mineBlock' in dict) {
+            row.children('.mined').text(dict['mineBlock']);
+        }
+    });
+
+
+/*
     $.each(data, function(key, value) {
         stat = key.split('.');
         var name;
@@ -168,15 +328,10 @@ function display_stat_data(data) {
                     row.children('.killed-by').text(value);
                 }
             } else {
-                name = key.substring('stat.'.length, key.length);
-
-
-                var row = '<tr id="general-row-' + name + '" class="general-row"><td class="name">' + name + '</td><td class="info">' + value + '</td></tr>'
-                loading_stat_general.before(row);
             }
         }
     });
-
+*/
     $('.loading-stat').remove();
 }
 
