@@ -244,11 +244,13 @@ function display_stat_data(data) {
                             final_value += hours + 'h ';
                         }
                         if (minutes) {
-                            final_value += minutes + 'min'
+                            final_value += minutes + 'min '
                         }
                         if (seconds) {
                             final_value += seconds + 's'
                         };
+                    } else if (key.starteWith('damage')) {
+                        final_value = (value / 2) + ' hearts';
                     }
 
                     if ('stats' in string_data) {
