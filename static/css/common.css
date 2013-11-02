@@ -26,11 +26,12 @@ h2 {
 
 .stats-table td {
 	vertical-align: middle;
-	line-height: 32px !important;
+	line-height: 35px !important;
 }
 
 .stats-table td.image {
 	width: 32px !important;
+	height: 32px !important;
 }
 
 .people-table td.username {
