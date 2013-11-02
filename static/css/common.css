@@ -16,6 +16,10 @@ h2 {
     min-width: 32px;
 }
 
+.funding-progressbar {
+	margin-top: 15px;
+}
+
 .people-table td {
     vertical-align: middle;
 }
