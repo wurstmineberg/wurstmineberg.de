@@ -1,70 +1,87 @@
 {
-	"0": {
-		"name": "Air",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Sky1.png",
-		"transparent": true,
-		"luminance": false,
-		"blast_resistance": -1,
-		"tool": null,
-		"renewable": false,
-		"stackable": null
-		},
-	"1": {
-		"name": "Stone",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Stone.png",
-		"transparent": false,
-		"luminance": false,
-		"blast_resistance": 30,
-		"tool": "pick",
-		"renewable": true,
-		"stackable": 64
-	},
-	"3": {
-		"name": "Grass Block",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/08/Grid_Grass_Block.png"
-	},
-	"4": {
-		"name": "Dirt",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Dirt.png"
-	},
-	"5": {
-		"name": "Wood Planks",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9f/Grid_Wooden_Plank.png"
-	},
-	"5:1": {
-		"name": "Pine Wood Planks",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Wooden_Plank_%28Pine%29.png"
-	},
-	"5:2": {
-		"name": "Birch Wood Planks",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Wooden_Plank_%28Birch%29.png"
-	},
-	"6": {
-		"name": "Oak Sapling",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b5/Grid_Sapling.png"
-	},
-	"23": {
-		"name": "Dispenser",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cc/Grid_Dispenser.png"
-	},
-	"256": {
-		"name": "Iron Shovel",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Iron_Shovel.png"
-	},
-	"257": {
-		"name": "Iron Pickaxe",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1d/Grid_Iron_Pickaxe.png"
-	},
-	"258": {
-		"name": "Iron Axe",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1d/Grid_Iron_Axe.png"
-	},
-	"259": {
-		"name": "Flint and Steel",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fb/Grid_Flint_and_Steel.png"
-	},
-	"260": {
-		"name": "Apple",
-		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/39/Grid_Red_Apple.png"
-	}
+    "0": {
+        "name": "Air",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Sky1.png",
+        "transparent": true,
+        "luminance": false,
+        "blast_resistance": -1,
+        "tool": null,
+        "renewable": false,
+        "stackable": null
+    },
+    "1": {
+        "name": "Stone",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Stone.png",
+        "transparent": false,
+        "luminance": false,
+        "blast_resistance": 30,
+        "tool": "pick",
+        "renewable": true,
+        "stackable": 64
+    },
+    "3": {
+        "name": "Grass Block",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/08/Grid_Grass_Block.png"
+    },
+    "4": {
+        "name": "Dirt",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Dirt.png"
+    },
+    "5": {
+        "name": "Wood Planks",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9f/Grid_Wooden_Plank.png"
+    },
+    "5:1": {
+        "name": "Pine Wood Planks",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Wooden_Plank_%28Pine%29.png"
+    },
+    "5:2": {
+        "name": "Birch Wood Planks",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Wooden_Plank_%28Birch%29.png"
+    },
+    "6": {
+        "name": "Sapling",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b5/Grid_Sapling.png"
+    },
+    "6:0": {
+        "name": "Oak Sapling",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b5/Grid_Sapling.png"
+    },
+    "23": {
+        "name": "Dispenser",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cc/Grid_Dispenser.png"
+    },
+    "256": {
+        "name": "Iron Shovel",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Iron_Shovel.png"
+    },
+    "257": {
+        "name": "Iron Pickaxe",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1d/Grid_Iron_Pickaxe.png"
+    },
+    "258": {
+        "name": "Iron Axe",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1d/Grid_Iron_Axe.png"
+    },
+    "259": {
+        "name": "Flint and Steel",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fb/Grid_Flint_and_Steel.png"
+    },
+    "260": {
+        "name": "Apple",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/39/Grid_Red_Apple.png"
+    },
+    "328": {
+        "name": "Minecart",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/58/Grid_Minecart.png"
+    },
+    "399": {
+        "always_glow": true,
+        "name": "Nether Star",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/ae/Grid_Nether_Star.png"
+    },
+    "404": {
+        "name": "Comparator",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ea/Grid_Redstone_Comparator.png"
+    }
 }

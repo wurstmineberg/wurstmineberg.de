@@ -27,13 +27,13 @@ function get_user_name() {
 
 function fetch_string_data() {
     return $.ajax('/static/json/strings.json', {
-    	dataType: 'json'
+        dataType: 'json'
     });
 }
 
 function fetch_item_data() {
     return $.ajax('/static/json/items.json', {
-    	dataType: 'json'
+        dataType: 'json'
     });
 }
 
@@ -126,324 +126,324 @@ function display_stat_data(data) {
 
     // wait for the string data to arrive
     $.when(fetch_string_data(), fetch_item_data()).done(function(string_data, item_data) {
-    	string_data = string_data[0];
-    	item_data = item_data[0];
-	    $.each(data, function(key, value) {
-	        stat = key.split('.');
-	        var name;
+        string_data = string_data[0];
+        item_data = item_data[0];
+        $.each(data, function(key, value) {
+            stat = key.split('.');
+            var name;
 
-	        if (stat[0] === 'stat') {
-	            if (stat[1] === 'craftItem' ||
-	                stat[1] === 'useItem' ||
-	                stat[1] === 'breakItem' ||
-	                stat[1] === 'mineBlock') {
-	                var id = parseInt(stat[2]);
-	                var name = stat[2];
-	                var actionIndex = stat[1];
-	                var count = value;
+            if (stat[0] === 'stat') {
+                if (stat[1] === 'craftItem' ||
+                    stat[1] === 'useItem' ||
+                    stat[1] === 'breakItem' ||
+                    stat[1] === 'mineBlock') {
+                    var id = parseInt(stat[2]);
+                    var name = stat[2];
+                    var actionIndex = stat[1];
+                    var count = value;
 
-	                var collection;
-	                if (id >= 256) {
-	                	collection = items;
-	                } else {
-	                	collection = blocks;
-	                }
+                    var collection;
+                    if (id >= 256) {
+                        collection = items;
+                    } else {
+                        collection = blocks;
+                    }
 
-	                var info;
-	                if ('' + id in item_data) {
-	                	info = item_data['' + id];
-	                	name = info['name'];
-	                }
+                    var info;
+                    if ('' + id in item_data) {
+                        info = item_data['' + id];
+                        name = info['name'];
+                    }
 
-	                var found = false;
-	                $.each(collection, function(key, value) {
-	                    if (value['id'] === id) {
-	                        value[actionIndex] = count;
-	                        found = true;
-	                        return;
-	                    }
-	                });
+                    var found = false;
+                    $.each(collection, function(key, value) {
+                        if (value['id'] === id) {
+                            value[actionIndex] = count;
+                            found = true;
+                            return;
+                        }
+                    });
 
-	                if (!found) {
-	                	newEntry = {'name': name, 'id': id};
-	                	newEntry[actionIndex] = count;
-	                	if (info) {
-	                		newEntry['info'] = info;
-	                	};
-	                    collection.push(newEntry);
-	                }
+                    if (!found) {
+                        newEntry = {'name': name, 'id': id};
+                        newEntry[actionIndex] = count;
+                        if (info) {
+                            newEntry['info'] = info;
+                        };
+                        collection.push(newEntry);
+                    }
 
-	            } else if (stat[1] === 'killEntity' ||
-	                       stat[1] === 'entityKilledBy') {
-	                var id = stat[2];
-	                var actionIndex = stat[1];
-	                var count = value;
+                } else if (stat[1] === 'killEntity' ||
+                           stat[1] === 'entityKilledBy') {
+                    var id = stat[2];
+                    var actionIndex = stat[1];
+                    var count = value;
 
-	                var name = id;
-	                if ('stats' in string_data) {
-	            		if ('mobs' in string_data['stats']) {
-	            			if (stat[2] in string_data['stats']['mobs']) {
-	            				name = string_data['stats']['mobs'][stat[2]];
-	            			};
-	            		};
-	            	};
+                    var name = id;
+                    if ('stats' in string_data) {
+                        if ('mobs' in string_data['stats']) {
+                            if (stat[2] in string_data['stats']['mobs']) {
+                                name = string_data['stats']['mobs'][stat[2]];
+                            };
+                        };
+                    };
 
-	                var found = false;
-	                $.each(mobs, function(key, value) {
-	                    if (value['id'] === id) {
-	                        value[actionIndex] = count;
-	                        found = true;
-	                        return;
-	                    }
-	                });
+                    var found = false;
+                    $.each(mobs, function(key, value) {
+                        if (value['id'] === id) {
+                            value[actionIndex] = count;
+                            found = true;
+                            return;
+                        }
+                    });
 
-	                if (!found) {
-	                	newEntry = {'id': id, 'name': name};
-	                	newEntry[actionIndex] = count;
-	                    mobs.push(newEntry);
-	                };
+                    if (!found) {
+                        newEntry = {'id': id, 'name': name};
+                        newEntry[actionIndex] = count;
+                        mobs.push(newEntry);
+                    };
 
-	            } else {
-	            	var final_key = key;
-	            	var final_value = value;
+                } else {
+                    var final_key = key;
+                    var final_value = value;
 
-	            	if (key.endsWith('OneCm')) {
-	            		if (value > 1000000) {
-	            			final_value = (value / 1000000).toFixed(2) + 'km';
-	            		} else if (value > 1000) {
-	            			final_value = (value / 1000).toFixed(2) + 'm';
-	            		} else {
-	            			final_value = value + 'cm';
-	            		}
-	            	} else if (key.endsWith('OneMinute')) {
-	            		// Yes, this is called 'minute' and actually reflects the value in seconds.
-	            		var seconds = value;
-	            		var minutes = 0;
-	            		var hours = 0;
-	            		var days = 0;
-	            		if (seconds >= 60) {
-	            			minutes = Math.floor(seconds / 60);
-	            			seconds = 0;
-	            		}
+                    if (key.endsWith('OneCm')) {
+                        if (value > 1000000) {
+                            final_value = (value / 1000000).toFixed(2) + 'km';
+                        } else if (value > 1000) {
+                            final_value = (value / 1000).toFixed(2) + 'm';
+                        } else {
+                            final_value = value + 'cm';
+                        }
+                    } else if (key.endsWith('OneMinute')) {
+                        // Yes, this is called 'minute' and actually reflects the value in seconds.
+                        var seconds = value;
+                        var minutes = 0;
+                        var hours = 0;
+                        var days = 0;
+                        if (seconds >= 60) {
+                            minutes = Math.floor(seconds / 60);
+                            seconds = 0;
+                        }
 
-	            		if (minutes >= 60) {
-	            			hours = Math.floor(minutes / 60);
-	            			minutes = minutes % 60;
-	            		}
+                        if (minutes >= 60) {
+                            hours = Math.floor(minutes / 60);
+                            minutes = minutes % 60;
+                        }
 
-	            		if (hours >= 24) {
-	            			days = Math.floor(hours / 60);
-	            			hours = hours % 24;
-	            		}
+                        if (hours >= 24) {
+                            days = Math.floor(hours / 60);
+                            hours = hours % 24;
+                        }
 
-	            		final_value = '';
-	            		if (days) {
-	            			final_value += days + 'd ';
-	            		}
-	            		if (hours) {
-	            			final_value += hours + 'h ';
-	            		}
-	            		if (minutes) {
-	            			final_value += minutes + 'min'
-	            		}
-	            		if (seconds) {
-	            			final_value += seconds + 's'
-	            		};
-	            	}
+                        final_value = '';
+                        if (days) {
+                            final_value += days + 'd ';
+                        }
+                        if (hours) {
+                            final_value += hours + 'h ';
+                        }
+                        if (minutes) {
+                            final_value += minutes + 'min'
+                        }
+                        if (seconds) {
+                            final_value += seconds + 's'
+                        };
+                    }
 
-	            	if ('stats' in string_data) {
-	            		if ('general' in string_data['stats']) {
-	            			if (stat[1] in string_data['stats']['general']) {
-	            				final_key = string_data['stats']['general'][stat[1]];
-	            			};
-	            		};
-	            	};
+                    if ('stats' in string_data) {
+                        if ('general' in string_data['stats']) {
+                            if (stat[1] in string_data['stats']['general']) {
+                                final_key = string_data['stats']['general'][stat[1]];
+                            };
+                        };
+                    };
 
-	                general.push({'name': final_key, 'value': final_value});
-	            }
-	        } else {
-	        	if (stat[0] === 'achievement') {
-	        		var id = stat[1];
-	        		var name = id;
-	        		var description = "";
+                    general.push({'name': final_key, 'value': final_value});
+                }
+            } else {
+                if (stat[0] === 'achievement') {
+                    var id = stat[1];
+                    var name = id;
+                    var description = "";
 
-	        		if ('stats' in string_data) {
-	            		if ('achievements' in string_data['stats']) {
-	            			if (id in string_data['stats']['achievements']) {
-	            				name = string_data['stats']['achievements'][id][0];
-	            				description = string_data['stats']['achievements'][id][1];
-	            			};
-	            		};
-	            	};
-
-
-	        		var final_value = value;
-	        		if (stat[1] === 'exploreAllBiomes') {
-	        			if ('value' in value) {
-	        				if (value['value'] === 1) {
-	        					final_value = "Yes"
-	        				} else {
-	        					if ('progress' in value) {
-	        						final_value = 'Progress: ';
-	        						$.each(value['progress'], function(index, biome) {
-	        							final_value += biome + ', ';
-	        						});
-	        						final_value = final_value.substring(0, final_value.length - 2);
-	        					}
-	        				}
-	        			}
-	        		} else {
-	        			if (parseInt(value) >= 1) {
-	        				final_value = 'Yes';
-	        			} else {
-	        				final_value = 'No'
-	        			}
-	        		}
-
-	        		achievements.push({'id': id, 'name': name, 'description': description, 'value': final_value});
-	        	};
-	        }
-	    });
-
-		// Add the missing achievements
-		if ('stats' in string_data) {
-	        if ('achievements' in string_data['stats']) {
-	        	$.each(string_data['stats']['achievements'], function(id, stringarray) {
-	        		var alreadyExisting = false;
-	        		$.each(achievements, function(index, dict) {
-	        			if (id === dict['id']) {
-	        				alreadyExisting = true;
-	        				return;
-	        			};
-	        		});
-
-	        		if (!alreadyExisting) {
-	            		achievements.push({'name': stringarray[0], 'description': stringarray[1], 'value': 'No'});
-	        		};
-	        	});
-	        };
-	    };
-
-	    general.sort(function(a, b) {
-	        nameA = a['name'];
-	        nameB = b['name'];
-	        return nameA.localeCompare(nameB);
-	    });
-
-	    mobs.sort(function(a, b) {
-	        nameA = a['name'];
-	        nameB = b['name'];
-	        return nameA.localeCompare(nameB);
-	    });
-
-	    items.sort(function(a, b) {
-	        return a['id'] - b['id'];
-	    });
-
-	    blocks.sort(function(a, b) {
-	        return a['id'] - b['id'];
-	    });
-
-	    achievements.sort(function(a, b) {
-	        nameA = a['name'];
-	        nameB = b['name'];
-	        return nameA.localeCompare(nameB);
-	    });
+                    if ('stats' in string_data) {
+                        if ('achievements' in string_data['stats']) {
+                            if (id in string_data['stats']['achievements']) {
+                                name = string_data['stats']['achievements'][id][0];
+                                description = string_data['stats']['achievements'][id][1];
+                            };
+                        };
+                    };
 
 
-	    $.each(general, function(index, dict) {
-	        name = dict['name'];
-	        value = dict['value'];
+                    var final_value = value;
+                    if (stat[1] === 'exploreAllBiomes') {
+                        if ('value' in value) {
+                            if (value['value'] === 1) {
+                                final_value = "Yes"
+                            } else {
+                                if ('progress' in value) {
+                                    final_value = 'Progress: ';
+                                    $.each(value['progress'], function(index, biome) {
+                                        final_value += biome + ', ';
+                                    });
+                                    final_value = final_value.substring(0, final_value.length - 2);
+                                }
+                            }
+                        }
+                    } else {
+                        if (parseInt(value) >= 1) {
+                            final_value = 'Yes';
+                        } else {
+                            final_value = 'No'
+                        }
+                    }
 
-	        var row = '<tr id="general-row-' + name + '" class="general-row"><td class="name">' + name + '</td><td class="info">' + value + '</td></tr>'
-	        loading_stat_general.before(row);
-	    });
+                    achievements.push({'id': id, 'name': name, 'description': description, 'value': final_value});
+                };
+            }
+        });
 
-	    $.each(mobs, function(index, dict) {
-	        name = dict['name'];
-	        id = dict['id']
+        // Add the missing achievements
+        if ('stats' in string_data) {
+            if ('achievements' in string_data['stats']) {
+                $.each(string_data['stats']['achievements'], function(id, stringarray) {
+                    var alreadyExisting = false;
+                    $.each(achievements, function(index, dict) {
+                        if (id === dict['id']) {
+                            alreadyExisting = true;
+                            return;
+                        };
+                    });
 
-	        row = '<tr id="mob-row-' + id + '" class="mob-row"><td class="name"></td><td class="killed">0</td><td class="killed-by">0</td></tr>';
-	        loading_stat_mobs.before(row);
-	        row = $('#mob-row-' + id);
-	        row.children('.name').text(name);
+                    if (!alreadyExisting) {
+                        achievements.push({'name': stringarray[0], 'description': stringarray[1], 'value': 'No'});
+                    };
+                });
+            };
+        };
 
-	        if ('killEntity' in dict) {
-	            row.children('.killed').text(dict['killEntity']);
-	        }
+        general.sort(function(a, b) {
+            nameA = a['name'];
+            nameB = b['name'];
+            return nameA.localeCompare(nameB);
+        });
 
-	        if ('entityKilledBy' in dict) {
-	            row.children('.killed-by').text(dict['entityKilledBy']);
-	        }
-	    });
+        mobs.sort(function(a, b) {
+            nameA = a['name'];
+            nameB = b['name'];
+            return nameA.localeCompare(nameB);
+        });
 
-	    $.each(items, function(index, dict) {
-	        var name = dict['name'];
-	        var id = dict['id'];
-	        var image = "";
-	        if ('info' in dict) {
-	        	var info = dict['info'];
-	        	var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
-	        }
+        items.sort(function(a, b) {
+            return a['id'] - b['id'];
+        });
 
-	        var row = '<tr id="item-row-' + id + '" class="item-row"><td class="image"></td><td class="name"></td><td class="depleted">0</td><td class="crafted">0</td><td class="used">0</td></tr>';
-	        loading_stat_item.before(row);
-	        row = $('#item-row-' + id);
-	        row.children('.name').text(name);
-	        row.children('.image').html(image);
+        blocks.sort(function(a, b) {
+            return a['id'] - b['id'];
+        });
 
-	        if ('craftItem' in dict) {
-	            row.children('.crafted').text(dict['craftItem']);
-	        }
+        achievements.sort(function(a, b) {
+            nameA = a['name'];
+            nameB = b['name'];
+            return nameA.localeCompare(nameB);
+        });
 
-	        if ('useItem' in dict) {
-	            row.children('.used').text(dict['useItem']);
-	        }
 
-	        if ('breakItem' in dict) {
-	            row.children('.depleted').text(dict['breakItem']);
-	        }
-	    });
+        $.each(general, function(index, dict) {
+            name = dict['name'];
+            value = dict['value'];
 
-	    $.each(blocks, function(index, dict) {
-	        var name = dict['name'];
-	        var id = dict['id'];
-	        var image = "";
-	        if ('info' in dict) {
-	        	var info = dict['info'];
-	        	var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
-	        }
+            var row = '<tr id="general-row-' + name + '" class="general-row"><td class="name">' + name + '</td><td class="info">' + value + '</td></tr>'
+            loading_stat_general.before(row);
+        });
 
-	        var row = '<tr id="block-row-' + id + '" class="block-row"><td class="image"></td><td class="name"></td><td class="crafted">0</td><td class="used">0</td><td class="mined">0</td></tr>';
-	        loading_stat_block.before(row);
-	        row = $('#block-row-' + id);
-	        row.children('.name').text(name);
-	        row.children('.image').html(image);
+        $.each(mobs, function(index, dict) {
+            name = dict['name'];
+            id = dict['id']
 
-	        if ('craftItem' in dict) {
-	            row.children('.crafted').text(dict['craftItem']);
-	        }
+            row = '<tr id="mob-row-' + id + '" class="mob-row"><td class="name"></td><td class="killed">0</td><td class="killed-by">0</td></tr>';
+            loading_stat_mobs.before(row);
+            row = $('#mob-row-' + id);
+            row.children('.name').text(name);
 
-	        if ('useItem' in dict) {
-	            row.children('.used').text(dict['useItem']);
-	        }
+            if ('killEntity' in dict) {
+                row.children('.killed').text(dict['killEntity']);
+            }
 
-	        if ('mineBlock' in dict) {
-	            row.children('.mined').text(dict['mineBlock']);
-	        }
-	    });
+            if ('entityKilledBy' in dict) {
+                row.children('.killed-by').text(dict['entityKilledBy']);
+            }
+        });
 
-	    $.each(achievements, function(index, dict) {
-	        name = dict['name'];
-	        description = dict['description'];
+        $.each(items, function(index, dict) {
+            var name = dict['name'];
+            var id = dict['id'];
+            var image = "";
+            if ('info' in dict) {
+                var info = dict['info'];
+                var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+            }
 
-	        row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td class="name" title="' + description + '">' + name + '</td><td class="value">' + dict['value'] + '</td></tr>';
-	        loading_stat_achievements.before(row);
-	    });
+            var row = '<tr id="item-row-' + id + '" class="item-row"><td class="image"></td><td class="name"></td><td class="depleted">0</td><td class="crafted">0</td><td class="used">0</td></tr>';
+            loading_stat_item.before(row);
+            row = $('#item-row-' + id);
+            row.children('.name').text(name);
+            row.children('.image').html(image);
 
-	    $('.loading-stat').remove();
+            if ('craftItem' in dict) {
+                row.children('.crafted').text(dict['craftItem']);
+            }
 
-	});
+            if ('useItem' in dict) {
+                row.children('.used').text(dict['useItem']);
+            }
+
+            if ('breakItem' in dict) {
+                row.children('.depleted').text(dict['breakItem']);
+            }
+        });
+
+        $.each(blocks, function(index, dict) {
+            var name = dict['name'];
+            var id = dict['id'];
+            var image = "";
+            if ('info' in dict) {
+                var info = dict['info'];
+                var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+            }
+
+            var row = '<tr id="block-row-' + id + '" class="block-row"><td class="image"></td><td class="name"></td><td class="crafted">0</td><td class="used">0</td><td class="mined">0</td></tr>';
+            loading_stat_block.before(row);
+            row = $('#block-row-' + id);
+            row.children('.name').text(name);
+            row.children('.image').html(image);
+
+            if ('craftItem' in dict) {
+                row.children('.crafted').text(dict['craftItem']);
+            }
+
+            if ('useItem' in dict) {
+                row.children('.used').text(dict['useItem']);
+            }
+
+            if ('mineBlock' in dict) {
+                row.children('.mined').text(dict['mineBlock']);
+            }
+        });
+
+        $.each(achievements, function(index, dict) {
+            name = dict['name'];
+            description = dict['description'];
+
+            row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td class="name" title="' + description + '">' + name + '</td><td class="value">' + dict['value'] + '</td></tr>';
+            loading_stat_achievements.before(row);
+        });
+
+        $('.loading-stat').remove();
+
+    });
 }
 
 function load_stat_data(minecraft) {
