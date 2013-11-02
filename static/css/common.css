@@ -16,8 +16,22 @@ h2 {
     min-width: 32px;
 }
 
+.funding-progressbar {
+	margin-top: 15px;
+}
+
 .people-table td {
     vertical-align: middle;
+}
+
+.stats-table td {
+	vertical-align: middle;
+	line-height: 35px !important;
+}
+
+.stats-table td.image {
+	width: 32px !important;
+	height: 32px !important;
 }
 
 .people-table td.username {
@@ -35,6 +49,11 @@ h2 {
 
 a.tag:hover {
     text-decoration: none;
+}
+
+.item-image {
+	width: 32px;
+	height: 32px;
 }
 
 .tag {
