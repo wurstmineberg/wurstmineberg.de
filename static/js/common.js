@@ -108,23 +108,38 @@ function display_funding_data() {
             $('.funding-progressbar').removeClass('active progress-striped');
             $('.funding-progressbar').empty();
             var funding_total = 0.0;
+
             data['history'].forEach(function(transaction) {
-            	funding_total += transaction['amount'];
+            	if (transaction['type'] !== 'nessus-monthly') {
+            		funding_total += transaction['amount'];
+            	};
             });
 
+
+
             var today = new Date();
+
+            // This is the beginning of the billing period: Sept-Oct 2013
+            var begin_month = 8;
+            var begin_year = 2013;
+
+            // This is the current month that is currently funded
+            var funded_year = begin_year;
+            var funded_month = begin_month;
+
+            // This is today
             var year = today.getFullYear();
             var month = today.getMonth();
+            var day = today.getDay();
+
             var spending_monthly = Math.abs(data['spending_monthly']);
 
-            // Subtract the current month
-            funding_total -= spending_monthly;
-
+            // Add a month until it doesn't fit anymore
             while (funding_total >= spending_monthly) {
-                month++;
-                if (month >= 12) {
-                    year++;
-                    month = 0;
+                funded_month++;
+                if (funded_month >= 12) {
+                    funded_year++;
+                    funded_month = 0;
                 }
 
                 funding_total -= spending_monthly;
@@ -132,17 +147,32 @@ function display_funding_data() {
 
             var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-            if (month == 11) {
-            	$('.funding-month').html(months[month] + ' ' + year + ' to ' + months[(month + 1) % 12] + ' ' + year + 1);
+            if (funded_month == 11) {
+            	$('.funding-month').html(months[funded_month] + ' ' + funded_year + ' to ' + months[0] + ' ' + (funded_year + 1));
             } else {
-            	$('.funding-month').html(months[month] + ' to ' + months[(month + 1) % 12] + ' ' + year);
+            	$('.funding-month').html(months[funded_month] + ' to ' + months[(funded_month + 1) % 12] + ' ' + funded_year);
             }
 
             var percent = 0;
 
-            var funded_for_one_month = !(month == today.getMonth() && year == today.getFullYear());
+            var funded_for_this_month = false;
+            if (funded_year > year) {
+            	// We are funded until next year
+            	funded_for_this_month = true;
+            } else {
+            	if (funded_month == month - 1) {
+            		// We are in the month that is just not funded.
+            		// Check if the billing date is already over.
 
-            if (funded_for_one_month) {
+            		if (day < data['billing_dom']) {
+            			funded_for_this_month = true;
+            		}
+            	} else {
+            		funded_for_this_month = funded_month > month;
+            	}
+            }
+
+            if (funded_for_this_month) {
                 percent = Math.floor(funding_total * 100 / spending_monthly);
                 $('.funding-progressbar').append('<div class="progress-bar progress-bar-success" style="width: ' + percent + '%;"><span class="sr-only">' + percent + '% funded</span></div>');
             } else {
