@@ -24,6 +24,11 @@ h2 {
     vertical-align: middle;
 }
 
+.stats-table td {
+	vertical-align: middle;
+	line-height: 32px !important;
+}
+
 .people-table td.username {
 	width: 120px;
 }
@@ -39,6 +44,11 @@ h2 {
 
 a.tag:hover {
     text-decoration: none;
+}
+
+.item-image {
+	width: 32px;
+	height: 32px;
 }
 
 .tag {

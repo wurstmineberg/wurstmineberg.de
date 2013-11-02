@@ -31,6 +31,12 @@ function fetch_string_data() {
     });
 }
 
+function fetch_item_data() {
+    return $.ajax('/static/json/items.json', {
+    	dataType: 'json'
+    });
+}
+
 function display_user_data(person) {
     $('.loading').removeClass('loading');
     
@@ -119,7 +125,9 @@ function display_stat_data(data) {
     var achievements = [];
 
     // wait for the string data to arrive
-    $.when(fetch_string_data()).done(function(string_data) {
+    $.when(fetch_string_data(), fetch_item_data()).done(function(string_data, item_data) {
+    	string_data = string_data[0];
+    	item_data = item_data[0];
 	    $.each(data, function(key, value) {
 	        stat = key.split('.');
 	        var name;
@@ -141,6 +149,12 @@ function display_stat_data(data) {
 	                	collection = blocks;
 	                }
 
+	                var info;
+	                if ('' + id in item_data) {
+	                	info = item_data['' + id];
+	                	name = info['name'];
+	                }
+
 	                var found = false;
 	                $.each(collection, function(key, value) {
 	                    if (value['id'] === id) {
@@ -153,6 +167,9 @@ function display_stat_data(data) {
 	                if (!found) {
 	                	newEntry = {'name': name, 'id': id};
 	                	newEntry[actionIndex] = count;
+	                	if (info) {
+	                		newEntry['info'] = info;
+	                	};
 	                    collection.push(newEntry);
 	                }
 
@@ -363,11 +380,17 @@ function display_stat_data(data) {
 	    $.each(items, function(index, dict) {
 	        var name = dict['name'];
 	        var id = dict['id'];
+	        var image = "";
+	        if ('info' in dict) {
+	        	var info = dict['info'];
+	        	var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+	        }
 
-	        var row = '<tr id="item-row-' + id + '" class="item-row"><td class="name"></td><td class="depleted">0</td><td class="crafted">0</td><td class="used">0</td></tr>';
+	        var row = '<tr id="item-row-' + id + '" class="item-row"><td class="image"></td><td class="name"></td><td class="depleted">0</td><td class="crafted">0</td><td class="used">0</td></tr>';
 	        loading_stat_item.before(row);
 	        row = $('#item-row-' + id);
 	        row.children('.name').text(name);
+	        row.children('.image').html(image);
 
 	        if ('craftItem' in dict) {
 	            row.children('.crafted').text(dict['craftItem']);
@@ -385,11 +408,17 @@ function display_stat_data(data) {
 	    $.each(blocks, function(index, dict) {
 	        var name = dict['name'];
 	        var id = dict['id'];
+	        var image = "";
+	        if ('info' in dict) {
+	        	var info = dict['info'];
+	        	var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+	        }
 
-	        var row = '<tr id="block-row-' + id + '" class="block-row"><td class="name"></td><td class="crafted">0</td><td class="used">0</td><td class="mined">0</td></tr>';
+	        var row = '<tr id="block-row-' + id + '" class="block-row"><td class="image"></td><td class="name"></td><td class="crafted">0</td><td class="used">0</td><td class="mined">0</td></tr>';
 	        loading_stat_block.before(row);
 	        row = $('#block-row-' + id);
 	        row.children('.name').text(name);
+	        row.children('.image').html(image);
 
 	        if ('craftItem' in dict) {
 	            row.children('.crafted').text(dict['craftItem']);

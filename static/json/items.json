@@ -1,0 +1,22 @@
+{
+	"0": {
+		"name": "Air",
+		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Sky1.png",
+		"transparent": true,
+		"luminance": false,
+		"blast_resistance": -1,
+		"tool": null,
+		"renewable": false,
+		"stackable": null
+		},
+	"1": {
+		"name": "Stone",
+		"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Stone.png",
+		"transparent": false,
+		"luminance": false,
+		"blast_resistance": 30,
+		"tool": "pick",
+		"renewable": true,
+		"stackable": 64
+	}
+}
