@@ -89,6 +89,44 @@
     "7": {
         "name": "Bedrock"
     },
+    "12": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Sand.png",
+        "name": "Sand"
+    },
+    "12:1": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/85/Grid_Red_Sand.png",
+        "name": "Red Sand"
+    },
+    "13": {
+        "name": "Gravel"
+    },
+    "14": {
+        "name": "Gold Ore"
+    },
+    "15": {
+        "name": "Iron Ore"
+    },
+    "16": {
+        "name": "Coal Ore"
+    },
+    "17": {
+        "name": "Wood"
+    },
+    "18": {
+        "name": "Leaves"
+    },
+    "19": {
+        "name": "Sponge"
+    },
+    "20": {
+        "name": "Glass"
+    },
+    "21": {
+        "name": "Lapis Lazuli Ore"
+    },
+    "22": {
+        "name": "Lapis Lazuli Block"
+    },
     "23": {
         "name": "Dispenser",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cc/Grid_Dispenser.png"
@@ -112,6 +150,15 @@
     "260": {
         "name": "Apple",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/39/Grid_Red_Apple.png"
+    },
+    "322": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Golden_Apple.png",
+        "name": "Golden Apple"
+    },
+    "322:1": {
+        "always_glow": true,
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Golden_Apple.png",
+        "name": "Enchanted Golden Apple"
     },
     "328": {
         "name": "Minecart",
