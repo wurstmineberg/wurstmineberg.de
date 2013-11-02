@@ -22,7 +22,51 @@
 			"playerKills": "Player Kills",
 			"playOneMinute": "Time played",
 			"swimOneCm": "Distance Swum",
-			"walkOneCm": "Distance Walked"
+			"walkOneCm": "Distance Walked",
+			"minecartOneCm": "Distance by Minecart",
+			"treasureFished": "Treasure Fished",
+			"junkFished": "Junk Fished"
+		},
+		"mobs": {
+			"CaveSpider": "Cave Spider",
+			"LavaSlime": "Magma Cube",
+			"MushroomCow": "Mooshroom",
+			"PigZombie": "Zombie Pigman"
+		},
+		"achievements": {
+			"openInventory": ["Taking Inventory", "Press E to open your inventory."],
+			"mineWood": ["Getting Wood", "Attack a tree until a block of wood pops out"],
+			"buildWorkBench": ["Benchmarking", "Craft a workbench with four blocks of planks"],
+			"buildPickaxe": ["Time to Mine!", "Use planks and sticks to make a pickaxe"],
+			"buildFurnace": ["Hot Topic", "Construct a furnace out of eight stone blocks"],
+			"acquireIron": ["Aquire Hardware", "Smelt an iron ingot"],
+			"buildHoe": ["Time to Farm!", "Use planks and sticks to make a hoe"],
+			"makeBread": ["Bake Bread", "Turn wheat into bread"],
+			"bakeCake": ["The Lie", "Wheat, sugar, milk, and eggs!"],
+			"buildBetterPickaxe": ["Getting an Upgrade", "Construct a better pickaxe"],
+			"cookFish": ["Delicious Fish", "Catch and cook a fish!"],
+			"onARail": ["On A Rail", "Travel by minecart at least 1 km from where you started"],
+			"buildSword": ["Time to Strike!", "Use planks and sticks to make a sword"],
+			"killEnemy": ["Monster Hunter", "Attack and destroy a monster"],
+			"killCow": ["Cow Tipper", "Harvest some leather"],
+			"flyPig": ["When Pigs Fly", "Fly a pig off a cliff"],
+			"snipeSkeleton": ["Sniper Duel", "Kill a skeleton or wither skeleton with an arrow from more than 50 meters"],
+			"diamonds": ["DIAMONDS!", "Acquire diamonds with your iron tools"],
+			"portal": ["We Need to Go Deeper", "Build a portal to the Nether"],
+			"ghast": ["Return to Sender", "Destroy a Ghast with a fireball"],
+			"blazeRod": ["Into Fire", "Relieve a Blaze of its rod"],
+			"potion": ["Local Brewery", "Brew a potion"],
+			"theEnd": ["The End?", "Locate the End"],
+			"theEnd2": ["The End.", "Defeat the Ender Dragon"],
+			"enchantments": ["Enchanter", "Use a book, obsidian and diamonds to construct an enchantment table"],
+			"overkill": ["Overkill", "Deal nine hearts of damage in a single hit"],
+			"bookcase": ["Librarian", "Build some bookshelves to improve your enchantment table"],
+			"exploreAllBiomes": ["Adventuring Time", "Discover all biomes"],
+			"spawnWither": ["The Beginning?", "Spawn the Wither"],
+			"killWither": ["The Beginning.", "Kill the Wither"],
+			"fullBeacon": ["Beaconator", "Create a full beacon"],
+			"breedCow": ["Repopulation", "Breed two cows with wheat"],
+			"diamondsToYou": ["Diamonds to you!", "Throw diamonds at another player."]
 		}
 	}
 }

@@ -158,13 +158,22 @@ function display_stat_data(data) {
 
 	            } else if (stat[1] === 'killEntity' ||
 	                       stat[1] === 'entityKilledBy') {
-	                var mobname = stat[2];
+	                var id = stat[2];
 	                var actionIndex = stat[1];
 	                var count = value;
 
+	                var name = id;
+	                if ('stats' in string_data) {
+	            		if ('mobs' in string_data['stats']) {
+	            			if (stat[2] in string_data['stats']['mobs']) {
+	            				name = string_data['stats']['mobs'][stat[2]];
+	            			};
+	            		};
+	            	};
+
 	                var found = false;
 	                $.each(mobs, function(key, value) {
-	                    if (value['name'] === mobname) {
+	                    if (value['id'] === id) {
 	                        value[actionIndex] = count;
 	                        found = true;
 	                        return;
@@ -172,7 +181,7 @@ function display_stat_data(data) {
 	                });
 
 	                if (!found) {
-	                	newEntry = {'name': mobname};
+	                	newEntry = {'id': id, 'name': name};
 	                	newEntry[actionIndex] = count;
 	                    mobs.push(newEntry);
 	                };
@@ -237,7 +246,19 @@ function display_stat_data(data) {
 	            }
 	        } else {
 	        	if (stat[0] === 'achievement') {
-	        		var name = key;
+	        		var id = stat[1];
+	        		var name = id;
+	        		var description = "";
+
+	        		if ('stats' in string_data) {
+	            		if ('achievements' in string_data['stats']) {
+	            			if (id in string_data['stats']['achievements']) {
+	            				name = string_data['stats']['achievements'][id][0];
+	            				description = string_data['stats']['achievements'][id][1];
+	            			};
+	            		};
+	            	};
+
 
 	        		var final_value = value;
 	        		if (stat[1] === 'exploreAllBiomes') {
@@ -262,10 +283,29 @@ function display_stat_data(data) {
 	        			}
 	        		}
 
-	        		achievements.push({'name': name, 'value': final_value});
+	        		achievements.push({'id': id, 'name': name, 'description': description, 'value': final_value});
 	        	};
 	        }
 	    });
+
+		// Add the missing achievements
+		if ('stats' in string_data) {
+	        if ('achievements' in string_data['stats']) {
+	        	$.each(string_data['stats']['achievements'], function(id, stringarray) {
+	        		var alreadyExisting = false;
+	        		$.each(achievements, function(index, dict) {
+	        			if (id === dict['id']) {
+	        				alreadyExisting = true;
+	        				return;
+	        			};
+	        		});
+
+	        		if (!alreadyExisting) {
+	            		achievements.push({'name': stringarray[0], 'description': stringarray[1], 'value': 'No'});
+	        		};
+	        	});
+	        };
+	    };
 
 	    general.sort(function(a, b) {
 	        nameA = a['name'];
@@ -303,12 +343,13 @@ function display_stat_data(data) {
 	    });
 
 	    $.each(mobs, function(index, dict) {
-	        mobname = dict['name'];
+	        name = dict['name'];
+	        id = dict['id']
 
-	        row = '<tr id="mob-row-' + mobname + '" class="mob-row"><td class="name"></td><td class="killed">0</td><td class="killed-by">0</td></tr>';
+	        row = '<tr id="mob-row-' + id + '" class="mob-row"><td class="name"></td><td class="killed">0</td><td class="killed-by">0</td></tr>';
 	        loading_stat_mobs.before(row);
-	        row = $('#mob-row-' + mobname);
-	        row.children('.name').text(mobname);
+	        row = $('#mob-row-' + id);
+	        row.children('.name').text(name);
 
 	        if ('killEntity' in dict) {
 	            row.children('.killed').text(dict['killEntity']);
@@ -365,8 +406,9 @@ function display_stat_data(data) {
 
 	    $.each(achievements, function(index, dict) {
 	        name = dict['name'];
+	        description = dict['description'];
 
-	        row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td class="name">' + name + '</td><td class="value">' + dict['value'] + '</td></tr>';
+	        row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td class="name" title="' + description + '">' + name + '</td><td class="value">' + dict['value'] + '</td></tr>';
 	        loading_stat_achievements.before(row);
 	    });
 
