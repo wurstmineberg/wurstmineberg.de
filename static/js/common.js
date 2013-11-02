@@ -134,6 +134,9 @@ function display_funding_data() {
 
             var spending_monthly = Math.abs(data['spending_monthly']);
 
+            // Subtract the first month
+            funding_total -= spending_monthly;
+
             // Add a month until it doesn't fit anymore
             while (funding_total >= spending_monthly) {
                 funded_month++;
@@ -160,7 +163,7 @@ function display_funding_data() {
             	// We are funded until next year
             	funded_for_this_month = true;
             } else {
-            	if (funded_month == month - 1) {
+            	if (funded_month == month) {
             		// We are in the month that is just not funded.
             		// Check if the billing date is already over.
 
@@ -168,7 +171,7 @@ function display_funding_data() {
             			funded_for_this_month = true;
             		}
             	} else {
-            		funded_for_this_month = funded_month > month;
+            		funded_for_this_month = funded_month >= month;
             	}
             }
 
