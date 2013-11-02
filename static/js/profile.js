@@ -74,14 +74,90 @@ function display_user_data(person) {
     }
 }
 
-function display_stat_data(data) {
-	var loading_stat = $('.loading-stat');
-	$.each(data, function(stat, value) {
+function is_block(id) {
+	return false;
+}
 
-		loading_stat.before('<tr id="' + value + '"><td>' + stat + '</td><td>' + value + '</td></tr>');
+function display_stat_data(data) {
+	var loading_stat_general = $('#loading-stat-general-table');
+	var loading_stat_item = $('#loading-stat-items-table');
+	var loading_stat_block = $('#loading-stat-blocks-table');
+	var loading_stat_general = $('#loading-stat-general-table');
+	var loading_stat_mobs = $('#loading-stat-mobs-table');
+
+	$.each(data, function(key, value) {
+		stat = key.split('.');
+		var name;
+
+		if (stat[0] === 'stat') {
+			if (stat[1] === 'craftItem' ||
+				stat[1] === 'useItem' ||
+				stat[1] === 'breakItem') {
+				var item = stat[2];
+				name = item;
+
+				var row = $('#item-row-' + item);
+				if (row.length == 0) {
+					row = '<tr id="item-row-' + item + '" class="item-row"><td class="name"></td><td class="depleted">0</td><td class="crafted">0</td><td class="used">0</td></tr>';
+					loading_stat_item.before(row);
+					row = $('#item-row-' + item);
+					row.children('.name').text(name);
+				}
+
+				if (row) {
+					if (stat[1] === 'craftItem') {
+						row.children('.crafted').text(value);
+					} else if (stat[1] === 'useItem') {
+						row.children('.used').text(value);
+					} else if (stat[1] === 'breakItem') {
+						row.children('.depleted').text(value);
+					}
+				}
+
+			} else if (stat[1] === 'mineBlock') {
+				var item = stat[2];
+				name = item;
+
+				var row = $('#block-row-' + item);
+				if (row.length == 0) {
+					row = '<tr id="block-row-' + item + '" class="block-row"><td class="name"></td><td class="crafted">0</td><td class="used">0</td><td class="mined">0</td></tr>';
+					loading_stat_block.before(row);
+					row = $('#block-row-' + item);
+					row.children('.name').text(name);
+				}
+
+				if (row) {
+					if (stat[1] === 'mineBlock') {
+						row.children('.mined').text(value);
+					}
+				}
+			} else if (stat[1] === 'killEntity' ||
+					   stat[1] === 'entityKilledBy') {
+				var mobname = stat[2];
+				var row = $('#mob-row-' + mobname);
+				if (row.length == 0) {
+					row = '<tr id="mob-row-' + mobname + '" class="mob-row"><td class="name"></td><td class="killed">0</td><td class="killed-by">0</td></tr>';
+					loading_stat_mobs.before(row);
+					row = $('#mob-row-' + mobname);
+					row.children('.name').text(mobname);
+				}
+
+				if (stat[1] === 'killEntity') {
+					row.children('.killed').text(value);
+				} else if (stat[1] === 'entityKilledBy') {
+					row.children('.killed-by').text(value);
+				}
+			} else {
+				name = key.substring('stat.'.length, key.length);
+
+
+				var row = '<tr id="general-row-' + name + '" class="general-row"><td class="name">' + name + '</td><td class="info">' + value + '</td></tr>'
+				loading_stat_general.before(row);
+			}
+		}
 	});
 
-	loading_stat.remove();
+	$('.loading-stat').remove();
 }
 
 function load_stat_data(minecraft) {
