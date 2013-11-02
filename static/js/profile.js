@@ -208,10 +208,10 @@ function display_stat_data(data) {
                     var final_value = value;
 
                     if (key.endsWith('OneCm')) {
-                        if (value > 1000000) {
-                            final_value = (value / 1000000).toFixed(2) + 'km';
-                        } else if (value > 1000) {
-                            final_value = (value / 1000).toFixed(2) + 'm';
+                        if (value > 100000) {
+                            final_value = (value / 100000).toFixed(2) + 'km';
+                        } else if (value > 100) {
+                            final_value = (value / 100).toFixed(2) + 'm';
                         } else {
                             final_value = value + 'cm';
                         }
