@@ -6,16 +6,26 @@ function display_leaderboard_stat_data(data) {
         $.each(data, function(playername, playerstats) {
             $.each(playerstats, function(stat, value) {
                 var override = false;
+                var add = false;
+
                 if (stat in stats) {
                     if (value > stats[stat]['value']) {
                         override = true;
+                    }
+
+                    else if (value == stats[stat]['value']) {
+                        add = true;
                     }
                 } else {
                     override = true;
                 }
 
                 if (override) {
-                    stats[stat] = {'player': playername, 'value': value};
+                    stats[stat] = {'players': [playername], 'value': value};
+                };
+
+                if (add) {
+                    stats[stat]['players'].push(playername)
                 };
             });
         });
@@ -31,10 +41,18 @@ function display_leaderboard_stat_data(data) {
                 };
             };
 
-            var player = data['player'];
+            var players = data['players'];
+            var playerhtml = '';
+            $.each(players, function(index, name) {
+                if (index >= 1) {
+                    name = ', ' + name;
+                };
+                playerhtml += '<span class="player">' + name + '</span>';
+            });
+
             var value = prettify_stats_value(stat[1], data['value']);
 
-            row = '<tr class="leaderboard-row"><td class="stat">' + name + '</td><td class="leading-player">' + player + '</td><td class="value">' + value + '</td></tr>';
+            row = '<tr class="leaderboard-row"><td class="stat">' + name + '</td><td class="leading-player">' + playerhtml + '</td><td class="value">' + value + '</td></tr>';
             loading_leaderboards.before(row);
         });
 
