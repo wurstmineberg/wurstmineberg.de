@@ -164,6 +164,29 @@ function minecraft_nick_to_username(minecraft, people) {
     return playername;
 }
 
+function username_for_player_values(values) {
+    if ('name' in values) {
+        return values['name'];
+    }
+
+    return values['id'];
+}
+
+function username_to_minecraft_nick(username, people) {
+    var minecraftname;
+
+    $.each(people, function(index, values) {
+        var name = username_for_player_values(values)
+        if (name === username) {
+            if ('minecraft' in values) {
+                minecraftname = values['minecraft'];
+            }
+        }
+    });
+
+    return minecraftname;
+}
+
 function fetch_string_data() {
     return $.ajax('/static/json/strings.json', {
         dataType: 'json'
@@ -182,7 +205,7 @@ function fetch_player_data() {
     });
 }
 
-function html_player_list(names) {
+function html_player_list(names, player_data) {
     var html = '';
 
     $.each(names, function(index, name) {
@@ -190,7 +213,7 @@ function html_player_list(names) {
             html += ', ';
         };
 
-        var ava = '/assets/img/ava/' + name + '.png';
+        var ava = '/assets/img/ava/' + username_to_minecraft_nick(name, player_data) + '.png';
         html += '<img src="' + ava + '" class="avatar" /><a class="player" href="/people/' + name + '">' + name + '</a>';
     });
 
@@ -207,26 +230,31 @@ function getServerStatus(on,version) {
 }
 
 function getOnlineData(list) {
-    if (list.length == 1) {
-        document.getElementById('peopleCount').innerHTML = 'one of the <span id="whitelistCount">(loading)</span> whitelisted players is';
-    } else if (list.length == 0) {
-        document.getElementById('peopleCount').innerHTML = 'none of the <span id="whitelistCount">(loading)</span> whitelisted players are';
-    } else {
-        document.getElementById('peopleCount').innerHTML = list.length + ' of the <span id="whitelistCount">(loading)</span> whitelisted players are';
-    }
-    $.ajax('assets/serverstatus/people.json', {
-        dataType: 'json',
-        error: function(request, status, error) {
-            document.getElementById('whitelistCount').innerHTML = '(error)';
-        },
-        success: function(data) {
-            document.getElementById('whitelistCount').innerHTML = data.filter(function(person) {
-                return (('status' in person ? person['status'] : 'later') != 'former');
-            }).length;
+    $.when(fetch_player_data()).done(function(player_data) {
+        if (list.length == 1) {
+            document.getElementById('peopleCount').innerHTML = 'one of the <span id="whitelistCount">(loading)</span> whitelisted players is';
+        } else if (list.length == 0) {
+            document.getElementById('peopleCount').innerHTML = 'none of the <span id="whitelistCount">(loading)</span> whitelisted players are';
+        } else {
+            document.getElementById('peopleCount').innerHTML = list.length + ' of the <span id="whitelistCount">(loading)</span> whitelisted players are';
         }
-    });
+        $.ajax('assets/serverstatus/people.json', {
+            dataType: 'json',
+            error: function(request, status, error) {
+                document.getElementById('whitelistCount').innerHTML = '(error)';
+            },
+            success: function(data) {
+                document.getElementById('whitelistCount').innerHTML = data.filter(function(person) {
+                    return (('status' in person ? person['status'] : 'later') != 'former');
+                }).length;
+            }
+        });
 
-    document.getElementById('peopleList').innerHTML = html_player_list(list);
+        list = list.map(function(name) {
+            return minecraft_nick_to_username(name, player_data);
+        });
+        document.getElementById('peopleList').innerHTML = html_player_list(list, player_data);
+    });
 }
 
 function display_funding_data() {

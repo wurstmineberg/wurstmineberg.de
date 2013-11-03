@@ -46,7 +46,7 @@ function display_leaderboard_stat_data(data) {
             };
 
             var players = data['players'];
-            var playerhtml = html_player_list(players);
+            var playerhtml = html_player_list(players, player_data);
             var value = prettify_stats_value(stat[1], data['value']);
 
             row = '<tr class="leaderboard-row"><td class="stat">' + name + '</td><td class="leading-player">' + playerhtml + '</td><td class="value">' + value + '</td></tr>';
