@@ -367,9 +367,9 @@ function display_stat_data(data) {
             value = dict['value']
 
             if (value === "Yes") {
-                value = '<span class="glyphicon glyphicon-ok"></span>'
+                value = '<span class="glyphicon glyphicon-ok text-success"></span>'
             } else if (value === "No") {
-                value = '<span class="glyphicon glyphicon-remove"></span>'
+                value = '<span class="glyphicon glyphicon-remove text-danger"></span>'
             }
 
             row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td class="name"><a href="#" data-toggle="tooltip" data-placement="right" rel="tooltip" class="text-link" title="' + description + '">' + name + '</a></td><td class="value">' + value + '</td></tr>';

@@ -176,6 +176,14 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/22/Grid_Smooth_Sandstone.png",
         "name": "Smooth Sandstone"
     },
+    "25": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1d/Grid_Note_Block.png",
+        "name": "Note Block"
+    },
+    "26": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a3/Grid_Bed.png",
+        "name": "Bed"
+    },
     "27": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9d/Grid_Powered_Rail.png",
         "name": "Powered Rail"
@@ -187,6 +195,94 @@
     "29": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/32/Grid_Sticky_Piston.png",
         "name": "Sticky Piston"
+    },
+    "31": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c1/Grid_Tall_Grass2.png",
+        "name": "Tall Grass"
+    },
+    "31:0": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Dead_Bush.png",
+        "name": "Shrub"
+    },
+    "31:1": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c1/Grid_Tall_Grass2.png",
+        "name": "Tall Grass"
+    },
+    "31:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e1/Grid_Tall_Grass3.png",
+        "name": "Fern"
+    },
+    "32": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Dead_Bush.png",
+        "name": "Dead Bush"
+    },
+    "35": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_White_Wool.png",
+        "name": "Wool"
+    },
+    "35:0": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_White_Wool.png",
+        "name": "White Wool"
+    },
+    "35:1": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/07/Grid_Orange_Wool.png",
+        "name": "Orange Wool"
+    },
+    "35:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fd/Grid_Magenta_Wool.png",
+        "name": "Magenta Wool"
+    },
+    "35:3": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fb/Grid_Light_Blue_Wool.png",
+        "name": "Light Blue Wool"
+    },
+    "35:4": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ed/Grid_Yellow_Wool.png",
+        "name": "Yellow Wool"
+    },
+    "35:5": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a2/Grid_Lime_Wool.png",
+        "name": "Lime Wool"
+    },
+    "35:6": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b3/Grid_Pink_Wool.png",
+        "name": "Pink Wool"
+    },
+    "35:7": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d3/Grid_Gray_Wool.png",
+        "name": "Gray Wool"
+    },
+    "35:8": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e5/Grid_Light_Gray_Wool.png",
+        "name": "Light Gray Wool"
+    },
+    "35:9": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cd/Grid_Cyan_Wool.png",
+        "name": "Cyan Wool"
+    },
+    "35:10": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/51/Grid_Purple_Wool.png",
+        "name": "Purple Wool"
+    },
+    "35:11": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/40/Grid_Blue_Wool.png",
+        "name": "Blue Wool"
+    },
+    "35:12": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Brown_Wool.png",
+        "name": "Brown Wool"
+    },
+    "35:13": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_Green_Wool.png",
+        "name": "Green Wool"
+    },
+    "35:14": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Red_Wool.png",
+        "name": "Red Wool"
+    },
+    "35:15": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/45/Grid_Black_Wool.png",
+        "name": "Black Wool"
     },
     "41": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b6/Grid_Gold_%28Block%29.png",
@@ -207,6 +303,10 @@
     "50": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/32/Grid_Torch.png",
         "name": "Torch"
+    },
+    "51": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/21/Grid_Fire.gif",
+        "name": "Fire"
     },
     "56": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ef/Grid_Diamond_%28Ore%29.png",
@@ -363,6 +463,54 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Grid_Bread.png",
         "name": "Bread"
     },
+    "298": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/24/Grid_Leather_Cap.png",
+        "name": "Leather Cap"
+    },
+    "299": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ed/Grid_Leather_Tunic.png",
+        "name": "Leather Tunic"
+    },
+    "300": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ce/Grid_Leather_Pants.png",
+        "name": "Leather Pants"
+    },
+    "301": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/06/Grid_Leather_Boots.png",
+        "name": "Leather Boots"
+    },
+    "302": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cf/Grid_Chain_Armor_Helmet.png",
+        "name": "Chain Helmet"
+    },
+    "303": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f4/Grid_Chain_Armor_Chestplate.png",
+        "name": "Chain Chestplate"
+    },
+    "304": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1b/Grid_Chain_Armor_Leggings.png",
+        "name": "Chain Leggings"
+    },
+    "305": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/74/Grid_Chain_Armor_Boots.png",
+        "name": "Chain Boots"
+    },
+    "306": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ec/Grid_Iron_Helmet.png",
+        "name": "Iron Helmet"
+    },
+    "307": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/8d/Grid_Iron_Chestplate.png",
+        "name": "Iron Chestplate"
+    },
+    "308": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/99/Grid_Iron_Leggings.png",
+        "name": "Iron Leggings"
+    },
+    "309": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f5/Grid_Iron_Boots.png",
+        "name": "Iron Boots"
+    },
     "310": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Diamond_Helmet.png",
         "name": "Diamond Helmet"
@@ -378,6 +526,22 @@
     "313": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d1/Grid_Diamond_Boots.png",
         "name": "Diamond Boots"
+    },
+    "314": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3a/Grid_Gold_Helmet.png",
+        "name": "Golden Helmet"
+    },
+    "315": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7b/Grid_Gold_Chestplate.png",
+        "name": "Golden Chestplate"
+    },
+    "316": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f5/Grid_Gold_Leggings.png",
+        "name": "Golden Leggings"
+    },
+    "317": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/00/Grid_Gold_Boots.png",
+        "name": "Golden Boots"
     },
     "322": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Golden_Apple.png",
@@ -435,6 +599,10 @@
     "354": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/28/Grid_Cake.png",
         "name": "Cake"
+    },
+    "355": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a3/Grid_Bed.png",
+        "name": "Bed"
     },
     "359": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/13/Grid_Shears.png",
