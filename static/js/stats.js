@@ -45,7 +45,7 @@ function display_leaderboard_stat_data(data) {
             var playerhtml = '';
             $.each(players, function(index, name) {
                 if (index >= 1) {
-                    name = ', ' + name;
+                    playerhtml += ', ';
                 };
                 playerhtml += '<span class="player">' + name + '</span>';
             });
