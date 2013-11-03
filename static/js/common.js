@@ -69,6 +69,18 @@ function set_anchor_height() {
 	anchor.css("margin-top", "-=" + navigation_height);
 }
 
+function fetch_string_data() {
+    return $.ajax('/static/json/strings.json', {
+        dataType: 'json'
+    });
+}
+
+function fetch_item_data() {
+    return $.ajax('/static/json/items.json', {
+        dataType: 'json'
+    });
+}
+
 function getServerStatus(on,version) {
     if (on) {
         var versionString = version == null ? "(error)" : ('<a href="http://minecraft.gamepedia.com/Version_history' + ((version.indexOf('pre') != 1 || version.substring(2,3) == 'w') ? '/Development_versions#' : '#') + version + '" style="font-weight: bold;">' + version + '</a>');

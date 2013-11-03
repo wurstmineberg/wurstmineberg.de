@@ -37,16 +37,8 @@ function get_user_name() {
     return username;
 }
 
-function fetch_string_data() {
-    return $.ajax('/static/json/strings.json', {
-        dataType: 'json'
-    });
-}
-
-function fetch_item_data() {
-    return $.ajax('/static/json/items.json', {
-        dataType: 'json'
-    });
+function minecraft_ticks_to_real_minutes(minecraft_minutes) {
+    return minecraft_minutes / 1200;
 }
 
 function display_user_data(person) {
@@ -228,15 +220,9 @@ function display_stat_data(data) {
                             final_value = value + 'cm';
                         }
                     } else if (key.endsWith('OneMinute')) {
-                        // Yes, this is called 'minute' and actually reflects the value in seconds.
-                        var seconds = value;
-                        var minutes = 0;
+                        var minutes = Math.floor(minecraft_ticks_to_real_minutes(value));
                         var hours = 0;
                         var days = 0;
-                        if (seconds >= 60) {
-                            minutes = Math.floor(seconds / 60);
-                            seconds = 0;
-                        }
 
                         if (minutes >= 60) {
                             hours = Math.floor(minutes / 60);
@@ -258,9 +244,6 @@ function display_stat_data(data) {
                         if (minutes) {
                             final_value += minutes + 'min '
                         }
-                        if (seconds) {
-                            final_value += seconds + 's'
-                        };
                     } else if (stat[1].startsWith('damage')) {
                         final_value = (value / 2) + ' hearts';
                     }
