@@ -1,7 +1,10 @@
-function bind_pagination_events() {
-    $('.pagination-item').bind('click', function(eventObject) {
+function bind_tab_events() {
+    $('.tab-item').bind('click', function(eventObject) {
+    	eventObject.preventDefault();
+        $(this).tab('show');
+
         var id = $(this).attr('id')
-        var elementid = id.substring('pagination-'.length, id.length);
+        var elementid = id.substring('tab-'.length, id.length);
         var selected = $('#' + elementid);
         $('.stats-section').each(function(index, element) {
             var table = $(element);
@@ -12,6 +15,8 @@ function bind_pagination_events() {
             }
         });
     });
+
+    $("#tab-stats-general").tab('show');
 }
 
 function get_user_name() {
@@ -490,5 +495,5 @@ function load_user_data() {
     });
 }
 
-bind_pagination_events();
+bind_tab_events();
 load_user_data();
