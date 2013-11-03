@@ -1,0 +1,270 @@
+[
+    {
+        "name": "openInventory",
+        "icon": 340,
+        "id": 0,
+        "displayname": "Taking Inventory",
+        "runobjective": "inv",
+        "requires": null
+    },
+    {
+        "name": "mineWood",
+        "icon": 17,
+        "id": 1,
+        "displayname": "Getting Wood",
+        "runobjective": "wood",
+        "requires": "openInventory"
+    },
+    {
+        "name": "buildWorkBench",
+        "icon": 58,
+        "id": 2,
+        "displayname": "Benchmarking",
+        "runobjective": "bench",
+        "requires": "mineWood"
+    },
+    {
+        "name": "buildPickaxe",
+        "icon": 270,
+        "id": 3,
+        "displayname": "Time to Mine!",
+        "runobjective": "pick",
+        "requires": "buildWorkBench"
+    },
+    {
+        "name": "buildFurnace",
+        "icon": 61,
+        "id": 4,
+        "displayname": "Hot Topic",
+        "runobjective": "furn",
+        "requires": "buildPickaxe"
+    },
+    {
+        "name": "acquireIron",
+        "icon": 265,
+        "id": 5,
+        "displayname": "Acquire Hardware",
+        "runobjective": "iron",
+        "requires": "buildFurnace"
+    },
+    {
+        "name": "buildHoe",
+        "icon": 290,
+        "id": 6,
+        "displayname": "Time to Farm!",
+        "runobjective": "hoe",
+        "requires": "buildWorkBench"
+    },
+    {
+        "name": "makeBread",
+        "icon": 297,
+        "id": 7,
+        "displayname": "Bake Bread",
+        "runobjective": "bread",
+        "requires": "buildHoe"
+    },
+    {
+        "name": "bakeCake",
+        "icon": 354,
+        "id": 8,
+        "displayname": "The Lie",
+        "runobjective": "cake",
+        "requires": "buildHoe"
+    },
+    {
+        "name": "buildBetterPickaxe",
+        "icon": 274,
+        "id": 9,
+        "displayname": "Getting an Upgrade",
+        "runobjective": "spick",
+        "requires": "buildPickaxe"
+    },
+    {
+        "name": "cookFish",
+        "icon": 350,
+        "id": 10,
+        "displayname": "Delicious Fish",
+        "runobjective": "fish",
+        "requires": "buildFurnace"
+    },
+    {
+        "name": "onARail",
+        "icon": 66,
+        "fancy": true,
+        "id": 11,
+        "displayname": "On A Rail",
+        "runobjective": "rail",
+        "requires": "acquireIron"
+    },
+    {
+        "name": "buildSword",
+        "icon": 268,
+        "id": 12,
+        "displayname": "Time to Strike!",
+        "runobjective": "sword",
+        "requires": "buildWorkBench"
+    },
+    {
+        "name": "killEnemy",
+        "icon": 352,
+        "id": 13,
+        "displayname": "Monster Hunter",
+        "runobjective": "kill",
+        "requires": "buildSword"
+    },
+    {
+        "name": "killCow",
+        "icon": 334,
+        "id": 14,
+        "displayname": "Cow Tipper",
+        "runobjective": "cow",
+        "requires": "buildSword"
+    },
+    {
+        "name": "flyPig",
+        "icon": 329,
+        "fancy": true,
+        "id": 15,
+        "displayname": "When Pigs Fly",
+        "runobjective": "fly",
+        "requires": "killCow"
+    },
+    {
+        "name": "snipeSkeleton",
+        "icon": 261,
+        "fancy": true,
+        "id": 16,
+        "displayname": "Sniper Duel",
+        "runobjective": "snipe",
+        "requires": "killEnemy"
+    },
+    {
+        "name": "diamonds",
+        "icon": 56,
+        "id": 17,
+        "displayname": "DIAMONDS!",
+        "runobjective": "dia",
+        "requires": "acquireIron"
+    },
+    {
+        "name": "portal",
+        "icon": 49,
+        "id": 18,
+        "displayname": "We Need to Go Deeper",
+        "runobjective": "hell",
+        "requires": "diamonds"
+    },
+    {
+        "name": "ghast",
+        "icon": 370,
+        "fancy": true,
+        "id": 19,
+        "displayname": "Return to Sender",
+        "runobjective": "ghast",
+        "requires": "portal"
+    },
+    {
+        "name": "blazeRod",
+        "icon": 369,
+        "id": 20,
+        "displayname": "Into Fire",
+        "runobjective": "blaze",
+        "requires": "portal"
+    },
+    {
+        "name": "potion",
+        "icon": 373,
+        "id": 21,
+        "displayname": "Local Brewery",
+        "runobjective": "brew",
+        "requires": "blazeRod"
+    },
+    {
+        "name": "theEnd",
+        "icon": 381,
+        "fancy": true,
+        "id": 22,
+        "displayname": "The End?",
+        "runobjective": "end",
+        "requires": "blazeRod"
+    },
+    {
+        "name": "theEnd2",
+        "icon": 122,
+        "fancy": true,
+        "id": 23,
+        "displayname": "The End.",
+        "runobjective": "dragn",
+        "requires": "theEnd"
+    },
+    {
+        "name": "enchantments",
+        "icon": 116,
+        "id": 24,
+        "displayname": "Enchanter",
+        "runobjective": "ench",
+        "requires": "diamonds"
+    },
+    {
+        "name": "overkill",
+        "icon": 276,
+        "fancy": true,
+        "id": 25,
+        "displayname": "Overkill",
+        "runobjective": "okill",
+        "requires": "enchantments"
+    },
+    {
+        "name": "bookcase",
+        "icon": 47,
+        "id": 26,
+        "displayname": "Librarian",
+        "runobjective": "book",
+        "requires": "enchantments"
+    },
+    {
+        "name": "exploreAllBiomes",
+        "icon": 313,
+        "id": 27,
+        "displayname": "Adventuring Time",
+        "runobjective": "biome",
+        "requires": "theEnd"
+    },
+    {
+        "name": "spawnWither",
+        "icon": 397,
+        "icondamage": 1,
+        "displayname": "The Beginning?",
+        "runobjective": "withs",
+        "requires": "theEnd2"
+    },
+    {
+        "name": "killWither",
+        "icon": 399,
+        "displayname": "The Beginning.",
+        "runobjective": "withk",
+        "requires": "spawnWither"
+    },
+    {
+        "name": "fullBeacon",
+        "icon": 138,
+        "fancy": true,
+        "displayname": "Beaconator",
+        "runobjective": "beac",
+        "requires": "killWither"
+    },
+    {
+        "name": "breedCow",
+        "icon": 296,
+        "displayname": "Repopulation",
+        "runobjective": "breed",
+        "requires": "killCow"
+    },
+    {
+        "name": "diamondsToYou",
+        "icon": 264,
+        "displayname": "Diamonds to you!",
+        "runobjective": "dtyou",
+        "requires": "diamonds"
+    }
+]
