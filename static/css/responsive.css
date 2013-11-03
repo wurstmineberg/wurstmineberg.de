@@ -15,7 +15,7 @@
 }
 
 @media (max-width: 910px) {
-	.navbar-right .funding-progress-container {
+	.funding-progress-container {
 		display: none;
 	}
 }
