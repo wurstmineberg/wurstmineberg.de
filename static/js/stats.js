@@ -3,39 +3,44 @@ function display_leaderboard_stat_data(data) {
         string_data = string_data[0]
         player_data = player_data[0]
 
-        var stats = {};
+        var stats = [];
         var loading_leaderboards = $('#loading-stat-leaderboard-table');
 
         $.each(data, function(playername, playerstats) {
             playername = minecraft_nick_to_username(playername, player_data)
             $.each(playerstats, function(stat, value) {
                 var override = false;
-                var add = false;
+                var add_name = false;
+                var found = false;
+                var matched_index;
+                var stat_to_override;
 
-                if (stat in stats) {
-                    if (value > stats[stat]['value']) {
-                        override = true;
+                $.each(stats, function(index, playerstat) {
+                    if (playerstat['id'] === stat) {
+                        found = true;
+                        if (value > playerstat['value']) {
+                            stats[index] = {'id': stat, 'players': [playername], 'value': value};
+                            return;
+                        } else if (value == playerstat['value']) {
+                            stats[index]['players'].push(playername);
+                            return;
+                        }
                     }
+                });
 
-                    else if (value == stats[stat]['value']) {
-                        add = true;
-                    }
-                } else {
-                    override = true;
-                }
-
-                if (override) {
-                    stats[stat] = {'players': [playername], 'value': value};
-                };
-
-                if (add) {
-                    stats[stat]['players'].push(playername)
+                if (!found) {
+                    stats.push({'id': stat, 'players': [playername], 'value': value});
                 };
             });
         });
+
+        stats.sort(function(a, b) {
+            return a['id'].localeCompare(b['id']);
+        });
         
-        $.each(stats, function(key, data) {
-            stat = key.split('.');
+        $.each(stats, function(index, data) {
+            var key = data['id']
+            var stat = key.split('.');
             var name = stat[1];
             if ('stats' in string_data) {
                 if ('general' in string_data['stats']) {

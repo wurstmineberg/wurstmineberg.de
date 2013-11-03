@@ -139,7 +139,7 @@ function prettify_stats_value(key, value) {
         if (minutes) {
             final_value += minutes + 'min '
         }
-    } else if (stat[1].startsWith('damage')) {
+    } else if (key.startsWith('damage')) {
         final_value = (value / 2) + ' hearts';
     }
 
