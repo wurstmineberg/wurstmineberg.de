@@ -50,8 +50,11 @@ function display_leaderboard_stat_data(data) {
                 if (index >= 1) {
                     playerhtml += ', ';
                 };
+
                 var username = minecraft_nick_to_username(name, player_data);
-                playerhtml += '<a class="player" href="/people/' + username + '">' + username + '</a>';
+                var ava = '/assets/img/ava/' + name + '.png';
+
+                playerhtml += '<img src="' + ava + '" class="avatar" /><a class="player" href="/people/' + username + '">' + username + '</a>';
             });
 
             var value = prettify_stats_value(stat[1], data['value']);
