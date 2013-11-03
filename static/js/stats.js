@@ -77,3 +77,5 @@ function load_leaderboard_stat_data(minecraft) {
 }
 
 load_leaderboard_stat_data();
+bind_tab_events();
+select_tab_with_id("tab-stats-general");

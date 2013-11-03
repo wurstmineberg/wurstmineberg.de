@@ -1,3 +1,33 @@
+function bind_tab_events() {
+    $('.tab-item').bind('click', function(eventObject) {
+        eventObject.preventDefault();
+        $(this).tab('show');
+    });
+
+    $('.tab-item').on('show.bs.tab', function(e) {
+        var id = $(this).attr('id')
+        var elementid = id.substring('tab-'.length, id.length);
+        var selected = $('#' + elementid);
+        $('.stats-section').each(function(index, element) {
+            var table = $(element);
+            if (table.attr('id') == selected.attr('id')) {
+                table.removeClass("hidden");
+            } else {
+                table.addClass("hidden");
+            }
+        });
+    });
+
+    if (location.hash !== '') $('a[href="' + location.hash + '"]').tab('show');
+        return $('a.tab-item').on('shown.bs.tab', function(e) {
+            return location.hash = $(e.target).attr('href').substr(1);
+    });
+}
+
+function select_tab_with_id(id) {
+    $("#id").tab('show');
+}
+
 function url_domain(data) {
     var a = document.createElement('a');
     a.href = data;
