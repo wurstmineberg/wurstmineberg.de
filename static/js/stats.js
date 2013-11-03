@@ -7,6 +7,7 @@ function display_leaderboard_stat_data(data) {
         var loading_leaderboards = $('#loading-stat-leaderboard-table');
 
         $.each(data, function(playername, playerstats) {
+            playername = minecraft_nick_to_username(playername, player_data)
             $.each(playerstats, function(stat, value) {
                 var override = false;
                 var add = false;
@@ -45,18 +46,7 @@ function display_leaderboard_stat_data(data) {
             };
 
             var players = data['players'];
-            var playerhtml = '';
-            $.each(players, function(index, name) {
-                if (index >= 1) {
-                    playerhtml += ', ';
-                };
-
-                var username = minecraft_nick_to_username(name, player_data);
-                var ava = '/assets/img/ava/' + name + '.png';
-
-                playerhtml += '<img src="' + ava + '" class="avatar" /><a class="player" href="/people/' + username + '">' + username + '</a>';
-            });
-
+            var playerhtml = html_player_list(players);
             var value = prettify_stats_value(stat[1], data['value']);
 
             row = '<tr class="leaderboard-row"><td class="stat">' + name + '</td><td class="leading-player">' + playerhtml + '</td><td class="value">' + value + '</td></tr>';

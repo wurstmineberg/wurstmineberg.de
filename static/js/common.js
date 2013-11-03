@@ -182,6 +182,21 @@ function fetch_player_data() {
     });
 }
 
+function html_player_list(names) {
+    var html = '';
+
+    $.each(names, function(index, name) {
+        if (index >= 1) {
+            html += ', ';
+        };
+
+        var ava = '/assets/img/ava/' + name + '.png';
+        html += '<img src="' + ava + '" class="avatar" /><a class="player" href="/people/' + name + '">' + name + '</a>';
+    });
+
+    return html;
+}
+
 function getServerStatus(on,version) {
     if (on) {
         var versionString = version == null ? "(error)" : ('<a href="http://minecraft.gamepedia.com/Version_history' + ((version.indexOf('pre') != 1 || version.substring(2,3) == 'w') ? '/Development_versions#' : '#') + version + '" style="font-weight: bold;">' + version + '</a>');
@@ -210,9 +225,8 @@ function getOnlineData(list) {
             }).length;
         }
     });
-    document.getElementById('peopleList').innerHTML = list.map(function(Name) {
-        return '<img class="avatar" src="/assets/img/ava/' + Name + '.png" />' + Name;
-    }).join(', ');
+
+    document.getElementById('peopleList').innerHTML = html_player_list(list);
 }
 
 function display_funding_data() {
