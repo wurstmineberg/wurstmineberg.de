@@ -160,6 +160,14 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/22/Grid_Smooth_Sandstone.png",
         "name": "Smooth Sandstone"
     },
+    "27": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9d/Grid_Powered_Rail.png",
+        "name": "Powered Rail"
+    },
+    "28": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a2/Grid_Detector_Rail.png",
+        "name": "Detector Rail"
+    },
     "47": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Bookshelf.png",
         "name": "Bookshelf"
@@ -195,6 +203,10 @@
     "138": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cb/Grid_Beacon.png",
         "name": "Beacon"
+    },
+    "157": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/50/Grid_Activator_Rail.png",
+        "name": "Activator Rail"
     },
     "162": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d6/Grid_Acacia_Wood.png",

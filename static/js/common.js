@@ -199,6 +199,12 @@ function fetch_item_data() {
     });
 }
 
+function fetch_achievement_data() {
+    return $.ajax('/static/json/achievements.json', {
+        dataType: 'json'
+    });
+}
+
 function fetch_player_data() {
     return $.ajax('/assets/serverstatus/people.json', {
         dataType: 'json'

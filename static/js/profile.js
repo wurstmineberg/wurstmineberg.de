@@ -97,9 +97,10 @@ function display_stat_data(data) {
     var achievements = [];
 
     // wait for the string data to arrive
-    $.when(fetch_string_data(), fetch_item_data()).done(function(string_data, item_data) {
+    $.when(fetch_string_data(), fetch_item_data(), fetch_achievement_data()).done(function(string_data, item_data, achievement_data) {
         string_data = string_data[0];
         item_data = item_data[0];
+        achievement_data = achievement_data[0];
         $.each(data, function(key, value) {
             stat = key.split('.');
             var name;
@@ -194,16 +195,11 @@ function display_stat_data(data) {
                     var id = stat[1];
                     var name = id;
                     var description = "";
-
-                    if ('stats' in string_data) {
-                        if ('achievements' in string_data['stats']) {
-                            if (id in string_data['stats']['achievements']) {
-                                name = string_data['stats']['achievements'][id][0];
-                                description = string_data['stats']['achievements'][id][1];
-                            };
-                        };
+                    if (id in achievement_data) {
+                        name = achievement_data[id]['displayname'];
+                        description = achievement_data[id]['description'];
                     };
-
+                    
                     var final_value = value;
                     if (stat[1] === 'exploreAllBiomes') {
                         if ('value' in value) {
@@ -226,8 +222,13 @@ function display_stat_data(data) {
                             final_value = 'No'
                         }
                     }
-
-                    achievements.push({'id': id, 'name': name, 'description': description, 'value': final_value});
+                    
+                    achievements.push({
+                        'id': id,
+                        'name': name,
+                        'description': description,
+                        'value': final_value
+                    });
                 };
             }
         });
