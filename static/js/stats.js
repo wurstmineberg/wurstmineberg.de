@@ -1,5 +1,8 @@
 function display_leaderboard_stat_data(data) {
-    $.when(fetch_string_data()).done(function(string_data) {
+    $.when(fetch_string_data(), fetch_player_data()).done(function(string_data, player_data) {
+        string_data = player_data[0]
+        player_data = player_data[0]
+
         var stats = {};
         var loading_leaderboards = $('#loading-stat-leaderboard-table');
 
@@ -47,7 +50,8 @@ function display_leaderboard_stat_data(data) {
                 if (index >= 1) {
                     playerhtml += ', ';
                 };
-                playerhtml += '<span class="player">' + name + '</span>';
+                var username = minecraft_nick_to_username(name, player_data);
+                playerhtml += '<a class="player" href="/people/' + username + '">' + username + '</a>';
             });
 
             var value = prettify_stats_value(stat[1], data['value']);

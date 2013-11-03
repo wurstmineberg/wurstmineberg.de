@@ -5,15 +5,15 @@ function url_domain(data) {
 }
 
 function reddit_user_link(username) {
-	return 'https://reddit.com/u/' + username;
+    return 'https://reddit.com/u/' + username;
 }
 
 function twitter_user_link(username) {
-	return 'https://twitter.com/' + username;
+    return 'https://twitter.com/' + username;
 }
 
 function wiki_user_link(username) {
-	username = username.replace(/ /g, '_');
+    username = username.replace(/ /g, '_');
     return 'http://wiki.wurstmineberg.de/User:' + username;
 }
 
@@ -34,39 +34,39 @@ String.prototype.endsWith = function(suffix) {
 };
 
 function linkify_headers() {
-	// Do the stuff to the headers to linkify them
+    // Do the stuff to the headers to linkify them
 
-	$.each($('h2'), function() {
-		$(this).addClass("anchor");
-		$(this).append('&nbsp;<a class="tag" href="#' + $(this).attr('id') + '">¶</a>');
-	});
-	$('h2').hover(function() {
-		$(this).children('.tag').css('display', 'inline');
-	}, function() {
-		$(this).children('.tag').css('display', 'none');
-	});
+    $.each($('h2'), function() {
+        $(this).addClass("anchor");
+        $(this).append('&nbsp;<a class="tag" href="#' + $(this).attr('id') + '">¶</a>');
+    });
+    $('h2').hover(function() {
+        $(this).children('.tag').css('display', 'inline');
+    }, function() {
+        $(this).children('.tag').css('display', 'none');
+    });
 }
 
 function configure_navigation() {
-	var navigation_items = $("#navbar-list > li");
-	var windowpath = window.location.pathname;
+    var navigation_items = $("#navbar-list > li");
+    var windowpath = window.location.pathname;
 
-	// Iterate over the list items and change the container of the active nav item to active
-	$.each(navigation_items, function() {
-		var elementlink = $(this).children($("a"))[0];
-		var elementpath = elementlink.getAttribute("href");
-		if (elementpath === windowpath) {
-			$(this).addClass("active");
-		}
-	});
+    // Iterate over the list items and change the container of the active nav item to active
+    $.each(navigation_items, function() {
+        var elementlink = $(this).children($("a"))[0];
+        var elementpath = elementlink.getAttribute("href");
+        if (elementpath === windowpath) {
+            $(this).addClass("active");
+        }
+    });
 }
 
 function set_anchor_height() {
-	var navigation_height = $(".navbar").css("height");
-	var anchor = $(".anchor");
+    var navigation_height = $(".navbar").css("height");
+    var anchor = $(".anchor");
 
-	anchor.css("padding-top", "+=" + navigation_height);
-	anchor.css("margin-top", "-=" + navigation_height);
+    anchor.css("padding-top", "+=" + navigation_height);
+    anchor.css("margin-top", "-=" + navigation_height);
 }
 
 function minecraft_ticks_to_real_minutes(minecraft_minutes) {
@@ -74,7 +74,7 @@ function minecraft_ticks_to_real_minutes(minecraft_minutes) {
 }
 
 function prettify_stats_value(key, value) {
-	var final_value = value;
+    var final_value = value;
 
     if (key.endsWith('OneCm')) {
         if (value > 100000) {
@@ -116,6 +116,23 @@ function prettify_stats_value(key, value) {
     return final_value;
 }
 
+function minecraft_nick_to_username(minecraft, people) {
+    var playername;
+    $.each(people, function(index, values) {
+        if (['minecraft'] in values) {
+            if (minecraft === values['minecraft']) {
+                if ('name' in values) {
+                    playername = values['name'];
+                } else {
+                    playername = values['id'];
+                }
+                return;
+            };
+        };
+    });
+
+    return playername;
+}
 
 function fetch_string_data() {
     return $.ajax('/static/json/strings.json', {
@@ -125,6 +142,12 @@ function fetch_string_data() {
 
 function fetch_item_data() {
     return $.ajax('/static/json/items.json', {
+        dataType: 'json'
+    });
+}
+
+function fetch_player_data() {
+    return $.ajax('/assets/serverstatus/people.json', {
         dataType: 'json'
     });
 }
@@ -176,9 +199,9 @@ function display_funding_data() {
             var funding_total = 0.0;
 
             data['history'].forEach(function(transaction) {
-            	if (transaction['type'] !== 'nessus-monthly') {
-            		funding_total += transaction['amount'];
-            	};
+                if (transaction['type'] !== 'nessus-monthly') {
+                    funding_total += transaction['amount'];
+                };
             });
 
 
@@ -217,35 +240,35 @@ function display_funding_data() {
             var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
             if (funded_month == 11) {
-            	$('.funding-month').html(months[funded_month] + ' ' + funded_year + ' to ' + months[0] + ' ' + (funded_year + 1));
+                $('.funding-month').html(months[funded_month] + ' ' + funded_year + ' to ' + months[0] + ' ' + (funded_year + 1));
             } else {
-            	$('.funding-month').html(months[funded_month] + ' to ' + months[(funded_month + 1) % 12] + ' ' + funded_year);
+                $('.funding-month').html(months[funded_month] + ' to ' + months[(funded_month + 1) % 12] + ' ' + funded_year);
             }
 
             var percent = 0;
 
             var funded_for_this_month = false;
             if (funded_year > year) {
-            	// We are funded until next year
-            	funded_for_this_month = true;
+                // We are funded until next year
+                funded_for_this_month = true;
             } else {
-            	if (funded_month == month) {
-            		// We are in the month that is just not funded.
-            		// Check if the billing date is already over.
+                if (funded_month == month) {
+                    // We are in the month that is just not funded.
+                    // Check if the billing date is already over.
 
-            		if (day < data['billing_dom']) {
-            			funded_for_this_month = true;
-            		}
-            	} else {
-            		funded_for_this_month = funded_month >= month;
-            	}
+                    if (day < data['billing_dom']) {
+                        funded_for_this_month = true;
+                    }
+                } else {
+                    funded_for_this_month = funded_month >= month;
+                }
             }
 
             if (funded_for_this_month) {
                 percent = Math.floor(funding_total * 100 / spending_monthly);
                 $('.funding-progressbar').append('<div class="progress-bar progress-bar-success" style="width: ' + percent + '%;"><span class="sr-only">' + percent + '% funded</span></div>');
             } else {
-            	var expected_total = funding_total;
+                var expected_total = funding_total;
 
                 data['history'].forEach(function(transaction) {
                     if (transaction['type'] == 'player-monthly') {
@@ -265,7 +288,7 @@ function display_funding_data() {
                 var expected_percent = Math.max(0, Math.min(100 - percent, Math.floor(expected_total * 100 / -data['spending_monthly'])));
                 var progress_bar_class = "progress-bar-warning";
                 if (expected_percent <= 50) {
-                	progress_bar_class = "progress-bar-danger";
+                    progress_bar_class = "progress-bar-danger";
                 }
 
                 $('.funding-progressbar').append('<div class="progress-bar progress-bar-success" style="width: ' + expected_percent + '%;"><span class="sr-only">' + expected_percent + '% expected</span></div>');
