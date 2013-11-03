@@ -177,7 +177,7 @@ function display_stat_data(data) {
 
                 } else {
                     var final_key = key;
-                    var final_value = prettify_stats_value(key, value);
+                    var final_value = prettify_stats_value(stat[1], value);
 
                     if ('stats' in string_data) {
                         if ('general' in string_data['stats']) {
