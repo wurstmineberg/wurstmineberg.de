@@ -17,6 +17,12 @@ function wiki_user_link(username) {
     return 'http://wiki.wurstmineberg.de/User:' + username;
 }
 
+function initialize_tooltips() {
+    $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
+}
+
 // Some string functions to ease the parsing of substrings
 String.prototype.startsWith = function(needle)
 {

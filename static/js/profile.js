@@ -451,12 +451,12 @@ function display_stat_data(data) {
             	value = '<span class="glyphicon glyphicon-remove"></span>'
             }
 
-            row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td class="name" title="' + description + '">' + name + '</td><td class="value">' + value + '</td></tr>';
+            row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td class="name"><a href="#" data-toggle="tooltip" data-placement="right" rel="tooltip" class="text-link" title="' + description + '">' + name + '</a></td><td class="value">' + value + '</td></tr>';
             loading_stat_achievements.before(row);
         });
 
         $('.loading-stat').remove();
-
+        initialize_tooltips();
     });
 }
 
