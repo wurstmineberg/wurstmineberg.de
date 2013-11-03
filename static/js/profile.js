@@ -310,7 +310,9 @@ function display_stat_data(data) {
             var image = "";
             if ('info' in dict) {
                 var info = dict['info'];
-                var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+                if ('image' in info) {
+                    var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+                };
             }
 
             var row = '<tr id="item-row-' + id + '" class="item-row"><td class="image"></td><td class="name"></td><td class="depleted">0</td><td class="crafted">0</td><td class="used">0</td></tr>';
@@ -338,7 +340,9 @@ function display_stat_data(data) {
             var image = "";
             if ('info' in dict) {
                 var info = dict['info'];
-                var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+                if ('image' in info) {
+                    var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+                };
             }
 
             var row = '<tr id="block-row-' + id + '" class="block-row"><td class="image"></td><td class="name"></td><td class="crafted">0</td><td class="used">0</td><td class="mined">0</td></tr>';
