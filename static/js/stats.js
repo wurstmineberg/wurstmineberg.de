@@ -7,17 +7,18 @@ function display_leaderboard_stat_data(data) {
             $.each(playerstats, function(stat, value) {
                 var override = false;
                 if (stat in stats) {
-                    if (value > stats[stat]) {
+                    if (value > stats[stat]['value']) {
                         override = true;
                     }
                 } else {
                     override = true;
                 }
 
-                stats[stat] = {'player': playername, 'value': value};
+                if (override) {
+                    stats[stat] = {'player': playername, 'value': value};
+                };
             });
         });
-
         
         $.each(stats, function(key, data) {
             stat = key.split('.');
