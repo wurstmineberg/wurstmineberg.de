@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--#include file="/static/html/header.html" -->
+</head>
+<body>
+    <!--#include file="/static/html/navigation.html" -->
+    
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Statistics</h3>
+            </div>
+            <div class="panel-body">
+                <p class="lead">These statistics, while mostly useless, are here to make you happy. More or less.</p>
+            </div>
+        </div>
+
+        <ul id="pagination" class="nav nav-tabs">
+	        <li><a id="tab-stats-leaderboard" class="tab-item" href="#leaderboards">Leaderboards</a></li>
+    	</ul>
+
+    	<div id="stats-leaderboard" class="stats-section">
+            <table id="stats-leaderboard-table" class="table table-responsive stats-table">
+                <tbody>
+                    <tr>
+                        <th>Stat</th>
+                        <th>Leading player</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr id="loading-stat-leaderboard-table" class="loading-stat">
+                        <td colspan="7">Loading stat data…</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--#include file="/static/html/footer.html" -->
+    <script src="/static/js/stats.js"></script>
+
+<script>
+</script>
+</body>
+</html>

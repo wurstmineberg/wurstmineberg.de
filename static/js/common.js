@@ -69,6 +69,54 @@ function set_anchor_height() {
 	anchor.css("margin-top", "-=" + navigation_height);
 }
 
+function minecraft_ticks_to_real_minutes(minecraft_minutes) {
+    return minecraft_minutes / 1200;
+}
+
+function prettify_stats_value(key, value) {
+	var final_value = value;
+
+    if (key.endsWith('OneCm')) {
+        if (value > 100000) {
+            final_value = (value / 100000).toFixed(2) + 'km';
+        } else if (value > 100) {
+            final_value = (value / 100).toFixed(2) + 'm';
+        } else {
+            final_value = value + 'cm';
+        }
+    } else if (key.endsWith('OneMinute')) {
+        var minutes = Math.floor(minecraft_ticks_to_real_minutes(value));
+        var hours = 0;
+        var days = 0;
+
+        if (minutes >= 60) {
+            hours = Math.floor(minutes / 60);
+            minutes = minutes % 60;
+        }
+
+        if (hours >= 24) {
+            days = Math.floor(hours / 60);
+            hours = hours % 24;
+        }
+
+        final_value = '';
+        if (days) {
+            final_value += days + 'd ';
+        }
+        if (hours) {
+            final_value += hours + 'h ';
+        }
+        if (minutes) {
+            final_value += minutes + 'min '
+        }
+    } else if (stat[1].startsWith('damage')) {
+        final_value = (value / 2) + ' hearts';
+    }
+
+    return final_value;
+}
+
+
 function fetch_string_data() {
     return $.ajax('/static/json/strings.json', {
         dataType: 'json'
