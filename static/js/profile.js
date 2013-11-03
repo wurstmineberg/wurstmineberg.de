@@ -234,23 +234,19 @@ function display_stat_data(data) {
         });
 
         // Add the missing achievements
-        if ('stats' in string_data) {
-            if ('achievements' in string_data['stats']) {
-                $.each(string_data['stats']['achievements'], function(id, stringarray) {
-                    var alreadyExisting = false;
-                    $.each(achievements, function(index, dict) {
-                        if (id === dict['id']) {
-                            alreadyExisting = true;
-                            return;
-                        };
-                    });
+        $.each(achievement_data, function(id, achievement_dict) {
+            var alreadyExisting = false;
+            $.each(achievements, function(index, dict) {
+                if (id === dict['id']) {
+                    alreadyExisting = true;
+                    return;
+                };
+            });
 
-                    if (!alreadyExisting) {
-                        achievements.push({'name': stringarray[0], 'description': stringarray[1], 'value': 'No'});
-                    };
-                });
+            if (!alreadyExisting) {
+                achievements.push({'name': achievement_dict['displayname'], 'description': achievement_dict['description'], 'value': 'No'});
             };
-        };
+        });
 
         general.sort(function(a, b) {
             nameA = a['name'];
