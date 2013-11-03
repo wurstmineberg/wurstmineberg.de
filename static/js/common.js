@@ -25,7 +25,7 @@ function bind_tab_events() {
 }
 
 function select_tab_with_id(id) {
-    $("#id").tab('show');
+    $('#' + id).tab('show');
 }
 
 function url_domain(data) {
