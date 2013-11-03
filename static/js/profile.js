@@ -443,8 +443,15 @@ function display_stat_data(data) {
         $.each(achievements, function(index, dict) {
             name = dict['name'];
             description = dict['description'];
+            value = dict['value']
 
-            row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td class="name" title="' + description + '">' + name + '</td><td class="value">' + dict['value'] + '</td></tr>';
+            if (value === "Yes") {
+            	value = '<span class="glyphicon glyphicon-ok"></span>'
+            } else if (value === "No") {
+            	value = '<span class="glyphicon glyphicon-remove"></span>'
+            }
+
+            row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td class="name" title="' + description + '">' + name + '</td><td class="value">' + value + '</td></tr>';
             loading_stat_achievements.before(row);
         });
 
