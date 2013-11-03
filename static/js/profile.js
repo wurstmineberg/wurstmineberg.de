@@ -1,8 +1,10 @@
 function bind_tab_events() {
     $('.tab-item').bind('click', function(eventObject) {
-    	eventObject.preventDefault();
+        eventObject.preventDefault();
         $(this).tab('show');
+    });
 
+    $('.tab-item').on('show.bs.tab', function(e) {
         var id = $(this).attr('id')
         var elementid = id.substring('tab-'.length, id.length);
         var selected = $('#' + elementid);
@@ -17,6 +19,11 @@ function bind_tab_events() {
     });
 
     $("#tab-stats-general").tab('show');
+
+    if (location.hash !== '') $('a[href="' + location.hash + '"]').tab('show');
+        return $('a.tab-item').on('shown.bs.tab', function(e) {
+            return location.hash = $(e.target).attr('href').substr(1);
+    });
 }
 
 function get_user_name() {
@@ -446,9 +453,9 @@ function display_stat_data(data) {
             value = dict['value']
 
             if (value === "Yes") {
-            	value = '<span class="glyphicon glyphicon-ok"></span>'
+                value = '<span class="glyphicon glyphicon-ok"></span>'
             } else if (value === "No") {
-            	value = '<span class="glyphicon glyphicon-remove"></span>'
+                value = '<span class="glyphicon glyphicon-remove"></span>'
             }
 
             row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td class="name"><a href="#" data-toggle="tooltip" data-placement="right" rel="tooltip" class="text-link" title="' + description + '">' + name + '</a></td><td class="value">' + value + '</td></tr>';
@@ -504,3 +511,4 @@ function load_user_data() {
 
 bind_tab_events();
 load_user_data();
+allow_tab_persistance();
