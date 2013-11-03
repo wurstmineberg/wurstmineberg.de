@@ -220,7 +220,7 @@ function html_player_list(names, player_data) {
         };
 
         var ava = '/assets/img/ava/' + username_to_minecraft_nick(name, player_data) + '.png';
-        html += '<img src="' + ava + '" class="avatar" /><a class="player" href="/people/' + name + '">' + name + '</a>';
+        html += '<span class="player-avatar-name"><img src="' + ava + '" class="avatar" /><a class="player" href="/people/' + name + '">' + name + '</a></span>';
     });
 
     return html;

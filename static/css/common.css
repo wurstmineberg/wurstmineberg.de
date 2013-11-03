@@ -73,6 +73,15 @@ h2 {
     font-style: italic;
 }
 
+.player-avatar-name img.avatar {
+	height: 16px;
+}
+
+.player-avatar-name a.player {
+	line-height: 16px;
+	vertical-align: middle;
+}
+
 a.text-link {
 	text-decoration: none;
 	color: #000000;
