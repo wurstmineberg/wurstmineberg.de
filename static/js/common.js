@@ -469,3 +469,5 @@ linkify_headers();
 configure_navigation();
 set_anchor_height();
 display_funding_data();
+$(".use-tooltip").tooltip();
+$("abbr").tooltip();
