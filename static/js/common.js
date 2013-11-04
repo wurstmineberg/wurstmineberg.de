@@ -9,6 +9,7 @@ function Person (person_data) {
     this.twitter = person_data['twitter'];
     this.website = person_data['website'];
     this.wiki = person_data['wiki'];
+    this.fav_item = person_data['fav_item'];
 
     this.interfaceName = function() {
     	if ('name' in person_data) {
@@ -259,6 +260,18 @@ function fetch_people() {
     return fetch_people_data().then(function(people_data) {
     	return new People(people_data);
     });
+}
+
+function fetch_person_by_id(player) {
+    return $.ajax('//api.wurstmineberg.de/player/' + player + '/info.json', {
+        dataType: 'json'
+    }).then(function(person_data) {
+    	return new Person(person_data);
+    });
+}
+
+function fetch_person(player) {
+	fetch_person_by_id(player.id)
 }
 
 function fetch_stat_data(person) {

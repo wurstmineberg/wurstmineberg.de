@@ -9,10 +9,10 @@ function get_user_name() {
     return username;
 }
 
-function display_user_data(person) {
+function display_user_data(person, item_data) {
     $('.loading').removeClass('loading');
     
-    var name = 'name' in person ? person['name'] : person['id'];
+    var name = person.interfaceName;
     var ava;
     var head;
     
@@ -20,8 +20,8 @@ function display_user_data(person) {
     $('#username').text(name);
 
 
-    if ('minecraft' in person) {
-        var minecraft = person['minecraft'];
+    if (person.minecraft) {
+        var minecraft = person.minecraft;
 
         ava = '/assets/img/ava/' + minecraft + '.png';
         $('#avatar').attr('src', ava);
@@ -37,7 +37,7 @@ function display_user_data(person) {
         };
     }
     
-    var description = person['description']
+    var description = person.description
     if (!description) {
         description = 'Hier könnte Ihre Beschreibung stehen! (To update your description, tell someone in <a href="irc://chat.freenode.net/#wurstmineberg">IRC</a>.)';
         $('#user-description').addClass('muted');
@@ -45,24 +45,21 @@ function display_user_data(person) {
     
     $('#user-description').html(description);
     
-    if ('fav_item' in person) {
-        var fav_item = person['fav_item'];
+    var fav_item = person.fav_item;
+    if (fav_item) {
         if ('id' in fav_item) {
-            $.when(fetch_item_data()).done(function(item_data) {
-                item_data = item_data[0];
-                var fav_item_data = fav_item;
-                if (fav_item['id'].toString() in item_data) {
-                    fav_item_data = item_data[fav_item['id'].toString()];
-                    if ('Damage' in fav_item && (fav_item['id'] + ':' + fav_item['Damage']) in item_data) {
-                        fav_item_data = item_data[fav_item['id'] + ':' + fav_item['Damage']];
-                    }
+            var fav_item_data = fav_item;
+            if (fav_item['id'].toString() in item_data) {
+                fav_item_data = item_data[fav_item['id'].toString()];
+                if ('Damage' in fav_item && (fav_item['id'] + ':' + fav_item['Damage']) in item_data) {
+                    fav_item_data = item_data[fav_item['id'] + ':' + fav_item['Damage']];
                 }
-                $('#fav-item').removeClass('hidden');
-                if ('image' in fav_item_data) {
-                    $('#fav-item').append('<img src="' + fav_item_data['image'] + '" /> ');
-                }
-                $('#fav-item').append('name' in fav_item_data ? fav_item_data['name'] : fav_item['id']);
-            });
+            }
+            $('#fav-item').removeClass('hidden');
+            if ('image' in fav_item_data) {
+                $('#fav-item').append('<img src="' + fav_item_data['image'] + '" /> ');
+            }
+            $('#fav-item').append('name' in fav_item_data ? fav_item_data['name'] : fav_item['id']);
         }
     }
     
@@ -386,28 +383,25 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
 }
 
 function load_stat_data(person, string_data, item_data, achievement_data) {
-	$.when(fetch_stat_data(person))
-		.done(function(stat_data) {
-			display_stat_data(stat_data, string_data, item_data, achievement_data);
-		})
-		.fail(function() {
-	        $('.loading-stat').html('<td colspan="7">Error: Could not load ' + person.minecraft + '.json</td>');
-		})
+    $.when(fetch_stat_data(person))
+        .done(function(stat_data) {
+            display_stat_data(stat_data, string_data, item_data, achievement_data);
+        })
+        .fail(function() {
+            $('.loading-stat').html('<td colspan="7">Error: Could not load ' + person.minecraft + '.json</td>');
+        })
 }
 
 function load_user_data() {
-	$.when(fetch_people(), fetch_string_data(), fetch_item_data(), fetch_achievement_data())
-		.done(function(people, string_data, item_data, achievement_data) {
-			var username = get_user_name();
-			var person = people.personById(username);
+    var username = get_user_name();
 
-			if (person) {
-				load_stat_data(person, string_data[0], item_data[0], achievement_data[0]);
-				display_user_data(person);
-			} else {
-				$('.loading').html('Error: User with this name not found');
-			}
-	})
+    $.when(fetch_person_by_id(username), fetch_string_data(), fetch_item_data(), fetch_achievement_data())
+        .done(function(person, string_data, item_data, achievement_data) {
+            load_stat_data(person, string_data[0], item_data[0], achievement_data[0]);
+            display_user_data(person, item_data[0]);
+        }).fail(function() {
+            $('.loading').html('Error: User with this name not found');
+        });
 
     $.ajax('/assets/serverstatus/people.json', {
         dataType: 'json',
