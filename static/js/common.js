@@ -13,36 +13,106 @@ function Person (person_data) {
     this.ava = '/assets/img/ava/' + this.minecraft + '.png';
 
     this.interfaceName = function() {
-    	if ('name' in person_data) {
-    		return person_data['name'];
-    	} else if ('id' in person_data) {
-    		return person_data['id'];
-    	} else if ('minecraft' in person_data) {
-    		return person_data['minecraft'];
-    	};
+        if ('name' in person_data) {
+            return person_data['name'];
+        } else if ('id' in person_data) {
+            return person_data['id'];
+        } else if ('minecraft' in person_data) {
+            return person_data['minecraft'];
+        };
     }();
 }
 
 function People (people_data) {
-	this.list = function() {
-		return _.map(people_data, function(value) {
-			return new Person(value);
-		});
-	}();
+    this.list = function() {
+        return _.map(people_data, function(value) {
+            return new Person(value);
+        });
+    }();
 
-	this.count = this.list.length;
-	this.personById = function(id) {
-		return _.find(this.list, function(person) {
-			return 'id' in person && person['id'] === id;
-		});
-	}
+    this.activePeople = function(id) {
+        return this.list.filter(function(person) {
+            return (person.status != 'former');
+        });
+    };
 
-	this.personByMinecraft = function(id) {
-		return _.find(this.list, function(person) {
-			return 'minecraft' in person && person['minecraft'] === id;
-		});
-	}
+    this.count = this.list.length;
+
+    this.personById = function(id) {
+        return _.find(this.list, function(person) {
+            return 'id' in person && person['id'] === id;
+        });
+    };
+
+    this.personByMinecraft = function(id) {
+        return _.find(this.list, function(person) {
+            return 'minecraft' in person && person['minecraft'] === id;
+        });
+    };
 }
+
+var API = {
+    ajaxJSONDeferred: function(url) {
+        return $.ajax(url, {
+            dataType: 'json'
+        }).then(function(ajaxData) {
+            // Strips out all the extra data we don't need
+            return ajaxData;
+        });
+    },
+
+    serverStatus: function() {
+        return API.ajaxJSONDeferred('assets/serverstatus/status.json');
+    },
+
+    stringData: function() {
+        return API.ajaxJSONDeferred('/static/json/strings.json');
+    },
+
+    itemData: function() {
+        return API.ajaxJSONDeferred('/static/json/items.json');
+    },
+
+    achievementData: function() {
+        return API.ajaxJSONDeferred('/static/json/achievements.json');
+    },
+
+    peopleData: function() {
+        return API.ajaxJSONDeferred('/assets/serverstatus/people.json');
+    },
+
+    people: function() {
+        return API.peopleData().then(function(people_data) {
+            return new People(people_data);
+        });
+    },
+
+    personById: function(player_id) {
+        return API.ajaxJSONDeferred('//api.wurstmineberg.de/player/' + player_id + '/info.json')
+            .then(function(person_data) {
+                return new Person(person_data);
+            });
+    },
+
+    statData: function() {
+        return API.ajaxJSONDeferred('//api.wurstmineberg.de/server/playerstats/general.json');
+    },
+
+    person: function(player) {
+        return API.personById(player.id)
+    },
+
+    personStatData: function(person) {
+        if (person.minecraft) {
+            return API.ajaxJSONDeferred('//api.wurstmineberg.de/player/' + person.minecraft + '/stats.json');
+        };
+    },
+
+    moneys: function() {
+        return API.ajaxJSONDeferred('/assets/serverstatus/moneys.json');
+    }
+}
+
 
 function bind_tab_events() {
     $('.tab-item').bind('click', function(eventObject) {
@@ -233,62 +303,6 @@ function username_to_minecraft_nick(username, people) {
     return minecraftname;
 }
 
-function fetch_string_data() {
-    return $.ajax('/static/json/strings.json', {
-        dataType: 'json'
-    });
-}
-
-function fetch_item_data() {
-    return $.ajax('/static/json/items.json', {
-        dataType: 'json'
-    });
-}
-
-function fetch_achievement_data() {
-    return $.ajax('/static/json/achievements.json', {
-        dataType: 'json'
-    });
-}
-
-function fetch_people_data() {
-    return $.ajax('/assets/serverstatus/people.json', {
-        dataType: 'json'
-    });
-}
-
-function fetch_people() {
-    return fetch_people_data().then(function(people_data) {
-    	return new People(people_data);
-    });
-}
-
-function fetch_person_by_id(player) {
-    return $.ajax('//api.wurstmineberg.de/player/' + player + '/info.json', {
-        dataType: 'json'
-    }).then(function(person_data) {
-    	return new Person(person_data);
-    });
-}
-
-function fetch_stat_data() {
-    return $.ajax('//api.wurstmineberg.de/server/playerstats/general.json', {
-        dataType: 'json',
-    });
-}
-
-function fetch_person(player) {
-	fetch_person_by_id(player.id)
-}
-
-function fetch_person_stat_data(person) {
-	if (person.minecraft) {
-	    return $.ajax('//api.wurstmineberg.de/player/' + person.minecraft + '/stats.json', {
-	        dataType: 'json'
-	    });
-	};
-}
-
 function html_player_list(people) {
     var html = '';
 
@@ -301,60 +315,54 @@ function html_player_list(people) {
     });
 
     return html;
-}
+};
 
 function getServerStatus(on,version) {
     if (on) {
         var versionString = version == null ? "(error)" : ('<a href="http://minecraft.gamepedia.com/Version_history' + ((version.indexOf('pre') != 1 || version.substring(2,3) == 'w') ? '/Development_versions#' : '#') + version + '" style="font-weight: bold;">' + version + '</a>');
-        document.getElementById('serverinfo').innerHTML = 'The server is currently <strong>online</strong> and running on version ' + versionString + ', and <span id="peopleCount">(loading) of the (loading) whitelisted players are</span> currently active.<br /><span id="peopleList"></span>';
+        $('#serverinfo').html('The server is currently <strong>online</strong> and running on version ' + versionString + ', and <span id="peopleCount">(loading) of the (loading) whitelisted players are</span> currently active.<br /><span id="peopleList"></span>');
     } else {
-        document.getElementById('serverinfo').innerHTML = "The server is <strong>offline</strong> right now. For more information, consult the <a href='http://twitter.com/wurstmineberg'>Twitter account</a>.";
+        $('#serverinfo').html("The server is <strong>offline</strong> right now. For more information, consult the <a href='http://twitter.com/wurstmineberg'>Twitter account</a>.");
     }
-}
+};
 
 function getOnlineData(list) {
-    $.when(fetch_people()).done(function(people) {
-        if (list.length == 1) {
-            document.getElementById('peopleCount').innerHTML = 'one of the <span id="whitelistCount">(loading)</span> whitelisted players is';
-        } else if (list.length == 0) {
-            document.getElementById('peopleCount').innerHTML = 'none of the <span id="whitelistCount">(loading)</span> whitelisted players are';
-        } else {
-            document.getElementById('peopleCount').innerHTML = list.length + ' of the <span id="whitelistCount">(loading)</span> whitelisted players are';
-        }
-        $.ajax('assets/serverstatus/people.json', {
-            dataType: 'json',
-            error: function(request, status, error) {
-                document.getElementById('whitelistCount').innerHTML = '(error)';
-            },
-            success: function(data) {
-                document.getElementById('whitelistCount').innerHTML = data.filter(function(person) {
-                    return (('status' in person ? person['status'] : 'later') != 'former');
-                }).length;
+    $.when(API.people())
+        .done(function(people) {
+            if (list.length == 1) {
+                $('#peopleCount').html('one of the <span id="whitelistCount">(loading)</span> whitelisted players is');
+            } else if (list.length == 0) {
+                $('#peopleCount').html('none of the <span id="whitelistCount">(loading)</span> whitelisted players are');
+            } else {
+                $('#peopleCount').html(list.length + ' of the <span id="whitelistCount">(loading)</span> whitelisted players are');
             }
-        });
 
-        onlinePeople = list.map(function(minecraftName) {
-            return people.personByMinecraft(minecraftName);
-        });
+            $('#whitelistCount').html(people.activePeople().length);
 
-        document.getElementById('peopleList').innerHTML = html_player_list(onlinePeople);
-    });
-}
+            onlinePeople = list.map(function(minecraftName) {
+                return people.personByMinecraft(minecraftName);
+            });
+
+            $('#peopleList').html(html_player_list(onlinePeople));
+    })
+        .fail(function() {
+            $('#whitelistCount').text('(error)');
+        });
+};
 
 function display_funding_data() {
-    $.ajax('/assets/serverstatus/moneys.json', {
-        dataType: 'json',
-        error: function(request, status, error) {
+    $.when(API.moneys())
+        .fail(function() {
             $('.funding-month').html('(error)');
             $('.funding-progressbar').removeClass('active');
             $('.funding-progressbar').children('.progress-bar').addClass('progress-bar-danger');
-        },
-        success: function(data) {
+        })
+        .done(function(money_data) {
             $('.funding-progressbar').removeClass('active progress-striped');
             $('.funding-progressbar').empty();
             var funding_total = 0.0;
 
-            data['history'].forEach(function(transaction) {
+            money_data['history'].forEach(function(transaction) {
                 if (transaction['type'] !== 'nessus-monthly') {
                     funding_total += transaction['amount'];
                 };
@@ -377,7 +385,7 @@ function display_funding_data() {
             var month = today.getMonth();
             var day = today.getDay();
 
-            var spending_monthly = Math.abs(data['spending_monthly']);
+            var spending_monthly = Math.abs(money_data['spending_monthly']);
 
             // Subtract the first month
             funding_total -= spending_monthly;
@@ -415,7 +423,7 @@ function display_funding_data() {
                     // We are in the month that is just not funded.
                     // Check if the billing date is already over.
 
-                    if (day < data['billing_dom']) {
+                    if (day < money_data['billing_dom']) {
                         funded_for_this_month = true;
                     }
                 } else {
@@ -429,12 +437,12 @@ function display_funding_data() {
             } else {
                 var expected_total = funding_total;
 
-                data['history'].forEach(function(transaction) {
+                money_data['history'].forEach(function(transaction) {
                     if (transaction['type'] == 'player-monthly') {
                         var transaction_year = transaction['date'].split('-')[0];
                         var transaction_month = transaction['date'].split('-')[1];
                         var transaction_day = transaction['date'].split('-')[2];
-                        if (transaction_day < data['billing_dom']) {
+                        if (transaction_day < money_data['billing_dom']) {
                             if ((transaction_month - 1 == month && transaction_year == year) || (month == 12 && transaction_month == 1 && transaction_year - 1 == year)) {
                                 expected_total -= transaction['amount'];
                             }
@@ -444,7 +452,7 @@ function display_funding_data() {
                     }
                 });
 
-                var expected_percent = Math.max(0, Math.min(100 - percent, Math.floor(expected_total * 100 / -data['spending_monthly'])));
+                var expected_percent = Math.max(0, Math.min(100 - percent, Math.floor(expected_total * 100 / -money_data['spending_monthly'])));
                 var progress_bar_class = "progress-bar-warning";
                 if (expected_percent <= 50) {
                     progress_bar_class = "progress-bar-danger";
@@ -453,9 +461,8 @@ function display_funding_data() {
                 $('.funding-progressbar').append('<div class="progress-bar progress-bar-success" style="width: ' + expected_percent + '%;"><span class="sr-only">' + expected_percent + '% expected</span></div>');
                 $('.funding-progressbar').append('<div class="progress-bar ' + progress_bar_class + '" style="width: ' + (100 - expected_percent) + '%;"><span class="sr-only">bla</span></div>');
             }
-        }
-    });
-}
+        });
+};
 
 // Run by default
 linkify_headers();

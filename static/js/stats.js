@@ -64,9 +64,9 @@ function display_leaderboard_stat_data(stat_data, string_data, people) {
 }
 
 function load_leaderboard_stat_data() {
-	$.when(fetch_stat_data(), fetch_string_data(), fetch_people())
+	$.when(API.statData(), API.stringData(), API.people())
 		.done(function(stat_data, string_data, people) {
-			display_leaderboard_stat_data(stat_data[0], string_data[0], people)
+			display_leaderboard_stat_data(stat_data, string_data, people)
 		})
 		.fail(function() {
             $('.loading-stat').html('<td colspan="7">Error: Could not load api.wurstmineberg.de/server/playerstats/general.json</td>');

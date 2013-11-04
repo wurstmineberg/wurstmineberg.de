@@ -382,7 +382,7 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
 }
 
 function load_stat_data(person, string_data, item_data, achievement_data) {
-    $.when(fetch_person_stat_data(person))
+    $.when(API.personStatData(person))
         .done(function(stat_data) {
             display_stat_data(stat_data, string_data, item_data, achievement_data);
         })
@@ -394,22 +394,13 @@ function load_stat_data(person, string_data, item_data, achievement_data) {
 function load_user_data() {
     var username = get_user_name();
 
-    $.when(fetch_person_by_id(username), fetch_string_data(), fetch_item_data(), fetch_achievement_data())
+    $.when(API.personById(username), API.stringData(), API.itemData(), API.achievementData())
         .done(function(person, string_data, item_data, achievement_data) {
-            load_stat_data(person, string_data[0], item_data[0], achievement_data[0]);
-            display_user_data(person, item_data[0]);
+            load_stat_data(person, string_data, item_data, achievement_data);
+            display_user_data(person, item_data);
         }).fail(function() {
             $('.loading').html('Error: User with this name not found');
         });
-
-    $.ajax('/assets/serverstatus/people.json', {
-        dataType: 'json',
-        error: function(request, status, error) {
-            $('.loading').html('Error: could not load people.json');
-        },
-        success: function(data) {
-        }
-    });
 }
 
 bind_tab_events();
