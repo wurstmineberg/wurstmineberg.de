@@ -1,5 +1,5 @@
 function display_leaderboard_stat_data(data) {
-    $.when(fetch_string_data(), fetch_player_data()).done(function(string_data, player_data) {
+    $.when(fetch_string_data(), fetch_people_data()).done(function(string_data, player_data) {
         string_data = string_data[0]
         player_data = player_data[0]
 

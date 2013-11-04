@@ -1,3 +1,47 @@
+function Person (person_data) {
+    // Propertys set themselves when instantiated
+    this.id = person_data['id'];
+    this.description = person_data['description'];
+    this.irc = person_data['irc'];
+    this.minecraft = person_data['minecraft'];
+    this.reddit = person_data['reddit'];
+    this.status = 'status' in person_data ? person_data['status'] : 'later';
+    this.twitter = person_data['twitter'];
+    this.website = person_data['website'];
+    this.wiki = person_data['wiki'];
+
+    this.interfaceName = function() {
+    	if ('name' in person_data) {
+    		return person_data['name'];
+    	} else if ('id' in person_data) {
+    		return person_data['id'];
+    	} else if ('minecraft' in person_data) {
+    		return person_data['minecraft'];
+    	};
+    }();
+}
+
+function People (people_data) {
+	this.list = function() {
+		return _.map(people_data, function(value) {
+			return new Person(value);
+		});
+	}();
+
+	this.count = this.list.length;
+	this.personById = function(id) {
+		return _.find(this.list, function(person) {
+			return 'id' in person && person['id'] === id;
+		});
+	}
+
+	this.personByMinecraft = function(id) {
+		return _.find(this.list, function(person) {
+			return 'minecraft' in person && person['minecraft'] === id;
+		});
+	}
+}
+
 function bind_tab_events() {
     $('.tab-item').bind('click', function(eventObject) {
         eventObject.preventDefault();
@@ -205,10 +249,24 @@ function fetch_achievement_data() {
     });
 }
 
-function fetch_player_data() {
+function fetch_people_data() {
     return $.ajax('/assets/serverstatus/people.json', {
         dataType: 'json'
     });
+}
+
+function fetch_people() {
+    return fetch_people_data().then(function(people_data) {
+    	return new People(people_data);
+    });
+}
+
+function fetch_stat_data(person) {
+	if (person.minecraft) {
+	    return $.ajax('//api.wurstmineberg.de/player/' + person.minecraft + '/stats.json', {
+	        dataType: 'json'
+	    });
+	};
 }
 
 function html_player_list(names, player_data) {
@@ -236,7 +294,7 @@ function getServerStatus(on,version) {
 }
 
 function getOnlineData(list) {
-    $.when(fetch_player_data()).done(function(player_data) {
+    $.when(fetch_people_data()).done(function(player_data) {
         if (list.length == 1) {
             document.getElementById('peopleCount').innerHTML = 'one of the <span id="whitelistCount">(loading)</span> whitelisted players is';
         } else if (list.length == 0) {
@@ -260,6 +318,8 @@ function getOnlineData(list) {
             return minecraft_nick_to_username(name, player_data);
         });
         document.getElementById('peopleList').innerHTML = html_player_list(list, player_data);
+
+
     });
 }
 
