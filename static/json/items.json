@@ -349,6 +349,34 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
         "name": "Sandstone Slab"
     },
+    "44:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
+        "name": "Wooden Slab"
+    },
+    "44:3": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
+        "name": "Cobblestone Slab"
+    },
+    "44:4": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
+        "name": "Brick Slab"
+    },
+    "44:5": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
+        "name": "Stone Brick Slab"
+    },
+    "44:6": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
+        "name": "Nether Brick Slab"
+    },
+    "44:7": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
+        "name": "Quartz Slab"
+    },
+    "46": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2b/Grid_TNT.png",
+        "name": "TNT"
+    },
     "47": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Bookshelf.png",
         "name": "Bookshelf"
@@ -400,6 +428,34 @@
     "122": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b1/Grid_Dragon_Egg.png",
         "name": "Dragon Egg"
+    },
+    "126": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
+        "name": "Wooden Slab"
+    },
+    "126:0": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
+        "name": "Oak Wood Slab"
+    },
+    "126:1": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/60/Grid_Spruce_Wood_Slab.png",
+        "name": "Spruce Wood Slab"
+    },
+    "126:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Birch_Wood_Slab.png",
+        "name": "Birch Wood Slab"
+    },
+    "126:3": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3f/Grid_Jungle_Wood_Slab.png",
+        "name": "Jungle Wood Slab"
+    },
+    "126:4": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b3/Grid_Acacia_Wood_Slab.png",
+        "name": "Acacia Wood Slab"
+    },
+    "126:5": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_Dark_Oak_Wood_Slab.png",
+        "name": "Dark Oak Wood Slab"
     },
     "133": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/27/Grid_Block_of_Emerald.png",
