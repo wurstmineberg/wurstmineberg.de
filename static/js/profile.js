@@ -403,6 +403,6 @@ function load_user_data() {
         });
 }
 
-bind_tab_events();
 select_tab_with_id("tab-stats-general");
+bind_tab_events();
 load_user_data();
