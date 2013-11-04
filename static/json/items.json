@@ -32,6 +32,7 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Dirt.png"
     },
     "3:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6d/Grid_Podzol.png",
         "name": "Podzol"
     },
     "4": {
@@ -284,6 +285,50 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/45/Grid_Black_Wool.png",
         "name": "Black Wool"
     },
+    "37": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/49/Grid_Dandelion.png",
+        "name": "Dandelion"
+    },
+    "38": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/49/Grid_Rose.png",
+        "name": "Flower"
+    },
+    "38:0": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c7/Grid_Poppy.png",
+        "name": "Poppy"
+    },
+    "38:1": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Grid_Blue_Orchid.png",
+        "name": "Blue Orchid"
+    },
+    "38:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/33/Grid_Allium.png",
+        "name": "Allium"
+    },
+    "38:3": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/79/Grid_Azure_Bluet.png",
+        "name": "Azure Bluet"
+    },
+    "38:4": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6f/Grid_Red_Tulip.png",
+        "name": "Red Tulip"
+    },
+    "38:5": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ec/Grid_Orange_Tulip.png",
+        "name": "Orange Tulip"
+    },
+    "38:6": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4f/Grid_White_Tulip.png",
+        "name": "White Tulip"
+    },
+    "38:7": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/61/Grid_Pink_Tulip.png",
+        "name": "Pink Tulip"
+    },
+    "38:8": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Oxeye_Daisy.png",
+        "name": "Oxeye Daisy"
+    },
     "41": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b6/Grid_Gold_%28Block%29.png",
         "name": "Block of Gold"
@@ -291,6 +336,18 @@
     "42": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5a/Grid_Iron_%28Block%29.png",
         "name": "Block of Iron"
+    },
+    "44": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
+        "name": "Slab"
+    },
+    "44:0": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
+        "name": "Stone Slab"
+    },
+    "44:1": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
+        "name": "Sandstone Slab"
     },
     "47": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Bookshelf.png",
