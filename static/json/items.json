@@ -217,6 +217,10 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Dead_Bush.png",
         "name": "Dead Bush"
     },
+    "33": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3c/Grid_Piston.png",
+        "name": "Piston"
+    },
     "35": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_White_Wool.png",
         "name": "Wool"
@@ -329,6 +333,14 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Oxeye_Daisy.png",
         "name": "Oxeye Daisy"
     },
+    "39": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d8/Grid_Brown_Mushroom.png",
+        "name": "Brown Mushroom"
+    },
+    "40": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Red_Mushroom.png",
+        "name": "Red Mushroom"
+    },
     "41": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b6/Grid_Gold_%28Block%29.png",
         "name": "Block of Gold"
@@ -349,9 +361,41 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
         "name": "Sandstone Slab"
     },
+    "44:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
+        "name": "Wooden Slab"
+    },
+    "44:3": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
+        "name": "Cobblestone Slab"
+    },
+    "44:4": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
+        "name": "Brick Slab"
+    },
+    "44:5": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
+        "name": "Stone Brick Slab"
+    },
+    "44:6": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
+        "name": "Nether Brick Slab"
+    },
+    "44:7": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
+        "name": "Quartz Slab"
+    },
+    "46": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2b/Grid_TNT.png",
+        "name": "TNT"
+    },
     "47": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Bookshelf.png",
         "name": "Bookshelf"
+    },
+    "48": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7d/Grid_Moss_Stone.png",
+        "name": "Moss Stone"
     },
     "49": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5d/Grid_Obsidian.png",
@@ -401,6 +445,34 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b1/Grid_Dragon_Egg.png",
         "name": "Dragon Egg"
     },
+    "126": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
+        "name": "Wooden Slab"
+    },
+    "126:0": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
+        "name": "Oak Wood Slab"
+    },
+    "126:1": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/60/Grid_Spruce_Wood_Slab.png",
+        "name": "Spruce Wood Slab"
+    },
+    "126:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Birch_Wood_Slab.png",
+        "name": "Birch Wood Slab"
+    },
+    "126:3": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3f/Grid_Jungle_Wood_Slab.png",
+        "name": "Jungle Wood Slab"
+    },
+    "126:4": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b3/Grid_Acacia_Wood_Slab.png",
+        "name": "Acacia Wood Slab"
+    },
+    "126:5": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_Dark_Oak_Wood_Slab.png",
+        "name": "Dark Oak Wood Slab"
+    },
     "133": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/27/Grid_Block_of_Emerald.png",
         "name": "Block of Emerald"
@@ -431,6 +503,34 @@
     "173": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b2/Grid_Block_of_Coal.png",
         "name": "Block of Coal"
+    },
+    "175": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/0a/Grid_Lilac.png",
+        "name": "Large Flower"
+    },
+    "175:0": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Sunflower.png",
+        "name": "Sunflower"
+    },
+    "175:1": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/0a/Grid_Lilac.png",
+        "name": "Lilac"
+    },
+    "175:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c4/Grid_Double_Tallgrass.png",
+        "name": "Double Tallgrass"
+    },
+    "175:3": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d9/Grid_Large_Fern.png",
+        "name": "Large Fern"
+    },
+    "175:4": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c3/Grid_Rose_Bush.png",
+        "name": "Rose Bush"
+    },
+    "175:5": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/eb/Grid_Peony.png",
+        "name": "Peony"
     },
     "256": {
         "name": "Iron Shovel",
@@ -475,6 +575,14 @@
     "265": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c6/Grid_Iron_%28Ingot%29.png",
         "name": "Iron Ingot"
+    },
+    "266": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/62/Grid_Gold_%28Ingot%29.png",
+        "name": "Gold Ingot"
+    },
+    "267": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d5/Grid_Iron_Sword.png",
+        "name": "Iron Sword"
     },
     "268": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cf/Grid_Wooden_Sword.png",

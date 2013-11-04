@@ -47,20 +47,22 @@ function display_user_data(person) {
     
     if ('fav_item' in person) {
         var fav_item = person['fav_item'];
-        var item_data = fetch_item_data()[0];
-        var fav_item_data = fav_item;
-        if ('id' in fav_item && fav_item['id'].toString() in item_data) {
-            fav_item_data = item_data[fav_item['id'].toString()];
-            if ('Damage' in fav_item && (fav_item['id'] + ':' + fav_item['Damage']) in item_data) {
-                fav_item_data = item_data[fav_item['id'] + ':' + fav_item['Damage']];
-            }
-        }
-        if ('image' in fav_item_data) {
-            $('#fav-item').append('<img src="' + fav_item_data['image'] + '" /> ');
-        }
-        if ('name' in fav_item_data || 'id' in fav_item_data) {
-            $('#fav-item').removeClass('hidden');
-            $('#fav-item').append('name' in fav_item_data ? fav_item_data['name'] : fav_item_data['id']);
+        if ('id' in fav_item) {
+            $.when(fetch_item_data()).done(function(item_data) {
+                item_data = item_data[0];
+                var fav_item_data = fav_item;
+                if (fav_item['id'].toString() in item_data) {
+                    fav_item_data = item_data[fav_item['id'].toString()];
+                    if ('Damage' in fav_item && (fav_item['id'] + ':' + fav_item['Damage']) in item_data) {
+                        fav_item_data = item_data[fav_item['id'] + ':' + fav_item['Damage']];
+                    }
+                }
+                $('#fav-item').removeClass('hidden');
+                if ('image' in fav_item_data) {
+                    $('#fav-item').append('<img src="' + fav_item_data['image'] + '" /> ');
+                }
+                $('#fav-item').append('name' in fav_item_data ? fav_item_data['name'] : fav_item['id']);
+            });
         }
     }
     
