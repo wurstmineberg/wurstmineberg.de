@@ -575,6 +575,134 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fd/Grid_Glowstone_%28Block%29.png",
         "name": "Glowstone"
     },
+    "95": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_Yellow_Stained_Glass.png",
+        "name": "Stained Glass"
+    },
+    "95:0": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/92/Grid_White_Stained_Glass.png",
+        "name": "White Stained Glass"
+    },
+    "95:1": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Orange_Stained_Glass.png",
+        "name": "Orange Stained Glass"
+    },
+    "95:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4d/Grid_Magenta_Stained_Glass.png",
+        "name": "Magenta Stained Glass"
+    },
+    "95:3": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/25/Grid_Light_Blue_Stained_Glass.png",
+        "name": "Light Blue Stained Glass"
+    },
+    "95:4": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_Yellow_Stained_Glass.png",
+        "name": "Yellow Stained Glass"
+    },
+    "95:5": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a5/Grid_Lime_Stained_Glass.png",
+        "name": "Lime Stained Glass"
+    },
+    "95:6": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/71/Grid_Pink_Stained_Glass.png",
+        "name": "Pink Stained Glass"
+    },
+    "95:7": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Gray_Stained_Glass.png",
+        "name": "Gray Stained Glass"
+    },
+    "95:8": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/26/Grid_Light_Gray_Stained_Glass.png",
+        "name": "Light Gray Stained Glass"
+    },
+    "95:9": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f3/Grid_Cyan_Stained_Glass.png",
+        "name": "Cyan Stained Glass"
+    },
+    "95:10": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b8/Grid_Purple_Stained_Glass.png",
+        "name": "Purple Stained Glass"
+    },
+    "95:11": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/35/Grid_Blue_Stained_Glass.png",
+        "name": "Blue Stained Glass"
+    },
+    "95:12": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Brown_Stained_Glass.png",
+        "name": "Brown Stained Glass"
+    },
+    "95:13": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5f/Grid_Green_Stained_Glass.png",
+        "name": "Green Stained Glass"
+    },
+    "95:14": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d8/Grid_Red_Stained_Glass.png",
+        "name": "Red Stained Glass"
+    },
+    "95:15": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9f/Grid_Black_Stained_Glass.png",
+        "name": "Black Stained Glass"
+    },
+    "97": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Stone.png",
+        "name": "Monster Egg"
+    },
+    "97:0": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Stone.png",
+        "name": "Stone Monster Egg"
+    },
+    "97:1": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/03/Grid_Cobblestone.png",
+        "name": "Cobblestone Monster Egg"
+    },
+    "97:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1c/Grid_Stone_Brick.png",
+        "name": "Stone Brick Monster Egg"
+    },
+    "97:3": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/23/Grid_Mossy_Stone_Brick.png",
+        "name": "Mossy Stone Brick Monster Egg"
+    },
+    "97:4": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/85/Grid_Cracked_Stone_Brick.png",
+        "name": "Cracked Stone Brick Monster Egg"
+    },
+    "97:5": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/77/Grid_Circle_Stone_Brick.png",
+        "name": "Chiseled Stone Brick Monster Egg"
+    },
+    "98": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1c/Grid_Stone_Brick.png",
+        "name": "Stone Brick"
+    },
+    "98:1": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/23/Grid_Mossy_Stone_Brick.png",
+        "name": "Mossy Stone Brick"
+    },
+    "98:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/85/Grid_Cracked_Stone_Brick.png",
+        "name": "Cracked Stone Brick"
+    },
+    "98:3": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/77/Grid_Circle_Stone_Brick.png",
+        "name": "Chiseled Stone Brick"
+    },
+    "99": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/07/Grid_Huge_Brown_Mushroom.png",
+        "name": "Huge Brown Mushroom"
+    },
+    "100": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/33/Grid_Huge_Red_Mushroom.png",
+        "name": "Huge Red Mushroom"
+    },
+    "102": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/30/Grid_Glass_Pane.png",
+        "name": "Glass Pane"
+    },
+    "106": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Vines.png",
+        "name": "Vines"
+    },
     "116": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/00/Grid_Enchantment_Table.png",
         "name": "Enchantment Table"
@@ -639,6 +767,82 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/50/Grid_Activator_Rail.png",
         "name": "Activator Rail"
     },
+    "159": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6b/Grid_White_Stained_Clay.png",
+        "name": "Stained Clay"
+    },
+    "159:0": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6b/Grid_White_Stained_Clay.png",
+        "name": "White Stained Clay"
+    },
+    "160": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6e/Grid_Yellow_Stained_Glass_Pane.png",
+        "name": "Stained Glass Pane"
+    },
+    "160:0": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_White_Stained_Glass_Pane.png",
+        "name": "White Stained Glass Pane"
+    },
+    "160:1": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f1/Grid_Orange_Stained_Glass_Pane.png",
+        "name": "Orange Stained Glass Pane"
+    },
+    "160:2": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/91/Grid_Magenta_Stained_Glass_Pane.png",
+        "name": "Magenta Stained Glass Pane"
+    },
+    "160:3": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Light_Blue_Stained_Glass_Pane.png",
+        "name": "Light Blue Stained Glass Pane"
+    },
+    "160:4": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6e/Grid_Yellow_Stained_Glass_Pane.png",
+        "name": "Yellow Stained Glass Pane"
+    },
+    "160:5": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/ae/Grid_Lime_Stained_Glass_Pane.png",
+        "name": "Lime Stained Glass Pane"
+    },
+    "160:6": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_Pink_Stained_Glass_Pane.png",
+        "name": "Pink Stained Glass Pane"
+    },
+    "160:7": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f0/Grid_Gray_Stained_Glass_Pane.png",
+        "name": "Gray Stained Glass Pane"
+    },
+    "160:8": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/79/Grid_Light_Gray_Stained_Glass_Pane.png",
+        "name": "Light Gray Stained Glass Pane"
+    },
+    "160:9": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/97/Grid_Cyan_Stained_Glass_Pane.png",
+        "name": "Cyan Stained Glass Pane"
+    },
+    "160:10": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/41/Grid_Purple_Stained_Glass_Pane.png",
+        "name": "Purple Stained Glass Pane"
+    },
+    "160:11": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fe/Grid_Blue_Stained_Glass_Pane.png",
+        "name": "Blue Stained Glass Pane"
+    },
+    "160:12": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ce/Grid_Brown_Stained_Glass_Pane.png",
+        "name": "Brown Stained Glass Pane"
+    },
+    "160:13": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9c/Grid_Green_Stained_Glass_Pane.png",
+        "name": "Green Stained Glass Pane"
+    },
+    "160:14": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/71/Grid_Red_Stained_Glass_Pane.png",
+        "name": "Red Stained Glass Pane"
+    },
+    "160:15": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7b/Grid_Black_Stained_Glass_Pane.png",
+        "name": "Black Stained Glass Pane"
+    },
     "161": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/76/Grid_Acacia_Leaves.png",
         "name": "Leaves"
@@ -662,6 +866,10 @@
     "162:1": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ec/Grid_Dark_Oak_Wood.png",
         "name": "Dark Oak Wood"
+    },
+    "172": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6d/Grid_Hardened_Clay.png",
+        "name": "Hardened Clay"
     },
     "173": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b2/Grid_Block_of_Coal.png",
