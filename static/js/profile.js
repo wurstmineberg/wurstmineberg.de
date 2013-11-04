@@ -19,7 +19,6 @@ function display_user_data(person, item_data) {
     $('#username').removeClass('hidden');
     $('#username').text(name);
 
-
     if (person.minecraft) {
         var minecraft = person.minecraft;
 
@@ -383,13 +382,13 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
 }
 
 function load_stat_data(person, string_data, item_data, achievement_data) {
-    $.when(fetch_stat_data(person))
+    $.when(fetch_person_stat_data(person))
         .done(function(stat_data) {
             display_stat_data(stat_data, string_data, item_data, achievement_data);
         })
         .fail(function() {
             $('.loading-stat').html('<td colspan="7">Error: Could not load ' + person.minecraft + '.json</td>');
-        })
+        });
 }
 
 function load_user_data() {

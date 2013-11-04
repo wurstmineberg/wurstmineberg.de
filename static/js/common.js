@@ -10,6 +10,7 @@ function Person (person_data) {
     this.website = person_data['website'];
     this.wiki = person_data['wiki'];
     this.fav_item = person_data['fav_item'];
+    this.ava = '/assets/img/ava/' + this.minecraft + '.png';
 
     this.interfaceName = function() {
     	if ('name' in person_data) {
@@ -270,11 +271,17 @@ function fetch_person_by_id(player) {
     });
 }
 
+function fetch_stat_data() {
+    return $.ajax('//api.wurstmineberg.de/server/playerstats/general.json', {
+        dataType: 'json',
+    });
+}
+
 function fetch_person(player) {
 	fetch_person_by_id(player.id)
 }
 
-function fetch_stat_data(person) {
+function fetch_person_stat_data(person) {
 	if (person.minecraft) {
 	    return $.ajax('//api.wurstmineberg.de/player/' + person.minecraft + '/stats.json', {
 	        dataType: 'json'
@@ -282,16 +289,15 @@ function fetch_stat_data(person) {
 	};
 }
 
-function html_player_list(names, player_data) {
+function html_player_list(people) {
     var html = '';
 
-    $.each(names, function(index, name) {
+    $.each(people, function(index, person) {
         if (index >= 1) {
             html += ', ';
         };
 
-        var ava = '/assets/img/ava/' + username_to_minecraft_nick(name, player_data) + '.png';
-        html += '<span class="player-avatar-name"><img src="' + ava + '" class="avatar" /><a class="player" href="/people/' + name + '">' + name + '</a></span>';
+        html += '<span class="player-avatar-name"><img src="' + person.ava + '" class="avatar" /><a class="player" href="/people/' + person.id + '">' + person.interfaceName + '</a></span>';
     });
 
     return html;
@@ -307,7 +313,7 @@ function getServerStatus(on,version) {
 }
 
 function getOnlineData(list) {
-    $.when(fetch_people_data()).done(function(player_data) {
+    $.when(fetch_people()).done(function(people) {
         if (list.length == 1) {
             document.getElementById('peopleCount').innerHTML = 'one of the <span id="whitelistCount">(loading)</span> whitelisted players is';
         } else if (list.length == 0) {
@@ -327,12 +333,11 @@ function getOnlineData(list) {
             }
         });
 
-        list = list.map(function(name) {
-            return minecraft_nick_to_username(name, player_data);
+        onlinePeople = list.map(function(minecraftName) {
+            return people.personByMinecraft(minecraftName);
         });
-        document.getElementById('peopleList').innerHTML = html_player_list(list, player_data);
 
-
+        document.getElementById('peopleList').innerHTML = html_player_list(onlinePeople);
     });
 }
 
