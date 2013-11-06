@@ -9,6 +9,18 @@ function get_user_name() {
     return username;
 }
 
+function initialize_datatables() {
+    /* Set the defaults for DataTables initialisation */
+    var table = $('#stats-blocks-table').dataTable({
+        "bPaginate": false,
+        "bAutoWidth": false,
+        "bLengthChange": false,
+        "bFilter": false,
+        "sDom": "<'row-fluid'<'span6'f><'span6'<'pull-right'T>>r>t",
+    });
+    new FixedHeader(table)
+}
+
 function display_user_data(person, item_data) {
     $('.loading').removeClass('loading');
     
@@ -63,22 +75,22 @@ function display_user_data(person, item_data) {
     }
     
     var social_links = $('#social-links');
-    if ('reddit' in person) {
+    if (person.reddit) {
         social_links.removeClass('hidden');
-        social_links.append('<a class="social-link" href="' + reddit_user_link(person['reddit']) + '">Reddit</a>');
+        social_links.append('<a class="social-link" href="' + reddit_user_link(person.reddit) + '">Reddit</a>');
     }
 
-    if ('twitter' in person) {
+    if (person.twitter) {
         social_links.removeClass('hidden');
-        social_links.append('<a class="social-link" href="' + twitter_user_link(person['twitter']) + '">Twitter</a>');
+        social_links.append('<a class="social-link" href="' + twitter_user_link(person.twitter) + '">Twitter</a>');
     }
 
-    if ('website' in person) {
+    if (person.website) {
         social_links.removeClass('hidden');
-        social_links.append('<a class="social-link" href="' + person['website'] + '">Website</a>');
+        social_links.append('<a class="social-link" href="' + person.website + '">Website</a>');
     }
     
-    if ('wiki' in person) {
+    if (person.wiki) {
         social_links.removeClass('hidden');
         social_links.append('<a class="social-link" href="' + wiki_user_link(person['wiki']) + '">Wiki</a>');
     }
@@ -379,6 +391,8 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
 
     $('.loading-stat').remove();
     initialize_tooltips();
+
+    initialize_datatables();
 }
 
 function load_stat_data(person, string_data, item_data, achievement_data) {
@@ -402,6 +416,7 @@ function load_user_data() {
             $('.loading').html('Error: User with this name not found');
         });
 }
+
 
 select_tab_with_id("tab-stats-general");
 bind_tab_events();
