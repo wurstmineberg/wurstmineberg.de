@@ -1,5 +1,5 @@
 Fields in item.json:
-The fields for the data values implicitely inherit the 
+The fields for the data values implicitely inherit the values of the parent
 
 * name: Interface name of the item
 * type: block or item, defaults to item
