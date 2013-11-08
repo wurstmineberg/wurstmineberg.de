@@ -178,12 +178,16 @@ a {
     border-color: #373737;
     border-style: solid none none solid;
     border-width: 2px;
+    height: 34px;
+    margin: 0 2px 2px 0;
 }
 
 .inv-cell > div > div {
     border-color: white;
     border-style: none solid solid none;
     border-width: 2px;
+    box-sizing: content-box;
+    margin: 0 -2px -2px 0;
     min-width: 32px;
     min-height: 32px;
 }
