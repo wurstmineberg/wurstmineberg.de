@@ -105,7 +105,7 @@ function initialize_inventory(tbody, rows, cols) {
         tbody.append('<tr class="inv-row inv-row-' + row + '"></tr>');
     }
     for (var col = 0; col < cols; col++) {
-        tbody.children('tr.inv-row').append('<td class="inv-cell inv-cell-' + col + '><div><div></div></div></td>');
+        tbody.children('tr.inv-row').append('<td class="inv-cell inv-cell-' + col + '"><div><div></div></div></td>');
     }
 }
 
