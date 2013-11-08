@@ -426,7 +426,7 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
 
 function load_stat_data(person, string_data, item_data, achievement_data) {
     if (person.id == 'fenhl') {
-        $.when(APT.playerData(person)).done(function(player_data) {
+        $.when(API.playerData(person)).done(function(player_data) {
             display_inventory(player_data, item_data);
         }).fail(function() {
             $('.inventory-table .loading td').html('Error: Could not load ' + person.minecraft + '.dat');
