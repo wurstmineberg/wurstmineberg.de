@@ -97,7 +97,7 @@ function display_user_data(person, item_data) {
 }
 
 function is_block(id) {
-    return false;
+    return id <= 255;
 }
 
 function initialize_inventory(tbody, rows, cols) {
@@ -136,6 +136,7 @@ function display_inventory(player_data, item_data) {
                 }
                 if ('name' in item) {
                     cell.children('div').attr('title', item['name']);
+                    cell.children('div').tooltip();
                 }
             }
         }
@@ -155,6 +156,7 @@ function display_inventory(player_data, item_data) {
             }
             if ('name' in item) {
                 cell.children('div').attr('title', item['name']);
+                cell.children('div').tooltip();
             }
         }
     });
@@ -189,10 +191,10 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
                 var count = value;
 
                 var collection;
-                if (id >= 256) {
-                    collection = items;
-                } else {
+                if (is_block(id)) {
                     collection = blocks;
+                } else {
+                    collection = items;
                 }
 
                 var info;
