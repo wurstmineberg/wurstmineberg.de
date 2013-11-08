@@ -177,10 +177,9 @@ a {
 .inv-cell {
     background-color: #8b8b8b;
     padding: 0;
-    position: relative;
 }
 
-.inv-cell > span.count {
+.inv-cell > div.inv-cell-style > span.count {
     bottom: 0;
     color: white;
     font-size: 16px;
@@ -194,6 +193,7 @@ a {
     border-width: 2px;
     height: 34px;
     margin: 0 2px 2px 0;
+    position: relative;
 }
 
 .inv-cell > div.inv-cell-style > div {
