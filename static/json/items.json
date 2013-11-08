@@ -4,7 +4,6 @@
         "type": "block",
         "texture": null,
         "solid": false,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Sky1.png",
         "transparent": true,
         "luminance": false,
         "blast_resistance": -1,
@@ -17,7 +16,7 @@
         "type": "block",
         "texture": "stone",
         "solid": true,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Stone.png",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a6/Grid_Stone.png",
         "transparent": false,
         "luminance": false,
         "blast_resistance": 30,
@@ -51,9 +50,9 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Dirt.png"
     },
     "3:2": {
-    	"name": "Podzol",
-    	"texture_side": "dirt_podzol_side",
-    	"texture_top": "dirt_podzol_top",
+        "name": "Podzol",
+        "texture_side": "dirt_podzol_side",
+        "texture_top": "dirt_podzol_top",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6d/Grid_Podzol.png"
     },
     "4": {
@@ -68,7 +67,7 @@
         "solid": true
     },
     "5:0": {
-    	"name": "Oak Wood Planks",
+        "name": "Oak Wood Planks",
         "texture": "planks_oak",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9f/Grid_Wooden_Plank.png"
     },
@@ -83,8 +82,8 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Wooden_Plank_%28Birch%29.png"
     },
     "5:3": {
-    	"name": "Jungle Wood Planks",
-    	"texture": "planks_jungle",
+        "name": "Jungle Wood Planks",
+        "texture": "planks_jungle",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Wooden_Plank_%28Jungle%29.png"
     },
     "5:4": {
@@ -223,7 +222,7 @@
         "name": "Wood"
     },
     "17:0": {
-    	"image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bf/Grid_Wood.png",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bf/Grid_Wood.png",
         "name": "Oak Wood",
         "texture": "log_oak",
         "texture_top": "log_oak_top"
@@ -301,30 +300,30 @@
         "name": "Lapis Lazuli Block"
     },
     "23": {
-    	"name": "Dispenser",
+        "name": "Dispenser",
         "type": "block",
         "solid": true,
         "texture": "furnace_side",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cc/Grid_Dispenser.png"
     },
     "23:0": {
-    	"texture_bottom": "furnace_front_vertical"
-   	},
-   	"23:1": {
-    	"texture_top": "furnace_front_vertical"
-   	},
+        "texture_bottom": "furnace_front_vertical"
+       },
+       "23:1": {
+        "texture_top": "furnace_front_vertical"
+       },
     "23:2": {
-    	"texture_north": "furnace_front_horizontal"
+        "texture_north": "furnace_front_horizontal"
     },
     "23:3": {
-    	"texture_south": "furnace_front_horizontal"
+        "texture_south": "furnace_front_horizontal"
     },
     "23:4": {
-    	"texture_west": "furnace_front_horizontal"
-   	},
-   	"23:5": {
-    	"texture_east": "furnace_front_horizontal"
-   	},
+        "texture_west": "furnace_front_horizontal"
+       },
+       "23:5": {
+        "texture_east": "furnace_front_horizontal"
+       },
     "24": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/12/Grid_Sandstone.png",
         "type": "block",
@@ -361,22 +360,22 @@
         "FIXME": "Beds are complicated stuff"
     },
     "26:0": {
-    	"texture_south": null,
-    	"texture_west": "bed_feet_side",
-    	"texture_east": "bed_feet_side",
-    	"texture_top": "bed_feet_top"
+        "texture_south": null,
+        "texture_west": "bed_feet_side",
+        "texture_east": "bed_feet_side",
+        "texture_top": "bed_feet_top"
     },
     "26:0": {
-    	"texture_south": null,
-    	"texture_west": "bed_feet_side",
-    	"texture_east": "bed_feet_side",
-    	"texture_top": "bed_feet_top"
+        "texture_south": null,
+        "texture_west": "bed_feet_side",
+        "texture_east": "bed_feet_side",
+        "texture_top": "bed_feet_top"
     },
     "26:0": {
-    	"texture_south": null,
-    	"texture_west": "bed_feet_side",
-    	"texture_east": "bed_feet_side",
-    	"texture_top": "bed_feet_top"
+        "texture_south": null,
+        "texture_west": "bed_feet_side",
+        "texture_east": "bed_feet_side",
+        "texture_top": "bed_feet_top"
     },
     "27": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9d/Grid_Powered_Rail.png",
@@ -451,24 +450,24 @@
         "type": "block",
         "name": "Piston",
         "texture_bottom": "piston_top_normal",
-    	"texture_top": "piston_bottom",
-    	"texture_side": "piston_side",
-    	"FIXME": "All rotational values"
+        "texture_top": "piston_bottom",
+        "texture_side": "piston_side",
+        "FIXME": "All rotational values"
     },
     "33:0": {
-    	"texture_bottom": "piston_top_normal",
-    	"texture_top": "piston_bottom",
-    	"texture_side": "piston_side"
+        "texture_bottom": "piston_top_normal",
+        "texture_top": "piston_bottom",
+        "texture_side": "piston_side"
     },
     "33:1": {
-    	"texture_bottom": "piston_bottom",
-    	"texture_top": "piston_top_normal",
-    	"texture_side": "piston_side"
+        "texture_bottom": "piston_bottom",
+        "texture_top": "piston_top_normal",
+        "texture_side": "piston_side"
     },
     "33:2": {
-    	"texture_bottom": "piston_top_normal",
-    	"texture_top": "piston_bottom",
-    	"texture_side": "piston_bottom@2"
+        "texture_bottom": "piston_top_normal",
+        "texture_top": "piston_bottom",
+        "texture_side": "piston_bottom@2"
     },
     "34": {
         "name": "Piston Extension"
@@ -725,7 +724,7 @@
         "name": "Sandstone Slab"
     },
     "44:2": {
-    	"alias": "126:0"
+        "alias": "126:0"
     },
     "44:3": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
@@ -774,7 +773,7 @@
         "name": "Sandstone Slab"
     },
     "44:130": {
-    	"alias": "126:128"
+        "alias": "126:128"
     },
     "44:131": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
@@ -929,25 +928,25 @@
         "name": "Wheat"
     },
     "59:0": {
-    	"texture_side": "wheat_stage_0"
+        "texture_side": "wheat_stage_0"
     },
     "59:1": {
-    	"texture_side": "wheat_stage_1"
+        "texture_side": "wheat_stage_1"
     },
     "59:2": {
-    	"texture_side": "wheat_stage_2"
+        "texture_side": "wheat_stage_2"
     },
     "59:3": {
-    	"texture_side": "wheat_stage_3"
+        "texture_side": "wheat_stage_3"
     },
     "59:4": {
-    	"texture_side": "wheat_stage_4"
+        "texture_side": "wheat_stage_4"
     },
     "59:5": {
-    	"texture_side": "wheat_stage_5"
+        "texture_side": "wheat_stage_5"
     },
     "59:6": {
-    	"texture_side": "wheat_stage_6"
+        "texture_side": "wheat_stage_6"
     },
     "59:7": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c4/Grid_Wheat.png",
@@ -982,16 +981,16 @@
         "name": "Furnace"
     },
     "61:2": {
-    	"texture_north": "furnace_front_off"
+        "texture_north": "furnace_front_off"
     },
     "61:3": {
-    	"texture_south": "furnace_front_off"
+        "texture_south": "furnace_front_off"
     },
     "61:4": {
-    	"texture_west": "furnace_front_off"
+        "texture_west": "furnace_front_off"
     },
     "61:5": {
-    	"texture_east": "furnace_front_off"
+        "texture_east": "furnace_front_off"
     },
     "62": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2e/Grid_Furnace.png",
@@ -1003,16 +1002,16 @@
         "texture_side": "furnace_side"
     },
     "61:2": {
-    	"texture_north": "furnace_front_on"
+        "texture_north": "furnace_front_on"
     },
     "61:3": {
-    	"texture_south": "furnace_front_on"
+        "texture_south": "furnace_front_on"
     },
     "61:4": {
-    	"texture_west": "furnace_front_on"
+        "texture_west": "furnace_front_on"
     },
     "61:5": {
-    	"texture_east": "furnace_front_on"
+        "texture_east": "furnace_front_on"
     },
     "63": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/06/Grid_Sign.png",

@@ -171,6 +171,7 @@ a {
 
 .inv-cell {
     background-color: #8b8b8b;
+    padding: 0;
 }
 
 .inv-cell > div {
@@ -183,4 +184,6 @@ a {
     border-color: white;
     border-style: none solid solid none;
     border-width: 2px;
+    min-width: 32px;
+    min-height: 32px;
 }

@@ -123,7 +123,7 @@ function display_inventory(player_data, item_data) {
         }
         if ('Slot' in stack && stack['Slot'] >= 9 && stack['Slot'] <= 36) {
             if ('image' in item) {
-                $('#main-inventory .inv-row-' + (stack['Slot'] % 9 - 1) + ' .inv-cell-' + (Math.floor(stack['Slot'] / 9) - 1) + ' > div > div').append('<img src="' + item['image'] + '" />');
+                $('#main-inventory .inv-row-' + (Math.floor(stack['Slot'] / 9) - 1) + ' .inv-cell-' + (stack['Slot'] % 9) + ' > div > div').append('<img src="' + item['image'] + '" />');
             }
         }
     });
