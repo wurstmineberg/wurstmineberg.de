@@ -154,7 +154,7 @@ function display_inventory(player_data, item_data) {
                 cell.childran('div').children('div').append('<img src="' + item['image'] + '" />');
             }
             if ('name' in item) {
-                cell.children('div').attr('title', item['name']));
+                cell.children('div').attr('title', item['name']);
             }
         }
     });
