@@ -139,8 +139,8 @@ function display_inventory(player_data, item_data) {
                     if ('tag' in stack && 'display' in stack['tag'] && 'Name' in stack['tag']['display']) {
                         name += ' “' + stack['tag']['display']['Name'] + '”';
                     }
-                    cell.children('div').attr('title', name);
-                    cell.children('div').tooltip();
+                    cell.attr('title', name);
+                    cell.tooltip();
                 }
                 if ('Count' in stack && stack['Count'] > 1) {
                     cell.append('<span class="count">' + stack['Count'] + '</span>');
@@ -162,8 +162,15 @@ function display_inventory(player_data, item_data) {
                 cell.children('div').children('div').append('<img src="' + item['image'] + '" />');
             }
             if ('name' in item) {
-                cell.children('div').attr('title', item['name']);
-                cell.children('div').tooltip();
+                var name = item['name'];
+                if ('tag' in stack && 'display' in stack['tag'] && 'Name' in stack['tag']['display']) {
+                    name += ' “' + stack['tag']['display']['Name'] + '”';
+                }
+                cell.attr('title', name);
+                cell.tooltip();
+            }
+            if ('Count' in stack && stack['Count'] > 1) {
+                cell.append('<span class="count">' + stack['Count'] + '</span>');
             }
         }
     });
