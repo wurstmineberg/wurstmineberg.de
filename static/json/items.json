@@ -64,7 +64,9 @@
     },
     "5": {
         "type": "block",
-        "solid": true
+        "solid": true,
+        "name": "Wooden Planks",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9f/Grid_Wooden_Plank.png"
     },
     "5:0": {
         "name": "Oak Wood Planks",
@@ -100,7 +102,9 @@
         "type": "block",
         "subtype": "sapling",
         "render_type": "cross",
-        "solid": false
+        "solid": false,
+        "name": "Sapling",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b5/Grid_Sapling.png"
     },
     "6:0": {
         "name": "Oak Sapling",
@@ -249,7 +253,9 @@
         "type": "block",
         "solid": true,
         "texture_needs_colorisation": true,
-        "color_map": "foliage"
+        "color_map": "foliage",
+        "name": "Leaves",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/30/Grid_Leaves.png"
     },
     "18:0": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/30/Grid_Leaves.png",
@@ -308,10 +314,10 @@
     },
     "23:0": {
         "texture_bottom": "furnace_front_vertical"
-       },
-       "23:1": {
+    },
+    "23:1": {
         "texture_top": "furnace_front_vertical"
-       },
+    },
     "23:2": {
         "texture_north": "furnace_front_horizontal"
     },
@@ -320,10 +326,10 @@
     },
     "23:4": {
         "texture_west": "furnace_front_horizontal"
-       },
-       "23:5": {
+    },
+    "23:5": {
         "texture_east": "furnace_front_horizontal"
-       },
+    },
     "24": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/12/Grid_Sandstone.png",
         "type": "block",
