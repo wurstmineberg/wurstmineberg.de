@@ -191,3 +191,8 @@ a {
     margin: 0 -2px -2px 0;
     min-width: 32px;
 }
+
+.inv-cell > div > div > img {
+    bottom: 1px;
+    position: relative;
+}
