@@ -151,7 +151,7 @@ function display_inventory(player_data, item_data) {
         if ('Slot' in stack && stack['Slot'] >= 0 && stack['Slot'] < 27) {
             var cell = $('#ender-chest-table .inv-row-' + Math.floor(stack['Slot'] / 9) + ' .inv-cell-' + (stack['Slot'] % 9));
             if ('image' in item) {
-                cell.childran('div').children('div').append('<img src="' + item['image'] + '" />');
+                cell.children('div').children('div').append('<img src="' + item['image'] + '" />');
             }
             if ('name' in item) {
                 cell.children('div').attr('title', item['name']);
