@@ -101,7 +101,13 @@ var API = {
     person: function(player) {
         return API.personById(player.id)
     },
-
+    
+    playerData: function(person) {
+        if (person.minecraft) {
+            return API.ajaxJSONDeferred('//api.wurstmineberg.de/player/' + person.minecraft + '/playerdata.json');
+        }
+    },
+    
     personStatData: function(person) {
         if (person.minecraft) {
             return API.ajaxJSONDeferred('//api.wurstmineberg.de/player/' + person.minecraft + '/stats.json');

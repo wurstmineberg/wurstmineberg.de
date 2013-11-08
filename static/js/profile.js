@@ -22,7 +22,7 @@ function initialize_datatables() {
 }
 
 function display_user_data(person, item_data) {
-    $('.loading').removeClass('loading');
+    $('.panel-loading').removeClass('loading');
     
     var name = person.interfaceName;
     var ava;
@@ -98,6 +98,34 @@ function display_user_data(person, item_data) {
 
 function is_block(id) {
     return false;
+}
+
+function initialize_inventory(tbody, rows, cols) {
+    for (var row = 0; row < rows; row++) {
+        tbody.append('<tr class="inv-row inv-row-' + row + '"></tr>');
+    }
+    for (var col = 0; col < cols; col++) {
+        tbody.children('tr#inv-row').append('<td class="inv-cell inv-cell-' + col + '><div><div></div></div></td>');
+    }
+}
+
+function display_inventory(player_data, item_data) {
+    $('tr.loading').remove();
+    initialize_inventory($('#main-inventory > tbody'), 3, 9);
+    player_data['Inventory'].forEach(function(stack) {
+        var item = {};
+        if (stack['id'].toString() in item_data) {
+            item = item_data[stack['id'].toString()];
+        }
+        if (stack['id'] + ':' + stack['Damage'] in item_data) {
+            item = item_data[stack['id'] + ':' + stack['Damage']];
+        }
+        if ('Slot' in stack && stack['Slot'] >= 9 && stack['Slot'] <= 36) {
+            if ('image' in item) {
+                $('#main-inventory inv-row-' + (stack['Slot'] % 9 - 1) + ' inv-cell-' + (Math.floor(stack['Slot'] / 9) - 1) + ' > div > div').append('<img src="' + item['image'] + '" />');
+            }
+        }
+    });
 }
 
 function display_stat_data(stat_data, string_data, item_data, achievement_data) {
@@ -396,13 +424,18 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
 }
 
 function load_stat_data(person, string_data, item_data, achievement_data) {
-    $.when(API.personStatData(person))
-        .done(function(stat_data) {
-            display_stat_data(stat_data, string_data, item_data, achievement_data);
-        })
-        .fail(function() {
-            $('.loading-stat').html('<td colspan="7">Error: Could not load ' + person.minecraft + '.json</td>');
+    if (person.id == 'fenhl') {
+        $.when(APT.playerData(person)).done(function(player_data) {
+            display_inventory(player_data, item_data);
+        }).fail(function() {
+            $('.inventory-table .loading td').html('Error: Could not load ' + person.minecraft + '.dat');
         });
+    }
+    $.when(API.personStatData(person)).done(function(stat_data) {
+        display_stat_data(stat_data, string_data, item_data, achievement_data);
+    }).fail(function() {
+        $('.loading-stat').html('<td colspan="7">Error: Could not load ' + person.minecraft + '.json</td>');
+    });
 }
 
 function load_user_data() {
