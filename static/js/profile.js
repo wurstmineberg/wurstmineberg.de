@@ -105,13 +105,13 @@ function initialize_inventory(tbody, rows, cols) {
         tbody.append('<tr class="inv-row inv-row-' + row + '"></tr>');
     }
     for (var col = 0; col < cols; col++) {
-        tbody.children('tr#inv-row').append('<td class="inv-cell inv-cell-' + col + '><div><div></div></div></td>');
+        tbody.children('tr.inv-row').append('<td class="inv-cell inv-cell-' + col + '><div><div></div></div></td>');
     }
 }
 
 function display_inventory(player_data, item_data) {
     $('tr.loading').remove();
-    $('.profile-opt-out').removeClass('profile-opt-out');
+    $('.inventory-opt-out').removeClass('inventory-opt-out');
     initialize_inventory($('#main-inventory > tbody'), 3, 9);
     player_data['Inventory'].forEach(function(stack) {
         var item = {};
@@ -123,7 +123,7 @@ function display_inventory(player_data, item_data) {
         }
         if ('Slot' in stack && stack['Slot'] >= 9 && stack['Slot'] <= 36) {
             if ('image' in item) {
-                $('#main-inventory inv-row-' + (stack['Slot'] % 9 - 1) + ' inv-cell-' + (Math.floor(stack['Slot'] / 9) - 1) + ' > div > div').append('<img src="' + item['image'] + '" />');
+                $('#main-inventory .inv-row-' + (stack['Slot'] % 9 - 1) + ' .inv-cell-' + (Math.floor(stack['Slot'] / 9) - 1) + ' > div > div').append('<img src="' + item['image'] + '" />');
             }
         }
     });
