@@ -111,6 +111,7 @@ function initialize_inventory(tbody, rows, cols) {
 
 function display_inventory(player_data, item_data) {
     $('tr.loading').remove();
+    $('.profile-opt-out').removeClass('profile-opt-out');
     initialize_inventory($('#main-inventory > tbody'), 3, 9);
     player_data['Inventory'].forEach(function(stack) {
         var item = {};
