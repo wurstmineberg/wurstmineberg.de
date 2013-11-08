@@ -111,8 +111,9 @@ function initialize_inventory(tbody, rows, cols) {
 
 function display_inventory(player_data, item_data) {
     $('tr.loading').remove();
-    $('.inventory-opt-out').removeClass('inventory-opt-out');
+    $('.inventory-opt-out').removeClass('inventory-opt-out').addClass('inventory-opt-in');
     initialize_inventory($('#main-inventory > tbody'), 3, 9);
+    initialize_inventory($('#ender-chest-table > tbody'), 3, 9);
     player_data['Inventory'].forEach(function(stack) {
         var item = {};
         if (stack['id'].toString() in item_data) {
@@ -124,6 +125,20 @@ function display_inventory(player_data, item_data) {
         if ('Slot' in stack && stack['Slot'] >= 9 && stack['Slot'] <= 36) {
             if ('image' in item) {
                 $('#main-inventory .inv-row-' + (Math.floor(stack['Slot'] / 9) - 1) + ' .inv-cell-' + (stack['Slot'] % 9) + ' > div > div').append('<img src="' + item['image'] + '" />');
+            }
+        }
+    });
+    player_data['EnderItems'].forEach(function(stack) {
+        var item = {};
+        if (stack['id'].toString() in item_data) {
+            item = item_data[stack['id'].toString()];
+        }
+        if (stack['id'] + ':' + stack['Damage'] in item_data) {
+            item = item_data[stack['id'] + ':' + stack['Damage']];
+        }
+        if ('Slot' in stack && stack['Slot'] >= 0 && stack['Slot'] <= 27) {
+            if ('image' in item) {
+                $('#ender-chest-table .inv-row-' + Math.floor(stack['Slot'] / 9) + ' .inv-cell-' + (stack['Slot'] % 9) + ' > div > div').append('<img src="' + item['image'] + '" />');
             }
         }
     });

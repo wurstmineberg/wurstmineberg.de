@@ -169,6 +169,10 @@ a {
     display: none;
 }
 
+.inventory-opt-in {
+    display: inline-block;
+}
+
 .inv-cell {
     background-color: #8b8b8b;
     padding: 0;
