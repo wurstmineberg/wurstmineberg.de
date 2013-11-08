@@ -5,6 +5,7 @@ function Person (person_data) {
     this.irc = person_data['irc'];
     this.minecraft = person_data['minecraft'];
     this.reddit = person_data['reddit'];
+    this.show_inventory = 'show_inventory' in person_data ? person_data['show_inventory'] : false;
     this.status = 'status' in person_data ? person_data['status'] : 'later';
     this.twitter = person_data['twitter'];
     this.website = person_data['website'];
