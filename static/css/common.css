@@ -179,7 +179,7 @@ a {
     padding: 0;
 }
 
-.inv-cell > div {
+.inv-cell > div.inv-cell-style {
     border-color: #373737;
     border-style: solid none none solid;
     border-width: 2px;
@@ -187,7 +187,7 @@ a {
     margin: 0 2px 2px 0;
 }
 
-.inv-cell > div > div {
+.inv-cell > div.inv-cell-style > div {
     border-color: white;
     border-style: none solid solid none;
     border-width: 2px;
@@ -197,7 +197,7 @@ a {
     min-width: 32px;
 }
 
-.inv-cell > div > div > img {
+.inv-cell > div.inv-cell-style > div > img {
     bottom: 1px;
     position: relative;
 }

@@ -105,7 +105,7 @@ function initialize_inventory(tbody, rows, cols) {
         tbody.append('<tr class="inv-row inv-row-' + row + '"></tr>');
     }
     for (var col = 0; col < cols; col++) {
-        tbody.children('tr.inv-row').append('<td class="inv-cell inv-cell-' + col + '"><div><div></div></div></td>');
+        tbody.children('tr.inv-row').append('<td class="inv-cell inv-cell-' + col + '"><div class="inv-cell-style"><div></div></div></td>');
     }
 }
 
@@ -113,6 +113,7 @@ function display_inventory(player_data, item_data) {
     $('tr.loading').remove();
     $('.inventory-opt-out').removeClass('inventory-opt-out').addClass('inventory-opt-in');
     initialize_inventory($('#main-inventory > tbody'), 3, 9);
+    initialize_inventory($('#hotbar-table > tbody'), 1, 9);
     initialize_inventory($('#ender-chest-table > tbody'), 3, 9);
     player_data['Inventory'].forEach(function(stack) {
         var item = {};
@@ -122,9 +123,20 @@ function display_inventory(player_data, item_data) {
         if (stack['id'] + ':' + stack['Damage'] in item_data) {
             item = item_data[stack['id'] + ':' + stack['Damage']];
         }
-        if ('Slot' in stack && stack['Slot'] >= 9 && stack['Slot'] <= 36) {
-            if ('image' in item) {
-                $('#main-inventory .inv-row-' + (Math.floor(stack['Slot'] / 9) - 1) + ' .inv-cell-' + (stack['Slot'] % 9) + ' > div > div').append('<img src="' + item['image'] + '" />');
+        if ('Slot' in stack) {
+            var cell = undefined;
+            if (stack['Slot'] >= 0 && stack['Slot'] < 9) {
+                cell = $('#hotbar-table .inv-row-0 .inv-cell-' + stack['Slot']);
+            } else if (stack['Slot'] >= 9 && stack['Slot'] < 36) {
+                cell = $('#main-inventory .inv-row-' + (Math.floor(stack['Slot'] / 9) - 1) + ' .inv-cell-' + (stack['Slot'] % 9));
+            }
+            if (cell !== undefined) {
+                if ('image' in item) {
+                    cell.children('div').children('div').append('<img src="' + item['image'] + '" />');
+                }
+                if ('name' in item) {
+                    cell.children('div').attr('title', item['name']));
+                }
             }
         }
     });
@@ -136,9 +148,13 @@ function display_inventory(player_data, item_data) {
         if (stack['id'] + ':' + stack['Damage'] in item_data) {
             item = item_data[stack['id'] + ':' + stack['Damage']];
         }
-        if ('Slot' in stack && stack['Slot'] >= 0 && stack['Slot'] <= 27) {
+        if ('Slot' in stack && stack['Slot'] >= 0 && stack['Slot'] < 27) {
+            var cell = $('#ender-chest-table .inv-row-' + Math.floor(stack['Slot'] / 9) + ' .inv-cell-' + (stack['Slot'] % 9));
             if ('image' in item) {
-                $('#ender-chest-table .inv-row-' + Math.floor(stack['Slot'] / 9) + ' .inv-cell-' + (stack['Slot'] % 9) + ' > div > div').append('<img src="' + item['image'] + '" />');
+                cell.childran('div').children('div').append('<img src="' + item['image'] + '" />');
+            }
+            if ('name' in item) {
+                cell.children('div').attr('title', item['name']));
             }
         }
     });
