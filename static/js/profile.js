@@ -122,8 +122,12 @@ function display_slot(cell, stack, item_data) {
     }
     if ('name' in item) {
         var name = item['name'];
-        if ('tag' in stack && 'display' in stack['tag'] && 'Name' in stack['tag']['display']) {
-            name += ' “' + stack['tag']['display']['Name'] + '”';
+        if ('tag' in stack)
+            if ('display' in stack['tag'] && 'Name' in stack['tag']['display']) {
+                name += ' “' + stack['tag']['display']['Name'] + '”';
+            } else if ('title' in stack['tag']) {
+                name += ' “' + stack['tag']['title'] + '”';
+            }
         }
         cell.children('div').attr('title', name);
         cell.children('div').tooltip();
