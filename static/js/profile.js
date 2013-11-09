@@ -142,7 +142,7 @@ function display_slot(cell, stack, item_data, string_data) {
         if (enchantments.length > 0) {
             name += ' (';
             var first = true;
-            stack['tag']['ench'].forEach(function(ench) {
+            enchantments.forEach(function(ench) {
                 if (first) {
                     first = false;
                 } else {
