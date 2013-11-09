@@ -120,34 +120,41 @@ function display_slot(cell, stack, item_data, string_data) {
     if ('image' in item) {
         cell.children('div').children('div').append('<img src="' + item['image'] + '" />');
     }
+    var name = stack['id'].toString();
     if ('name' in item) {
-        var name = item['name'];
-        if ('tag' in stack) {
-            if ('display' in stack['tag'] && 'Name' in stack['tag']['display']) {
-                name += ' “' + stack['tag']['display']['Name'] + '”';
-            } else if ('title' in stack['tag']) {
-                name += ' “' + stack['tag']['title'] + '”';
-                if ("author" in stack['tag']) {
-                    name += ' by ' + stack['tag']['author'];
-                }
-            }
-            if ('ench' in stack['tag']) {
-                name += ' (';
-                var first = true;
-                stack['tag']['ench'].forEach(function(ench) {
-                    if (first) {
-                        first = false;
-                    } else {
-                        name += ', ';
-                    }
-                    name += string_data['enchantments']['names'][ench['id'].toString()] + ' ' + string_data['enchantments']['levels'][ench['lvl'].toString()];
-                });
-                name += ')';
+        name = item['name'];
+    }
+    if ('tag' in stack) {
+        if ('display' in stack['tag'] && 'Name' in stack['tag']['display']) {
+            name += ' “' + stack['tag']['display']['Name'] + '”';
+        } else if ('title' in stack['tag']) {
+            name += ' “' + stack['tag']['title'] + '”';
+            if ("author" in stack['tag']) {
+                name += ' by ' + stack['tag']['author'];
             }
         }
-        cell.children('div').attr('title', name);
-        cell.children('div').tooltip();
+        var enchantments = [];
+        if ('ench' in stack['tag']) {
+            enchantments = stack['tag']['ench'];
+        } else if ('StoredEnchantments' in stack['tag']) {
+            enchantments = stack['tag']['StoredEnchantments'];
+        }
+        if (enchantments.length > 0) {
+            name += ' (';
+            var first = true;
+            stack['tag']['ench'].forEach(function(ench) {
+                if (first) {
+                    first = false;
+                } else {
+                    name += ', ';
+                }
+                name += string_data['enchantments']['names'][ench['id'].toString()] + ' ' + string_data['enchantments']['levels'][ench['lvl'].toString()];
+            });
+            name += ')';
+        }
     }
+    cell.children('div').attr('title', name);
+    cell.children('div').tooltip();
     if ('Count' in stack && stack['Count'] > 1) {
         cell.children('div').append('<span class="count">' + stack['Count'] + '</span>');
     }
