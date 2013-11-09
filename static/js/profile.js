@@ -109,7 +109,7 @@ function initialize_inventory(tbody, rows, cols) {
     }
 }
 
-function display_slot(cell, stack, item_data) {
+function display_slot(cell, stack, item_data, string_data) {
     var item = {};
     if (stack['id'].toString() in item_data) {
         item = item_data[stack['id'].toString()];
@@ -131,6 +131,19 @@ function display_slot(cell, stack, item_data) {
                     name += ' by ' + stack['tag']['author'];
                 }
             }
+            if ('ench' in stack['tag']) {
+                name += ' (';
+                var first = true;
+                stack['tag']['ench'].forEach(function(ench) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        name += ', ';
+                    }
+                    name += string_data['enchantments']['names'][ench['id'].toString()] + ' ' + string_data['enchantments']['levels'][ench['lvl'].toString()];
+                });
+                name += ')';
+            }
         }
         cell.children('div').attr('title', name);
         cell.children('div').tooltip();
@@ -140,7 +153,7 @@ function display_slot(cell, stack, item_data) {
     }
 }
 
-function display_inventory(player_data, item_data) {
+function display_inventory(player_data, item_data, string_data) {
     $('tr.loading').remove();
     $('.inventory-opt-out').removeClass('inventory-opt-out').addClass('inventory-opt-in');
     initialize_inventory($('#main-inventory > tbody'), 3, 9);
@@ -465,7 +478,7 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
 function load_stat_data(person, string_data, item_data, achievement_data) {
     if (person.show_inventory) {
         $.when(API.playerData(person)).done(function(player_data) {
-            display_inventory(player_data, item_data);
+            display_inventory(player_data, item_data, string_data);
         }).fail(function() {
             $('.inventory-table .loading td').html('Error: Could not load ' + person.minecraft + '.dat');
         });
