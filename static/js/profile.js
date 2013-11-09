@@ -109,6 +109,30 @@ function initialize_inventory(tbody, rows, cols) {
     }
 }
 
+function display_slot(cell, stack, item_data) {
+    var item = {};
+    if (stack['id'].toString() in item_data) {
+        item = item_data[stack['id'].toString()];
+    }
+    if (stack['id'] + ':' + stack['Damage'] in item_data) {
+        item = item_data[stack['id'] + ':' + stack['Damage']];
+    }
+    if ('image' in item) {
+        cell.children('div').children('div').append('<img src="' + item['image'] + '" />');
+    }
+    if ('name' in item) {
+        var name = item['name'];
+        if ('tag' in stack && 'display' in stack['tag'] && 'Name' in stack['tag']['display']) {
+            name += ' “' + stack['tag']['display']['Name'] + '”';
+        }
+        cell.children('div').attr('title', name);
+        cell.children('div').tooltip();
+    }
+    if ('Count' in stack && stack['Count'] > 1) {
+        cell.children('div').append('<span class="count">' + stack['Count'] + '</span>');
+    }
+}
+
 function display_inventory(player_data, item_data) {
     $('tr.loading').remove();
     $('.inventory-opt-out').removeClass('inventory-opt-out').addClass('inventory-opt-in');
@@ -116,13 +140,6 @@ function display_inventory(player_data, item_data) {
     initialize_inventory($('#hotbar-table > tbody'), 1, 9);
     initialize_inventory($('#ender-chest-table > tbody'), 3, 9);
     player_data['Inventory'].forEach(function(stack) {
-        var item = {};
-        if (stack['id'].toString() in item_data) {
-            item = item_data[stack['id'].toString()];
-        }
-        if (stack['id'] + ':' + stack['Damage'] in item_data) {
-            item = item_data[stack['id'] + ':' + stack['Damage']];
-        }
         if ('Slot' in stack) {
             var cell = undefined;
             if (stack['Slot'] >= 0 && stack['Slot'] < 9) {
@@ -131,47 +148,14 @@ function display_inventory(player_data, item_data) {
                 cell = $('#main-inventory .inv-row-' + (Math.floor(stack['Slot'] / 9) - 1) + ' .inv-cell-' + (stack['Slot'] % 9));
             }
             if (cell !== undefined) {
-                if ('image' in item) {
-                    cell.children('div').children('div').append('<img src="' + item['image'] + '" />');
-                }
-                if ('name' in item) {
-                    var name = item['name'];
-                    if ('tag' in stack && 'display' in stack['tag'] && 'Name' in stack['tag']['display']) {
-                        name += ' “' + stack['tag']['display']['Name'] + '”';
-                    }
-                    cell.children('div').attr('title', name);
-                    cell.children('div').tooltip();
-                }
-                if ('Count' in stack && stack['Count'] > 1) {
-                    cell.children('div').append('<span class="count">' + stack['Count'] + '</span>');
-                }
+                display_slot(cell, stack, item_data);
             }
         }
     });
     player_data['EnderItems'].forEach(function(stack) {
-        var item = {};
-        if (stack['id'].toString() in item_data) {
-            item = item_data[stack['id'].toString()];
-        }
-        if (stack['id'] + ':' + stack['Damage'] in item_data) {
-            item = item_data[stack['id'] + ':' + stack['Damage']];
-        }
         if ('Slot' in stack && stack['Slot'] >= 0 && stack['Slot'] < 27) {
             var cell = $('#ender-chest-table .inv-row-' + Math.floor(stack['Slot'] / 9) + ' .inv-cell-' + (stack['Slot'] % 9));
-            if ('image' in item) {
-                cell.children('div').children('div').append('<img src="' + item['image'] + '" />');
-            }
-            if ('name' in item) {
-                var name = item['name'];
-                if ('tag' in stack && 'display' in stack['tag'] && 'Name' in stack['tag']['display']) {
-                    name += ' “' + stack['tag']['display']['Name'] + '”';
-                }
-                cell.children('div').attr('title', name);
-                cell.children('div').tooltip();
-            }
-            if ('Count' in stack && stack['Count'] > 1) {
-                cell.children('div').append('<span class="count">' + stack['Count'] + '</span>');
-            }
+            display_slot(cell, stack, item_data);
         }
     });
 }
