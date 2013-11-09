@@ -127,6 +127,9 @@ function display_slot(cell, stack, item_data) {
                 name += ' “' + stack['tag']['display']['Name'] + '”';
             } else if ('title' in stack['tag']) {
                 name += ' “' + stack['tag']['title'] + '”';
+                if ("author" in stack['tag']) {
+                    name += ' by ' + stack['tag']['author'];
+                }
             }
         }
         cell.children('div').attr('title', name);
