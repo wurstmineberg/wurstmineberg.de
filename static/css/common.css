@@ -35,6 +35,7 @@ h2 {
 
 .funding-progressbar {
     margin-top: 15px;
+    width: 200px;
 }
 
 .funding-progress-container-about .funding-progressbar {
