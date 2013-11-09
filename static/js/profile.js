@@ -168,14 +168,14 @@ function display_inventory(player_data, item_data, string_data) {
                 cell = $('#main-inventory .inv-row-' + (Math.floor(stack['Slot'] / 9) - 1) + ' .inv-cell-' + (stack['Slot'] % 9));
             }
             if (cell !== undefined) {
-                display_slot(cell, stack, item_data);
+                display_slot(cell, stack, item_data, string_data);
             }
         }
     });
     player_data['EnderItems'].forEach(function(stack) {
         if ('Slot' in stack && stack['Slot'] >= 0 && stack['Slot'] < 27) {
             var cell = $('#ender-chest-table .inv-row-' + Math.floor(stack['Slot'] / 9) + ' .inv-cell-' + (stack['Slot'] % 9));
-            display_slot(cell, stack, item_data);
+            display_slot(cell, stack, item_data, string_data);
         }
     });
 }
