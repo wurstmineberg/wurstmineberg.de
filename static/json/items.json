@@ -1,7 +1,9 @@
 {
     "0": {
         "name": "Air",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Sky1.png",
+        "type": "block",
+        "texture": null,
+        "solid": false,
         "transparent": true,
         "luminance": false,
         "blast_resistance": -1,
@@ -11,7 +13,10 @@
     },
     "1": {
         "name": "Stone",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Stone.png",
+        "type": "block",
+        "texture": "stone",
+        "solid": true,
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a6/Grid_Stone.png",
         "transparent": false,
         "luminance": false,
         "blast_resistance": 30,
@@ -21,313 +26,543 @@
     },
     "2": {
         "name": "Grass Block",
+        "type": "block",
+        "solid": true,
+        "texture": "grass_side",
+        "texture_uncolored": "grass_side_overlay",
+        "texture_snow": "grass_side_snowed",
+        "texture_needs_colorisation": true,
+        "texture_top_uncolored": "grass_top",
+        "texture_bottom": "dirt",
+        "color_map": "grass",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/08/Grid_Grass_Block.png"
     },
     "3": {
         "name": "Dirt",
+        "type": "block",
+        "solid": true,
+        "texture": "dirt",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Dirt.png"
     },
     "3:1": {
         "name": "Grassless Dirt",
+        "texture": "dirt",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Dirt.png"
     },
     "3:2": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6d/Grid_Podzol.png",
-        "name": "Podzol"
+        "name": "Podzol",
+        "texture_side": "dirt_podzol_side",
+        "texture_top": "dirt_podzol_top",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6d/Grid_Podzol.png"
     },
     "4": {
         "name": "Cobblestone",
+        "type": "block",
+        "solid": true,
+        "texture": "cobblestone",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/03/Grid_Cobblestone.png"
     },
     "5": {
-        "name": "Wood Planks",
+        "type": "block",
+        "solid": true,
+        "name": "Wooden Planks",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9f/Grid_Wooden_Plank.png"
     },
     "5:0": {
         "name": "Oak Wood Planks",
+        "texture": "planks_oak",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9f/Grid_Wooden_Plank.png"
     },
     "5:1": {
         "name": "Spruce Wood Planks",
+        "texture": "planks_spruce",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Wooden_Plank_%28Pine%29.png"
     },
     "5:2": {
         "name": "Birch Wood Planks",
+        "texture": "planks_birch",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Wooden_Plank_%28Birch%29.png"
     },
     "5:3": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Wooden_Plank_%28Jungle%29.png",
-        "name": "Jungle Wood Planks"
+        "name": "Jungle Wood Planks",
+        "texture": "planks_jungle",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Wooden_Plank_%28Jungle%29.png"
     },
     "5:4": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f1/Grid_Acacia_Wood_Planks.png",
+        "texture": "planks_acacia",
         "name": "Acacia Wood Planks"
     },
     "5:5": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b5/Grid_Dark_Oak_Wood_Planks.png",
+        "texture": "planks_big_oak",
         "name": "Dark Oak Wood Planks"
     },
     "6": {
+        "type": "block",
+        "subtype": "sapling",
+        "render_type": "cross",
+        "solid": false,
         "name": "Sapling",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b5/Grid_Sapling.png"
     },
     "6:0": {
         "name": "Oak Sapling",
+        "texture": "sapling_birch",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b5/Grid_Sapling.png"
     },
     "6:1": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c6/Grid_Sapling_Spruce.png",
+        "texture": "sapling_spruce",
         "name": "Spruce Sapling"
     },
     "6:2": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b4/Grid_Sapling_Birch.png",
+        "texture": "sapling_birch",
         "name": "Birch Sapling"
     },
     "6:3": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7f/Grid_Sapling_Jungle.png",
+        "texture": "sapling_jungle",
         "name": "Jungle Sapling"
     },
     "6:4": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5b/Grid_Acacia_Sapling.png",
+        "texture": "sapling_acacia",
         "name": "Acacia Sapling"
     },
     "6:5": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c5/Grid_Dark_Oak_Sapling.png",
+        "texture": "sapling_oak",
         "name": "Dark Oak Sapling"
     },
     "7": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e0/Grid_Bedrock.png",
+        "type": "block",
+        "solid": true,
+        "texture": "bedrock",
         "name": "Bedrock"
     },
     "8": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/13/Grid_Water.png",
-        "name": "Water"
+        "type": "block",
+        "subtype": "water.flow",
+        "solid": false,
+        "texture": "water_flow",
+        "name": "Flowing Water"
     },
     "9": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/13/Grid_Water.png",
-        "name": "Water"
+        "type": "block",
+        "subtype": "water.still",
+        "solid": false,
+        "texture": "water_still",
+        "name": "Still Water"
     },
     "10": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/61/Grid_Lava.png",
-        "name": "Lava"
+        "type": "block",
+        "subtype": "lava.flow",
+        "solid": false,
+        "texture": "lava_flow",
+        "name": "Flowing Lava"
     },
     "11": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/61/Grid_Lava.png",
-        "name": "Lava"
+        "type": "block",
+        "subtype": "lava.still",
+        "solid": false,
+        "texture": "lava_still",
+        "name": "Still Lava"
     },
     "12": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Sand.png",
+        "type": "block",
+        "solid": true,
+        "texture": "sand",
         "name": "Sand"
     },
     "12:1": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/85/Grid_Red_Sand.png",
+        "type": "block",
+        "solid": true,
+        "texture": "red_sand",
         "name": "Red Sand"
     },
     "13": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/03/Grid_Gravel.png",
+        "type": "block",
+        "solid": true,
+        "texture": "gravel",
         "name": "Gravel"
     },
     "14": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5c/Grid_Gold_%28Ore%29.png",
+        "type": "block",
+        "solid": true,
+        "texture": "gold_ore",
         "name": "Gold Ore"
     },
     "15": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/74/Grid_Iron_%28Ore%29.png",
+        "type": "block",
+        "solid": true,
+        "texture": "iron_ore",
         "name": "Iron Ore"
     },
     "16": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/8c/Grid_Coal_%28Ore%29.png",
+        "type": "block",
+        "solid": true,
+        "texture": "coal_ore",
         "name": "Coal Ore"
     },
     "17": {
+        "type": "block",
+        "solid": true,
+        "texture": "log_oak",
+        "texture_top": "log_oak_top",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bf/Grid_Wood.png",
         "name": "Wood"
     },
     "17:0": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bf/Grid_Wood.png",
-        "name": "Oak Wood"
+        "name": "Oak Wood",
+        "texture": "log_oak",
+        "texture_top": "log_oak_top"
     },
     "17:1": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/db/Grid_Wood_%28Pine%29.png",
+        "texture": "log_spruce",
+        "texture_top": "log_spruce_top",
         "name": "Spruce Wood"
     },
     "17:2": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/81/Grid_Wood_%28Birch%29.png",
+        "texture": "log_birch",
+        "texture_top": "log_birch_top",
         "name": "Birch Wood"
     },
     "17:3": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5e/Grid_Wood_%28Jungle%29.png",
+        "texture": "log_jungle",
+        "texture_top": "log_jungle_top",
         "name": "Jungle Wood"
     },
     "18": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/30/Grid_Leaves.png",
-        "name": "Leaves"
+        "type": "block",
+        "solid": true,
+        "texture_needs_colorisation": true,
+        "color_map": "foliage",
+        "name": "Leaves",
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/30/Grid_Leaves.png"
     },
     "18:0": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/30/Grid_Leaves.png",
+        "texture_uncolored": "leaves_oak_opaque",
         "name": "Oak Leaves"
     },
     "18:1": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/08/Grid_Leaves_%28Pine%29.png",
+        "texture_uncolored": "leaves_spruce_opaque",
         "name": "Spruce Leaves"
     },
     "18:2": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/0a/Grid_Leaves_%28Birch%29.png",
+        "texture_uncolored": "leaves_birch_opaque",
         "name": "Birch Leaves"
     },
     "18:3": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1b/Grid_Leaves_%28Jungle%29.png",
+        "texture_uncolored": "leaves_jungle_opaque",
         "name": "Jungle Leaves"
     },
     "19": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Grid_Sponge.png",
+        "type": "block",
+        "solid": true,
+        "texture": "sponge",
         "name": "Sponge"
     },
     "20": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/00/Grid_Glass.png",
+        "type": "block",
+        "solid": false,
+        "texture": "glass",
         "name": "Glass"
     },
     "21": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d2/Grid_Lapis_Lazuli_%28Ore%29.png",
+        "type": "block",
+        "solid": true,
+        "texture": "lapis_ore",
         "name": "Lapis Lazuli Ore"
     },
     "22": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/58/Grid_Lapis_Lazuli_%28Block%29.png",
+        "type": "block",
+        "solid": true,
+        "texture": "lapis_block",
         "name": "Lapis Lazuli Block"
     },
     "23": {
         "name": "Dispenser",
+        "type": "block",
+        "solid": true,
+        "texture": "furnace_side",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cc/Grid_Dispenser.png"
+    },
+    "23:0": {
+        "texture_bottom": "furnace_front_vertical"
+    },
+    "23:1": {
+        "texture_top": "furnace_front_vertical"
+    },
+    "23:2": {
+        "texture_north": "furnace_front_horizontal"
+    },
+    "23:3": {
+        "texture_south": "furnace_front_horizontal"
+    },
+    "23:4": {
+        "texture_west": "furnace_front_horizontal"
+    },
+    "23:5": {
+        "texture_east": "furnace_front_horizontal"
     },
     "24": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/12/Grid_Sandstone.png",
+        "type": "block",
+        "solid": true,
+        "texture": "sandstone_normal",
+        "texture_bottom": "sandstone_bottom",
+        "texture_top": "sandstone_top",
         "name": "Sandstone"
     },
     "24:1": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1b/Grid_Decorative_Sandstone.png",
+        "texture": "sandstone_carved",
         "name": "Chiseled Sandstone"
     },
     "24:2": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/22/Grid_Smooth_Sandstone.png",
+        "texture": "sandstone_smooth",
         "name": "Smooth Sandstone"
     },
     "25": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1d/Grid_Note_Block.png",
+        "type": "block",
+        "solid": "true",
+        "texture": "noteblock",
         "name": "Note Block"
     },
     "26": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a3/Grid_Bed.png",
-        "name": "Bed"
+        "type": "block",
+        "subtype": "bed",
+        "solid": false,
+        "texture": "bed_feet_top",
+        "name": "Bed",
+        "FIXME": "Beds are complicated stuff"
+    },
+    "26:0": {
+        "texture_south": null,
+        "texture_west": "bed_feet_side",
+        "texture_east": "bed_feet_side",
+        "texture_top": "bed_feet_top"
+    },
+    "26:0": {
+        "texture_south": null,
+        "texture_west": "bed_feet_side",
+        "texture_east": "bed_feet_side",
+        "texture_top": "bed_feet_top"
+    },
+    "26:0": {
+        "texture_south": null,
+        "texture_west": "bed_feet_side",
+        "texture_east": "bed_feet_side",
+        "texture_top": "bed_feet_top"
     },
     "27": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9d/Grid_Powered_Rail.png",
+        "type": "block",
+        "solid": false,
+        "texture_top": "rail_golden",
         "name": "Powered Rail"
+    },
+    "27:1": {
+        "texture_top": "rail_golden_powered"
     },
     "28": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a2/Grid_Detector_Rail.png",
+        "type": "block",
+        "solid": false,
+        "texture_top": "rail_detector",
         "name": "Detector Rail"
+    },
+    "28:1": {
+        "texture_top": "rail_detector_powered"
     },
     "29": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/32/Grid_Sticky_Piston.png",
+        "type": "block",
+        "solid": false,
+        "texture": "piston_side",
+        "texture_south": "piston_bottom",
+        "texture_north": "piston_top_normal",
+        "FIXME": "orientation",
         "name": "Sticky Piston"
     },
     "30": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/36/Grid_Cobweb.png",
+        "type": "block",
+        "solid": false,
+        "render_type": "cross",
         "name": "Cobweb"
     },
     "31": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c1/Grid_Tall_Grass2.png",
+        "type": "block",
+        "solid": false,
+        "render_type": "cross",
         "name": "Tall Grass"
     },
     "31:0": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Dead_Bush.png",
+        "texture": "deadbush",
         "name": "Shrub"
     },
     "31:1": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c1/Grid_Tall_Grass2.png",
+        "texture_uncolored": "tallgrass",
+        "texture_needs_colorisation": true,
+        "color_map": "foliage",
         "name": "Tall Grass"
     },
     "31:2": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e1/Grid_Tall_Grass3.png",
+        "texture_uncolored": "fern",
+        "texture_needs_colorisation": true,
+        "color_map": "foliage",
         "name": "Fern"
     },
     "32": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Dead_Bush.png",
+        "texture": "deadbush",
         "name": "Dead Bush"
     },
     "33": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3c/Grid_Piston.png",
-        "name": "Piston"
+        "type": "block",
+        "name": "Piston",
+        "texture_bottom": "piston_top_normal",
+        "texture_top": "piston_bottom",
+        "texture_side": "piston_side",
+        "FIXME": "All rotational values"
+    },
+    "33:0": {
+        "texture_bottom": "piston_top_normal",
+        "texture_top": "piston_bottom",
+        "texture_side": "piston_side"
+    },
+    "33:1": {
+        "texture_bottom": "piston_bottom",
+        "texture_top": "piston_top_normal",
+        "texture_side": "piston_side"
+    },
+    "33:2": {
+        "texture_bottom": "piston_top_normal",
+        "texture_top": "piston_bottom",
+        "texture_side": "piston_bottom@2"
     },
     "34": {
         "name": "Piston Extension"
     },
     "35": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_White_Wool.png",
+        "type": "block",
+        "solid": true,
+        "texture": "wool_colored_white",
         "name": "Wool"
     },
     "35:0": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_White_Wool.png",
+        "texture": "wool_colored_white",
         "name": "White Wool"
     },
     "35:1": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/07/Grid_Orange_Wool.png",
+        "texture": "wool_colored_orange",
         "name": "Orange Wool"
     },
     "35:2": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fd/Grid_Magenta_Wool.png",
+        "texture": "wool_colored_magenta",
         "name": "Magenta Wool"
     },
     "35:3": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fb/Grid_Light_Blue_Wool.png",
+        "texture": "wool_colored_light_blue",
         "name": "Light Blue Wool"
     },
     "35:4": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ed/Grid_Yellow_Wool.png",
+        "texture": "wool_colored_yellow",
         "name": "Yellow Wool"
     },
     "35:5": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a2/Grid_Lime_Wool.png",
+        "texture": "wool_colored_lime",
         "name": "Lime Wool"
     },
     "35:6": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b3/Grid_Pink_Wool.png",
+        "texture": "wool_colored_pink",
         "name": "Pink Wool"
     },
     "35:7": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d3/Grid_Gray_Wool.png",
+        "texture": "wool_colored_gray",
         "name": "Gray Wool"
     },
     "35:8": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e5/Grid_Light_Gray_Wool.png",
+        "texture": "wool_colored_silver",
         "name": "Light Gray Wool"
     },
     "35:9": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cd/Grid_Cyan_Wool.png",
+        "texture": "wool_colored_cyan",
         "name": "Cyan Wool"
     },
     "35:10": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/51/Grid_Purple_Wool.png",
+        "texture": "wool_colored_purple",
         "name": "Purple Wool"
     },
     "35:11": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/40/Grid_Blue_Wool.png",
+        "texture": "wool_colored_blue",
         "name": "Blue Wool"
     },
     "35:12": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Brown_Wool.png",
+        "texture": "wool_colored_brown",
         "name": "Brown Wool"
     },
     "35:13": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_Green_Wool.png",
+        "texture": "wool_colored_green",
         "name": "Green Wool"
     },
     "35:14": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Red_Wool.png",
+        "texture": "wool_colored_red",
         "name": "Red Wool"
     },
     "35:15": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/45/Grid_Black_Wool.png",
+        "texture": "wool_colored_black",
         "name": "Black Wool"
     },
     "36": {
@@ -336,214 +571,460 @@
     },
     "37": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/49/Grid_Dandelion.png",
+        "render_type": "cross",
+        "texture": "flower_dandelion",
         "name": "Dandelion"
     },
     "38": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/49/Grid_Rose.png",
+        "type": "block",
+        "solid": false,
+        "render_type": "cross",
+        "texture": "flower_rose",
         "name": "Flower"
     },
     "38:0": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c7/Grid_Poppy.png",
+        "texture": "flower_rose",
         "name": "Poppy"
     },
     "38:1": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Grid_Blue_Orchid.png",
+        "texture": "flower_blue_orchid",
         "name": "Blue Orchid"
     },
     "38:2": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/33/Grid_Allium.png",
+        "texture": "flower_allium",
         "name": "Allium"
     },
     "38:3": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/79/Grid_Azure_Bluet.png",
+        "texture": "flower_houstonia",
         "name": "Azure Bluet"
     },
     "38:4": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6f/Grid_Red_Tulip.png",
+        "texture": "flower_tulip_red",
         "name": "Red Tulip"
     },
     "38:5": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ec/Grid_Orange_Tulip.png",
+        "texture": "flower_tulip_orange",
         "name": "Orange Tulip"
     },
     "38:6": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4f/Grid_White_Tulip.png",
+        "texture": "flower_tulip_white",
         "name": "White Tulip"
     },
     "38:7": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/61/Grid_Pink_Tulip.png",
+        "texture": "flower_tulip_pink",
         "name": "Pink Tulip"
     },
     "38:8": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Oxeye_Daisy.png",
+        "texture": "flower_oxeye_daisy",
         "name": "Oxeye Daisy"
     },
     "39": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d8/Grid_Brown_Mushroom.png",
+        "type": "block",
+        "solid": false,
+        "render_type": "cross",
+        "texture": "mushroom_brown",
         "name": "Brown Mushroom"
     },
     "40": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Red_Mushroom.png",
+        "type": "block",
+        "solid": false,
+        "render_type": "cross",
+        "texture": "mushroom_red",
         "name": "Red Mushroom"
     },
     "41": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b6/Grid_Gold_%28Block%29.png",
+        "type": "block",
+        "solid": true,
+        "texture": "gold_block",
         "name": "Block of Gold"
     },
     "42": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5a/Grid_Iron_%28Block%29.png",
+        "type": "block",
+        "solid": true,
+        "texture": "iron_block",
         "name": "Block of Iron"
     },
     "43": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
+        "type": "block",
+        "solid": true,
         "name": "Double Slab"
     },
     "43:0": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
+        "texture": "stone_slab_side",
         "name": "Double Stone Slab"
     },
     "43:1": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
+        "texture": "sandstone_normal",
+        "texture_bottom": "sandstone_bottom",
+        "texture_top": "sandstone_top",
         "name": "Double Sandstone Slab"
     },
     "43:2": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
+        "texture": "planks_oak",
         "name": "Double Wooden Slab"
     },
     "43:3": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
+        "texture": "cobblestone",
         "name": "Double Cobblestone Slab"
     },
     "43:4": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
+        "texture": "brick",
         "name": "Double Brick Slab"
     },
     "43:5": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
+        "texture": "stonebrick",
         "name": "Double Stone Brick Slab"
     },
     "43:6": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
+        "texture": "nether_brick",
         "name": "Double Nether Brick Slab"
     },
     "43:7": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
+        "texture": "quartz_block_side",
+        "texture_top": "quartz_block_top",
+        "texture_bottom": "quartz_block_bottom",
         "name": "Double Quartz Slab"
     },
     "44": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
+        "type": "block",
+        "subtype": "slab",
+        "solid": false,
         "name": "Slab"
     },
     "44:0": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
+        "subtype": "slab",
+        "texture": "stone_slab_side",
         "name": "Stone Slab"
     },
     "44:1": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
+        "subtype": "slab",
+        "texture": "sandstone_normal",
+        "texture_bottom": "sandstone_bottom",
+        "texture_top": "sandstone_top",
         "name": "Sandstone Slab"
     },
     "44:2": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
-        "name": "Wooden Slab"
+        "alias": "126:0"
     },
     "44:3": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
+        "subtype": "slab",
+        "texture": "cobblestone",
         "name": "Cobblestone Slab"
     },
     "44:4": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
+        "subtype": "slab",
+        "texture": "brick",
         "name": "Brick Slab"
     },
     "44:5": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
+        "subtype": "slab",
+        "texture": "stonebrick",
         "name": "Stone Brick Slab"
     },
     "44:6": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
+        "subtype": "slab",
+        "texture": "nether_brick",
         "name": "Nether Brick Slab"
     },
     "44:7": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
+        "subtype": "slab",
+        "texture": "quartz_block_side",
+        "texture_top": "quartz_block_top",
+        "texture_bottom": "quartz_block_bottom",
+        "name": "Quartz Slab"
+    },
+    "44:128": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
+        "subtype": "slab-top",
+        "texture": "stone_slab_side",
+        "name": "Stone Slab"
+    },
+    "44:129": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
+        "subtype": "slab-top",
+        "texture": "sandstone_normal",
+        "texture_bottom": "sandstone_bottom",
+        "texture_top": "sandstone_top",
+        "name": "Sandstone Slab"
+    },
+    "44:130": {
+        "alias": "126:128"
+    },
+    "44:131": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
+        "subtype": "slab-top",
+        "texture": "cobblestone",
+        "name": "Cobblestone Slab"
+    },
+    "44:132": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
+        "subtype": "slab-top",
+        "texture": "brick",
+        "name": "Brick Slab"
+    },
+    "44:133": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
+        "subtype": "slab-top",
+        "texture": "stonebrick",
+        "name": "Stone Brick Slab"
+    },
+    "44:134": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
+        "subtype": "slab-top",
+        "texture": "nether_brick",
+        "name": "Nether Brick Slab"
+    },
+    "44:135": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
+        "subtype": "slab-top",
+        "texture": "quartz_block_side",
+        "texture_top": "quartz_block_top",
+        "texture_bottom": "quartz_block_bottom",
         "name": "Quartz Slab"
     },
     "45": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/64/Grid_Brick_%28Block%29.png",
+        "type": "block",
+        "solid": true,
+        "texture": "brick",
         "name": "Brick"
     },
     "46": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2b/Grid_TNT.png",
+        "type": "block",
+        "solid": true,
+        "texture": "tnt",
+        "texture_top": "tnt_top",
+        "texture_bottom": "tnt_bottom",
         "name": "TNT"
     },
     "47": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Bookshelf.png",
+        "type": "block",
+        "solid": true,
+        "texture": "bookshelf",
+        "texture_top": "planks_oak",
+        "texture_bottom": "planks_oak",
         "name": "Bookshelf"
     },
     "48": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7d/Grid_Moss_Stone.png",
+        "type": "block",
+        "solid": true,
+        "texture": "cobblestone_mossy",
         "name": "Moss Stone"
     },
     "49": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5d/Grid_Obsidian.png",
+        "type": "block",
+        "solid": true,
+        "texture": "obsidian",
         "name": "Obsidian"
     },
     "50": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/32/Grid_Torch.png",
+        "type": "block",
+        "subtype": "torch",
+        "solid": false,
+        "texture": "torch_on",
         "name": "Torch"
     },
     "51": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/21/Grid_Fire.gif",
+        "type": "block",
+        "subtype": "fire",
+        "solid": false,
+        "texture_side": "fire_layer_1",
+        "texture_top": "fire_layer_0",
+        "texture_bottom": "fire_layer_0",
         "name": "Fire"
     },
     "52": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3b/Grid_Monster_Spawner.png",
+        "type": "block",
+        "subtype": "mobspawner",
+        "solid": false,
+        "texture": "mob_spawner",
         "name": "Spawner"
     },
     "53": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3b/Grid_Wooden_Stairs.png",
+        "type": "block",
+        "subtype": "stairs",
+        "solid": false,
         "name": "Oak Wood Stairs"
     },
     "54": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c1/Grid_Chest.png",
+        "type": "block",
+        "subtype": "chest",
+        "solid": false,
         "name": "Chest"
     },
     "55": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c3/Grid_Redstone_%28Dust%29.png",
+        "type": "block",
+        "subtype": "redstone.wire",
+        "texture": "redstone_dust_cross",
+        "texture_redstone_wire_line": "redstone_dust_line",
         "name": "Redstone Wire"
     },
     "56": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ef/Grid_Diamond_%28Ore%29.png",
+        "type": "block",
+        "solid": true,
+        "texture": "diamond_ore",
         "name": "Diamond Ore"
     },
     "57": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/73/Grid_Diamond_%28Block%29.png",
+        "type": "block",
+        "solid": true,
+        "texture": "diamond_block",
         "name": "Block of Diamond"
     },
     "58": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/79/Grid_Crafting_Table.png",
+        "type": "block",
+        "solid": true,
+        "texture_north": "crafting_table_front",
+        "texture_west": "crafting_table_front",
+        "texture_south": "crafting_table_side",
+        "texture_east": "crafting_table_side",
+        "texture_top": "crafting_table_top",
+        "texture_bottom": "planks_oak",
         "name": "Crafting Table"
     },
     "59": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/68/Grid_Seeds.png",
+        "type": "block",
+        "solid": false,
+        "render_type": "square",
         "name": "Wheat"
+    },
+    "59:0": {
+        "texture_side": "wheat_stage_0"
+    },
+    "59:1": {
+        "texture_side": "wheat_stage_1"
+    },
+    "59:2": {
+        "texture_side": "wheat_stage_2"
+    },
+    "59:3": {
+        "texture_side": "wheat_stage_3"
+    },
+    "59:4": {
+        "texture_side": "wheat_stage_4"
+    },
+    "59:5": {
+        "texture_side": "wheat_stage_5"
+    },
+    "59:6": {
+        "texture_side": "wheat_stage_6"
     },
     "59:7": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c4/Grid_Wheat.png",
+        "texture_side": "wheat_stage_7",
         "name": "Wheat"
     },
     "60": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6a/Grid_Farmland.png",
+        "type": "block",
+        "solid": false,
+        "subtype": "farmland",
+        "texture": "dirt",
+        "texture_top": "farmland_wet",
         "name": "Farmland"
+    },
+    "60:0": {
+        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6a/Grid_Farmland.png",
+        "type": "block",
+        "solid": false,
+        "subtype": "farmland",
+        "texture": "dirt",
+        "name": "Farmland",
+        "texture_top": "farmland_dry"
     },
     "61": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2e/Grid_Furnace.png",
+        "type": "block",
+        "solid": true,
+        "texture_bottom": "furnace_top",
+        "texture_top": "furnace_top",
+        "texture_side": "furnace_side",
         "name": "Furnace"
+    },
+    "61:2": {
+        "texture_north": "furnace_front_off"
+    },
+    "61:3": {
+        "texture_south": "furnace_front_off"
+    },
+    "61:4": {
+        "texture_west": "furnace_front_off"
+    },
+    "61:5": {
+        "texture_east": "furnace_front_off"
     },
     "62": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2e/Grid_Furnace.png",
-        "name": "Burning Furnace"
+        "name": "Burning Furnace",
+        "type": "block",
+        "solid": true,
+        "texture_bottom": "furnace_top",
+        "texture_top": "furnace_top",
+        "texture_side": "furnace_side"
+    },
+    "61:2": {
+        "texture_north": "furnace_front_on"
+    },
+    "61:3": {
+        "texture_south": "furnace_front_on"
+    },
+    "61:4": {
+        "texture_west": "furnace_front_on"
+    },
+    "61:5": {
+        "texture_east": "furnace_front_on"
     },
     "63": {
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/06/Grid_Sign.png",
+        "type": "block",
+        "solid": false,
+        "subtype": "sign",
+        "texture_sign": "planks_oak",
         "name": "Sign"
     },
     "64": {

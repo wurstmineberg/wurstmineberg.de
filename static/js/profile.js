@@ -9,8 +9,20 @@ function get_user_name() {
     return username;
 }
 
+function initialize_datatables() {
+    /* Set the defaults for DataTables initialisation */
+    var table = $('#stats-blocks-table').dataTable({
+        "bPaginate": false,
+        "bAutoWidth": false,
+        "bLengthChange": false,
+        "bFilter": false,
+        "sDom": "<'row-fluid'<'span6'f><'span6'<'pull-right'T>>r>t",
+    });
+    new FixedHeader(table)
+}
+
 function display_user_data(person, item_data) {
-    $('.loading').removeClass('loading');
+    $('.panel-loading').removeClass('loading');
     
     var name = person.interfaceName;
     var ava;
@@ -63,29 +75,116 @@ function display_user_data(person, item_data) {
     }
     
     var social_links = $('#social-links');
-    if ('reddit' in person) {
+    if (person.reddit) {
         social_links.removeClass('hidden');
-        social_links.append('<a class="social-link" href="' + reddit_user_link(person['reddit']) + '">Reddit</a>');
+        social_links.append('<a class="social-link" href="' + reddit_user_link(person.reddit) + '">Reddit</a>');
     }
 
-    if ('twitter' in person) {
+    if (person.twitter) {
         social_links.removeClass('hidden');
-        social_links.append('<a class="social-link" href="' + twitter_user_link(person['twitter']) + '">Twitter</a>');
+        social_links.append('<a class="social-link" href="' + twitter_user_link(person.twitter) + '">Twitter</a>');
     }
 
-    if ('website' in person) {
+    if (person.website) {
         social_links.removeClass('hidden');
-        social_links.append('<a class="social-link" href="' + person['website'] + '">Website</a>');
+        social_links.append('<a class="social-link" href="' + person.website + '">Website</a>');
     }
     
-    if ('wiki' in person) {
+    if (person.wiki) {
         social_links.removeClass('hidden');
         social_links.append('<a class="social-link" href="' + wiki_user_link(person['wiki']) + '">Wiki</a>');
     }
 }
 
 function is_block(id) {
-    return false;
+    return id <= 255;
+}
+
+function initialize_inventory(tbody, rows, cols) {
+    for (var row = 0; row < rows; row++) {
+        tbody.append('<tr class="inv-row inv-row-' + row + '"></tr>');
+    }
+    for (var col = 0; col < cols; col++) {
+        tbody.children('tr.inv-row').append('<td class="inv-cell inv-cell-' + col + '"><div class="inv-cell-style"><div></div></div></td>');
+    }
+}
+
+function display_slot(cell, stack, item_data, string_data) {
+    var item = {};
+    if (stack['id'].toString() in item_data) {
+        item = item_data[stack['id'].toString()];
+    }
+    if (stack['id'] + ':' + stack['Damage'] in item_data) {
+        item = item_data[stack['id'] + ':' + stack['Damage']];
+    }
+    if ('image' in item) {
+        cell.children('div').children('div').append('<img src="' + item['image'] + '" />');
+    }
+    var name = stack['id'].toString();
+    if ('name' in item) {
+        name = item['name'];
+    }
+    if ('tag' in stack) {
+        if ('display' in stack['tag'] && 'Name' in stack['tag']['display']) {
+            name += ' “' + stack['tag']['display']['Name'] + '”';
+        } else if ('title' in stack['tag']) {
+            name += ' “' + stack['tag']['title'] + '”';
+            if ("author" in stack['tag']) {
+                name += ' by ' + stack['tag']['author'];
+            }
+        }
+        var enchantments = [];
+        if ('ench' in stack['tag']) {
+            enchantments = stack['tag']['ench'];
+        } else if ('StoredEnchantments' in stack['tag']) {
+            enchantments = stack['tag']['StoredEnchantments'];
+        }
+        if (enchantments.length > 0) {
+            name += ' (';
+            var first = true;
+            enchantments.forEach(function(ench) {
+                if (first) {
+                    first = false;
+                } else {
+                    name += ', ';
+                }
+                name += string_data['enchantments']['names'][ench['id'].toString()] + ' ' + string_data['enchantments']['levels'][ench['lvl'].toString()];
+            });
+            name += ')';
+        }
+    }
+    cell.children('div').attr('title', name);
+    cell.children('div').tooltip();
+    if ('Count' in stack && stack['Count'] > 1) {
+        cell.children('div').append('<span class="count">' + stack['Count'] + '</span>');
+    }
+}
+
+function display_inventory(player_data, item_data, string_data) {
+    $('tr.loading').remove();
+    $('.inventory-opt-out').removeClass('inventory-opt-out').addClass('inventory-opt-in');
+    initialize_inventory($('#main-inventory > tbody'), 3, 9);
+    initialize_inventory($('#hotbar-table > tbody'), 1, 9);
+    initialize_inventory($('#ender-chest-table > tbody'), 3, 9);
+    player_data['Inventory'].forEach(function(stack) {
+        if ('Slot' in stack) {
+            var cell = undefined;
+            if (stack['Slot'] >= 0 && stack['Slot'] < 9) {
+                cell = $('#hotbar-table .inv-row-0 .inv-cell-' + stack['Slot']);
+            } else if (stack['Slot'] >= 9 && stack['Slot'] < 36) {
+                cell = $('#main-inventory .inv-row-' + (Math.floor(stack['Slot'] / 9) - 1) + ' .inv-cell-' + (stack['Slot'] % 9));
+            }
+            if (cell !== undefined) {
+                display_slot(cell, stack, item_data, string_data);
+            }
+        }
+    });
+    player_data['EnderItems'].forEach(function(stack) {
+        if ('Slot' in stack && stack['Slot'] >= 0 && stack['Slot'] < 27) {
+            var cell = $('#ender-chest-table .inv-row-' + Math.floor(stack['Slot'] / 9) + ' .inv-cell-' + (stack['Slot'] % 9));
+            display_slot(cell, stack, item_data, string_data);
+        }
+    });
 }
 
 function display_stat_data(stat_data, string_data, item_data, achievement_data) {
@@ -117,10 +216,10 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
                 var count = value;
 
                 var collection;
-                if (id >= 256) {
-                    collection = items;
-                } else {
+                if (is_block(id)) {
                     collection = blocks;
+                } else {
+                    collection = items;
                 }
 
                 var info;
@@ -379,16 +478,23 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
 
     $('.loading-stat').remove();
     initialize_tooltips();
+
+    initialize_datatables();
 }
 
 function load_stat_data(person, string_data, item_data, achievement_data) {
-    $.when(API.personStatData(person))
-        .done(function(stat_data) {
-            display_stat_data(stat_data, string_data, item_data, achievement_data);
-        })
-        .fail(function() {
-            $('.loading-stat').html('<td colspan="7">Error: Could not load ' + person.minecraft + '.json</td>');
+    if (person.show_inventory) {
+        $.when(API.playerData(person)).done(function(player_data) {
+            display_inventory(player_data, item_data, string_data);
+        }).fail(function() {
+            $('.inventory-table .loading td').html('Error: Could not load ' + person.minecraft + '.dat');
         });
+    }
+    $.when(API.personStatData(person)).done(function(stat_data) {
+        display_stat_data(stat_data, string_data, item_data, achievement_data);
+    }).fail(function() {
+        $('.loading-stat').html('<td colspan="7">Error: Could not load ' + person.minecraft + '.json</td>');
+    });
 }
 
 function load_user_data() {
@@ -402,6 +508,7 @@ function load_user_data() {
             $('.loading').html('Error: User with this name not found');
         });
 }
+
 
 select_tab_with_id("tab-stats-general");
 bind_tab_events();

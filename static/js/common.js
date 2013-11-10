@@ -5,6 +5,7 @@ function Person (person_data) {
     this.irc = person_data['irc'];
     this.minecraft = person_data['minecraft'];
     this.reddit = person_data['reddit'];
+    this.show_inventory = 'show_inventory' in person_data ? person_data['show_inventory'] : false;
     this.status = 'status' in person_data ? person_data['status'] : 'later';
     this.twitter = person_data['twitter'];
     this.website = person_data['website'];
@@ -101,7 +102,13 @@ var API = {
     person: function(player) {
         return API.personById(player.id)
     },
-
+    
+    playerData: function(person) {
+        if (person.minecraft) {
+            return API.ajaxJSONDeferred('//api.wurstmineberg.de/player/' + person.minecraft + '/playerdata.json');
+        }
+    },
+    
     personStatData: function(person) {
         if (person.minecraft) {
             return API.ajaxJSONDeferred('//api.wurstmineberg.de/player/' + person.minecraft + '/stats.json');
@@ -351,117 +358,115 @@ function getOnlineData(list) {
 };
 
 function display_funding_data() {
-    $.when(API.moneys())
-        .fail(function() {
-            $('.funding-month').html('(error)');
-            $('.funding-progressbar').removeClass('active');
-            $('.funding-progressbar').children('.progress-bar').addClass('progress-bar-danger');
-        })
-        .done(function(money_data) {
-            $('.funding-progressbar').removeClass('active progress-striped');
-            $('.funding-progressbar').empty();
-            var funding_total = 0.0;
-
-            money_data['history'].forEach(function(transaction) {
-                if (transaction['type'] !== 'nessus-monthly') {
-                    funding_total += transaction['amount'];
-                };
-            });
-
-
-
-            var today = new Date();
-
-            // This is the beginning of the billing period: Sept-Oct 2013
-            var begin_month = 8;
-            var begin_year = 2013;
-
-            // This is the current month that is currently funded
-            var funded_year = begin_year;
-            var funded_month = begin_month;
-
-            // This is today
-            var year = today.getFullYear();
-            var month = today.getMonth();
-            var day = today.getDay();
-
-            var spending_monthly = Math.abs(money_data['spending_monthly']);
-
-            // Subtract the first month
+    $.when(API.moneys()).fail(function() {
+        $('.funding-month').html('(error)');
+        $('.funding-progressbar').removeClass('active');
+        $('.funding-progressbar').children('.progress-bar').addClass('progress-bar-danger');
+    }).done(function(money_data) {
+        $('.funding-progressbar').removeClass('active progress-striped');
+        $('.funding-progressbar').empty();
+        var funding_total = 0.0;
+        
+        money_data['history'].forEach(function(transaction) {
+            if (transaction['type'] !== 'nessus-monthly') {
+                funding_total += transaction['amount'];
+            };
+        });
+        
+        var today = new Date();
+        
+        // This is the beginning of the billing period: Sept-Oct 2013
+        var begin_month = 8;
+        var begin_year = 2013;
+        
+        // This is the current month that is currently funded
+        var funded_year = begin_year;
+        var funded_month = begin_month;
+        
+        // This is today
+        var year = today.getFullYear();
+        var month = today.getMonth();
+        var day = today.getDay();
+        
+        var spending_monthly = Math.abs(money_data['spending_monthly']);
+        
+        // Subtract the first month
+        funding_total -= spending_monthly;
+        
+        // Add a month until it doesn't fit anymore
+        while (funding_total >= spending_monthly) {
+            funded_month++;
+            if (funded_month >= 12) {
+                funded_year++;
+                funded_month = 0;
+            }
+            
             funding_total -= spending_monthly;
-
-            // Add a month until it doesn't fit anymore
-            while (funding_total >= spending_monthly) {
-                funded_month++;
-                if (funded_month >= 12) {
-                    funded_year++;
-                    funded_month = 0;
+        }
+        
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var abbr_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
+        if (funded_month == 11) {
+            $('.funding-month').html(months[funded_month] + ' ' + funded_year + ' to ' + months[0] + ' ' + (funded_year + 1));
+            $('.funding-month-small').html(abbr_months[funded_month] + ' ' + funded_year % 100 + ' to ' + abbr_months[0] + ' ' + (funded_year + 1) % 100);
+        } else {
+            $('.funding-month').html(months[funded_month] + ' to ' + months[(funded_month + 1) % 12] + ' ' + funded_year);
+            $('.funding-month-small').html(abbr_months[funded_month] + ' to ' + abbr_months[(funded_month + 1) % 12] + ' ' + funded_year % 100);
+        }
+        
+        var percent = 0;
+        
+        var funded_for_this_month = false;
+        if (funded_year > year) {
+            // We are funded until next year
+            funded_for_this_month = true;
+        } else {
+            if (funded_month == month) {
+                // We are in the month that is just not funded.
+                // Check if the billing date is already over.
+                
+                if (day < money_data['billing_dom']) {
+                    funded_for_this_month = true;
                 }
-
-                funding_total -= spending_monthly;
-            }
-
-            var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            var abbr_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-            if (funded_month == 11) {
-                $('.funding-month').html(months[funded_month] + ' ' + funded_year + ' to ' + months[0] + ' ' + (funded_year + 1));
-                $('.funding-month-small').html(abbr_months[funded_month] + ' ' + funded_year % 100 + ' to ' + abbr_months[0] + ' ' + (funded_year + 1) % 100);
             } else {
-                $('.funding-month').html(months[funded_month] + ' to ' + months[(funded_month + 1) % 12] + ' ' + funded_year);
-                $('.funding-month-small').html(abbr_months[funded_month] + ' to ' + abbr_months[(funded_month + 1) % 12] + ' ' + funded_year % 100);
+                funded_for_this_month = funded_month >= month;
             }
-
-            var percent = 0;
-
-            var funded_for_this_month = false;
-            if (funded_year > year) {
-                // We are funded until next year
-                funded_for_this_month = true;
-            } else {
-                if (funded_month == month) {
-                    // We are in the month that is just not funded.
-                    // Check if the billing date is already over.
-
-                    if (day < money_data['billing_dom']) {
-                        funded_for_this_month = true;
-                    }
-                } else {
-                    funded_for_this_month = funded_month >= month;
-                }
-            }
-
-            if (funded_for_this_month) {
-                percent = Math.floor(funding_total * 100 / spending_monthly);
-                $('.funding-progressbar').append('<div class="progress-bar progress-bar-success" style="width: ' + percent + '%;"><span class="sr-only">' + percent + '% funded</span></div>');
-            } else {
-                var expected_total = funding_total;
-
-                money_data['history'].forEach(function(transaction) {
-                    if (transaction['type'] == 'player-monthly') {
-                        var transaction_year = transaction['date'].split('-')[0];
-                        var transaction_month = transaction['date'].split('-')[1];
-                        var transaction_day = transaction['date'].split('-')[2];
-                        if (transaction_day < money_data['billing_dom']) {
-                            if ((transaction_month - 1 == month && transaction_year == year) || (month == 12 && transaction_month == 1 && transaction_year - 1 == year)) {
-                                expected_total -= transaction['amount'];
-                            }
-                        } else if (transaction_year == year && transaction_month == month) {
+        }
+        
+        if (funded_for_this_month) {
+            percent = Math.floor(funding_total * 100 / spending_monthly);
+            $('.funding-progressbar').append('<div class="progress-bar progress-bar-success" style="width: ' + percent + '%;"><span class="sr-only">' + percent + '% funded</span></div>');
+        } else {
+            var expected_total = funding_total;
+            
+            money_data['history'].forEach(function(transaction) {
+                if (transaction['type'] == 'player-monthly') {
+                    var transaction_year = transaction['date'].split('-')[0];
+                    var transaction_month = transaction['date'].split('-')[1];
+                    var transaction_day = transaction['date'].split('-')[2];
+                    if (transaction_day < money_data['billing_dom']) {
+                        if ((transaction_month - 1 == month && transaction_year == year) || (month == 12 && transaction_month == 1 && transaction_year - 1 == year)) {
                             expected_total -= transaction['amount'];
                         }
+                    } else if (transaction_year == year && transaction_month == month) {
+                        expected_total -= transaction['amount'];
                     }
-                });
-
-                var expected_percent = Math.max(0, Math.min(100 - percent, Math.floor(expected_total * 100 / -money_data['spending_monthly'])));
-                var progress_bar_class = "progress-bar-warning";
-                if (expected_percent <= 50) {
-                    progress_bar_class = "progress-bar-danger";
                 }
-
-                $('.funding-progressbar').append('<div class="progress-bar progress-bar-success" style="width: ' + expected_percent + '%;"><span class="sr-only">' + expected_percent + '% expected</span></div>');
-                $('.funding-progressbar').append('<div class="progress-bar ' + progress_bar_class + '" style="width: ' + (100 - expected_percent) + '%;"><span class="sr-only">bla</span></div>');
+            });
+            
+            var expected_percent = Math.max(0, Math.min(100 - percent, Math.floor(expected_total * 100 / -money_data['spending_monthly'])));
+            var progress_bar_class = "progress-bar-warning";
+            if (expected_percent <= 50) {
+                progress_bar_class = "progress-bar-danger";
             }
-        });
+            
+            $('.funding-progressbar').append('<div class="progress-bar progress-bar-success" style="width: ' + expected_percent + '%;"><span class="sr-only">' + expected_percent + '% expected</span></div>');
+            $('.funding-progressbar').append('<div class="progress-bar ' + progress_bar_class + '" style="width: ' + (100 - expected_percent) + '%;"><span class="sr-only">bla</span></div>');
+        }
+        $('.funding-progressbar').attr('title', funding_total.toFixed(2) + '€ out of ' + spending_monthly.toFixed(2) + '€');
+        $('.funding-progressbar').tooltip();
+    });
 };
 
 // Run by default
