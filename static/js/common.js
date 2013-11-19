@@ -12,7 +12,7 @@ function Person (person_data) {
     this.fav_item = person_data['fav_item'];
     this.ava = '/assets/img/ava/' + this.minecraft + '.png';
     this.option = function(opt) {
-        var default_true_options = []; # These options are on by default. All other options are off by default.
+        var default_true_options = []; // These options are on by default. All other options are off by default.
         if ('options' in person_data && opt in person_data['options']) {
             return person_data['options'][opt];
         } else {
