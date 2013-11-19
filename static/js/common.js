@@ -5,14 +5,21 @@ function Person (person_data) {
     this.irc = person_data['irc'];
     this.minecraft = person_data['minecraft'];
     this.reddit = person_data['reddit'];
-    this.show_inventory = 'show_inventory' in person_data ? person_data['show_inventory'] : false;
     this.status = 'status' in person_data ? person_data['status'] : 'later';
     this.twitter = person_data['twitter'];
     this.website = person_data['website'];
     this.wiki = person_data['wiki'];
     this.fav_item = person_data['fav_item'];
     this.ava = '/assets/img/ava/' + this.minecraft + '.png';
-
+    this.option = function(opt) {
+        var default_true_options = []; # These options are on by default. All other options are off by default.
+        if ('options' in person_data && opt in person_data['options']) {
+            return person_data['options'][opt];
+        } else {
+            return opt in default_true_options;
+        }
+    };
+    this.show_inventory = this.option('show_inventory');
     this.interfaceName = function() {
         if ('name' in person_data) {
             return person_data['name'];
