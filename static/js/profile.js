@@ -301,25 +301,21 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
                 };
                 
                 var final_value = value;
-                if (stat[1] === 'exploreAllBiomes') {
-                    if ('value' in value) {
-                        if (value['value'] === 1) {
-                            final_value = "Yes"
-                        } else {
-                            if ('progress' in value) {
-                                final_value = 'Progress: ';
-                                $.each(value['progress'], function(index, biome) {
-                                    final_value += biome + ', ';
-                                });
-                                final_value = final_value.substring(0, final_value.length - 2);
-                            }
-                        }
+                if (stat[1] === 'exploreAllBiomes' && 'value' in value) {
+                    if (value['value'] === 1) {
+                        final_value = 'Yes';
+                    } else if ('progress' in value && value['progress'].length > 0) {
+                        var biomes = value['progress'];
+                        biomes.sort();
+                        final_value = 'Progress: ' + biomes.join(', ');
+                    } else {
+                        final_value = 'No';
                     }
                 } else {
                     if (parseInt(value) >= 1) {
                         final_value = 'Yes';
                     } else {
-                        final_value = 'No'
+                        final_value = 'No';
                     }
                 }
                 
