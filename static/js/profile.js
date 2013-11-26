@@ -305,7 +305,7 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
                     if (value['value'] === 1) {
                         final_value = 'Yes';
                     } else if ('progress' in value && value['progress'].length > 0) {
-                        var biomes = value['progress'];
+                        var biomes = value['progress'].slice(0);
                         biomes.sort();
                         final_value = 'Progress: ' + biomes.join(', ');
                     } else {
