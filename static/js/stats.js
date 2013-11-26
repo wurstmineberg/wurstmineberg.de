@@ -70,7 +70,7 @@ function display_leaderboard_stat_data(stat_data, string_data, people) {
         var players = data['players'];
         var playerhtml = html_player_list(players);
         var minplayers = data['minplayers'];
-        var minplayerhtml = html_player_list(players);
+        var minplayerhtml = html_player_list(minplayers);
         var value = prettify_stats_value(stat[1], data['value']);
         var minvalue = prettify_stats_value(stat[1], data['minvalue']);
 
