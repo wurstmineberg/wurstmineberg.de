@@ -118,7 +118,11 @@ function display_slot(cell, stack, item_data, string_data) {
         item = item_data[stack['id'] + ':' + stack['Damage']];
     }
     if ('image' in item) {
-        cell.children('div').children('div').append('<img src="' + item['image'] + '" />');
+        var image = '<img src="/assets/img/grid/' + item['image'] + '" />';
+        if (item['image'].startsWith('http://') || item['image'].startsWith('https://')) {
+            image = '<img src="' + item['image'] + '" />';
+        }
+        cell.children('div').children('div').append(image);
     }
     var name = stack['id'].toString();
     if ('name' in item) {
@@ -404,7 +408,11 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
         if ('info' in dict) {
             var info = dict['info'];
             if ('image' in info) {
-                var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+                if (info['image'].startsWith('http://') || info['image'].startsWith('https://')) {
+                    var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+                } else {
+                    var image = '<img src="/assets/img/grid/' + info['image'] + '" alt="image" class="item-image" />';
+                }
             };
         }
 

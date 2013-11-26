@@ -66,12 +66,12 @@
         "type": "block",
         "solid": true,
         "name": "Wooden Planks",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9f/Grid_Wooden_Plank.png"
+        "image": "oakwoodplanks.png"
     },
     "5:0": {
         "name": "Oak Wood Planks",
         "texture": "planks_oak",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9f/Grid_Wooden_Plank.png"
+        "image": "oakwoodplanks.png"
     },
     "5:1": {
         "name": "Spruce Wood Planks",
@@ -1020,7 +1020,7 @@
         "texture_east": "furnace_front_on"
     },
     "63": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/06/Grid_Sign.png",
+        "image": "sign.png",
         "type": "block",
         "solid": false,
         "subtype": "sign",
@@ -1044,7 +1044,7 @@
         "name": "Cobblestone Stairs"
     },
     "68": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/06/Grid_Sign.png",
+        "image": "sign.png",
         "name": "Sign"
     },
     "69": {
@@ -1968,7 +1968,7 @@
         "name": "Golden Shovel"
     },
     "285": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/95/Grid_Gold_Pickaxe.png",
+        "image": "goldpickaxe.png",
         "name": "Golden Pickaxe"
     },
     "286": {
@@ -2125,7 +2125,7 @@
         "name": "Enchanted Golden Apple"
     },
     "323": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/06/Grid_Sign.png",
+        "image": "sign.png",
         "name": "Sign"
     },
     "324": {
@@ -2209,7 +2209,7 @@
         "name": "Minecart with Furnace"
     },
     "344": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/27/Grid_Egg.png",
+        "image": "egg.png",
         "name": "Egg"
     },
     "345": {
@@ -2345,7 +2345,7 @@
         "name": "Cookie"
     },
     "358": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/33/Grid_Map_%28Item%29.png",
+        "image": "map.png",
         "name": "Map"
     },
     "359": {
@@ -2557,7 +2557,7 @@
         "name": "Fire Charge"
     },
     "386": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/eb/Grid_Book_and_Quill.png",
+        "image": "bookandquill.png",
         "name": "Book and Quill"
     },
     "387": {
@@ -2565,7 +2565,7 @@
         "name": "Written Book"
     },
     "388": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/87/Grid_Emerald.png",
+        "image": "emerald.png",
         "name": "Emerald"
     },
     "389": {
@@ -2646,7 +2646,7 @@
         "name": "Firework Star"
     },
     "403": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Enchanted_Book.png",
+        "image": "enchantedbook.png",
         "name": "Enchanted Book"
     },
     "404": {
@@ -2734,7 +2734,7 @@
         "name": "Music Disc: C418 — ward"
     },
     "2266": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e4/Grid_11_Disc.png",
+        "image": "musicdisc11.png",
         "name": "Music Disc: C418 — 11"
     },
     "2267": {
