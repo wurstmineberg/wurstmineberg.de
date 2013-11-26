@@ -1072,11 +1072,11 @@
         "name": "Redstone Ore"
     },
     "75": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/66/Grid_Redstone_%28Torch%29.png",
+        "image": "redstonetorch.png",
         "name": "Redstone Torch"
     },
     "76": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/66/Grid_Redstone_%28Torch%29.png",
+        "image": "redstonetorch.png",
         "name": "Redstone Torch"
     },
     "77": {

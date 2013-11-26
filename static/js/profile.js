@@ -442,7 +442,11 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
         if ('info' in dict) {
             var info = dict['info'];
             if ('image' in info) {
-                var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+                if (info['image'].startsWith('http://') || info['image'].startsWith('https://')) {
+                    var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+                } else {
+                    var image = '<img src="/assets/img/grid/' + info['image'] + '" alt="image" class="item-image" />';
+                }
             };
         }
 
