@@ -1,0 +1,72 @@
+{
+    "0": {
+        "name": "Ocean",
+        "temperature": "neutral"
+    },
+    "1": {
+        "name": "Plains",
+        "temperature": "medium"
+    },
+    "2": {
+        "name": "Desert",
+        "temperature": "warm"
+    },
+    "3": {
+        "name": "Extreme Hills",
+        "temperature": "cold"
+    },
+    "4": {
+        "name": "Forest",
+        "temperature": "medium"
+    },
+    "5": {
+        "name": "Taiga",
+        "temperature": "cold"
+    },
+    "6": {
+        "name": "Swampland",
+        "temperature": "medium"
+    },
+    "7": {
+        "name": "River",
+        "temperature": "medium"
+    },
+    "8": {
+        "name": "Hell",
+        "temperature": "warm"
+    },
+    "9": {
+        "name": "Sky",
+        "temperature": "cold"
+    },
+    "10": {
+        "adventuringTime": false,
+        "name": "FrozenOcean",
+        "temperature": "frozen"
+    },
+    "11": {
+        "name": "FrozenRiver",
+        "temperature": "frozen"
+    },
+    "12": {
+        "name": "Ice Plains",
+        "temperature": "frozen"
+    },
+    "13": {
+        "name": "Ice Mountains",
+        "temperature": "frozen"
+    },
+    "14": {
+        "name": "MushroomIsland",
+        "temperature": "neutral"
+    },
+    "15": {
+        "name": "MushroomIslandShore",
+        "temperature": "neutral"
+    },
+    "20": {
+        "adventuringTime": false,
+        "name": "Extreme Hills Edge",
+        "temperature": "cold"
+    }
+}
