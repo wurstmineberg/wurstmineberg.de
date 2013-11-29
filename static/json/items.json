@@ -746,14 +746,14 @@
         "type": "block"
     },
     "21": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d2/Grid_Lapis_Lazuli_%28Ore%29.png",
+        "image": "lapislazuliore.png",
         "name": "Lapis Lazuli Ore",
         "solid": true,
         "texture": "lapis_ore",
         "type": "block"
     },
     "22": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/58/Grid_Lapis_Lazuli_%28Block%29.png",
+        "image": "lapislazuliblock.png",
         "name": "Lapis Lazuli Block",
         "solid": true,
         "texture": "lapis_block",
@@ -1138,7 +1138,7 @@
         "name": "Iron Boots"
     },
     "31": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c1/Grid_Tall_Grass2.png",
+        "image": "tallgrass.png",
         "name": "Tall Grass",
         "render_type": "cross",
         "solid": false,
@@ -1982,7 +1982,7 @@
         "name": "Minecart with Hopper"
     },
     "41": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b6/Grid_Gold_%28Block%29.png",
+        "image": "goldblock.png",
         "name": "Block of Gold",
         "solid": true,
         "texture": "gold_block",
@@ -2001,7 +2001,7 @@
         "name": "Diamond Horse Armor"
     },
     "42": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5a/Grid_Iron_%28Block%29.png",
+        "image": "ironblock.png",
         "name": "Block of Iron",
         "solid": true,
         "texture": "iron_block",
