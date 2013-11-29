@@ -76,6 +76,14 @@ function Biome (biome_data) {
 			return biome_data['id'];
 		};
 	}();
+
+	this.adventuringTime = function() {
+		if ('adventuringTime' in biome_data) {
+			return biome_data['adventuringTime'];
+		} else {
+			return true;
+		}
+	}();
 }
 
 function BiomeInfo (biome_info) {

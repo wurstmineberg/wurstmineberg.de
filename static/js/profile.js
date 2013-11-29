@@ -309,7 +309,11 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
                     var visitedBiomes = value['progress'].slice(0);
                     final_value = '<span class="achievement-list">';
 
-                	_.map(biomes.biomes, function(biome) {
+                    adventuring_biomes = _.filter(biomes.biomes, function(biome) {
+                    	return biome.adventuringTime;
+                    });
+
+                	_.map(adventuring_biomes, function(biome) {
                 		final_value += '<span class="glyphicon-text-aligned achievement-value">';
 
                 		if (_.find(visitedBiomes, function(biome_name) {
