@@ -306,12 +306,12 @@
 			"description": "Like mesa but with a low desert-like ground area and tall columns of stained clay",
 			"type": "warm"
 		},
-		"165": {
+		"166": {
 			"id": "Mesa Plateau F M",
 			"description": "A slightly flatter version of the Mesa Plateau F",
 			"type": "warm"
 		},
-		"166": {
+		"167": {
 			"id": "Mesa Plateau M",
 			"description": "A slightly flatter version of the Mesa Plateau",
 			"type": "warm"
