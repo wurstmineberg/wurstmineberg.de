@@ -191,7 +191,7 @@ function display_inventory(player_data, item_data, string_data) {
     });
 }
 
-function display_stat_data(stat_data, string_data, item_data, achievement_data) {
+function display_stat_data(stat_data, string_data, item_data, achievement_data, biomes) {
     var loading_stat_general = $('#loading-stat-general-table');
     var loading_stat_item = $('#loading-stat-items-table');
     var loading_stat_block = $('#loading-stat-blocks-table');
@@ -306,15 +306,24 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
                 
                 var final_value = value;
                 if (stat[1] === 'exploreAllBiomes' && 'value' in value) {
-                    if (value['value'] === 1) {
-                        final_value = 'Yes';
-                    } else if ('progress' in value && value['progress'].length > 0) {
-                        var biomes = value['progress'].slice(0);
-                        biomes.sort();
-                        final_value = 'Progress: ' + biomes.join(', ');
-                    } else {
-                        final_value = 'No';
-                    }
+                    var visitedBiomes = value['progress'].slice(0);
+                    final_value = '<span class="achievement-list">';
+
+                	_.map(biomes.biomes, function(biome) {
+                		final_value += '<span class="glyphicon-text-aligned achievement-value">';
+
+                		if (_.find(visitedBiomes, function(biome_name) {
+                			return biome_name === biome.id;
+                		})) {
+                			final_value += '<span class="glyphicon glyphicon-ok text-success"></span> ';
+                		} else {
+                			final_value += '<span class="glyphicon glyphicon-remove text-danger"></span> ';
+                		};
+
+                		final_value += '<abbr class="nounderline achievement-name" title="' + biome.description + '">' + biome.name + '</abbr></span> ';
+                	});
+
+                	final_value += '</span>';
                 } else {
                     if (parseInt(value) >= 1) {
                         final_value = 'Yes';
@@ -487,10 +496,10 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
     $('.loading-stat').remove();
     initialize_tooltips();
 
-    initialize_datatables();
+    //initialize_datatables();
 }
 
-function load_stat_data(person, string_data, item_data, achievement_data) {
+function load_stat_data(person, string_data, item_data, achievement_data, biomes) {
     if (person.show_inventory) {
         $.when(API.playerData(person)).done(function(player_data) {
             display_inventory(player_data, item_data, string_data);
@@ -499,7 +508,7 @@ function load_stat_data(person, string_data, item_data, achievement_data) {
         });
     }
     $.when(API.personStatData(person)).done(function(stat_data) {
-        display_stat_data(stat_data, string_data, item_data, achievement_data);
+        display_stat_data(stat_data, string_data, item_data, achievement_data, biomes);
     }).fail(function() {
         $('.loading-stat').html('<td colspan="7">Error: Could not load ' + person.minecraft + '.json</td>');
     });
@@ -508,9 +517,9 @@ function load_stat_data(person, string_data, item_data, achievement_data) {
 function load_user_data() {
     var username = get_user_name();
 
-    $.when(API.personById(username), API.stringData(), API.itemData(), API.achievementData())
-        .done(function(person, string_data, item_data, achievement_data) {
-            load_stat_data(person, string_data, item_data, achievement_data);
+    $.when(API.personById(username), API.stringData(), API.itemData(), API.achievementData(), API.biomes())
+        .done(function(person, string_data, item_data, achievement_data, biomes) {
+            load_stat_data(person, string_data, item_data, achievement_data, biomes);
             display_user_data(person, item_data);
         }).fail(function() {
             $('.loading').html('Error: User with this name not found');
