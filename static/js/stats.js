@@ -81,7 +81,7 @@ function display_leaderboard_stat_data(stat_data, string_data, people) {
     $('.loading-stat').remove();
 }
 
-function prepare_achievements(achievement_data) {
+function prepare_achievements(achievement_data, item_data) {
     var missing_main_track = {};
     $.each(achievement_data, function(achievement_id, achievement_info) {
         if (achievement_info['track'] == 'main') {
@@ -90,7 +90,12 @@ function prepare_achievements(achievement_data) {
     });
     while (Object.keys(missing_main_track).length) {
         $.each(missing_main_track, function(achievement_id, achievement_info) {
-            var achievement_html = '<tr id="achievement-row-' + achievement_id + '"><td>&nbsp;</td><td>' + achievement_info['displayname'] + '</td><td>&nbsp;</td>';
+            var fancy = false;
+            if ('fancy' in achievement_info) {
+                fancy = achievement_info['fancy'];
+            }
+            var achievement_image = '/assets/img/grid/' + item_data[achievement_info['icon'].toString()]['image'];
+            var achievement_html = '<tr id="achievement-row-' + achievement_id + '"><td><img class="achievement-image' + (fancy ? ' fancy' : '') + '" src="' + achievement_image + '" /></td><td>' + achievement_info['displayname'] + '</td><td>&nbsp;</td>';
             if (achievement_info['requires'] == null) {
                 $('#achievement-row-none').after(achievement_html);
                 delete missing_main_track[achievement_id];
@@ -122,9 +127,9 @@ function load_leaderboard_stat_data() {
 }
 
 function load_achievements_stat_data() {
-    $.when(API.biomes()).done(function(biome_data) {
+    $.when(API.biomes(), API.itemData()).done(function(biome_data, item_data) {
         $.when(API.achievementData()).done(function(achievement_data) {
-            prepare_achievements(achievement_data);
+            prepare_achievements(achievement_data, item_data);
             display_achievements_stat_data(achievement_data);
         }).fail(function() {
             $('#achievement-row-loading').html('<td colspan="3">Error: Could not load achievements</td>');
