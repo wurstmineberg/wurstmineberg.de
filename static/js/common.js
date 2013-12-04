@@ -19,7 +19,9 @@ function Person (person_data) {
             return opt in default_true_options;
         }
     };
-    this.show_inventory = this.option('show_inventory');
+    this.option_is_default = function(opt) {
+        return !('options' in person_data && opt in person_data['options']);
+    }
     this.interfaceName = function() {
         if ('name' in person_data) {
             return person_data['name'];
