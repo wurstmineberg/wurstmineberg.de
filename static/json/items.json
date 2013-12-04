@@ -89,7 +89,7 @@
         "name": "Lily Pad"
     },
     "112": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/62/Grid_Nether_Brick.png",
+        "image": "netherbricks.png",
         "name": "Nether Brick"
     },
     "113": {
@@ -896,7 +896,7 @@
         "name": "Arrow"
     },
     "263": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1c/Grid_Coal_%28Item%29.png",
+        "image": "coal.png",
         "name": "Coal"
     },
     "263:1": {
@@ -904,15 +904,15 @@
         "name": "Charcoal"
     },
     "264": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cf/Grid_Diamond_%28Gem%29.png",
+        "image": "diamond.png",
         "name": "Diamond"
     },
     "265": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c6/Grid_Iron_%28Ingot%29.png",
+        "image": "ironingot.png",
         "name": "Iron Ingot"
     },
     "266": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/62/Grid_Gold_%28Ingot%29.png",
+        "image": "goldingot.png",
         "name": "Gold Ingot"
     },
     "267": {
@@ -1267,7 +1267,7 @@
         "name": "Iron Door"
     },
     "331": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c3/Grid_Redstone_%28Dust%29.png",
+        "image": "redstonedust.png",
         "name": "Redstone Dust"
     },
     "332": {
@@ -1287,7 +1287,7 @@
         "name": "Milk"
     },
     "336": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ed/Grid_Clay_%28Brick%29.png",
+        "image": "brick.png",
         "name": "Brick"
     },
     "337": {
@@ -1966,7 +1966,7 @@
         "name": "Comparator"
     },
     "405": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/71/Grid_Nether_Brick_%28Item%29.png",
+        "image": "netherbrick.png",
         "name": "Nether Brick"
     },
     "406": {
@@ -2175,7 +2175,7 @@
         "texture_top": "quartz_block_top"
     },
     "45": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/64/Grid_Brick_%28Block%29.png",
+        "image": "bricks.png",
         "name": "Brick",
         "solid": true,
         "texture": "brick",
@@ -2246,7 +2246,7 @@
         "type": "block"
     },
     "53": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3b/Grid_Wooden_Stairs.png",
+        "image": "oakwoodstairs.png",
         "name": "Oak Wood Stairs",
         "solid": false,
         "subtype": "stairs",
@@ -2275,7 +2275,7 @@
         "type": "block"
     },
     "57": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/73/Grid_Diamond_%28Block%29.png",
+        "image": "diamondblock.png",
         "name": "Block of Diamond",
         "solid": true,
         "texture": "diamond_block",
@@ -2425,11 +2425,11 @@
         "name": "Wooden Door"
     },
     "65": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/99/Grid_Ladders.png",
+        "image": "ladder.png",
         "name": "Ladder"
     },
     "66": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7a/Grid_Rails.png",
+        "image": "rail.png",
         "name": "Rail"
     },
     "67": {
@@ -2494,11 +2494,11 @@
         "name": "Wooden Pressure Plate"
     },
     "73": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b8/Grid_Redstone_%28Ore%29.png",
+        "image": "redstoneore.png",
         "name": "Redstone Ore"
     },
     "74": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b8/Grid_Redstone_%28Ore%29.png",
+        "image": "redstoneore.png",
         "name": "Redstone Ore"
     },
     "75": {
@@ -2538,7 +2538,7 @@
         "name": "Cactus"
     },
     "82": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a6/Grid_Clay_%28Block%29.png",
+        "image": "clayblock.png",
         "name": "Clay"
     },
     "83": {
@@ -2566,7 +2566,7 @@
         "name": "Soul Sand"
     },
     "89": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fd/Grid_Glowstone_%28Block%29.png",
+        "image": "glowstone.png",
         "name": "Glowstone"
     },
     "9": {
@@ -2582,7 +2582,7 @@
         "name": "Nether Portal"
     },
     "91": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/ac/Grid_Jack-O-Lantern.png",
+        "image": "jackolantern.png",
         "name": "Jack o'Lantern"
     },
     "92": {
@@ -2694,7 +2694,7 @@
         "name": "Cracked Stone Brick Monster Egg"
     },
     "97:5": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/77/Grid_Circle_Stone_Brick.png",
+        "image": "chiseledstonebrick.png",
         "name": "Chiseled Stone Brick Monster Egg"
     },
     "98": {
@@ -2710,7 +2710,7 @@
         "name": "Cracked Stone Brick"
     },
     "98:3": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/77/Grid_Circle_Stone_Brick.png",
+        "image": "chiseledstonebrick.png",
         "name": "Chiseled Stone Brick"
     },
     "99": {
