@@ -81,16 +81,61 @@ function display_leaderboard_stat_data(stat_data, string_data, people) {
     $('.loading-stat').remove();
 }
 
+function prepare_achievements(achievement_data) {
+    var missing_main_track = {};
+    $.each(achievement_data, function(achievement_id, achievement_info) {
+        if (achievement_info['track'] == 'main') {
+            missing_main_track[achievement_id] = achievement_info;
+        }
+    });
+    while (Object.keys(missing_main_track).length) {
+        $.each(missing_main_track, function(achievement_id, achievement_info) {
+            var achievement_html = '<tr id="achievement-row-' + achievement_id + '"><td>&nbsp;</td><td>' + achievement_info['displayname'] + '</td><td>&nbsp;</td>';
+            if (achievement_info['requires'] == null) {
+                $('#achievement-row-none').after(achievement_html);
+                delete missing_main_track[achievement_id];
+            } else if ($('#achievement-row-' + achievement_info['requires']).length) {
+                $('#achievement-row-' + achievement_info['requires']).after(achievement_html);
+                delete missing_main_track[achievement_id];
+            }
+        });
+    }
+    $('#achievement-row-loading').remove();
+}
+
+function display_achievements_stat_data(achievement_data) {
+    //TODO
+}
+
+function display_biomes_stat_data(biome_data) {
+    //TODO
+}
+
 function load_leaderboard_stat_data() {
     $.when(API.statData(), API.stringData(), API.people())
         .done(function(stat_data, string_data, people) {
             display_leaderboard_stat_data(stat_data, string_data, people)
         })
         .fail(function() {
-            $('.loading-stat').html('<td colspan="7">Error: Could not load api.wurstmineberg.de/server/playerstats/general.json</td>');
+            $('#loading-stat-leaderboard-table').html('<td colspan="7">Error: Could not load api.wurstmineberg.de/server/playerstats/general.json</td>');
         });
 }
 
-load_leaderboard_stat_data();
-bind_tab_events();
+function load_achievements_stat_data() {
+    $.when(API.biomes()).done(function(biome_data) {
+        $.when(API.achievementData()).done(function(achievement_data) {
+            prepare_achievements(achievement_data);
+            display_achievements_stat_data(achievement_data);
+        }).fail(function() {
+            $('#achievement-row-loading').html('<td colspan="3">Error: Could not load achievements</td>');
+        });
+        display_biomes_stat_data(achievement_data);
+    }).fail(function() {
+        $('#loading-achievements-table-biome-track').html('<td colspan="3">Error: Could not load biomes</td>');
+    });
+}
+
 select_tab_with_id("tab-stats-leaderboard");
+bind_tab_events();
+load_leaderboard_stat_data();
+load_achievements_stat_data();

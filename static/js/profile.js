@@ -310,24 +310,24 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
                     final_value = '<span class="achievement-list">';
 
                     adventuring_biomes = _.filter(biomes.biomes, function(biome) {
-                    	return biome.adventuringTime;
+                        return biome.adventuringTime;
                     });
 
-                	_.map(adventuring_biomes, function(biome) {
-                		final_value += '<span class="glyphicon-text-aligned achievement-value">';
+                    _.map(adventuring_biomes, function(biome) {
+                        final_value += '<span class="glyphicon-text-aligned achievement-value">';
 
-                		if (_.find(visitedBiomes, function(biome_name) {
-                			return biome_name === biome.id;
-                		})) {
-                			final_value += '<span class="glyphicon glyphicon-ok text-success"></span> ';
-                		} else {
-                			final_value += '<span class="glyphicon glyphicon-remove text-danger"></span> ';
-                		};
+                        if (_.find(visitedBiomes, function(biome_name) {
+                            return biome_name === biome.id;
+                        })) {
+                            final_value += '<span class="glyphicon glyphicon-ok text-success"></span> ';
+                        } else {
+                            final_value += '<span class="glyphicon glyphicon-remove text-danger"></span> ';
+                        };
 
-                		final_value += '<abbr class="nounderline achievement-name" title="' + biome.description + '">' + biome.name + '</abbr></span> ';
-                	});
+                        final_value += '<abbr class="nounderline achievement-name" title="' + biome.description + '">' + biome.name + '</abbr></span> ';
+                    });
 
-                	final_value += '</span>';
+                    final_value += '</span>';
                 } else {
                     if (parseInt(value) >= 1) {
                         final_value = 'Yes';

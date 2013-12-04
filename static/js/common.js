@@ -62,62 +62,62 @@ function People (people_data) {
 }
 
 function Biome (biome_data) {
-	this.id = biome_data['id'];
-	this.description = function() {
-		if ('description' in biome_data) {
-			return biome_data['description']
-		} else {
-			return '';
-		}
-	}();
-	this.type = biome_data['type'];
-	this.name = function() {
-		if ('name' in biome_data) {
-			return biome_data['name'];
-		} else {
-			return biome_data['id'];
-		};
-	}();
+    this.id = biome_data['id'];
+    this.description = function() {
+        if ('description' in biome_data) {
+            return biome_data['description']
+        } else {
+            return '';
+        }
+    }();
+    this.type = biome_data['type'];
+    this.name = function() {
+        if ('name' in biome_data) {
+            return biome_data['name'];
+        } else {
+            return biome_data['id'];
+        };
+    }();
 
-	this.adventuringTime = function() {
-		if ('adventuringTime' in biome_data) {
-			return biome_data['adventuringTime'];
-		} else {
-			return true;
-		}
-	}();
+    this.adventuringTime = function() {
+        if ('adventuringTime' in biome_data) {
+            return biome_data['adventuringTime'];
+        } else {
+            return true;
+        }
+    }();
 }
 
 function BiomeInfo (biome_info) {
-	this.biomes = function() {
-		var biomes_list = _.map(biome_info['biomes'], function(biome_data) {
-			return new Biome(biome_data);
-		});
+    this.biomes = function() {
+        var biomes_list = _.map(biome_info['biomes'], function(biome_data) {
+            return new Biome(biome_data);
+        });
 
-	    biomes_list.sort(function(a, b) {
-	        return a.id.localeCompare(b.id);
-	    });
+        biomes_list.sort(function(a, b) {
+            return a.id.localeCompare(b.id);
+        });
 
-	    return biomes_list;
-	}();
+        return biomes_list;
+    }();
 
-	this.biomeById = function(id) {
-		return _.find(this.biomes, function(biome) {
-			return biome.id == id;
-		});
-	};
+    this.biomeById = function(id) {
+        return _.find(this.biomes, function(biome) {
+            return biome.id == id;
+        });
+    };
 
-	this.biomesOfType = function(type) {
-		return _.find(this.biomes, function(biome) {
-			return biome.type == type;
-		});
-	};
+    this.biomesOfType = function(type) {
+        return _.find(this.biomes, function(biome) {
+            return biome.type == type;
+        });
+    };
 
-	this.biomeNames = function(type) {
-		return _.map(this.biomes, function(biome) {
-			return biome.name;
-		});
-	};
+    this.biomeNames = function(type) {
+        return _.map(this.biomes, function(biome) {
+            return biome.name;
+        });
+    };
 }
 
 var API = {
@@ -188,11 +188,11 @@ var API = {
     },
 
     biomeData: function() {
-    	return API.ajaxJSONDeferred('/static/json/biomes.json');
+        return API.ajaxJSONDeferred('/static/json/biomes.json');
     },
 
     biomes: function() {
-    	return API.biomeData().then(function(biome_data) {
+        return API.biomeData().then(function(biome_data) {
             return new BiomeInfo(biome_data);
         });
     }
