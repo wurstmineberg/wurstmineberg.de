@@ -193,7 +193,7 @@ function display_biomes_stat_data(achievement_stat_data, biome_data, people) {
     });
     //TODO sort by number of biomes
     $.each(biomeStats, function(numBiomes, people_list) {
-        $('#loading-achievements-table-biome-track').before('<tr><td>' + numBiomes + '</td><td>' + html_player_list(people_list) + '</td></tr>');
+        $('#stats-achievements-table-biome-track tbody tr:last').after('<tr><td>' + numBiomes + '</td><td>' + html_player_list(people_list) + '</td></tr>');
     })
 }
 
