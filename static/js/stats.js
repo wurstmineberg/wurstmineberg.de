@@ -145,7 +145,10 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data)
         });
         var main_track_progress = 'none';
         // move player down
-        while (taken_main_track.length) {
+        for (var i = 0; i < 256; i++) {
+            if (taken_main_track.length == 0) {
+                break;
+            }
             taken_main_track.forEach(function(achievement_id) {
                 var requirement = 'none';
                 if (achievement_id in achievement_data && 'requires' in achievement_data[achievement_id]) {
