@@ -166,7 +166,11 @@ var API = {
     statData: function() {
         return API.ajaxJSONDeferred('//api.wurstmineberg.de/server/playerstats/general.json');
     },
-
+    
+    achievementStatData: function() {
+        return API.ajaxJSONDeferred('//api.wurstmineberg.de/server/playerstats/achievement.json');
+    },
+    
     person: function(player) {
         return API.personById(player.id)
     },
