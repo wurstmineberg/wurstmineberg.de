@@ -108,7 +108,7 @@ function prepare_achievements(achievement_data, item_data) {
     $('#achievement-row-loading').remove();
 }
 
-function display_achievements_stat_data(achievement_data, achievement_stat_data) {
+function display_achievements_stat_data(achievement_data, achievement_stat_data, people) {
     var no_track_achievements = [];
     var main_track = {
         none: [],
@@ -160,10 +160,10 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data)
                 }
             });
         }
-        main_track[main_track_progress].push(People.personByMinecraft(minecraft_nick));
+        main_track[main_track_progress].push(people.personByMinecraft(minecraft_nick));
     });
-    $.each(main_track, function(achievement_id, people) {
-        $('#achievement-row-' + achievement_id).children('.achievement-players').html(html_player_list(people));
+    $.each(main_track, function(achievement_id, people_list) {
+        $('#achievement-row-' + achievement_id).children('.achievement-players').html(html_player_list(people_list));
     });
 }
 
@@ -182,15 +182,12 @@ function load_leaderboard_stat_data() {
 }
 
 function load_achievements_stat_data() {
-    $.when(API.biomes(), API.itemData()).done(function(biome_data, item_data) {
-        $.when(API.achievementData(), API.achievementStatData()).done(function(achievement_data, achievement_stat_data) {
-            prepare_achievements(achievement_data, item_data);
-            display_achievements_stat_data(achievement_data, achievement_stat_data);
-        }).fail(function() {
-            $('#achievement-row-loading').html('<td colspan="3">Error: Could not load achievements</td>');
-        });
+    $.when(API.biomes(), API.itemData(), API.achievementData(), API.achievementStatData(), API.people()).done(function(biome_data, item_data, achievement_data, achievement_stat_data, people) {
+        prepare_achievements(achievement_data, item_data);
+        display_achievements_stat_data(achievement_data, achievement_stat_data, people);
         display_biomes_stat_data(achievement_data);
     }).fail(function() {
+        $('#achievement-row-loading').html('<td colspan="3">Error: Could not load achievements</td>');
         $('#loading-achievements-table-biome-track').html('<td colspan="3">Error: Could not load biomes</td>');
     });
 }
