@@ -6,6 +6,10 @@ h2 {
     margin-top: 40;
 }
 
+.tooltip-inner {
+    white-space:pre-wrap;
+}
+
 .avatar{
     width:16px;
     height:16px;
@@ -67,6 +71,10 @@ h2 {
 
 .people-table td.text-info {
     white-space: nowrap;
+}
+
+#stats-achievements-table td.name {
+    min-width: 160px;
 }
 
 .loading > td {
@@ -210,4 +218,40 @@ a {
 .inv-cell > div.inv-cell-style > div > img {
     bottom: 1px;
     position: relative;
+}
+
+.achievement-list {
+    display: inline;
+    margin-right: 1em;
+    white-space: normal;
+}
+
+abbr.nounderline {
+    border-bottom-width: 0 !important;
+    border-bottom: none !important;
+}
+
+.achievement-value {
+    display: inline;
+    white-space: nowrap;
+    margin-right: 0.5em;
+    height: 14px;
+}
+
+.achievement-name {
+    height: 14px;
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.achievement-image {
+    background: url('/assets/img/achievement-plain.png');
+    box-sizing: border-box;
+    height: 52px;
+    padding: 10px;
+    width: 52px;
+}
+
+.achievement-image.fancy {
+    background: url('/assets/img/achievement-fancy.png');
 }

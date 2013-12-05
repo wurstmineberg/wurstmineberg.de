@@ -12,14 +12,16 @@ function Person (person_data) {
     this.fav_item = person_data['fav_item'];
     this.ava = '/assets/img/ava/' + this.minecraft + '.png';
     this.option = function(opt) {
-        var default_true_options = []; // These options are on by default. All other options are off by default.
+        var default_true_options = ['chatsync_highlight']; // These options are on by default. All other options are off by default.
         if ('options' in person_data && opt in person_data['options']) {
             return person_data['options'][opt];
         } else {
             return opt in default_true_options;
         }
     };
-    this.show_inventory = this.option('show_inventory');
+    this.option_is_default = function(opt) {
+        return !('options' in person_data && opt in person_data['options']);
+    }
     this.interfaceName = function() {
         if ('name' in person_data) {
             return person_data['name'];
@@ -55,6 +57,65 @@ function People (people_data) {
     this.personByMinecraft = function(id) {
         return _.find(this.list, function(person) {
             return 'minecraft' in person && person['minecraft'] === id;
+        });
+    };
+}
+
+function Biome (biome_data) {
+    this.id = biome_data['id'];
+    this.description = function() {
+        if ('description' in biome_data) {
+            return biome_data['description']
+        } else {
+            return '';
+        }
+    }();
+    this.type = biome_data['type'];
+    this.name = function() {
+        if ('name' in biome_data) {
+            return biome_data['name'];
+        } else {
+            return biome_data['id'];
+        };
+    }();
+
+    this.adventuringTime = function() {
+        if ('adventuringTime' in biome_data) {
+            return biome_data['adventuringTime'];
+        } else {
+            return true;
+        }
+    }();
+}
+
+function BiomeInfo (biome_info) {
+    this.biomes = function() {
+        var biomes_list = _.map(biome_info['biomes'], function(biome_data) {
+            return new Biome(biome_data);
+        });
+
+        biomes_list.sort(function(a, b) {
+            return a.id.localeCompare(b.id);
+        });
+
+        return biomes_list;
+    }();
+
+    this.biomeById = function(id) {
+        return _.find(this.biomes, function(biome) {
+            return biome.id == id;
+        });
+    };
+
+    this.biomesOfType = function(type) {
+        return _.find(this.biomes, function(biome) {
+            return biome.type == type;
+        });
+    };
+
+    this.biomeNames = function(type) {
+        return _.map(this.biomes, function(biome) {
+            return biome.name;
         });
     };
 }
@@ -105,7 +166,11 @@ var API = {
     statData: function() {
         return API.ajaxJSONDeferred('//api.wurstmineberg.de/server/playerstats/general.json');
     },
-
+    
+    achievementStatData: function() {
+        return API.ajaxJSONDeferred('//api.wurstmineberg.de/server/playerstats/achievement.json');
+    },
+    
     person: function(player) {
         return API.personById(player.id)
     },
@@ -124,6 +189,16 @@ var API = {
 
     moneys: function() {
         return API.ajaxJSONDeferred('/assets/serverstatus/moneys.json');
+    },
+
+    biomeData: function() {
+        return API.ajaxJSONDeferred('/static/json/biomes.json');
+    },
+
+    biomes: function() {
+        return API.biomeData().then(function(biome_data) {
+            return new BiomeInfo(biome_data);
+        });
     }
 }
 
@@ -180,6 +255,7 @@ function wiki_user_link(username) {
 function initialize_tooltips() {
     $(function () {
         $("[rel='tooltip']").tooltip();
+        $("abbr").tooltip();
     });
 }
 

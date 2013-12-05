@@ -118,7 +118,11 @@ function display_slot(cell, stack, item_data, string_data) {
         item = item_data[stack['id'] + ':' + stack['Damage']];
     }
     if ('image' in item) {
-        cell.children('div').children('div').append('<img src="' + item['image'] + '" />');
+        var image = '<img src="/assets/img/grid/' + item['image'] + '" />';
+        if (item['image'].startsWith('http://') || item['image'].startsWith('https://')) {
+            image = '<img src="' + item['image'] + '" />';
+        }
+        cell.children('div').children('div').append(image);
     }
     var name = stack['id'].toString();
     if ('name' in item) {
@@ -187,7 +191,7 @@ function display_inventory(player_data, item_data, string_data) {
     });
 }
 
-function display_stat_data(stat_data, string_data, item_data, achievement_data) {
+function display_stat_data(stat_data, string_data, item_data, achievement_data, biomes) {
     var loading_stat_general = $('#loading-stat-general-table');
     var loading_stat_item = $('#loading-stat-items-table');
     var loading_stat_block = $('#loading-stat-blocks-table');
@@ -302,15 +306,28 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
                 
                 var final_value = value;
                 if (stat[1] === 'exploreAllBiomes' && 'value' in value) {
-                    if (value['value'] === 1) {
-                        final_value = 'Yes';
-                    } else if ('progress' in value && value['progress'].length > 0) {
-                        var biomes = value['progress'].slice(0);
-                        biomes.sort();
-                        final_value = 'Progress: ' + biomes.join(', ');
-                    } else {
-                        final_value = 'No';
-                    }
+                    var visitedBiomes = value['progress'].slice(0);
+                    final_value = '<span class="achievement-list">';
+
+                    adventuring_biomes = _.filter(biomes.biomes, function(biome) {
+                        return biome.adventuringTime;
+                    });
+
+                    _.map(adventuring_biomes, function(biome) {
+                        final_value += '<span class="glyphicon-text-aligned achievement-value">';
+
+                        if (_.find(visitedBiomes, function(biome_name) {
+                            return biome_name === biome.id;
+                        })) {
+                            final_value += '<span class="glyphicon glyphicon-ok text-success"></span> ';
+                        } else {
+                            final_value += '<span class="glyphicon glyphicon-remove text-danger"></span> ';
+                        };
+
+                        final_value += '<abbr class="nounderline achievement-name" title="' + biome.description + '">' + biome.name + '</abbr></span> ';
+                    });
+
+                    final_value += '</span>';
                 } else {
                     if (parseInt(value) >= 1) {
                         final_value = 'Yes';
@@ -404,7 +421,11 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
         if ('info' in dict) {
             var info = dict['info'];
             if ('image' in info) {
-                var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+                if (info['image'].startsWith('http://') || info['image'].startsWith('https://')) {
+                    var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+                } else {
+                    var image = '<img src="/assets/img/grid/' + info['image'] + '" alt="image" class="item-image" />';
+                }
             };
         }
 
@@ -434,7 +455,11 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
         if ('info' in dict) {
             var info = dict['info'];
             if ('image' in info) {
-                var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+                if (info['image'].startsWith('http://') || info['image'].startsWith('https://')) {
+                    var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
+                } else {
+                    var image = '<img src="/assets/img/grid/' + info['image'] + '" alt="image" class="item-image" />';
+                }
             };
         }
 
@@ -475,19 +500,21 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data) 
     $('.loading-stat').remove();
     initialize_tooltips();
 
-    initialize_datatables();
+    //initialize_datatables();
 }
 
-function load_stat_data(person, string_data, item_data, achievement_data) {
-    if (person.show_inventory) {
+function load_stat_data(person, string_data, item_data, achievement_data, biomes) {
+    if (person.option('show_inventory')) {
         $.when(API.playerData(person)).done(function(player_data) {
             display_inventory(player_data, item_data, string_data);
         }).fail(function() {
             $('.inventory-table .loading td').html('Error: Could not load ' + person.minecraft + '.dat');
         });
+    } else if (person.option_is_default('show_inventory')) {
+        $('.panel').before('<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Want to show you inventory?</strong> Since you have not set a preference for this, your inventory and Ender chest will be displayed on this page once we get everything working. You can activate this feature now using the command <code>opt show_inventory on</code>, or permanently deactivate it with <code>opt show_inventory off</code>.</div>');
     }
     $.when(API.personStatData(person)).done(function(stat_data) {
-        display_stat_data(stat_data, string_data, item_data, achievement_data);
+        display_stat_data(stat_data, string_data, item_data, achievement_data, biomes);
     }).fail(function() {
         $('.loading-stat').html('<td colspan="7">Error: Could not load ' + person.minecraft + '.json</td>');
     });
@@ -496,9 +523,9 @@ function load_stat_data(person, string_data, item_data, achievement_data) {
 function load_user_data() {
     var username = get_user_name();
 
-    $.when(API.personById(username), API.stringData(), API.itemData(), API.achievementData())
-        .done(function(person, string_data, item_data, achievement_data) {
-            load_stat_data(person, string_data, item_data, achievement_data);
+    $.when(API.personById(username), API.stringData(), API.itemData(), API.achievementData(), API.biomes())
+        .done(function(person, string_data, item_data, achievement_data, biomes) {
+            load_stat_data(person, string_data, item_data, achievement_data, biomes);
             display_user_data(person, item_data);
         }).fail(function() {
             $('.loading').html('Error: User with this name not found');
