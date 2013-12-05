@@ -153,7 +153,7 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data)
                 }
                 if (main_track_progress == requirement) {
                     main_track_progress = achievement_id;
-                    taken_main_track.splice(taken_main_track.indexOf(achievement_id), 1));
+                    taken_main_track.splice(taken_main_track.indexOf(achievement_id), 1);
                 }
             });
         }
