@@ -88,6 +88,7 @@ function prepare_achievements(achievement_data, item_data) {
             missing_main_track[achievement_id] = achievement_info;
         }
     });
+    var main_track = [];
     while (Object.keys(missing_main_track).length) {
         $.each(missing_main_track, function(achievement_id, achievement_info) {
             var fancy = false;
@@ -97,20 +98,23 @@ function prepare_achievements(achievement_data, item_data) {
             var achievement_image = '/assets/img/grid/' + item_data[achievement_info['icon'].toString()]['image'];
             var achievement_html = '<tr id="achievement-row-' + achievement_id + '"><td><img class="achievement-image' + (fancy ? ' fancy' : '') + '" src="' + achievement_image + '" /></td><td>' + achievement_info['displayname'] + '</td><td class="achievement-players">&nbsp;</td>';
             if (achievement_info['requires'] == null) {
+                main_track.push(achievement_id);
                 $('#achievement-row-none').after(achievement_html);
                 delete missing_main_track[achievement_id];
             } else if ($('#achievement-row-' + achievement_info['requires']).length) {
+                main_track.push(achievement_id);
                 $('#achievement-row-' + achievement_info['requires']).after(achievement_html);
                 delete missing_main_track[achievement_id];
             }
         });
     }
     $('#achievement-row-loading').remove();
+    return main_track;
 }
 
-function display_achievements_stat_data(achievement_data, achievement_stat_data, people) {
+function display_achievements_stat_data(achievement_data, achievement_stat_data, people, main_track) {
     var no_track_achievements = [];
-    var main_track = {
+    var main_track_players = {
         none: [],
         all: []
     };
@@ -118,7 +122,7 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data,
         if (!('track' in achievement_info)) {
             no_track_achievements.push(achievement_id);
         } else if (achievement_info['track'] == 'main') {
-            main_track[achievement_id] = [];
+            main_track_players[achievement_id] = [];
         }
     });
     $.each(achievement_stat_data, function(minecraft_nick, achievement_stats) {
@@ -145,22 +149,16 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data,
         });
         var main_track_progress = 'none';
         // move player down
-        for (var i = 0; i < 256; i++) {
-            if (taken_main_track.length == 0) {
+        main_track.forEach(function(achievement_id) {
+            if (!(achievement_id in taken_main_track)) {
                 break;
-            }
-            taken_main_track.forEach(function(achievement_id) {
-                var requirement = 'none';
-                if (achievement_id in achievement_data && 'requires' in achievement_data[achievement_id]) {
-                    requirement = achievement_data[achievement_id]['requires'];
-                }
-                if (main_track_progress == requirement) {
-                    main_track_progress = achievement_id;
-                    taken_main_track.splice(taken_main_track.indexOf(achievement_id), 1);
-                }
-            });
+            };
+            main_track_progress = achievement_id;
+        });
+        if (main_track_progress == main_track.slice(-1)[0] && has_adventuring_time && missing_no_track.length == 0) {
+            main_track_progress = 'all';
         }
-        main_track[main_track_progress].push(people.personByMinecraft(minecraft_nick));
+        main_track_players[main_track_progress].push(people.personByMinecraft(minecraft_nick));
     });
     $.each(main_track, function(achievement_id, people_list) {
         $('#achievement-row-' + achievement_id).children('.achievement-players').html(html_player_list(people_list));
@@ -183,8 +181,8 @@ function load_leaderboard_stat_data() {
 
 function load_achievements_stat_data() {
     $.when(API.biomes(), API.itemData(), API.achievementData(), API.achievementStatData(), API.people()).done(function(biome_data, item_data, achievement_data, achievement_stat_data, people) {
-        prepare_achievements(achievement_data, item_data);
-        display_achievements_stat_data(achievement_data, achievement_stat_data, people);
+        var main_track = prepare_achievements(achievement_data, item_data);
+        display_achievements_stat_data(achievement_data, achievement_stat_data, people, main_track);
         display_biomes_stat_data(achievement_data);
     }).fail(function() {
         $('#achievement-row-loading').html('<td colspan="3">Error: Could not load achievements</td>');
