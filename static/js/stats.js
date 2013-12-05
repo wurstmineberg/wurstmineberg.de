@@ -159,7 +159,7 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data,
         }
         main_track_players[main_track_progress].push(people.personByMinecraft(minecraft_nick));
     });
-    $.each(main_track, function(achievement_id, people_list) {
+    $.each(main_track_players, function(achievement_id, people_list) {
         $('#achievement-row-' + achievement_id).children('.achievement-players').html(html_player_list(people_list));
     });
 }
