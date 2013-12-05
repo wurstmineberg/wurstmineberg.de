@@ -150,10 +150,9 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data,
         var main_track_progress = 'none';
         // move player down
         main_track.forEach(function(achievement_id) {
-            if (!(achievement_id in taken_main_track)) {
-                break;
+            if (achievement_id in taken_main_track) {
+                main_track_progress = achievement_id;
             };
-            main_track_progress = achievement_id;
         });
         if (main_track_progress == main_track.slice(-1)[0] && has_adventuring_time && missing_no_track.length == 0) {
             main_track_progress = 'all';
