@@ -150,7 +150,7 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data,
         var main_track_progress = 'none';
         // move player down
         main_track.forEach(function(achievement_id) {
-            if (achievement_id in taken_main_track) {
+            if ($.inArray(achievement_id, taken_main_track)) {
                 main_track_progress = achievement_id;
             };
         });
@@ -164,8 +164,37 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data,
     });
 }
 
-function display_biomes_stat_data(biome_data) {
-    //TODO
+function display_biomes_stat_data(achievement_stat_data, biome_data, people) {
+    var adventuringTimeBiomes = [];
+    $.each(biome_data['biomes'], function(biomeNumberString, biomeInfo) {
+        if ('adventuringTime' in biomeInfo && biomeInfo['adventuringTime'] == false) {
+            return;
+        }
+        adventuringTimeBiomes.push(biomeInfo['id']);
+    });
+    var biomeStats = {};
+    $.each(achievement_stat_data, function(minecraft_nick, achievement_stats) {
+        var numBiomes = 0;
+        if ('achievement.exploreAllBiomes' in achievement_stats) {
+            if ('value' in achievement_stats['achievement.exploreAllBiomes'] && achievement_stats['achievement.exploreAllBiomes']['value'] > 0) {
+                numBiomes = adventuringTimeBiomes.length;
+            } else if ('progress' in achievement_stats['achievement.exploreAllBiomes']) {
+                achievement_stats['achievement.exploreAllBiomes']['progress'].forEach(function(biome_id) {
+                    if ($.inArray(biome_id, adventuringTimeBiomes)) {
+                        numBiomes++;
+                    }
+                });
+            }
+        }
+        if (!(numBiomes.toString() in biomeStats)) {
+            biomeStats[numBiomes.toString()] = [];
+        }
+        biomeStats[numBiomes.toString()].push(people.personByMinecraft(minecraft_nick));
+    });
+    //TODO sort by number of biomes
+    $.each(biomeStats, function(numBiomes, people_list) {
+        $('#loading-achievements-table-biome-track').before('<tr><td>' + numBiomes + '</td><td>' + html_player_list(people_list) + '</td></tr>');
+    })
 }
 
 function load_leaderboard_stat_data() {
@@ -182,7 +211,7 @@ function load_achievements_stat_data() {
     $.when(API.biomes(), API.itemData(), API.achievementData(), API.achievementStatData(), API.people()).done(function(biome_data, item_data, achievement_data, achievement_stat_data, people) {
         var main_track = prepare_achievements(achievement_data, item_data);
         display_achievements_stat_data(achievement_data, achievement_stat_data, people, main_track);
-        display_biomes_stat_data(achievement_data);
+        display_biomes_stat_data(achievement_stat_data, biome_data, people);
     }).fail(function() {
         $('#achievement-row-loading').html('<td colspan="3">Error: Could not load achievements</td>');
         $('#loading-achievements-table-biome-track').html('<td colspan="3">Error: Could not load biomes</td>');
