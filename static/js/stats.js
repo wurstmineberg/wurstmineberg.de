@@ -117,7 +117,7 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data)
     $.each(achievement_data, function(achievement_id, achievement_info) {
         if (!('track' in achievement_info)) {
             no_track_achievements.push(achievement_id);
-        } elif (achievement_info['track'] == 'main') {
+        } else if (achievement_info['track'] == 'main') {
             main_track[achievement_id] = [];
         }
     });
