@@ -180,7 +180,7 @@ function display_biomes_stat_data(achievement_stat_data, biome_data, people) {
                 numBiomes = adventuringTimeBiomes.length;
             } else if ('progress' in achievement_stats['achievement.exploreAllBiomes']) {
                 achievement_stats['achievement.exploreAllBiomes']['progress'].forEach(function(biome_id) {
-                    if (adventuringTimeBiomes.indexOf(biome_id) > -1) {
+                    if ($.inArray(biome_id, adventuringTimeBiomes)) {
                         numBiomes++;
                     }
                 });
