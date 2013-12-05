@@ -150,9 +150,9 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data,
         var main_track_progress = 'none';
         // move player down
         main_track.forEach(function(achievement_id) {
-            if ($.inArray(achievement_id, taken_main_track)) {
+            if (taken_main_track.indexOf(achievement_id) > -1) {
                 main_track_progress = achievement_id;
-            };
+            }
         });
         if (main_track_progress == main_track.slice(-1)[0] && has_adventuring_time && missing_no_track.length == 0) {
             main_track_progress = 'all';
@@ -180,7 +180,7 @@ function display_biomes_stat_data(achievement_stat_data, biome_data, people) {
                 numBiomes = adventuringTimeBiomes.length;
             } else if ('progress' in achievement_stats['achievement.exploreAllBiomes']) {
                 achievement_stats['achievement.exploreAllBiomes']['progress'].forEach(function(biome_id) {
-                    if ($.inArray(biome_id, adventuringTimeBiomes)) {
+                    if (adventuringTimeBiomes.indexOf(biome_id) > -1) {
                         numBiomes++;
                     }
                 });
