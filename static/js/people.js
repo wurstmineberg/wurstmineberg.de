@@ -13,7 +13,7 @@ function display_people_data(people) {
         
         var description;
         if (!person.description) {
-            description = '<td class="description small muted">Hier könnte Ihre Beschreibung stehen! (To update your description, tell someone in <a href="irc://chat.freenode.net/#wurstmineberg">IRC</a>.)</td>'
+            description = '<td class="description small muted">Hier könnte Ihre Beschreibung stehen! (You can update your description using the command <code>people ' + person.id + ' description</code>.)</td>'
         } else {
             description = '<td class="description">' + person['description'] + '</td>';
         }

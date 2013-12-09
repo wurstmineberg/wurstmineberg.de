@@ -50,7 +50,7 @@ function display_user_data(person, item_data) {
     
     var description = person.description
     if (!description) {
-        description = 'Hier könnte Ihre Beschreibung stehen! (To update your description, tell someone in <a href="irc://chat.freenode.net/#wurstmineberg">IRC</a>.)';
+        description = 'Hier könnte Ihre Beschreibung stehen! (You can update your description using the command <code>people ' + person.id + ' description <value></code>.)';
         $('#user-description').addClass('muted');
     }
     
