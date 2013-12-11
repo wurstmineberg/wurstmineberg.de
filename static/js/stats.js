@@ -159,7 +159,11 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data,
         if (main_track_progress == main_track.slice(-1)[0] && has_adventuring_time && missing_no_track.length == 0) {
             main_track_progress = 'all';
         }
-        main_track_players[main_track_progress].push(people.personByMinecraft(minecraft_nick));
+        var person = people.personByMinecraft(minecraft_nick);
+        if (person == undefined) {
+            return;
+        }
+        main_track_players[main_track_progress].push(person);
     });
     $.each(main_track_players, function(achievement_id, people_list) {
         $('#achievement-row-' + achievement_id).children('.achievement-players').html(html_player_list(people_list));
@@ -191,7 +195,11 @@ function display_biomes_stat_data(achievement_stat_data, biome_data, people) {
         if (!(numBiomes.toString() in biomeStats)) {
             biomeStats[numBiomes.toString()] = [];
         }
-        biomeStats[numBiomes.toString()].push(people.personByMinecraft(minecraft_nick));
+        var person = people.personByMinecraft(minecraft_nick);
+        if (person == undefined) {
+            return;
+        }
+        biomeStats[numBiomes.toString()].push(person);
     });
     //TODO sort by number of biomes
     $.each(biomeStats, function(numBiomes, people_list) {
