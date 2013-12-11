@@ -4,7 +4,9 @@ function display_leaderboard_stat_data(stat_data, string_data, people) {
 
     $.each(stat_data, function(minecraftname, playerstats) {
         player = people.personByMinecraft(minecraftname);
-
+        if (player == undefined) {
+            return;
+        }
         $.each(playerstats, function(key, value) {
             stat = key.split('.');
             var override = false;
