@@ -45,7 +45,7 @@
         "name": "Glass Pane"
     },
     "103": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Melon_%28Block%29.png",
+        "image": "melonblock.png",
         "name": "Melon"
     },
     "104": {
@@ -336,7 +336,7 @@
         "name": "Nether Quartz Ore"
     },
     "154": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cb/Grid_Hopper.png",
+        "image": "hopper.png",
         "name": "Hopper"
     },
     "155": {
@@ -1003,7 +1003,7 @@
         "name": "Mushroom Stew"
     },
     "283": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1f/Grid_Gold_Sword.png",
+        "image": "goldsword.png",
         "name": "Golden Sword"
     },
     "284": {
@@ -1106,19 +1106,19 @@
         "name": "Leather Boots"
     },
     "302": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cf/Grid_Chain_Armor_Helmet.png",
+        "image": "chainhelmet.png",
         "name": "Chain Helmet"
     },
     "303": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f4/Grid_Chain_Armor_Chestplate.png",
+        "image": "chainchestplate.png",
         "name": "Chain Chestplate"
     },
     "304": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1b/Grid_Chain_Armor_Leggings.png",
+        "image": "chainleggings.png",
         "name": "Chain Leggings"
     },
     "305": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/74/Grid_Chain_Armor_Boots.png",
+        "image": "chainboots.png",
         "name": "Chain Boots"
     },
     "306": {
@@ -1161,19 +1161,19 @@
         "name": "Diamond Boots"
     },
     "314": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3a/Grid_Gold_Helmet.png",
+        "image": "goldhelmet.png",
         "name": "Golden Helmet"
     },
     "315": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7b/Grid_Gold_Chestplate.png",
+        "image": "goldchestplate.png",
         "name": "Golden Chestplate"
     },
     "316": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f5/Grid_Gold_Leggings.png",
+        "image": "goldleggings.png",
         "name": "Golden Leggings"
     },
     "317": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/00/Grid_Gold_Boots.png",
+        "image": "goldboots.png",
         "name": "Golden Boots"
     },
     "318": {
@@ -1295,7 +1295,7 @@
         "name": "Clay"
     },
     "338": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d3/Grid_Sugar_Cane.png",
+        "image": "sugarcane.png",
         "name": "Sugar Cane"
     },
     "339": {
@@ -1432,7 +1432,7 @@
         "name": "Cocoa Beans"
     },
     "351:4": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a8/Grid_Lapis_Lazuli_%28Dye%29.png",
+        "image": "lapislazuli.png",
         "name": "Lapis Lazuli"
     },
     "351:5": {
@@ -1572,7 +1572,7 @@
         "name": "Extending Piston Head"
     },
     "360": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ee/Grid_Melon_%28Slice%29.png",
+        "image": "melon.png",
         "name": "Melon"
     },
     "361": {
@@ -2332,7 +2332,7 @@
         "texture": "planks_oak"
     },
     "5:1": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Wooden_Plank_%28Pine%29.png",
+        "image": "sprucewoodplanks.png",
         "name": "Spruce Wood Planks",
         "texture": "planks_spruce"
     },
@@ -2542,7 +2542,7 @@
         "name": "Clay"
     },
     "83": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d3/Grid_Sugar_Cane.png",
+        "image": "sugarcane.png",
         "name": "Sugar Cane"
     },
     "84": {
@@ -2682,7 +2682,7 @@
         "name": "Cobblestone Monster Egg"
     },
     "97:2": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1c/Grid_Stone_Brick.png",
+        "image": "stonebrick.png",
         "name": "Stone Brick Monster Egg"
     },
     "97:3": {
@@ -2698,7 +2698,7 @@
         "name": "Chiseled Stone Brick Monster Egg"
     },
     "98": {
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1c/Grid_Stone_Brick.png",
+        "image": "stonebrick.png",
         "name": "Stone Brick"
     },
     "98:1": {
