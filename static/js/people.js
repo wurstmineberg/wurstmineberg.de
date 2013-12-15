@@ -17,16 +17,7 @@ function display_people_data(people) {
         } else {
             description = '<td class="description">' + person['description'] + '</td>';
         }
-
-        $('#loading-' + person.status + "-table").before('<tr id="' + person.id + '"><td class="avatar">&nbsp;</td><td class="username">' + name + '</td>' + description + '</tr>');
-
-        if (person.minecraft) {
-            var ava = '/assets/img/ava/' + person.minecraft + '.png';
-            $('#' + person.id + ' > .avatar').html('<img class="" />');
-            $('#' + person.id + ' > .avatar > img').attr('src', ava).error(function() {
-                $('#' + person.id + ' > .avatar').html('&nbsp;');
-            });
-        };
+        $('#loading-' + person.status + "-table").before('<tr id="' + person.id + '"><td class="people-avatar">' + person.html_ava(32) + '</td><td class="username">' + name + '</td>' + description + '</tr>');
     });
 
     $('.loading').remove();
