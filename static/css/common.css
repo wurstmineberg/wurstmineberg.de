@@ -10,12 +10,7 @@ h2 {
     white-space:pre-wrap;
 }
 
-.avatar{
-    width:16px;
-    height:16px;
-}
-
-.avatar > img {
+.people-avatar > img {
     margin-right: 5px;
     min-width: 32px;
 }
@@ -82,10 +77,6 @@ h2 {
     font-style: italic;
 }
 
-.player-avatar-name img.avatar {
-    height: 16px;
-}
-
 .player-avatar-name a.player {
     line-height: 16px;
     vertical-align: middle;
@@ -150,7 +141,7 @@ a {
     line-height: 16px;
 }
 
-.avatar {
+.player-avatar-name > img.avatar {
     margin-right: 0.5em;
 }
 

@@ -31,6 +31,9 @@ function Person (person_data) {
             return person_data['minecraft'];
         };
     }();
+    this.html_ava = function(size) {
+        return '<img class="avatar" style="width: ' + size + 'px; height: ' + size + 'px;" src="/assets/img/ava/' + this.minecraft + '.png" />';
+    };
 }
 
 function People (people_data) {
@@ -401,7 +404,7 @@ function html_player_list(people) {
             html += ', ';
         };
 
-        html += '<span class="player-avatar-name"><img src="' + person.ava + '" class="avatar" /><a class="player" href="/people/' + person.id + '">' + person.interfaceName + '</a></span>';
+        html += '<span class="player-avatar-name">' + person.html_ava(16) + '<a class="player" href="/people/' + person.id + '">' + person.interfaceName + '</a></span>';
     });
 
     return html;
