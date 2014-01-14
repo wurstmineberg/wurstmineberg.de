@@ -546,6 +546,10 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5c/Grid_Dark_Oak_Wood_Stairs.png",
         "name": "Dark Oak Wood Stairs"
     },
+    "165": {
+        "image": "slimeblock.png",
+        "name": "Slime Block"
+    },
     "17": {
         "image": "oakwood.png",
         "name": "Wood",
@@ -724,6 +728,30 @@
         "solid": true,
         "texture": "sponge",
         "type": "block"
+    },
+    "1:1": {
+        "image": "granite.png",
+        "name": "Granite"
+    },
+    "1:2": {
+        "image": "polishedgranite.png",
+        "name": "Polished Granite"
+    },
+    "1:3": {
+        "image": "diorite.png",
+        "name": "Diorite"
+    },
+    "1:4": {
+        "image": "polisheddiorite.png",
+        "name": "Polished Diorite"
+    },
+    "1:5": {
+        "image": "andesite.png",
+        "name": "Andesite"
+    },
+    "1:6": {
+        "image": "polishedandesite.png",
+        "name": "Polished Andesite"
     },
     "2": {
         "color_map": "grass",
