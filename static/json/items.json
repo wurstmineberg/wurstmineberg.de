@@ -13,6 +13,11 @@
     },
     "1": {
         "blast_resistance": 30,
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+        },
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a6/Grid_Stone.png",
         "luminance": false,
         "name": "Stone",
@@ -81,6 +86,11 @@
         "type": "block"
     },
     "110": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 10
+        },
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/aa/Grid_Mycelium.png",
         "name": "Mycelium"
     },
@@ -121,6 +131,11 @@
         "name": "End Portal"
     },
     "12": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 6
+        },
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Sand.png",
         "name": "Sand",
         "solid": true,
@@ -216,6 +231,11 @@
         "name": "Emerald Ore"
     },
     "12:1": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 7
+        },
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/85/Grid_Red_Sand.png",
         "name": "Red Sand",
         "solid": true,
@@ -223,6 +243,11 @@
         "type": "block"
     },
     "13": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 8
+        },
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/03/Grid_Gravel.png",
         "name": "Gravel",
         "solid": true,
@@ -340,6 +365,11 @@
         "name": "Hopper"
     },
     "155": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 4
+        },
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/04/Grid_Block_of_Quartz.png",
         "name": "Block of Quartz"
     },
@@ -754,6 +784,11 @@
         "name": "Polished Andesite"
     },
     "2": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 9
+        },
         "color_map": "grass",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/08/Grid_Grass_Block.png",
         "name": "Grass Block",
@@ -861,6 +896,11 @@
         "texture_east": "furnace_front_horizontal"
     },
     "24": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 5
+        },
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/12/Grid_Sandstone.png",
         "name": "Sandstone",
         "solid": true,
@@ -1112,6 +1152,11 @@
         "name": "Leather Tunic"
     },
     "3": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 1
+        },
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Dirt.png",
         "name": "Dirt",
         "solid": true,
@@ -1959,6 +2004,11 @@
         "texture_top": "dirt_podzol_top"
     },
     "4": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 2
+        },
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/03/Grid_Cobblestone.png",
         "name": "Cobblestone",
         "solid": true,
@@ -2726,6 +2776,11 @@
         "name": "Chiseled Stone Brick Monster Egg"
     },
     "98": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 3
+        },
         "image": "stonebrick.png",
         "name": "Stone Brick"
     },
