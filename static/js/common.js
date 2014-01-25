@@ -42,25 +42,41 @@ function People (people_data) {
             return new Person(value);
         });
     }();
-
+    
     this.activePeople = function(id) {
         return this.list.filter(function(person) {
             return (person.status != 'former');
         });
     };
-
+    
     this.count = this.list.length;
-
+    
     this.personById = function(id) {
         return _.find(this.list, function(person) {
             return 'id' in person && person['id'] === id;
         });
     };
-
+    
     this.personByMinecraft = function(id) {
         return _.find(this.list, function(person) {
             return 'minecraft' in person && person['minecraft'] === id;
         });
+    };
+    
+    this.sorted = function(peopleList) {
+        var ret = [];
+        people_data.forEach(function(person) {
+            if (person.id in peopleList) {
+                ret.push(person);
+            } else {
+                peopleList.forEach(function(otherPerson) {
+                    if (person.id == otherPerson.id) {
+                        ret.push(person);
+                    }
+                });
+            }
+        });
+        return ret;
     };
 }
 
@@ -449,7 +465,7 @@ function getOnlineData(list) {
                 return people.personByMinecraft(minecraftName);
             });
 
-            $('#peopleList').html(html_player_list(onlinePeople));
+            $('#peopleList').html(html_player_list(people.sorted(onlinePeople)));
     })
         .fail(function() {
             $('#whitelistCount').text('(error)');
