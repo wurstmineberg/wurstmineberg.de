@@ -67,11 +67,11 @@ function People (people_data) {
         var ret = [];
         people_data.forEach(function(person) {
             if (person.id in peopleList) {
-                ret.push(Person(person));
+                ret.push(this.personById(person.id));
             } else {
                 peopleList.forEach(function(otherPerson) {
                     if (person.id == otherPerson.id) {
-                        ret.push(Person(person));
+                        ret.push(this.personById(person.id));
                     }
                 });
             }
