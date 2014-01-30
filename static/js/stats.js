@@ -70,9 +70,9 @@ function display_leaderboard_stat_data(stat_data, string_data, people) {
         var name = data['name'];
 
         var players = data['players'];
-        var playerhtml = html_player_list(players);
+        var playerhtml = html_player_list(people.sorted(players));
         var minplayers = data['minplayers'];
-        var minplayerhtml = html_player_list(minplayers);
+        var minplayerhtml = html_player_list(people.sorted(minplayers));
         var value = prettify_stats_value(stat[1], data['value']);
         var minvalue = prettify_stats_value(stat[1], data['minvalue']);
 
@@ -166,7 +166,7 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data,
         main_track_players[main_track_progress].push(person);
     });
     $.each(main_track_players, function(achievement_id, people_list) {
-        $('#achievement-row-' + achievement_id).children('.achievement-players').html(html_player_list(people_list));
+        $('#achievement-row-' + achievement_id).children('.achievement-players').html(html_player_list(people.sorted(people_list)));
     });
 }
 
@@ -203,8 +203,8 @@ function display_biomes_stat_data(achievement_stat_data, biome_data, people) {
     });
     //TODO sort by number of biomes
     $.each(biomeStats, function(numBiomes, people_list) {
-        $('#stats-achievements-table-biome-track tbody tr:last').after('<tr><td>' + numBiomes + '</td><td>' + html_player_list(people_list) + '</td></tr>');
-    })
+        $('#stats-achievements-table-biome-track tbody tr:last').after('<tr><td>' + numBiomes + '</td><td>' + html_player_list(people.sorted(people_list)) + '</td></tr>');
+    });
 }
 
 function load_leaderboard_stat_data() {

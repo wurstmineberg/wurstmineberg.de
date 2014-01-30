@@ -42,25 +42,41 @@ function People (people_data) {
             return new Person(value);
         });
     }();
-
+    
     this.activePeople = function(id) {
         return this.list.filter(function(person) {
             return (person.status != 'former');
         });
     };
-
+    
     this.count = this.list.length;
-
+    
     this.personById = function(id) {
         return _.find(this.list, function(person) {
             return 'id' in person && person['id'] === id;
         });
     };
-
+    
     this.personByMinecraft = function(id) {
         return _.find(this.list, function(person) {
             return 'minecraft' in person && person['minecraft'] === id;
         });
+    };
+    
+    this.sorted = function(peopleList) {
+        var ret = [];
+        people_data.forEach(function(person) {
+            if (person.id in peopleList) {
+                ret.push(this.personById(person.id));
+            } else {
+                peopleList.forEach(function(otherPerson) {
+                    if (person.id == otherPerson.id) {
+                        ret.push(this.personById(person.id));
+                    }
+                }, this);
+            }
+        }, this);
+        return ret;
     };
 }
 
@@ -410,12 +426,25 @@ function html_player_list(people) {
     return html;
 };
 
-function getServerStatus(on,version) {
-    if (on) {
-        var versionString = version == null ? "(error)" : ('<a href="http://minecraft.gamepedia.com/Version_history' + ((version.indexOf('pre') != 1 || version.substring(2,3) == 'w') ? '/Development_versions#' : '#') + version + '" style="font-weight: bold;">' + version + '</a>');
-        $('#serverinfo').html('The server is currently <strong>online</strong> and running on version ' + versionString + ', and <span id="peopleCount">(loading) of the (loading) whitelisted players are</span> currently active.<br /><span id="peopleList"></span>');
+function get_version_url(version, func) {
+    if (version == null) {
+        func('http://minecraft.gamepedia.com/Version_history');
     } else {
-        $('#serverinfo').html("The server is <strong>offline</strong> right now. For more information, consult the <a href='http://twitter.com/wurstmineberg'>Twitter account</a>.");
+        $.when(API.ajaxJSONDeferred('http://minecraft.gamepedia.com/api.php?format=json&action=query&titles=' + encodeURIComponent(version))).done(function(minecraft_wiki_result) {
+            if ('query' in minecraft_wiki_result && 'pages' in minecraft_wiki_result['query']) {
+                $.each(minecraft_wiki_result['query']['pages'], function(page_id, page_info) {
+                    if ('missing' in page_info) {
+                        func('http://minecraft.gamepedia.com/Version_history' + ((version.indexOf('pre') != -1 || version.substring(2,3) == 'w') ? '/Development_versions#' : '#') + version);
+                    } else {
+                        func('http://minecraft.gamepedia.com/' + page_info['title']);
+                    }
+                });
+            } else {
+                func('http://minecraft.gamepedia.com/Version_history' + ((version.indexOf('pre') != -1 || version.substring(2,3) == 'w') ? '/Development_versions#' : '#') + version);
+            }
+        }).fail(function() {
+            func('http://minecraft.gamepedia.com/Version_history' + ((version.indexOf('pre') != -1 || version.substring(2,3) == 'w') ? '/Development_versions#' : '#') + version);
+        });
     }
 };
 
@@ -436,7 +465,7 @@ function getOnlineData(list) {
                 return people.personByMinecraft(minecraftName);
             });
 
-            $('#peopleList').html(html_player_list(onlinePeople));
+            $('#peopleList').html(html_player_list(people.sorted(onlinePeople)));
     })
         .fail(function() {
             $('#whitelistCount').text('(error)');
