@@ -73,9 +73,9 @@ function People (people_data) {
                     if (person.id == otherPerson.id) {
                         ret.push(this.personById(person.id));
                     }
-                });
+                }, this);
             }
-        });
+        }, this);
         return ret;
     };
 }
