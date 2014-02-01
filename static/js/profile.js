@@ -218,7 +218,7 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
                 var name = stat[2];
                 var actionIndex = stat[1];
                 var count = value;
-                
+
                 var collection;
                 if (is_block(id)) {
                     collection = blocks;
@@ -227,7 +227,7 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
                 }
                 
                 var info;
-                $.each(item_data, function(item_name, item) {
+                item_data.forEach(function(item) {
                     if (item['id'] == id) {
                         info = item;
                         name = info['name'];
