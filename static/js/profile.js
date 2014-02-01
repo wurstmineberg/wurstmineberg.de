@@ -225,13 +225,15 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
                 } else {
                     collection = items;
                 }
-
+                
                 var info;
-                if ('' + id in item_data) {
-                    info = item_data['' + id];
-                    name = info['name'];
-                }
-
+                item_data.forEach(function(item) {
+                    if (item['id'] == id) {
+                        info = item;
+                        name = info['name'];
+                    }
+                });
+                
                 var found = false;
                 $.each(collection, function(key, value) {
                     if (value['id'] === id) {
