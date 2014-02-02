@@ -19,6 +19,32 @@
             "y": 1,
             "z": 0
         },
+        "damageValues": {
+            "1": {
+                "image": "granite.png",
+                "name": "Granite"
+            },
+            "2": {
+                "image": "polishedgranite.png",
+                "name": "Polished Granite"
+            },
+            "3": {
+                "image": "diorite.png",
+                "name": "Diorite"
+            },
+            "4": {
+                "image": "polisheddiorite.png",
+                "name": "Polished Diorite"
+            },
+            "5": {
+                "image": "andesite.png",
+                "name": "Andesite"
+            },
+            "6": {
+                "image": "polishedandesite.png",
+                "name": "Polished Andesite"
+            }
+        },
         "id": 1,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a6/Grid_Stone.png",
         "luminance": false,
@@ -160,6 +186,18 @@
             "y": 1,
             "z": 6
         },
+        "damageValues": {
+            "1": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 7
+                },
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/85/Grid_Red_Sand.png",
+                "name": "Red Sand",
+                "texture": "red_sand"
+            }
+        },
         "id": 12,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Sand.png",
         "name": "Sand",
@@ -193,86 +231,64 @@
         "name": "Redstone Lamp"
     },
     "125": {
+        "damageValues": {
+            "0": {
+                "name": "Double Oak Wood Slab"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/60/Grid_Spruce_Wood_Slab.png",
+                "name": "Double Spruce Wood Slab"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Birch_Wood_Slab.png",
+                "name": "Double Birch Wood Slab"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3f/Grid_Jungle_Wood_Slab.png",
+                "name": "Double Jungle Wood Slab"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b3/Grid_Acacia_Wood_Slab.png",
+                "name": "Double Acacia Wood Slab"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_Dark_Oak_Wood_Slab.png",
+                "name": "Double Dark Oak Wood Slab"
+            }
+        },
         "id": 125,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
         "name": "Double Wooden Slab"
     },
-    "125:0": {
-        "damage": 0,
-        "id": 125,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
-        "name": "Double Oak Wood Slab"
-    },
-    "125:1": {
-        "damage": 1,
-        "id": 125,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/60/Grid_Spruce_Wood_Slab.png",
-        "name": "Double Spruce Wood Slab"
-    },
-    "125:2": {
-        "damage": 2,
-        "id": 125,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Birch_Wood_Slab.png",
-        "name": "Double Birch Wood Slab"
-    },
-    "125:3": {
-        "damage": 3,
-        "id": 125,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3f/Grid_Jungle_Wood_Slab.png",
-        "name": "Double Jungle Wood Slab"
-    },
-    "125:4": {
-        "damage": 4,
-        "id": 125,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b3/Grid_Acacia_Wood_Slab.png",
-        "name": "Double Acacia Wood Slab"
-    },
-    "125:5": {
-        "damage": 5,
-        "id": 125,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_Dark_Oak_Wood_Slab.png",
-        "name": "Double Dark Oak Wood Slab"
-    },
     "126": {
+        "damageValues": {
+            "0": {
+                "name": "Oak Wood Slab"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/60/Grid_Spruce_Wood_Slab.png",
+                "name": "Spruce Wood Slab"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Birch_Wood_Slab.png",
+                "name": "Birch Wood Slab"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3f/Grid_Jungle_Wood_Slab.png",
+                "name": "Jungle Wood Slab"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b3/Grid_Acacia_Wood_Slab.png",
+                "name": "Acacia Wood Slab"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_Dark_Oak_Wood_Slab.png",
+                "name": "Dark Oak Wood Slab"
+            }
+        },
         "id": 126,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
         "name": "Wooden Slab"
-    },
-    "126:0": {
-        "damage": 0,
-        "id": 126,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
-        "name": "Oak Wood Slab"
-    },
-    "126:1": {
-        "damage": 1,
-        "id": 126,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/60/Grid_Spruce_Wood_Slab.png",
-        "name": "Spruce Wood Slab"
-    },
-    "126:2": {
-        "damage": 2,
-        "id": 126,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Birch_Wood_Slab.png",
-        "name": "Birch Wood Slab"
-    },
-    "126:3": {
-        "damage": 3,
-        "id": 126,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3f/Grid_Jungle_Wood_Slab.png",
-        "name": "Jungle Wood Slab"
-    },
-    "126:4": {
-        "damage": 4,
-        "id": 126,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b3/Grid_Acacia_Wood_Slab.png",
-        "name": "Acacia Wood Slab"
-    },
-    "126:5": {
-        "damage": 5,
-        "id": 126,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_Dark_Oak_Wood_Slab.png",
-        "name": "Dark Oak Wood Slab"
     },
     "127": {
         "id": 127,
@@ -288,20 +304,6 @@
         "id": 129,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e7/Grid_Emerald_Ore.png",
         "name": "Emerald Ore"
-    },
-    "12:1": {
-        "cloud": {
-            "x": 0,
-            "y": 1,
-            "z": 7
-        },
-        "damage": 1,
-        "id": 12,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/85/Grid_Red_Sand.png",
-        "name": "Red Sand",
-        "solid": true,
-        "texture": "red_sand",
-        "type": "block"
     },
     "13": {
         "cloud": {
@@ -458,33 +460,27 @@
             "y": 1,
             "z": 4
         },
+        "damageValues": {
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/8d/Grid_Chiseled_Quartz_Block.png",
+                "name": "Chiseled Quartz Block"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/59/Grid_Pillar_Quartz_Block.png",
+                "name": "Pillar Quartz Block"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/59/Grid_Pillar_Quartz_Block.png",
+                "name": "Pillar Quartz Block"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/59/Grid_Pillar_Quartz_Block.png",
+                "name": "Pillar Quartz Block"
+            }
+        },
         "id": 155,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/04/Grid_Block_of_Quartz.png",
         "name": "Block of Quartz"
-    },
-    "155:1": {
-        "damage": 1,
-        "id": 155,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/8d/Grid_Chiseled_Quartz_Block.png",
-        "name": "Chiseled Quartz Block"
-    },
-    "155:2": {
-        "damage": 2,
-        "id": 155,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/59/Grid_Pillar_Quartz_Block.png",
-        "name": "Pillar Quartz Block"
-    },
-    "155:3": {
-        "damage": 3,
-        "id": 155,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/59/Grid_Pillar_Quartz_Block.png",
-        "name": "Pillar Quartz Block"
-    },
-    "155:4": {
-        "damage": 4,
-        "id": 155,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/59/Grid_Pillar_Quartz_Block.png",
-        "name": "Pillar Quartz Block"
     },
     "156": {
         "id": 156,
@@ -502,105 +498,74 @@
         "name": "Dropper"
     },
     "159": {
+        "damageValues": {
+            "0": {
+                "name": "White Stained Clay"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3c/Grid_Orange_Stained_Clay.png",
+                "name": "Orange Stained Clay"
+            },
+            "10": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6a/Grid_Purple_Stained_Clay.png",
+                "name": "Purple Stained Clay"
+            },
+            "11": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/91/Grid_Blue_Stained_Clay.png",
+                "name": "Blue Stained Clay"
+            },
+            "12": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/20/Grid_Brown_Stained_Clay.png",
+                "name": "Brown Stained Clay"
+            },
+            "13": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/19/Grid_Green_Stained_Clay.png",
+                "name": "Green Stained Clay"
+            },
+            "14": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cd/Grid_Red_Stained_Clay.png",
+                "name": "Red Stained Clay"
+            },
+            "15": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/91/Grid_Black_Stained_Clay.png",
+                "name": "Black Stained Clay"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ce/Grid_Magenta_Stained_Clay.png",
+                "name": "Magenta Stained Clay"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a0/Grid_Light_Blue_Stained_Clay.png",
+                "name": "Light Blue Stained Clay"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ef/Grid_Yellow_Stained_Clay.png",
+                "name": "Yellow Stained Clay"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/aa/Grid_Lime_Stained_Clay.png",
+                "name": "Lime Stained Clay"
+            },
+            "6": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/68/Grid_Pink_Stained_Clay.png",
+                "name": "Pink Stained Clay"
+            },
+            "7": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/18/Grid_Gray_Stained_Clay.png",
+                "name": "Gray Stained Clay"
+            },
+            "8": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/47/Grid_Light_Gray_Stained_Clay.png",
+                "name": "Light Gray Stained Clay"
+            },
+            "9": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/78/Grid_Cyan_Stained_Clay.png",
+                "name": "Cyan Stained Clay"
+            }
+        },
         "id": 159,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6b/Grid_White_Stained_Clay.png",
         "name": "Stained Clay"
-    },
-    "159:0": {
-        "damage": 0,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6b/Grid_White_Stained_Clay.png",
-        "name": "White Stained Clay"
-    },
-    "159:1": {
-        "damage": 1,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3c/Grid_Orange_Stained_Clay.png",
-        "name": "Orange Stained Clay"
-    },
-    "159:10": {
-        "damage": 10,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6a/Grid_Purple_Stained_Clay.png",
-        "name": "Purple Stained Clay"
-    },
-    "159:11": {
-        "damage": 11,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/91/Grid_Blue_Stained_Clay.png",
-        "name": "Blue Stained Clay"
-    },
-    "159:12": {
-        "damage": 12,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/20/Grid_Brown_Stained_Clay.png",
-        "name": "Brown Stained Clay"
-    },
-    "159:13": {
-        "damage": 13,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/19/Grid_Green_Stained_Clay.png",
-        "name": "Green Stained Clay"
-    },
-    "159:14": {
-        "damage": 14,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cd/Grid_Red_Stained_Clay.png",
-        "name": "Red Stained Clay"
-    },
-    "159:15": {
-        "damage": 15,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/91/Grid_Black_Stained_Clay.png",
-        "name": "Black Stained Clay"
-    },
-    "159:2": {
-        "damage": 2,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ce/Grid_Magenta_Stained_Clay.png",
-        "name": "Magenta Stained Clay"
-    },
-    "159:3": {
-        "damage": 3,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a0/Grid_Light_Blue_Stained_Clay.png",
-        "name": "Light Blue Stained Clay"
-    },
-    "159:4": {
-        "damage": 4,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ef/Grid_Yellow_Stained_Clay.png",
-        "name": "Yellow Stained Clay"
-    },
-    "159:5": {
-        "damage": 5,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/aa/Grid_Lime_Stained_Clay.png",
-        "name": "Lime Stained Clay"
-    },
-    "159:6": {
-        "damage": 6,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/68/Grid_Pink_Stained_Clay.png",
-        "name": "Pink Stained Clay"
-    },
-    "159:7": {
-        "damage": 7,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/18/Grid_Gray_Stained_Clay.png",
-        "name": "Gray Stained Clay"
-    },
-    "159:8": {
-        "damage": 8,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/47/Grid_Light_Gray_Stained_Clay.png",
-        "name": "Light Gray Stained Clay"
-    },
-    "159:9": {
-        "damage": 9,
-        "id": 159,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/78/Grid_Cyan_Stained_Clay.png",
-        "name": "Cyan Stained Clay"
     },
     "16": {
         "id": 16,
@@ -611,139 +576,102 @@
         "type": "block"
     },
     "160": {
+        "damageValues": {
+            "0": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_White_Stained_Glass_Pane.png",
+                "name": "White Stained Glass Pane"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f1/Grid_Orange_Stained_Glass_Pane.png",
+                "name": "Orange Stained Glass Pane"
+            },
+            "10": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/41/Grid_Purple_Stained_Glass_Pane.png",
+                "name": "Purple Stained Glass Pane"
+            },
+            "11": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fe/Grid_Blue_Stained_Glass_Pane.png",
+                "name": "Blue Stained Glass Pane"
+            },
+            "12": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ce/Grid_Brown_Stained_Glass_Pane.png",
+                "name": "Brown Stained Glass Pane"
+            },
+            "13": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9c/Grid_Green_Stained_Glass_Pane.png",
+                "name": "Green Stained Glass Pane"
+            },
+            "14": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/71/Grid_Red_Stained_Glass_Pane.png",
+                "name": "Red Stained Glass Pane"
+            },
+            "15": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7b/Grid_Black_Stained_Glass_Pane.png",
+                "name": "Black Stained Glass Pane"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/91/Grid_Magenta_Stained_Glass_Pane.png",
+                "name": "Magenta Stained Glass Pane"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Light_Blue_Stained_Glass_Pane.png",
+                "name": "Light Blue Stained Glass Pane"
+            },
+            "4": {
+                "name": "Yellow Stained Glass Pane"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/ae/Grid_Lime_Stained_Glass_Pane.png",
+                "name": "Lime Stained Glass Pane"
+            },
+            "6": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_Pink_Stained_Glass_Pane.png",
+                "name": "Pink Stained Glass Pane"
+            },
+            "7": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f0/Grid_Gray_Stained_Glass_Pane.png",
+                "name": "Gray Stained Glass Pane"
+            },
+            "8": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/79/Grid_Light_Gray_Stained_Glass_Pane.png",
+                "name": "Light Gray Stained Glass Pane"
+            },
+            "9": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/97/Grid_Cyan_Stained_Glass_Pane.png",
+                "name": "Cyan Stained Glass Pane"
+            }
+        },
         "id": 160,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6e/Grid_Yellow_Stained_Glass_Pane.png",
         "name": "Stained Glass Pane"
     },
-    "160:0": {
-        "damage": 0,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_White_Stained_Glass_Pane.png",
-        "name": "White Stained Glass Pane"
-    },
-    "160:1": {
-        "damage": 1,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f1/Grid_Orange_Stained_Glass_Pane.png",
-        "name": "Orange Stained Glass Pane"
-    },
-    "160:10": {
-        "damage": 10,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/41/Grid_Purple_Stained_Glass_Pane.png",
-        "name": "Purple Stained Glass Pane"
-    },
-    "160:11": {
-        "damage": 11,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fe/Grid_Blue_Stained_Glass_Pane.png",
-        "name": "Blue Stained Glass Pane"
-    },
-    "160:12": {
-        "damage": 12,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ce/Grid_Brown_Stained_Glass_Pane.png",
-        "name": "Brown Stained Glass Pane"
-    },
-    "160:13": {
-        "damage": 13,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9c/Grid_Green_Stained_Glass_Pane.png",
-        "name": "Green Stained Glass Pane"
-    },
-    "160:14": {
-        "damage": 14,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/71/Grid_Red_Stained_Glass_Pane.png",
-        "name": "Red Stained Glass Pane"
-    },
-    "160:15": {
-        "damage": 15,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7b/Grid_Black_Stained_Glass_Pane.png",
-        "name": "Black Stained Glass Pane"
-    },
-    "160:2": {
-        "damage": 2,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/91/Grid_Magenta_Stained_Glass_Pane.png",
-        "name": "Magenta Stained Glass Pane"
-    },
-    "160:3": {
-        "damage": 3,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Light_Blue_Stained_Glass_Pane.png",
-        "name": "Light Blue Stained Glass Pane"
-    },
-    "160:4": {
-        "damage": 4,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6e/Grid_Yellow_Stained_Glass_Pane.png",
-        "name": "Yellow Stained Glass Pane"
-    },
-    "160:5": {
-        "damage": 5,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/ae/Grid_Lime_Stained_Glass_Pane.png",
-        "name": "Lime Stained Glass Pane"
-    },
-    "160:6": {
-        "damage": 6,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_Pink_Stained_Glass_Pane.png",
-        "name": "Pink Stained Glass Pane"
-    },
-    "160:7": {
-        "damage": 7,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f0/Grid_Gray_Stained_Glass_Pane.png",
-        "name": "Gray Stained Glass Pane"
-    },
-    "160:8": {
-        "damage": 8,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/79/Grid_Light_Gray_Stained_Glass_Pane.png",
-        "name": "Light Gray Stained Glass Pane"
-    },
-    "160:9": {
-        "damage": 9,
-        "id": 160,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/97/Grid_Cyan_Stained_Glass_Pane.png",
-        "name": "Cyan Stained Glass Pane"
-    },
     "161": {
+        "damageValues": {
+            "0": {
+                "name": "Acacia Leaves"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/57/Grid_Dark_Oak_Leaves.png",
+                "name": "Dark Oak Leaves"
+            }
+        },
         "id": 161,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/76/Grid_Acacia_Leaves.png",
         "name": "Leaves"
     },
-    "161:0": {
-        "damage": 0,
-        "id": 161,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/76/Grid_Acacia_Leaves.png",
-        "name": "Acacia Leaves"
-    },
-    "161:1": {
-        "damage": 1,
-        "id": 161,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/57/Grid_Dark_Oak_Leaves.png",
-        "name": "Dark Oak Leaves"
-    },
     "162": {
+        "damageValues": {
+            "0": {
+                "name": "Acacia Wood"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ec/Grid_Dark_Oak_Wood.png",
+                "name": "Dark Oak Wood"
+            }
+        },
         "id": 162,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d6/Grid_Acacia_Wood.png",
         "name": "Wood"
-    },
-    "162:0": {
-        "damage": 0,
-        "id": 162,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d6/Grid_Acacia_Wood.png",
-        "name": "Acacia Wood"
-    },
-    "162:1": {
-        "damage": 1,
-        "id": 162,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ec/Grid_Dark_Oak_Wood.png",
-        "name": "Dark Oak Wood"
     },
     "163": {
         "id": 163,
@@ -761,6 +689,29 @@
         "name": "Slime Block"
     },
     "17": {
+        "damageValues": {
+            "0": {
+                "name": "Oak Wood"
+            },
+            "1": {
+                "image": "sprucewood.png",
+                "name": "Spruce Wood",
+                "texture": "log_spruce",
+                "texture_top": "log_spruce_top"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/81/Grid_Wood_%28Birch%29.png",
+                "name": "Birch Wood",
+                "texture": "log_birch",
+                "texture_top": "log_birch_top"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5e/Grid_Wood_%28Jungle%29.png",
+                "name": "Jungle Wood",
+                "texture": "log_jungle",
+                "texture_top": "log_jungle_top"
+            }
+        },
         "id": 17,
         "image": "oakwood.png",
         "name": "Wood",
@@ -775,105 +726,74 @@
         "name": "Hay Bale"
     },
     "171": {
+        "damageValues": {
+            "0": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/72/Grid_White_Carpet.png",
+                "name": "White Carpet"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3c/Grid_Orange_Carpet.png",
+                "name": "Orange Carpet"
+            },
+            "10": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_Purple_Carpet.png",
+                "name": "Purple Carpet"
+            },
+            "11": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5a/Grid_Blue_Carpet.png",
+                "name": "Blue Carpet"
+            },
+            "12": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/ad/Grid_Brown_Carpet.png",
+                "name": "Brown Carpet"
+            },
+            "13": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/41/Grid_Green_Carpet.png",
+                "name": "Green Carpet"
+            },
+            "14": {
+                "name": "Red Carpet"
+            },
+            "15": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e6/Grid_Black_Carpet.png",
+                "name": "Black Carpet"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Magenta_Carpet.png",
+                "name": "Magenta Carpet"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4b/Grid_Light_Blue_Carpet.png",
+                "name": "Light Blue Carpet"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/63/Grid_Yellow_Carpet.png",
+                "name": "Yellow Carpet"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/34/Grid_Lime_Carpet.png",
+                "name": "Lime Carpet"
+            },
+            "6": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/be/Grid_Pink_Carpet.png",
+                "name": "Pink Carpet"
+            },
+            "7": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2b/Grid_Gray_Carpet.png",
+                "name": "Gray Carpet"
+            },
+            "8": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3a/Grid_Light_Gray_Carpet.png",
+                "name": "Light Gray Carpet"
+            },
+            "9": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Grid_Cyan_Carpet.png",
+                "name": "Cyan Carpet"
+            }
+        },
         "id": 171,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dc/Grid_Red_Carpet.png",
         "name": "Carpet"
-    },
-    "171:0": {
-        "damage": 0,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/72/Grid_White_Carpet.png",
-        "name": "White Carpet"
-    },
-    "171:1": {
-        "damage": 1,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3c/Grid_Orange_Carpet.png",
-        "name": "Orange Carpet"
-    },
-    "171:10": {
-        "damage": 10,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_Purple_Carpet.png",
-        "name": "Purple Carpet"
-    },
-    "171:11": {
-        "damage": 11,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5a/Grid_Blue_Carpet.png",
-        "name": "Blue Carpet"
-    },
-    "171:12": {
-        "damage": 12,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/ad/Grid_Brown_Carpet.png",
-        "name": "Brown Carpet"
-    },
-    "171:13": {
-        "damage": 13,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/41/Grid_Green_Carpet.png",
-        "name": "Green Carpet"
-    },
-    "171:14": {
-        "damage": 14,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dc/Grid_Red_Carpet.png",
-        "name": "Red Carpet"
-    },
-    "171:15": {
-        "damage": 15,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e6/Grid_Black_Carpet.png",
-        "name": "Black Carpet"
-    },
-    "171:2": {
-        "damage": 2,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Magenta_Carpet.png",
-        "name": "Magenta Carpet"
-    },
-    "171:3": {
-        "damage": 3,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4b/Grid_Light_Blue_Carpet.png",
-        "name": "Light Blue Carpet"
-    },
-    "171:4": {
-        "damage": 4,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/63/Grid_Yellow_Carpet.png",
-        "name": "Yellow Carpet"
-    },
-    "171:5": {
-        "damage": 5,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/34/Grid_Lime_Carpet.png",
-        "name": "Lime Carpet"
-    },
-    "171:6": {
-        "damage": 6,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/be/Grid_Pink_Carpet.png",
-        "name": "Pink Carpet"
-    },
-    "171:7": {
-        "damage": 7,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2b/Grid_Gray_Carpet.png",
-        "name": "Gray Carpet"
-    },
-    "171:8": {
-        "damage": 8,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3a/Grid_Light_Gray_Carpet.png",
-        "name": "Light Gray Carpet"
-    },
-    "171:9": {
-        "damage": 9,
-        "id": 171,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Grid_Cyan_Carpet.png",
-        "name": "Cyan Carpet"
     },
     "172": {
         "id": 172,
@@ -891,114 +811,64 @@
         "name": "Packed Ice"
     },
     "175": {
+        "damageValues": {
+            "0": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Sunflower.png",
+                "name": "Sunflower"
+            },
+            "1": {
+                "name": "Lilac"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c4/Grid_Double_Tallgrass.png",
+                "name": "Double Tallgrass"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d9/Grid_Large_Fern.png",
+                "name": "Large Fern"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c3/Grid_Rose_Bush.png",
+                "name": "Rose Bush"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/eb/Grid_Peony.png",
+                "name": "Peony"
+            }
+        },
         "id": 175,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/0a/Grid_Lilac.png",
         "name": "Large Flower"
     },
-    "175:0": {
-        "damage": 0,
-        "id": 175,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Sunflower.png",
-        "name": "Sunflower"
-    },
-    "175:1": {
-        "damage": 1,
-        "id": 175,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/0a/Grid_Lilac.png",
-        "name": "Lilac"
-    },
-    "175:2": {
-        "damage": 2,
-        "id": 175,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c4/Grid_Double_Tallgrass.png",
-        "name": "Double Tallgrass"
-    },
-    "175:3": {
-        "damage": 3,
-        "id": 175,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d9/Grid_Large_Fern.png",
-        "name": "Large Fern"
-    },
-    "175:4": {
-        "damage": 4,
-        "id": 175,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c3/Grid_Rose_Bush.png",
-        "name": "Rose Bush"
-    },
-    "175:5": {
-        "damage": 5,
-        "id": 175,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/eb/Grid_Peony.png",
-        "name": "Peony"
-    },
-    "17:0": {
-        "damage": 0,
-        "id": 17,
-        "image": "oakwood.png",
-        "name": "Oak Wood",
-        "texture": "log_oak",
-        "texture_top": "log_oak_top"
-    },
-    "17:1": {
-        "damage": 1,
-        "id": 17,
-        "image": "sprucewood.png",
-        "name": "Spruce Wood",
-        "texture": "log_spruce",
-        "texture_top": "log_spruce_top"
-    },
-    "17:2": {
-        "damage": 2,
-        "id": 17,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/81/Grid_Wood_%28Birch%29.png",
-        "name": "Birch Wood",
-        "texture": "log_birch",
-        "texture_top": "log_birch_top"
-    },
-    "17:3": {
-        "damage": 3,
-        "id": 17,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5e/Grid_Wood_%28Jungle%29.png",
-        "name": "Jungle Wood",
-        "texture": "log_jungle",
-        "texture_top": "log_jungle_top"
-    },
     "18": {
         "color_map": "foliage",
+        "damageValues": {
+            "0": {
+                "name": "Oak Leaves",
+                "texture_uncolored": "leaves_oak_opaque"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/08/Grid_Leaves_%28Pine%29.png",
+                "name": "Spruce Leaves",
+                "texture_uncolored": "leaves_spruce_opaque"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/0a/Grid_Leaves_%28Birch%29.png",
+                "name": "Birch Leaves",
+                "texture_uncolored": "leaves_birch_opaque"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1b/Grid_Leaves_%28Jungle%29.png",
+                "name": "Jungle Leaves",
+                "texture_uncolored": "leaves_jungle_opaque"
+            }
+        },
         "id": 18,
         "image": "oakleaves.png",
         "name": "Leaves",
         "solid": true,
         "texture_needs_colorisation": true,
         "type": "block"
-    },
-    "18:0": {
-        "damage": 0,
-        "id": 18,
-        "image": "oakleaves.png",
-        "name": "Oak Leaves",
-        "texture_uncolored": "leaves_oak_opaque"
-    },
-    "18:1": {
-        "damage": 1,
-        "id": 18,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/08/Grid_Leaves_%28Pine%29.png",
-        "name": "Spruce Leaves",
-        "texture_uncolored": "leaves_spruce_opaque"
-    },
-    "18:2": {
-        "damage": 2,
-        "id": 18,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/0a/Grid_Leaves_%28Birch%29.png",
-        "name": "Birch Leaves",
-        "texture_uncolored": "leaves_birch_opaque"
-    },
-    "18:3": {
-        "damage": 3,
-        "id": 18,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1b/Grid_Leaves_%28Jungle%29.png",
-        "name": "Jungle Leaves",
-        "texture_uncolored": "leaves_jungle_opaque"
     },
     "19": {
         "id": 19,
@@ -1007,42 +877,6 @@
         "solid": true,
         "texture": "sponge",
         "type": "block"
-    },
-    "1:1": {
-        "damage": 1,
-        "id": 1,
-        "image": "granite.png",
-        "name": "Granite"
-    },
-    "1:2": {
-        "damage": 2,
-        "id": 1,
-        "image": "polishedgranite.png",
-        "name": "Polished Granite"
-    },
-    "1:3": {
-        "damage": 3,
-        "id": 1,
-        "image": "diorite.png",
-        "name": "Diorite"
-    },
-    "1:4": {
-        "damage": 4,
-        "id": 1,
-        "image": "polisheddiorite.png",
-        "name": "Polished Diorite"
-    },
-    "1:5": {
-        "damage": 5,
-        "id": 1,
-        "image": "andesite.png",
-        "name": "Andesite"
-    },
-    "1:6": {
-        "damage": 6,
-        "id": 1,
-        "image": "polishedandesite.png",
-        "name": "Polished Andesite"
     },
     "2": {
         "cloud": {
@@ -1148,6 +982,26 @@
         "name": "Music Disc: C418 \u2014 wait"
     },
     "23": {
+        "damageValues": {
+            "0": {
+                "texture_bottom": "furnace_front_vertical"
+            },
+            "1": {
+                "texture_top": "furnace_front_vertical"
+            },
+            "2": {
+                "texture_north": "furnace_front_horizontal"
+            },
+            "3": {
+                "texture_south": "furnace_front_horizontal"
+            },
+            "4": {
+                "texture_west": "furnace_front_horizontal"
+            },
+            "5": {
+                "texture_east": "furnace_front_horizontal"
+            }
+        },
         "id": 23,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cc/Grid_Dispenser.png",
         "name": "Dispenser",
@@ -1155,41 +1009,23 @@
         "texture": "furnace_side",
         "type": "block"
     },
-    "23:0": {
-        "damage": 0,
-        "id": 23,
-        "texture_bottom": "furnace_front_vertical"
-    },
-    "23:1": {
-        "damage": 1,
-        "id": 23,
-        "texture_top": "furnace_front_vertical"
-    },
-    "23:2": {
-        "damage": 2,
-        "id": 23,
-        "texture_north": "furnace_front_horizontal"
-    },
-    "23:3": {
-        "damage": 3,
-        "id": 23,
-        "texture_south": "furnace_front_horizontal"
-    },
-    "23:4": {
-        "damage": 4,
-        "id": 23,
-        "texture_west": "furnace_front_horizontal"
-    },
-    "23:5": {
-        "damage": 5,
-        "id": 23,
-        "texture_east": "furnace_front_horizontal"
-    },
     "24": {
         "cloud": {
             "x": 0,
             "y": 1,
             "z": 5
+        },
+        "damageValues": {
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1b/Grid_Decorative_Sandstone.png",
+                "name": "Chiseled Sandstone",
+                "texture": "sandstone_carved"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/22/Grid_Smooth_Sandstone.png",
+                "name": "Smooth Sandstone",
+                "texture": "sandstone_smooth"
+            }
         },
         "id": 24,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/12/Grid_Sandstone.png",
@@ -1199,20 +1035,6 @@
         "texture_bottom": "sandstone_bottom",
         "texture_top": "sandstone_top",
         "type": "block"
-    },
-    "24:1": {
-        "damage": 1,
-        "id": 24,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1b/Grid_Decorative_Sandstone.png",
-        "name": "Chiseled Sandstone",
-        "texture": "sandstone_carved"
-    },
-    "24:2": {
-        "damage": 2,
-        "id": 24,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/22/Grid_Smooth_Sandstone.png",
-        "name": "Smooth Sandstone",
-        "texture": "sandstone_smooth"
     },
     "25": {
         "id": 25,
@@ -1244,6 +1066,14 @@
     },
     "26": {
         "FIXME": "Beds are complicated stuff",
+        "damageValues": {
+            "0": {
+                "texture_east": "bed_feet_side",
+                "texture_south": null,
+                "texture_top": "bed_feet_top",
+                "texture_west": "bed_feet_side"
+            }
+        },
         "id": 26,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a3/Grid_Bed.png",
         "name": "Bed",
@@ -1268,15 +1098,15 @@
         "name": "Arrow"
     },
     "263": {
+        "damageValues": {
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/54/Grid_Charcoal_%28Item%29.png",
+                "name": "Charcoal"
+            }
+        },
         "id": 263,
         "image": "coal.png",
         "name": "Coal"
-    },
-    "263:1": {
-        "damage": 1,
-        "id": 263,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/54/Grid_Charcoal_%28Item%29.png",
-        "name": "Charcoal"
     },
     "264": {
         "id": 264,
@@ -1308,15 +1138,12 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/21/Grid_Wooden_Shovel.png",
         "name": "Wooden Shovel"
     },
-    "26:0": {
-        "damage": 0,
-        "id": 26,
-        "texture_east": "bed_feet_side",
-        "texture_south": null,
-        "texture_top": "bed_feet_top",
-        "texture_west": "bed_feet_side"
-    },
     "27": {
+        "damageValues": {
+            "1": {
+                "texture_top": "rail_golden_powered"
+            }
+        },
         "id": 27,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9d/Grid_Powered_Rail.png",
         "name": "Powered Rail",
@@ -1374,12 +1201,12 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/8d/Grid_Diamond_Axe.png",
         "name": "Diamond Axe"
     },
-    "27:1": {
-        "damage": 1,
-        "id": 27,
-        "texture_top": "rail_golden_powered"
-    },
     "28": {
+        "damageValues": {
+            "1": {
+                "texture_top": "rail_detector_powered"
+            }
+        },
         "id": 28,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a2/Grid_Detector_Rail.png",
         "name": "Detector Rail",
@@ -1436,11 +1263,6 @@
         "id": 289,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7a/Grid_Gunpowder.png",
         "name": "Gunpowder"
-    },
-    "28:1": {
-        "damage": 1,
-        "id": 28,
-        "texture_top": "rail_detector_powered"
     },
     "29": {
         "FIXME": "orientation",
@@ -1509,6 +1331,17 @@
             "y": 1,
             "z": 1
         },
+        "damageValues": {
+            "1": {
+                "name": "Grassless Dirt"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6d/Grid_Podzol.png",
+                "name": "Podzol",
+                "texture_side": "dirt_podzol_side",
+                "texture_top": "dirt_podzol_top"
+            }
+        },
         "id": 3,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Dirt.png",
         "name": "Dirt",
@@ -1575,6 +1408,26 @@
         "name": "Iron Boots"
     },
     "31": {
+        "damageValues": {
+            "0": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Dead_Bush.png",
+                "name": "Shrub",
+                "texture": "deadbush"
+            },
+            "1": {
+                "color_map": "foliage",
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c1/Grid_Tall_Grass2.png",
+                "texture_needs_colorisation": true,
+                "texture_uncolored": "tallgrass"
+            },
+            "2": {
+                "color_map": "foliage",
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e1/Grid_Tall_Grass3.png",
+                "name": "Fern",
+                "texture_needs_colorisation": true,
+                "texture_uncolored": "fern"
+            }
+        },
         "id": 31,
         "image": "tallgrass.png",
         "name": "Tall Grass",
@@ -1632,31 +1485,6 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ec/Grid_Raw_Porkchop.png",
         "name": "Raw Porkchop"
     },
-    "31:0": {
-        "damage": 0,
-        "id": 31,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Dead_Bush.png",
-        "name": "Shrub",
-        "texture": "deadbush"
-    },
-    "31:1": {
-        "color_map": "foliage",
-        "damage": 1,
-        "id": 31,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c1/Grid_Tall_Grass2.png",
-        "name": "Tall Grass",
-        "texture_needs_colorisation": true,
-        "texture_uncolored": "tallgrass"
-    },
-    "31:2": {
-        "color_map": "foliage",
-        "damage": 2,
-        "id": 31,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e1/Grid_Tall_Grass3.png",
-        "name": "Fern",
-        "texture_needs_colorisation": true,
-        "texture_uncolored": "fern"
-    },
     "32": {
         "id": 32,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Dead_Bush.png",
@@ -1674,16 +1502,15 @@
         "name": "Painting"
     },
     "322": {
+        "damageValues": {
+            "1": {
+                "always_glow": true,
+                "name": "Enchanted Golden Apple"
+            }
+        },
         "id": 322,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Golden_Apple.png",
         "name": "Golden Apple"
-    },
-    "322:1": {
-        "always_glow": true,
-        "damage": 1,
-        "id": 322,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Golden_Apple.png",
-        "name": "Enchanted Golden Apple"
     },
     "323": {
         "id": 323,
@@ -1722,6 +1549,15 @@
     },
     "33": {
         "FIXME": "All rotational values",
+        "damageValues": {
+            "1": {
+                "texture_bottom": "piston_bottom",
+                "texture_top": "piston_top_normal"
+            },
+            "2": {
+                "texture_side": "piston_bottom@2"
+            }
+        },
         "id": 33,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3c/Grid_Piston.png",
         "name": "Piston",
@@ -1780,27 +1616,6 @@
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6c/Grid_Paper.png",
         "name": "Paper"
     },
-    "33:0": {
-        "damage": 0,
-        "id": 33,
-        "texture_bottom": "piston_top_normal",
-        "texture_side": "piston_side",
-        "texture_top": "piston_bottom"
-    },
-    "33:1": {
-        "damage": 1,
-        "id": 33,
-        "texture_bottom": "piston_bottom",
-        "texture_side": "piston_side",
-        "texture_top": "piston_top_normal"
-    },
-    "33:2": {
-        "damage": 2,
-        "id": 33,
-        "texture_bottom": "piston_top_normal",
-        "texture_side": "piston_bottom@2",
-        "texture_top": "piston_bottom"
-    },
     "34": {
         "id": 34,
         "name": "Piston Extension"
@@ -1851,29 +1666,105 @@
         "name": "Glowstone Dust"
     },
     "349": {
+        "damageValues": {
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c0/Grid_Raw_Salmon.png",
+                "name": "Raw Salmon"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/81/Grid_Clownfish.png",
+                "name": "Clownfish"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/df/Grid_Pufferfish.png",
+                "name": "Pufferfish"
+            }
+        },
         "id": 349,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6a/Grid_Raw_Fish.png",
         "name": "Raw Fish"
     },
-    "349:1": {
-        "damage": 1,
-        "id": 349,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c0/Grid_Raw_Salmon.png",
-        "name": "Raw Salmon"
-    },
-    "349:2": {
-        "damage": 2,
-        "id": 349,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/81/Grid_Clownfish.png",
-        "name": "Clownfish"
-    },
-    "349:3": {
-        "damage": 3,
-        "id": 349,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/df/Grid_Pufferfish.png",
-        "name": "Pufferfish"
-    },
     "35": {
+        "damageValues": {
+            "0": {
+                "name": "White Wool"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/07/Grid_Orange_Wool.png",
+                "name": "Orange Wool",
+                "texture": "wool_colored_orange"
+            },
+            "10": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/51/Grid_Purple_Wool.png",
+                "name": "Purple Wool",
+                "texture": "wool_colored_purple"
+            },
+            "11": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/40/Grid_Blue_Wool.png",
+                "name": "Blue Wool",
+                "texture": "wool_colored_blue"
+            },
+            "12": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Brown_Wool.png",
+                "name": "Brown Wool",
+                "texture": "wool_colored_brown"
+            },
+            "13": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_Green_Wool.png",
+                "name": "Green Wool",
+                "texture": "wool_colored_green"
+            },
+            "14": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Red_Wool.png",
+                "name": "Red Wool",
+                "texture": "wool_colored_red"
+            },
+            "15": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/45/Grid_Black_Wool.png",
+                "name": "Black Wool",
+                "texture": "wool_colored_black"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fd/Grid_Magenta_Wool.png",
+                "name": "Magenta Wool",
+                "texture": "wool_colored_magenta"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fb/Grid_Light_Blue_Wool.png",
+                "name": "Light Blue Wool",
+                "texture": "wool_colored_light_blue"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ed/Grid_Yellow_Wool.png",
+                "name": "Yellow Wool",
+                "texture": "wool_colored_yellow"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a2/Grid_Lime_Wool.png",
+                "name": "Lime Wool",
+                "texture": "wool_colored_lime"
+            },
+            "6": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b3/Grid_Pink_Wool.png",
+                "name": "Pink Wool",
+                "texture": "wool_colored_pink"
+            },
+            "7": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d3/Grid_Gray_Wool.png",
+                "name": "Gray Wool",
+                "texture": "wool_colored_gray"
+            },
+            "8": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e5/Grid_Light_Gray_Wool.png",
+                "name": "Light Gray Wool",
+                "texture": "wool_colored_silver"
+            },
+            "9": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cd/Grid_Cyan_Wool.png",
+                "name": "Cyan Wool",
+                "texture": "wool_colored_cyan"
+            }
+        },
         "id": 35,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_White_Wool.png",
         "name": "Wool",
@@ -1882,116 +1773,85 @@
         "type": "block"
     },
     "350": {
+        "damageValues": {
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a5/Grid_Cooked_Salmon.png",
+                "name": "Cooked Salmon"
+            }
+        },
         "id": 350,
         "image": "cookedfish.png",
         "name": "Cooked Fish"
     },
-    "350:1": {
-        "damage": 1,
-        "id": 350,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a5/Grid_Cooked_Salmon.png",
-        "name": "Cooked Salmon"
-    },
     "351": {
+        "damageValues": {
+            "0": {
+                "name": "Ink Sac"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/0d/Grid_Rose_Red.png",
+                "name": "Rose Red"
+            },
+            "10": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a6/Grid_Lime_Dye.png",
+                "name": "Lime Dye"
+            },
+            "11": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/df/Grid_Dandelion_Yellow.png",
+                "name": "Dandelion Yellow"
+            },
+            "12": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/ae/Grid_Light_Blue_Dye.png",
+                "name": "Light Blue Dye"
+            },
+            "13": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/8f/Grid_Magenta_Dye.png",
+                "name": "Magenta Dye"
+            },
+            "14": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b2/Grid_Orange_Dye.png",
+                "name": "Orange Dye"
+            },
+            "15": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c0/Grid_Bone_Meal.png",
+                "name": "Bone Meal"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fd/Grid_Cactus_Green.png",
+                "name": "Cactus Green"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7d/Grid_Cocoa_Beans.png",
+                "name": "Cocoa Beans"
+            },
+            "4": {
+                "image": "lapislazuli.png",
+                "name": "Lapis Lazuli"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a0/Grid_Purple_Dye.png",
+                "name": "Purple Dye"
+            },
+            "6": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ca/Grid_Cyan_Dye.png",
+                "name": "Cyan Dye"
+            },
+            "7": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/16/Grid_Light_Gray_Dye.png",
+                "name": "Light Gray Dye"
+            },
+            "8": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/54/Grid_Gray_Dye.png",
+                "name": "Gray Dye"
+            },
+            "9": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Pink_Dye.png",
+                "name": "Pink Dye"
+            }
+        },
         "id": 351,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d6/Grid_Ink_Sac.png",
         "name": "Dye"
-    },
-    "351:0": {
-        "damage": 0,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d6/Grid_Ink_Sac.png",
-        "name": "Ink Sac"
-    },
-    "351:1": {
-        "damage": 1,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/0d/Grid_Rose_Red.png",
-        "name": "Rose Red"
-    },
-    "351:10": {
-        "damage": 10,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a6/Grid_Lime_Dye.png",
-        "name": "Lime Dye"
-    },
-    "351:11": {
-        "damage": 11,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/df/Grid_Dandelion_Yellow.png",
-        "name": "Dandelion Yellow"
-    },
-    "351:12": {
-        "damage": 12,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/ae/Grid_Light_Blue_Dye.png",
-        "name": "Light Blue Dye"
-    },
-    "351:13": {
-        "damage": 13,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/8f/Grid_Magenta_Dye.png",
-        "name": "Magenta Dye"
-    },
-    "351:14": {
-        "damage": 14,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b2/Grid_Orange_Dye.png",
-        "name": "Orange Dye"
-    },
-    "351:15": {
-        "damage": 15,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c0/Grid_Bone_Meal.png",
-        "name": "Bone Meal"
-    },
-    "351:2": {
-        "damage": 2,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fd/Grid_Cactus_Green.png",
-        "name": "Cactus Green"
-    },
-    "351:3": {
-        "damage": 3,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7d/Grid_Cocoa_Beans.png",
-        "name": "Cocoa Beans"
-    },
-    "351:4": {
-        "damage": 4,
-        "id": 351,
-        "image": "lapislazuli.png",
-        "name": "Lapis Lazuli"
-    },
-    "351:5": {
-        "damage": 5,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a0/Grid_Purple_Dye.png",
-        "name": "Purple Dye"
-    },
-    "351:6": {
-        "damage": 6,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ca/Grid_Cyan_Dye.png",
-        "name": "Cyan Dye"
-    },
-    "351:7": {
-        "damage": 7,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/16/Grid_Light_Gray_Dye.png",
-        "name": "Light Gray Dye"
-    },
-    "351:8": {
-        "damage": 8,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/54/Grid_Gray_Dye.png",
-        "name": "Gray Dye"
-    },
-    "351:9": {
-        "damage": 9,
-        "id": 351,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Pink_Dye.png",
-        "name": "Pink Dye"
     },
     "352": {
         "id": 352,
@@ -2032,118 +1892,6 @@
         "id": 359,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/13/Grid_Shears.png",
         "name": "Shears"
-    },
-    "35:0": {
-        "damage": 0,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_White_Wool.png",
-        "name": "White Wool",
-        "texture": "wool_colored_white"
-    },
-    "35:1": {
-        "damage": 1,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/07/Grid_Orange_Wool.png",
-        "name": "Orange Wool",
-        "texture": "wool_colored_orange"
-    },
-    "35:10": {
-        "damage": 10,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/51/Grid_Purple_Wool.png",
-        "name": "Purple Wool",
-        "texture": "wool_colored_purple"
-    },
-    "35:11": {
-        "damage": 11,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/40/Grid_Blue_Wool.png",
-        "name": "Blue Wool",
-        "texture": "wool_colored_blue"
-    },
-    "35:12": {
-        "damage": 12,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Brown_Wool.png",
-        "name": "Brown Wool",
-        "texture": "wool_colored_brown"
-    },
-    "35:13": {
-        "damage": 13,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_Green_Wool.png",
-        "name": "Green Wool",
-        "texture": "wool_colored_green"
-    },
-    "35:14": {
-        "damage": 14,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Red_Wool.png",
-        "name": "Red Wool",
-        "texture": "wool_colored_red"
-    },
-    "35:15": {
-        "damage": 15,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/45/Grid_Black_Wool.png",
-        "name": "Black Wool",
-        "texture": "wool_colored_black"
-    },
-    "35:2": {
-        "damage": 2,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fd/Grid_Magenta_Wool.png",
-        "name": "Magenta Wool",
-        "texture": "wool_colored_magenta"
-    },
-    "35:3": {
-        "damage": 3,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fb/Grid_Light_Blue_Wool.png",
-        "name": "Light Blue Wool",
-        "texture": "wool_colored_light_blue"
-    },
-    "35:4": {
-        "damage": 4,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ed/Grid_Yellow_Wool.png",
-        "name": "Yellow Wool",
-        "texture": "wool_colored_yellow"
-    },
-    "35:5": {
-        "damage": 5,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a2/Grid_Lime_Wool.png",
-        "name": "Lime Wool",
-        "texture": "wool_colored_lime"
-    },
-    "35:6": {
-        "damage": 6,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b3/Grid_Pink_Wool.png",
-        "name": "Pink Wool",
-        "texture": "wool_colored_pink"
-    },
-    "35:7": {
-        "damage": 7,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d3/Grid_Gray_Wool.png",
-        "name": "Gray Wool",
-        "texture": "wool_colored_gray"
-    },
-    "35:8": {
-        "damage": 8,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e5/Grid_Light_Gray_Wool.png",
-        "name": "Light Gray Wool",
-        "texture": "wool_colored_silver"
-    },
-    "35:9": {
-        "damage": 9,
-        "id": 35,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cd/Grid_Cyan_Wool.png",
-        "name": "Cyan Wool",
-        "texture": "wool_colored_cyan"
     },
     "36": {
         "id": 36,
@@ -2223,15 +1971,14 @@
         "name": "Nether Wart"
     },
     "373": {
+        "damageValues": {
+            "0": {
+                "name": "Water Bottle"
+            }
+        },
         "id": 373,
         "image": "waterbottle.png",
         "name": "Potion"
-    },
-    "373:0": {
-        "damage": 0,
-        "id": 373,
-        "image": "waterbottle.png",
-        "name": "Water Bottle"
     },
     "374": {
         "id": 374,
@@ -2264,6 +2011,52 @@
         "name": "Brewing Stand"
     },
     "38": {
+        "damageValues": {
+            "0": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c7/Grid_Poppy.png",
+                "name": "Poppy"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Grid_Blue_Orchid.png",
+                "name": "Blue Orchid",
+                "texture": "flower_blue_orchid"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/33/Grid_Allium.png",
+                "name": "Allium",
+                "texture": "flower_allium"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/79/Grid_Azure_Bluet.png",
+                "name": "Azure Bluet",
+                "texture": "flower_houstonia"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6f/Grid_Red_Tulip.png",
+                "name": "Red Tulip",
+                "texture": "flower_tulip_red"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ec/Grid_Orange_Tulip.png",
+                "name": "Orange Tulip",
+                "texture": "flower_tulip_orange"
+            },
+            "6": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4f/Grid_White_Tulip.png",
+                "name": "White Tulip",
+                "texture": "flower_tulip_white"
+            },
+            "7": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/61/Grid_Pink_Tulip.png",
+                "name": "Pink Tulip",
+                "texture": "flower_tulip_pink"
+            },
+            "8": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Oxeye_Daisy.png",
+                "name": "Oxeye Daisy",
+                "texture": "flower_oxeye_daisy"
+            }
+        },
         "id": 38,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/49/Grid_Rose.png",
         "name": "Flower",
@@ -2288,153 +2081,106 @@
         "name": "Glistering Melon"
     },
     "383": {
+        "damageValues": {
+            "100": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e0/Grid_Spawn_Horse.png",
+                "name": "Spawn Horse"
+            },
+            "120": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/02/Grid_Spawn_Villager.png",
+                "name": "Spawn Villager"
+            },
+            "50": {
+                "name": "Spawn Creeper"
+            },
+            "51": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/35/Grid_Spawn_Skeleton.png",
+                "name": "Spawn Skeleton"
+            },
+            "52": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/50/Grid_Spawn_Spider.png",
+                "name": "Spawn Spider"
+            },
+            "54": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/30/Grid_Spawn_Zombie.png",
+                "name": "Spawn Zombie"
+            },
+            "55": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/11/Grid_Spawn_Slime.png",
+                "name": "Spawn Slime"
+            },
+            "56": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3f/Grid_Spawn_Ghast.png",
+                "name": "Spawn Ghast"
+            },
+            "57": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7b/Grid_Spawn_Pig_Zombie.png",
+                "name": "Spawn Zombie Pigman"
+            },
+            "58": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/62/Grid_Spawn_Enderman.png",
+                "name": "Spawn Enderman"
+            },
+            "59": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ee/Grid_Spawn_Cave_Spider.png",
+                "name": "Spawn Cave Spider"
+            },
+            "60": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/11/Grid_Spawn_Silverfish.png",
+                "name": "Spawn Silverfish"
+            },
+            "61": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/ff/Grid_Spawn_Blaze.png",
+                "name": "Spawn Blaze"
+            },
+            "62": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/25/Grid_Spawn_Magma_Cube.png",
+                "name": "Spawn Magma Cube"
+            },
+            "65": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f3/Grid_Spawn_Bat.png",
+                "name": "Spawn Bat"
+            },
+            "66": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7c/Grid_Spawn_Witch.png",
+                "name": "Spawn Witch"
+            },
+            "90": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Spawn_Pig.png",
+                "name": "Spawn Pig"
+            },
+            "91": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f8/Grid_Spawn_Sheep.png",
+                "name": "Spawn Sheep"
+            },
+            "92": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/80/Grid_Spawn_Cow.png",
+                "name": "Spawn Cow"
+            },
+            "93": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b0/Grid_Spawn_Chicken.png",
+                "name": "Spawn Chicken"
+            },
+            "94": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/58/Grid_Spawn_Squid.png",
+                "name": "Spawn Squid"
+            },
+            "95": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4b/Grid_Spawn_Wolf.png",
+                "name": "Spawn Wolf"
+            },
+            "96": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/91/Grid_Spawn_Mooshroom.png",
+                "name": "Spawn Mooshroom"
+            },
+            "98": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e8/Grid_Spawn_Ocelot.png",
+                "name": "Spawn Ocelot"
+            }
+        },
         "id": 383,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fc/Grid_Spawn_Creeper.png",
         "name": "Spawn Egg"
-    },
-    "383:100": {
-        "damage": 100,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e0/Grid_Spawn_Horse.png",
-        "name": "Spawn Horse"
-    },
-    "383:120": {
-        "damage": 120,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/02/Grid_Spawn_Villager.png",
-        "name": "Spawn Villager"
-    },
-    "383:50": {
-        "damage": 50,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fc/Grid_Spawn_Creeper.png",
-        "name": "Spawn Creeper"
-    },
-    "383:51": {
-        "damage": 51,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/35/Grid_Spawn_Skeleton.png",
-        "name": "Spawn Skeleton"
-    },
-    "383:52": {
-        "damage": 52,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/50/Grid_Spawn_Spider.png",
-        "name": "Spawn Spider"
-    },
-    "383:54": {
-        "damage": 54,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/30/Grid_Spawn_Zombie.png",
-        "name": "Spawn Zombie"
-    },
-    "383:55": {
-        "damage": 55,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/11/Grid_Spawn_Slime.png",
-        "name": "Spawn Slime"
-    },
-    "383:56": {
-        "damage": 56,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3f/Grid_Spawn_Ghast.png",
-        "name": "Spawn Ghast"
-    },
-    "383:57": {
-        "damage": 57,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7b/Grid_Spawn_Pig_Zombie.png",
-        "name": "Spawn Zombie Pigman"
-    },
-    "383:58": {
-        "damage": 58,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/62/Grid_Spawn_Enderman.png",
-        "name": "Spawn Enderman"
-    },
-    "383:59": {
-        "damage": 59,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ee/Grid_Spawn_Cave_Spider.png",
-        "name": "Spawn Cave Spider"
-    },
-    "383:60": {
-        "damage": 60,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/11/Grid_Spawn_Silverfish.png",
-        "name": "Spawn Silverfish"
-    },
-    "383:61": {
-        "damage": 61,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/ff/Grid_Spawn_Blaze.png",
-        "name": "Spawn Blaze"
-    },
-    "383:62": {
-        "damage": 62,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/25/Grid_Spawn_Magma_Cube.png",
-        "name": "Spawn Magma Cube"
-    },
-    "383:65": {
-        "damage": 65,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f3/Grid_Spawn_Bat.png",
-        "name": "Spawn Bat"
-    },
-    "383:66": {
-        "damage": 66,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7c/Grid_Spawn_Witch.png",
-        "name": "Spawn Witch"
-    },
-    "383:90": {
-        "damage": 90,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Spawn_Pig.png",
-        "name": "Spawn Pig"
-    },
-    "383:91": {
-        "damage": 91,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f8/Grid_Spawn_Sheep.png",
-        "name": "Spawn Sheep"
-    },
-    "383:92": {
-        "damage": 92,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/80/Grid_Spawn_Cow.png",
-        "name": "Spawn Cow"
-    },
-    "383:93": {
-        "damage": 93,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b0/Grid_Spawn_Chicken.png",
-        "name": "Spawn Chicken"
-    },
-    "383:94": {
-        "damage": 94,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/58/Grid_Spawn_Squid.png",
-        "name": "Spawn Squid"
-    },
-    "383:95": {
-        "damage": 95,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4b/Grid_Spawn_Wolf.png",
-        "name": "Spawn Wolf"
-    },
-    "383:96": {
-        "damage": 96,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/91/Grid_Spawn_Mooshroom.png",
-        "name": "Spawn Mooshroom"
-    },
-    "383:98": {
-        "damage": 98,
-        "id": 383,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e8/Grid_Spawn_Ocelot.png",
-        "name": "Spawn Ocelot"
     },
     "384": {
         "id": 384,
@@ -2465,69 +2211,6 @@
         "id": 389,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c5/Grid_Item_Frame.png",
         "name": "Item Frame"
-    },
-    "38:0": {
-        "damage": 0,
-        "id": 38,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c7/Grid_Poppy.png",
-        "name": "Poppy",
-        "texture": "flower_rose"
-    },
-    "38:1": {
-        "damage": 1,
-        "id": 38,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Grid_Blue_Orchid.png",
-        "name": "Blue Orchid",
-        "texture": "flower_blue_orchid"
-    },
-    "38:2": {
-        "damage": 2,
-        "id": 38,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/33/Grid_Allium.png",
-        "name": "Allium",
-        "texture": "flower_allium"
-    },
-    "38:3": {
-        "damage": 3,
-        "id": 38,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/79/Grid_Azure_Bluet.png",
-        "name": "Azure Bluet",
-        "texture": "flower_houstonia"
-    },
-    "38:4": {
-        "damage": 4,
-        "id": 38,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6f/Grid_Red_Tulip.png",
-        "name": "Red Tulip",
-        "texture": "flower_tulip_red"
-    },
-    "38:5": {
-        "damage": 5,
-        "id": 38,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ec/Grid_Orange_Tulip.png",
-        "name": "Orange Tulip",
-        "texture": "flower_tulip_orange"
-    },
-    "38:6": {
-        "damage": 6,
-        "id": 38,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4f/Grid_White_Tulip.png",
-        "name": "White Tulip",
-        "texture": "flower_tulip_white"
-    },
-    "38:7": {
-        "damage": 7,
-        "id": 38,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/61/Grid_Pink_Tulip.png",
-        "name": "Pink Tulip",
-        "texture": "flower_tulip_pink"
-    },
-    "38:8": {
-        "damage": 8,
-        "id": 38,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Oxeye_Daisy.png",
-        "name": "Oxeye Daisy",
-        "texture": "flower_oxeye_daisy"
     },
     "39": {
         "id": 39,
@@ -2574,39 +2257,30 @@
         "name": "Golden Carrot"
     },
     "397": {
+        "damageValues": {
+            "0": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c9/Grid_Skeleton_Skull.png",
+                "name": "Skeleton Skull"
+            },
+            "1": {
+                "name": "Wither Skeleton Skull"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6f/Grid_Zombie_Head.png",
+                "name": "Zombie Head"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_Head.png",
+                "name": "Head"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c7/Grid_Creeper_Head.png",
+                "name": "Creeper Head"
+            }
+        },
         "id": 397,
         "image": "witherskeletonskull.png",
         "name": "Mob Head"
-    },
-    "397:0": {
-        "damage": 0,
-        "id": 397,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c9/Grid_Skeleton_Skull.png",
-        "name": "Skeleton Skull"
-    },
-    "397:1": {
-        "damage": 1,
-        "id": 397,
-        "image": "witherskeletonskull.png",
-        "name": "Wither Skeleton Skull"
-    },
-    "397:2": {
-        "damage": 2,
-        "id": 397,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6f/Grid_Zombie_Head.png",
-        "name": "Zombie Head"
-    },
-    "397:3": {
-        "damage": 3,
-        "id": 397,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_Head.png",
-        "name": "Head"
-    },
-    "397:4": {
-        "damage": 4,
-        "id": 397,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c7/Grid_Creeper_Head.png",
-        "name": "Creeper Head"
     },
     "398": {
         "id": 398,
@@ -2618,21 +2292,6 @@
         "id": 399,
         "image": "netherstar.png",
         "name": "Nether Star"
-    },
-    "3:1": {
-        "damage": 1,
-        "id": 3,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Dirt.png",
-        "name": "Grassless Dirt",
-        "texture": "dirt"
-    },
-    "3:2": {
-        "damage": 2,
-        "id": 3,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6d/Grid_Podzol.png",
-        "name": "Podzol",
-        "texture_side": "dirt_podzol_side",
-        "texture_top": "dirt_podzol_top"
     },
     "4": {
         "cloud": {
@@ -2748,209 +2407,155 @@
         "name": "Minecart with Command Block"
     },
     "43": {
+        "damageValues": {
+            "0": {
+                "name": "Double Stone Slab",
+                "texture": "stone_slab_side"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
+                "name": "Double Sandstone Slab",
+                "texture": "sandstone_normal",
+                "texture_bottom": "sandstone_bottom",
+                "texture_top": "sandstone_top"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
+                "name": "Double Wooden Slab",
+                "texture": "planks_oak"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
+                "name": "Double Cobblestone Slab",
+                "texture": "cobblestone"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
+                "name": "Double Brick Slab",
+                "texture": "brick"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
+                "name": "Double Stone Brick Slab",
+                "texture": "stonebrick"
+            },
+            "6": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
+                "name": "Double Nether Brick Slab",
+                "texture": "nether_brick"
+            },
+            "7": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
+                "name": "Double Quartz Slab",
+                "texture": "quartz_block_side",
+                "texture_bottom": "quartz_block_bottom",
+                "texture_top": "quartz_block_top"
+            }
+        },
         "id": 43,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
         "name": "Double Slab",
         "solid": true,
         "type": "block"
     },
-    "43:0": {
-        "damage": 0,
-        "id": 43,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
-        "name": "Double Stone Slab",
-        "texture": "stone_slab_side"
-    },
-    "43:1": {
-        "damage": 1,
-        "id": 43,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
-        "name": "Double Sandstone Slab",
-        "texture": "sandstone_normal",
-        "texture_bottom": "sandstone_bottom",
-        "texture_top": "sandstone_top"
-    },
-    "43:2": {
-        "damage": 2,
-        "id": 43,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
-        "name": "Double Wooden Slab",
-        "texture": "planks_oak"
-    },
-    "43:3": {
-        "damage": 3,
-        "id": 43,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
-        "name": "Double Cobblestone Slab",
-        "texture": "cobblestone"
-    },
-    "43:4": {
-        "damage": 4,
-        "id": 43,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
-        "name": "Double Brick Slab",
-        "texture": "brick"
-    },
-    "43:5": {
-        "damage": 5,
-        "id": 43,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
-        "name": "Double Stone Brick Slab",
-        "texture": "stonebrick"
-    },
-    "43:6": {
-        "damage": 6,
-        "id": 43,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
-        "name": "Double Nether Brick Slab",
-        "texture": "nether_brick"
-    },
-    "43:7": {
-        "damage": 7,
-        "id": 43,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
-        "name": "Double Quartz Slab",
-        "texture": "quartz_block_side",
-        "texture_bottom": "quartz_block_bottom",
-        "texture_top": "quartz_block_top"
-    },
     "44": {
+        "damageValues": {
+            "0": {
+                "name": "Stone Slab",
+                "texture": "stone_slab_side"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
+                "name": "Sandstone Slab",
+                "texture": "sandstone_normal",
+                "texture_bottom": "sandstone_bottom",
+                "texture_top": "sandstone_top"
+            },
+            "128": {
+                "name": "Stone Slab",
+                "subtype": "slab-top",
+                "texture": "stone_slab_side"
+            },
+            "129": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
+                "name": "Sandstone Slab",
+                "subtype": "slab-top",
+                "texture": "sandstone_normal",
+                "texture_bottom": "sandstone_bottom",
+                "texture_top": "sandstone_top"
+            },
+            "130": {
+                "alias": "126:128"
+            },
+            "131": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
+                "name": "Cobblestone Slab",
+                "subtype": "slab-top",
+                "texture": "cobblestone"
+            },
+            "132": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
+                "name": "Brick Slab",
+                "subtype": "slab-top",
+                "texture": "brick"
+            },
+            "133": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
+                "name": "Stone Brick Slab",
+                "subtype": "slab-top",
+                "texture": "stonebrick"
+            },
+            "134": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
+                "name": "Nether Brick Slab",
+                "subtype": "slab-top",
+                "texture": "nether_brick"
+            },
+            "135": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
+                "name": "Quartz Slab",
+                "subtype": "slab-top",
+                "texture": "quartz_block_side",
+                "texture_bottom": "quartz_block_bottom",
+                "texture_top": "quartz_block_top"
+            },
+            "2": {
+                "alias": "126:0"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
+                "name": "Cobblestone Slab",
+                "texture": "cobblestone"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
+                "name": "Brick Slab",
+                "texture": "brick"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
+                "name": "Stone Brick Slab",
+                "texture": "stonebrick"
+            },
+            "6": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
+                "name": "Nether Brick Slab",
+                "texture": "nether_brick"
+            },
+            "7": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
+                "name": "Quartz Slab",
+                "texture": "quartz_block_side",
+                "texture_bottom": "quartz_block_bottom",
+                "texture_top": "quartz_block_top"
+            }
+        },
         "id": 44,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
         "name": "Slab",
         "solid": false,
         "subtype": "slab",
         "type": "block"
-    },
-    "44:0": {
-        "damage": 0,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
-        "name": "Stone Slab",
-        "subtype": "slab",
-        "texture": "stone_slab_side"
-    },
-    "44:1": {
-        "damage": 1,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
-        "name": "Sandstone Slab",
-        "subtype": "slab",
-        "texture": "sandstone_normal",
-        "texture_bottom": "sandstone_bottom",
-        "texture_top": "sandstone_top"
-    },
-    "44:128": {
-        "damage": 128,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
-        "name": "Stone Slab",
-        "subtype": "slab-top",
-        "texture": "stone_slab_side"
-    },
-    "44:129": {
-        "damage": 129,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
-        "name": "Sandstone Slab",
-        "subtype": "slab-top",
-        "texture": "sandstone_normal",
-        "texture_bottom": "sandstone_bottom",
-        "texture_top": "sandstone_top"
-    },
-    "44:130": {
-        "alias": "126:128",
-        "damage": 130,
-        "id": 44
-    },
-    "44:131": {
-        "damage": 131,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
-        "name": "Cobblestone Slab",
-        "subtype": "slab-top",
-        "texture": "cobblestone"
-    },
-    "44:132": {
-        "damage": 132,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
-        "name": "Brick Slab",
-        "subtype": "slab-top",
-        "texture": "brick"
-    },
-    "44:133": {
-        "damage": 133,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
-        "name": "Stone Brick Slab",
-        "subtype": "slab-top",
-        "texture": "stonebrick"
-    },
-    "44:134": {
-        "damage": 134,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
-        "name": "Nether Brick Slab",
-        "subtype": "slab-top",
-        "texture": "nether_brick"
-    },
-    "44:135": {
-        "damage": 135,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
-        "name": "Quartz Slab",
-        "subtype": "slab-top",
-        "texture": "quartz_block_side",
-        "texture_bottom": "quartz_block_bottom",
-        "texture_top": "quartz_block_top"
-    },
-    "44:2": {
-        "alias": "126:0",
-        "damage": 2,
-        "id": 44
-    },
-    "44:3": {
-        "damage": 3,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
-        "name": "Cobblestone Slab",
-        "subtype": "slab",
-        "texture": "cobblestone"
-    },
-    "44:4": {
-        "damage": 4,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
-        "name": "Brick Slab",
-        "subtype": "slab",
-        "texture": "brick"
-    },
-    "44:5": {
-        "damage": 5,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
-        "name": "Stone Brick Slab",
-        "subtype": "slab",
-        "texture": "stonebrick"
-    },
-    "44:6": {
-        "damage": 6,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
-        "name": "Nether Brick Slab",
-        "subtype": "slab",
-        "texture": "nether_brick"
-    },
-    "44:7": {
-        "damage": 7,
-        "id": 44,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
-        "name": "Quartz Slab",
-        "subtype": "slab",
-        "texture": "quartz_block_side",
-        "texture_bottom": "quartz_block_bottom",
-        "texture_top": "quartz_block_top"
     },
     "45": {
         "id": 45,
@@ -2997,6 +2602,37 @@
         "type": "block"
     },
     "5": {
+        "damageValues": {
+            "0": {
+                "name": "Oak Wood Planks",
+                "texture": "planks_oak"
+            },
+            "1": {
+                "image": "sprucewoodplanks.png",
+                "name": "Spruce Wood Planks",
+                "texture": "planks_spruce"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Wooden_Plank_%28Birch%29.png",
+                "name": "Birch Wood Planks",
+                "texture": "planks_birch"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Wooden_Plank_%28Jungle%29.png",
+                "name": "Jungle Wood Planks",
+                "texture": "planks_jungle"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f1/Grid_Acacia_Wood_Planks.png",
+                "name": "Acacia Wood Planks",
+                "texture": "planks_acacia"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b5/Grid_Dark_Oak_Wood_Planks.png",
+                "name": "Dark Oak Wood Planks",
+                "texture": "planks_big_oak"
+            }
+        },
         "id": 5,
         "image": "oakwoodplanks.png",
         "name": "Wooden Planks",
@@ -3087,6 +2723,33 @@
         "type": "block"
     },
     "59": {
+        "damageValues": {
+            "0": {
+                "texture_side": "wheat_stage_0"
+            },
+            "1": {
+                "texture_side": "wheat_stage_1"
+            },
+            "2": {
+                "texture_side": "wheat_stage_2"
+            },
+            "3": {
+                "texture_side": "wheat_stage_3"
+            },
+            "4": {
+                "texture_side": "wheat_stage_4"
+            },
+            "5": {
+                "texture_side": "wheat_stage_5"
+            },
+            "6": {
+                "texture_side": "wheat_stage_6"
+            },
+            "7": {
+                "image": "wheat.png",
+                "texture_side": "wheat_stage_7"
+            }
+        },
         "id": 59,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/68/Grid_Seeds.png",
         "name": "Wheat",
@@ -3094,91 +2757,38 @@
         "solid": false,
         "type": "block"
     },
-    "59:0": {
-        "damage": 0,
-        "id": 59,
-        "texture_side": "wheat_stage_0"
-    },
-    "59:1": {
-        "damage": 1,
-        "id": 59,
-        "texture_side": "wheat_stage_1"
-    },
-    "59:2": {
-        "damage": 2,
-        "id": 59,
-        "texture_side": "wheat_stage_2"
-    },
-    "59:3": {
-        "damage": 3,
-        "id": 59,
-        "texture_side": "wheat_stage_3"
-    },
-    "59:4": {
-        "damage": 4,
-        "id": 59,
-        "texture_side": "wheat_stage_4"
-    },
-    "59:5": {
-        "damage": 5,
-        "id": 59,
-        "texture_side": "wheat_stage_5"
-    },
-    "59:6": {
-        "damage": 6,
-        "id": 59,
-        "texture_side": "wheat_stage_6"
-    },
-    "59:7": {
-        "damage": 7,
-        "id": 59,
-        "image": "wheat.png",
-        "name": "Wheat",
-        "texture_side": "wheat_stage_7"
-    },
-    "5:0": {
-        "damage": 0,
-        "id": 5,
-        "image": "oakwoodplanks.png",
-        "name": "Oak Wood Planks",
-        "texture": "planks_oak"
-    },
-    "5:1": {
-        "damage": 1,
-        "id": 5,
-        "image": "sprucewoodplanks.png",
-        "name": "Spruce Wood Planks",
-        "texture": "planks_spruce"
-    },
-    "5:2": {
-        "damage": 2,
-        "id": 5,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Wooden_Plank_%28Birch%29.png",
-        "name": "Birch Wood Planks",
-        "texture": "planks_birch"
-    },
-    "5:3": {
-        "damage": 3,
-        "id": 5,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Wooden_Plank_%28Jungle%29.png",
-        "name": "Jungle Wood Planks",
-        "texture": "planks_jungle"
-    },
-    "5:4": {
-        "damage": 4,
-        "id": 5,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f1/Grid_Acacia_Wood_Planks.png",
-        "name": "Acacia Wood Planks",
-        "texture": "planks_acacia"
-    },
-    "5:5": {
-        "damage": 5,
-        "id": 5,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b5/Grid_Dark_Oak_Wood_Planks.png",
-        "name": "Dark Oak Wood Planks",
-        "texture": "planks_big_oak"
-    },
     "6": {
+        "damageValues": {
+            "0": {
+                "name": "Oak Sapling",
+                "texture": "sapling_birch"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c6/Grid_Sapling_Spruce.png",
+                "name": "Spruce Sapling",
+                "texture": "sapling_spruce"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b4/Grid_Sapling_Birch.png",
+                "name": "Birch Sapling",
+                "texture": "sapling_birch"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7f/Grid_Sapling_Jungle.png",
+                "name": "Jungle Sapling",
+                "texture": "sapling_jungle"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5b/Grid_Acacia_Sapling.png",
+                "name": "Acacia Sapling",
+                "texture": "sapling_acacia"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c5/Grid_Dark_Oak_Sapling.png",
+                "name": "Dark Oak Sapling",
+                "texture": "sapling_oak"
+            }
+        },
         "id": 6,
         "image": "oaksapling.png",
         "name": "Sapling",
@@ -3188,6 +2798,11 @@
         "type": "block"
     },
     "60": {
+        "damageValues": {
+            "0": {
+                "texture_top": "farmland_dry"
+            }
+        },
         "id": 60,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6a/Grid_Farmland.png",
         "name": "Farmland",
@@ -3197,18 +2812,21 @@
         "texture_top": "farmland_wet",
         "type": "block"
     },
-    "60:0": {
-        "damage": 0,
-        "id": 60,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6a/Grid_Farmland.png",
-        "name": "Farmland",
-        "solid": false,
-        "subtype": "farmland",
-        "texture": "dirt",
-        "texture_top": "farmland_dry",
-        "type": "block"
-    },
     "61": {
+        "damageValues": {
+            "2": {
+                "texture_north": "furnace_front_on"
+            },
+            "3": {
+                "texture_south": "furnace_front_on"
+            },
+            "4": {
+                "texture_west": "furnace_front_on"
+            },
+            "5": {
+                "texture_east": "furnace_front_on"
+            }
+        },
         "id": 61,
         "image": "furnace.png",
         "name": "Furnace",
@@ -3217,26 +2835,6 @@
         "texture_side": "furnace_side",
         "texture_top": "furnace_top",
         "type": "block"
-    },
-    "61:2": {
-        "damage": 2,
-        "id": 61,
-        "texture_north": "furnace_front_on"
-    },
-    "61:3": {
-        "damage": 3,
-        "id": 61,
-        "texture_south": "furnace_front_on"
-    },
-    "61:4": {
-        "damage": 4,
-        "id": 61,
-        "texture_west": "furnace_front_on"
-    },
-    "61:5": {
-        "damage": 5,
-        "id": 61,
-        "texture_east": "furnace_front_on"
     },
     "62": {
         "id": 62,
@@ -3286,48 +2884,6 @@
         "id": 69,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/33/Grid_Lever.png",
         "name": "Lever"
-    },
-    "6:0": {
-        "damage": 0,
-        "id": 6,
-        "image": "oaksapling.png",
-        "name": "Oak Sapling",
-        "texture": "sapling_birch"
-    },
-    "6:1": {
-        "damage": 1,
-        "id": 6,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c6/Grid_Sapling_Spruce.png",
-        "name": "Spruce Sapling",
-        "texture": "sapling_spruce"
-    },
-    "6:2": {
-        "damage": 2,
-        "id": 6,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b4/Grid_Sapling_Birch.png",
-        "name": "Birch Sapling",
-        "texture": "sapling_birch"
-    },
-    "6:3": {
-        "damage": 3,
-        "id": 6,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7f/Grid_Sapling_Jungle.png",
-        "name": "Jungle Sapling",
-        "texture": "sapling_jungle"
-    },
-    "6:4": {
-        "damage": 4,
-        "id": 6,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5b/Grid_Acacia_Sapling.png",
-        "name": "Acacia Sapling",
-        "texture": "sapling_acacia"
-    },
-    "6:5": {
-        "damage": 5,
-        "id": 6,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c5/Grid_Dark_Oak_Sapling.png",
-        "name": "Dark Oak Sapling",
-        "texture": "sapling_oak"
     },
     "7": {
         "id": 7,
@@ -3481,105 +3037,74 @@
         "name": "Repeater"
     },
     "95": {
+        "damageValues": {
+            "0": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/92/Grid_White_Stained_Glass.png",
+                "name": "White Stained Glass"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Orange_Stained_Glass.png",
+                "name": "Orange Stained Glass"
+            },
+            "10": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b8/Grid_Purple_Stained_Glass.png",
+                "name": "Purple Stained Glass"
+            },
+            "11": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/35/Grid_Blue_Stained_Glass.png",
+                "name": "Blue Stained Glass"
+            },
+            "12": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Brown_Stained_Glass.png",
+                "name": "Brown Stained Glass"
+            },
+            "13": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5f/Grid_Green_Stained_Glass.png",
+                "name": "Green Stained Glass"
+            },
+            "14": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d8/Grid_Red_Stained_Glass.png",
+                "name": "Red Stained Glass"
+            },
+            "15": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9f/Grid_Black_Stained_Glass.png",
+                "name": "Black Stained Glass"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4d/Grid_Magenta_Stained_Glass.png",
+                "name": "Magenta Stained Glass"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/25/Grid_Light_Blue_Stained_Glass.png",
+                "name": "Light Blue Stained Glass"
+            },
+            "4": {
+                "name": "Yellow Stained Glass"
+            },
+            "5": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a5/Grid_Lime_Stained_Glass.png",
+                "name": "Lime Stained Glass"
+            },
+            "6": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/71/Grid_Pink_Stained_Glass.png",
+                "name": "Pink Stained Glass"
+            },
+            "7": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Gray_Stained_Glass.png",
+                "name": "Gray Stained Glass"
+            },
+            "8": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/26/Grid_Light_Gray_Stained_Glass.png",
+                "name": "Light Gray Stained Glass"
+            },
+            "9": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f3/Grid_Cyan_Stained_Glass.png",
+                "name": "Cyan Stained Glass"
+            }
+        },
         "id": 95,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_Yellow_Stained_Glass.png",
         "name": "Stained Glass"
-    },
-    "95:0": {
-        "damage": 0,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/92/Grid_White_Stained_Glass.png",
-        "name": "White Stained Glass"
-    },
-    "95:1": {
-        "damage": 1,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Orange_Stained_Glass.png",
-        "name": "Orange Stained Glass"
-    },
-    "95:10": {
-        "damage": 10,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b8/Grid_Purple_Stained_Glass.png",
-        "name": "Purple Stained Glass"
-    },
-    "95:11": {
-        "damage": 11,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/35/Grid_Blue_Stained_Glass.png",
-        "name": "Blue Stained Glass"
-    },
-    "95:12": {
-        "damage": 12,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Brown_Stained_Glass.png",
-        "name": "Brown Stained Glass"
-    },
-    "95:13": {
-        "damage": 13,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5f/Grid_Green_Stained_Glass.png",
-        "name": "Green Stained Glass"
-    },
-    "95:14": {
-        "damage": 14,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d8/Grid_Red_Stained_Glass.png",
-        "name": "Red Stained Glass"
-    },
-    "95:15": {
-        "damage": 15,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9f/Grid_Black_Stained_Glass.png",
-        "name": "Black Stained Glass"
-    },
-    "95:2": {
-        "damage": 2,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4d/Grid_Magenta_Stained_Glass.png",
-        "name": "Magenta Stained Glass"
-    },
-    "95:3": {
-        "damage": 3,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/25/Grid_Light_Blue_Stained_Glass.png",
-        "name": "Light Blue Stained Glass"
-    },
-    "95:4": {
-        "damage": 4,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_Yellow_Stained_Glass.png",
-        "name": "Yellow Stained Glass"
-    },
-    "95:5": {
-        "damage": 5,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a5/Grid_Lime_Stained_Glass.png",
-        "name": "Lime Stained Glass"
-    },
-    "95:6": {
-        "damage": 6,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/71/Grid_Pink_Stained_Glass.png",
-        "name": "Pink Stained Glass"
-    },
-    "95:7": {
-        "damage": 7,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Gray_Stained_Glass.png",
-        "name": "Gray Stained Glass"
-    },
-    "95:8": {
-        "damage": 8,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/26/Grid_Light_Gray_Stained_Glass.png",
-        "name": "Light Gray Stained Glass"
-    },
-    "95:9": {
-        "damage": 9,
-        "id": 95,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f3/Grid_Cyan_Stained_Glass.png",
-        "name": "Cyan Stained Glass"
     },
     "96": {
         "id": 96,
@@ -3587,45 +3112,34 @@
         "name": "Trapdoor"
     },
     "97": {
+        "damageValues": {
+            "0": {
+                "name": "Stone Monster Egg"
+            },
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/03/Grid_Cobblestone.png",
+                "name": "Cobblestone Monster Egg"
+            },
+            "2": {
+                "image": "stonebrick.png",
+                "name": "Stone Brick Monster Egg"
+            },
+            "3": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/23/Grid_Mossy_Stone_Brick.png",
+                "name": "Mossy Stone Brick Monster Egg"
+            },
+            "4": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/85/Grid_Cracked_Stone_Brick.png",
+                "name": "Cracked Stone Brick Monster Egg"
+            },
+            "5": {
+                "image": "chiseledstonebrick.png",
+                "name": "Chiseled Stone Brick Monster Egg"
+            }
+        },
         "id": 97,
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Stone.png",
         "name": "Monster Egg"
-    },
-    "97:0": {
-        "damage": 0,
-        "id": 97,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Stone.png",
-        "name": "Stone Monster Egg"
-    },
-    "97:1": {
-        "damage": 1,
-        "id": 97,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/03/Grid_Cobblestone.png",
-        "name": "Cobblestone Monster Egg"
-    },
-    "97:2": {
-        "damage": 2,
-        "id": 97,
-        "image": "stonebrick.png",
-        "name": "Stone Brick Monster Egg"
-    },
-    "97:3": {
-        "damage": 3,
-        "id": 97,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/23/Grid_Mossy_Stone_Brick.png",
-        "name": "Mossy Stone Brick Monster Egg"
-    },
-    "97:4": {
-        "damage": 4,
-        "id": 97,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/85/Grid_Cracked_Stone_Brick.png",
-        "name": "Cracked Stone Brick Monster Egg"
-    },
-    "97:5": {
-        "damage": 5,
-        "id": 97,
-        "image": "chiseledstonebrick.png",
-        "name": "Chiseled Stone Brick Monster Egg"
     },
     "98": {
         "cloud": {
@@ -3633,27 +3147,23 @@
             "y": 1,
             "z": 3
         },
+        "damageValues": {
+            "1": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/23/Grid_Mossy_Stone_Brick.png",
+                "name": "Mossy Stone Brick"
+            },
+            "2": {
+                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/85/Grid_Cracked_Stone_Brick.png",
+                "name": "Cracked Stone Brick"
+            },
+            "3": {
+                "image": "chiseledstonebrick.png",
+                "name": "Chiseled Stone Brick"
+            }
+        },
         "id": 98,
         "image": "stonebrick.png",
         "name": "Stone Brick"
-    },
-    "98:1": {
-        "damage": 1,
-        "id": 98,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/23/Grid_Mossy_Stone_Brick.png",
-        "name": "Mossy Stone Brick"
-    },
-    "98:2": {
-        "damage": 2,
-        "id": 98,
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/85/Grid_Cracked_Stone_Brick.png",
-        "name": "Cracked Stone Brick"
-    },
-    "98:3": {
-        "damage": 3,
-        "id": 98,
-        "image": "chiseledstonebrick.png",
-        "name": "Chiseled Stone Brick"
     },
     "99": {
         "id": 99,
