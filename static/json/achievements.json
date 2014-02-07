@@ -227,6 +227,15 @@
         "requires": "enchantments",
         "runobjective": "okill"
     },
+    "overpowered": {
+        "description": "Build a Notch apple",
+        "displayname": "Overpowered",
+        "fancy": true,
+        "icon": 322,
+        "iconName": "minecraft:golden_apple",
+        "requires": "buildBetterPickaxe",
+        "runobjective": "apple"
+    },
     "portal": {
         "description": "Build a portal to the Nether",
         "displayname": "We Need to Go Deeper",
