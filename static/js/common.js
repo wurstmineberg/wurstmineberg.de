@@ -160,7 +160,11 @@ function Item(numericID, itemInfo) {
         this.name = itemInfo.name;
     }
     this.isBlock = numericID <= 255;
-    this.numericID = numericID;
+    if (_.isString(numericID)) {
+        this.numericID = parseInt(numericID);
+    } else {
+        this.numericID = numericID;
+    }
 }
 
 function ItemData (itemData) {
@@ -182,7 +186,7 @@ function ItemData (itemData) {
         }
         if ('damageValues' in item) {
             if (damage.toString() in item.damageValues) {
-                $.extend(item, item.damageValues[damage.toString()]);
+                item = $.extend({}, item, item.damageValues[damage.toString()]);
             }
             delete item.damageValues;
         }
