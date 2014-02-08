@@ -161,6 +161,7 @@ function ItemData (itemData) {
             }
             delete item.damageValues;
         }
+        return item;
     };
     
     this.itemById = function(id) {
