@@ -143,12 +143,32 @@ function is_block(id) {
     return id <= 255;
 }
 
+function Item(numericID, itemInfo) {
+    this.htmlImage = function(classes) {
+        if ('image' in itemInfo) {
+            if (itemInfo['image'].startsWith('http://') || itemInfo['image'].startsWith('https://')) {
+                return '<img src="' + itemInfo['image'] + '" class="' + (classes || '') + '" />';
+            } else {
+                return '<img src="/assets/img/grid/' + itemInfo['image'] + '" class="' + (classes || '') + '" />';
+            }
+        } else {
+            return '';
+        }
+    };
+    this.id = itemInfo.id;
+    this.isBlock = itemInfo.id <= 255;
+    this.name = itemInfo.name;
+    this.numericID = numericID;
+}
+
 function ItemData (itemData) {
     this.itemByDamage = function(id, damage) {
         var item = undefined;
+        var numericID = id;
         if (_.isString(id)) {
             $.each(itemData, function(numericItemID, itemInfo) {
                 if (itemInfo['id'] == id && (item === undefined || ! is_block(numericItemID))) {
+                    numericID = numericItemID;
                     item = itemInfo;
                 }
             });
@@ -161,20 +181,22 @@ function ItemData (itemData) {
             }
             delete item.damageValues;
         }
-        return item;
+        return Item(numericID, item);
     };
     
     this.itemById = function(id) {
         if (_.isString(id)) {
             var item = undefined;
+            var numericID = undefined;
             $.each(itemData, function(numericItemID, itemInfo) {
                 if (itemInfo['id'] == id && (item === undefined || ! is_block(numericItemID))) {
+                    numericID = numericItemID;
                     item = itemInfo;
                 }
             });
-            return item;
+            return Item(numericID, item);
         } else {
-            return itemData[id.toString()];
+            return Item(id, itemData[id.toString()]);
         }
     };
 }

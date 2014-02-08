@@ -108,17 +108,8 @@ function initialize_inventory(tbody, rows, cols) {
 function display_slot(cell, stack, item_data, string_data) {
     var itemData = new ItemData(item_data);
     var item = itemData.itemByDamage(stack.id, stack.Damage);
-    if ('image' in item) {
-        var image = '<img src="/assets/img/grid/' + item['image'] + '" />';
-        if (item['image'].startsWith('http://') || item['image'].startsWith('https://')) {
-            image = '<img src="' + item['image'] + '" />';
-        }
-        cell.children('div').children('div').append(image);
-    }
-    var name = stack['id'].toString();
-    if ('name' in item) {
-        name = item['name'];
-    }
+    cell.children('div').children('div').append(item.image());
+    var name = item.name || stack['id'].toString();
     if ('tag' in stack) {
         if ('display' in stack['tag'] && 'Name' in stack['tag']['display']) {
             name += ' “' + stack['tag']['display']['Name'] + '”';
@@ -195,52 +186,48 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
     var blocks = [];
     var mobs = [];
     var achievements = [];
-
+    
+    var itemData = new ItemData(item_data);
+    
     $.each(stat_data, function(key, value) {
         stat = key.split('.');
         var name;
 
         if (stat[0] === 'stat') {
-            if (stat[1] === 'craftItem' ||
-                stat[1] === 'useItem' ||
-                stat[1] === 'breakItem' ||
-                stat[1] === 'mineBlock') {
-                var id = parseInt(stat[2]);
-                var name = stat[2];
+            if (stat[1] === 'craftItem' || stat[1] === 'useItem' || stat[1] === 'breakItem' || stat[1] === 'mineBlock') {
+                var item = itemData.itemById(stat.slice(2).join(':'));
+                var name = item.name || stat.slice(2).join(':');
                 var actionIndex = stat[1];
                 var count = value;
-
+                
                 var collection;
-                if (is_block(id)) {
+                if (item.isBlock) {
                     collection = blocks;
                 } else {
                     collection = items;
                 }
-
-                var info;
-                if ('' + id in item_data) {
-                    info = item_data['' + id];
-                    name = info['name'];
-                }
-
+                
                 var found = false;
-                $.each(collection, function(key, value) {
-                    if (value['id'] === id) {
+                collection.forEach(function(value) {
+                    if (value['id'] === item.id) {
                         value[actionIndex] = count;
                         found = true;
                         return;
                     }
                 });
-
+                
                 if (!found) {
-                    newEntry = {'name': name, 'id': id};
+                    newEntry = {
+                        'name': name,
+                        'numericID': item.numericID,
+                        'id': item.id
+                    };
                     newEntry[actionIndex] = count;
-                    if (info) {
-                        newEntry['info'] = info;
+                    if (item) {
+                        newEntry['info'] = item;
                     };
                     collection.push(newEntry);
                 }
-
             } else if (stat[1] === 'killEntity' ||
                        stat[1] === 'entityKilledBy') {
                 var id = stat[2];
@@ -363,22 +350,21 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
         nameB = b['name'];
         return nameA.localeCompare(nameB);
     });
-
+    
     items.sort(function(a, b) {
-        return a['id'] - b['id'];
+        return a.numericID - b.numericID;
     });
-
+    
     blocks.sort(function(a, b) {
-        return a['id'] - b['id'];
+        return a.numericID - b.numericID;
     });
-
+    
     achievements.sort(function(a, b) {
         nameA = a['name'];
         nameB = b['name'];
         return nameA.localeCompare(nameB);
     });
-
-
+    
     $.each(general, function(index, dict) {
         name = dict['name'];
         value = dict['value'];
@@ -407,19 +393,13 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
 
     $.each(items, function(index, dict) {
         var name = dict['name'];
-        var id = dict['id'];
+        var id = dict['numericID'];
         var image = "";
         if ('info' in dict) {
             var info = dict['info'];
-            if ('image' in info) {
-                if (info['image'].startsWith('http://') || info['image'].startsWith('https://')) {
-                    var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
-                } else {
-                    var image = '<img src="/assets/img/grid/' + info['image'] + '" alt="image" class="item-image" />';
-                }
-            };
+            image = info.htmlImage('item-image');
         }
-
+        
         var row = '<tr id="item-row-' + id + '" class="item-row"><td class="image"></td><td class="name"></td><td class="depleted">0</td><td class="crafted">0</td><td class="used">0</td></tr>';
         loading_stat_item.before(row);
         row = $('#item-row-' + id);
@@ -441,19 +421,13 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
 
     $.each(blocks, function(index, dict) {
         var name = dict['name'];
-        var id = dict['id'];
+        var id = dict['numericID'];
         var image = "";
         if ('info' in dict) {
             var info = dict['info'];
-            if ('image' in info) {
-                if (info['image'].startsWith('http://') || info['image'].startsWith('https://')) {
-                    var image = '<img src="' + info['image'] + '" alt="image" class="item-image" />';
-                } else {
-                    var image = '<img src="/assets/img/grid/' + info['image'] + '" alt="image" class="item-image" />';
-                }
-            };
+            image = info.htmlImage('item-image');
         }
-
+        
         var row = '<tr id="block-row-' + id + '" class="block-row"><td class="image"></td><td class="name"></td><td class="crafted">0</td><td class="used">0</td><td class="mined">0</td></tr>';
         loading_stat_block.before(row);
         row = $('#block-row-' + id);
