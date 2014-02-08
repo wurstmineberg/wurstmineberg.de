@@ -139,6 +139,41 @@ function BiomeInfo (biome_info) {
     };
 }
 
+function is_block(id) {
+    return id <= 255;
+}
+
+function ItemData (itemData) {
+    this.itemByDamage = function(id, damage) {
+        var item = undefined;
+        if (_.isString(id)) {
+            $.each(itemData, function(numericItemID, itemInfo) {
+                if (itemInfo['id'] == id && (item === undefined || ! is_block(numericItemID))) {
+                    item = itemInfo;
+                }
+            });
+        } else {
+            item = itemData[id.toString()];
+        }
+        $.extend(item, item.damageValues[damage.toString()]);
+        delete item.damageValues;
+    }
+    
+    this.itemById = function(id) {
+        if (_.isString(id)) {
+            var item = undefined;
+            $.each(itemData, function(numericItemID, itemInfo) {
+                if (itemInfo['id'] == id && (item === undefined || ! is_block(numericItemID))) {
+                    item = itemInfo;
+                }
+            });
+            return item;
+        } else {
+            return itemData[id.toString()];
+        }
+    }
+}
+
 var API = {
     ajaxJSONDeferred: function(url) {
         return $.ajax(url, {

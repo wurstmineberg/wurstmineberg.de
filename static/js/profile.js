@@ -96,10 +96,6 @@ function display_user_data(person, item_data) {
     }
 }
 
-function is_block(id) {
-    return id <= 255;
-}
-
 function initialize_inventory(tbody, rows, cols) {
     for (var row = 0; row < rows; row++) {
         tbody.append('<tr class="inv-row inv-row-' + row + '"></tr>');
@@ -110,13 +106,7 @@ function initialize_inventory(tbody, rows, cols) {
 }
 
 function display_slot(cell, stack, item_data, string_data) {
-    var item = {};
-    if (stack['id'].toString() in item_data) {
-        item = item_data[stack['id'].toString()];
-    }
-    if (stack['id'] + ':' + stack['Damage'] in item_data) {
-        item = item_data[stack['id'] + ':' + stack['Damage']];
-    }
+    var item = ItemData(item_data).itemByDamage(stack.id, stack.Damage);
     if ('image' in item) {
         var image = '<img src="/assets/img/grid/' + item['image'] + '" />';
         if (item['image'].startsWith('http://') || item['image'].startsWith('https://')) {
