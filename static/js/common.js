@@ -184,11 +184,8 @@ function ItemData (itemData) {
         } else {
             item = itemData[id.toString()];
         }
-        if ('damageValues' in item) {
-            if (damage.toString() in item.damageValues) {
-                item = $.extend({}, item, item.damageValues[damage.toString()]);
-            }
-            delete item.damageValues;
+        if ('damageValues' in item && damage.toString() in item.damageValues) {
+            item = $.extend({}, item, item.damageValues[damage.toString()]);
         }
         return new Item(numericID, item);
     };
