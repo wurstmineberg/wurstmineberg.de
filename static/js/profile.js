@@ -106,7 +106,8 @@ function initialize_inventory(tbody, rows, cols) {
 }
 
 function display_slot(cell, stack, item_data, string_data) {
-    var item = ItemData(item_data).itemByDamage(stack.id, stack.Damage);
+    var itemData = new ItemData(item_data);
+    var item = itemData.itemByDamage(stack.id, stack.Damage);
     if ('image' in item) {
         var image = '<img src="/assets/img/grid/' + item['image'] + '" />';
         if (item['image'].startsWith('http://') || item['image'].startsWith('https://')) {
