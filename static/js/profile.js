@@ -208,13 +208,15 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
                 }
                 
                 var found = false;
-                collection.forEach(function(value) {
-                    if (value['id'] === item.id) {
-                        value[actionIndex] = count;
-                        found = true;
-                        return;
-                    }
-                });
+                if (item.id) {
+                    collection.forEach(function(value) {
+                        if (value['id'] === item.id) {
+                            value[actionIndex] = count;
+                            found = true;
+                            return;
+                        }
+                    });
+                }
                 
                 if (!found) {
                     newEntry = {

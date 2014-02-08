@@ -165,6 +165,9 @@ function Item(numericID, itemInfo) {
 
 function ItemData (itemData) {
     this.itemByDamage = function(id, damage) {
+        if (_.isString(id) && /[0-9]+/.test(id)) {
+            id = parseInt(id);
+        }
         var item = undefined;
         var numericID = id;
         if (_.isString(id)) {
