@@ -155,8 +155,12 @@ function ItemData (itemData) {
         } else {
             item = itemData[id.toString()];
         }
-        $.extend(item, item.damageValues[damage.toString()]);
-        delete item.damageValues;
+        if ('damageValues' in item) {
+            if (damage.toString() in item.damageValues) {
+                $.extend(item, item.damageValues[damage.toString()]);
+            }
+            delete item.damageValues;
+        }
     };
     
     this.itemById = function(id) {
