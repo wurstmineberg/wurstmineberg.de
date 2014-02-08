@@ -157,7 +157,7 @@ function ItemData (itemData) {
         }
         $.extend(item, item.damageValues[damage.toString()]);
         delete item.damageValues;
-    }
+    };
     
     this.itemById = function(id) {
         if (_.isString(id)) {
@@ -171,7 +171,7 @@ function ItemData (itemData) {
         } else {
             return itemData[id.toString()];
         }
-    }
+    };
 }
 
 var API = {
