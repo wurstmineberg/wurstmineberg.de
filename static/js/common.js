@@ -156,7 +156,7 @@ function Item(numericID, itemInfo) {
         }
     };
     this.id = itemInfo.id;
-    this.isBlock = itemInfo.id <= 255;
+    this.isBlock = numericID <= 255;
     this.name = itemInfo.name;
     this.numericID = numericID;
 }
