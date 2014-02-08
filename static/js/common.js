@@ -190,6 +190,9 @@ function ItemData (itemData) {
     };
     
     this.itemById = function(id) {
+        if (_.isString(id) && /[0-9]+/.test(id)) {
+            id = parseInt(id);
+        }
         if (_.isString(id)) {
             var item = undefined;
             var numericID = undefined;
