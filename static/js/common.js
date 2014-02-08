@@ -145,7 +145,7 @@ function is_block(id) {
 
 function Item(numericID, itemInfo) {
     this.htmlImage = function(classes) {
-        if ('image' in itemInfo) {
+        if (itemInfo && 'image' in itemInfo) {
             if (itemInfo['image'].startsWith('http://') || itemInfo['image'].startsWith('https://')) {
                 return '<img src="' + itemInfo['image'] + '" class="' + (classes || '') + '" />';
             } else {
@@ -155,9 +155,11 @@ function Item(numericID, itemInfo) {
             return '';
         }
     };
-    this.id = itemInfo.id;
+    if (itemInfo) {
+        this.id = itemInfo.id;
+        this.name = itemInfo.name;
+    }
     this.isBlock = numericID <= 255;
-    this.name = itemInfo.name;
     this.numericID = numericID;
 }
 
