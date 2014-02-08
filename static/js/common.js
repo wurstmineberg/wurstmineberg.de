@@ -181,7 +181,7 @@ function ItemData (itemData) {
             }
             delete item.damageValues;
         }
-        return Item(numericID, item);
+        return new Item(numericID, item);
     };
     
     this.itemById = function(id) {
@@ -194,9 +194,9 @@ function ItemData (itemData) {
                     item = itemInfo;
                 }
             });
-            return Item(numericID, item);
+            return new Item(numericID, item);
         } else {
-            return Item(id, itemData[id.toString()]);
+            return new Item(id, itemData[id.toString()]);
         }
     };
 }

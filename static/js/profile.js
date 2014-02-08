@@ -108,7 +108,7 @@ function initialize_inventory(tbody, rows, cols) {
 function display_slot(cell, stack, item_data, string_data) {
     var itemData = new ItemData(item_data);
     var item = itemData.itemByDamage(stack.id, stack.Damage);
-    cell.children('div').children('div').append(item.image());
+    cell.children('div').children('div').append(item.htmlImage());
     var name = item.name || stack['id'].toString();
     if ('tag' in stack) {
         if ('display' in stack['tag'] && 'Name' in stack['tag']['display']) {
