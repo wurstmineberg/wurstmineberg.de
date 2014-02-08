@@ -688,6 +688,12 @@
         "image": "slimeblock.png",
         "name": "Slime Block"
     },
+    "166": {
+        "cloud": null,
+        "id": "minecraft:barrier",
+        "image": "barrier.png",
+        "name": "Barrier"
+    },
     "17": {
         "damageValues": {
             "0": {
@@ -1662,7 +1668,7 @@
     },
     "348": {
         "id": "minecraft:glowstone_dust",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2c/Grid_Glowstone_%28Dust%29.png",
+        "image": "glowstonedust.png",
         "name": "Glowstone Dust"
     },
     "349": {
