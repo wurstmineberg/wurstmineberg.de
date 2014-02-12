@@ -1,6 +1,7 @@
 {
     "0": {
         "blast_resistance": -1,
+        "cloud": null,
         "id": "minecraft:air",
         "luminance": false,
         "name": "Air",
@@ -21,26 +22,56 @@
         },
         "damageValues": {
             "1": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 17
+                },
                 "image": "granite.png",
                 "name": "Granite"
             },
             "2": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 18
+                },
                 "image": "polishedgranite.png",
                 "name": "Polished Granite"
             },
             "3": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 19
+                },
                 "image": "diorite.png",
                 "name": "Diorite"
             },
             "4": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 20
+                },
                 "image": "polisheddiorite.png",
                 "name": "Polished Diorite"
             },
             "5": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 21
+                },
                 "image": "andesite.png",
                 "name": "Andesite"
             },
             "6": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 22
+                },
                 "image": "polishedandesite.png",
                 "name": "Polished Andesite"
             }
@@ -58,6 +89,7 @@
         "type": "block"
     },
     "10": {
+        "cloud": null,
         "id": "minecraft:flowing_lava",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/61/Grid_Lava.png",
         "name": "Flowing Lava",
@@ -67,21 +99,41 @@
         "type": "block"
     },
     "100": {
+        "cloud": {
+            "x": 1,
+            "y": 4,
+            "z": 3
+        },
         "id": "minecraft:red_mushroom_block",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/33/Grid_Huge_Red_Mushroom.png",
         "name": "Huge Red Mushroom"
     },
     "101": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 12
+        },
         "id": "minecraft:iron_bars",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/00/Grid_Iron_Bars.png",
         "name": "Iron Bars"
     },
     "102": {
+        "cloud": {
+            "x": -3,
+            "y": 1,
+            "z": 1
+        },
         "id": "minecraft:glass_pane",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/30/Grid_Glass_Pane.png",
         "name": "Glass Pane"
     },
     "103": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 3
+        },
         "id": "minecraft:melon_block",
         "image": "melonblock.png",
         "name": "Melon"
@@ -354,6 +406,7 @@
         "name": "Jungle Wood Stairs"
     },
     "137": {
+        "cloud": null,
         "id": "minecraft:command_block",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/de/Grid_Adventure_Mode_Control_Block.png",
         "name": "Command Block"
@@ -812,6 +865,11 @@
         "name": "Block of Coal"
     },
     "174": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 14
+        },
         "id": "minecraft:packed_ice",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b2/Grid_Packed_Ice.png",
         "name": "Packed Ice"
@@ -1342,6 +1400,11 @@
                 "name": "Grassless Dirt"
             },
             "2": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 11
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6d/Grid_Podzol.png",
                 "name": "Podzol",
                 "texture_side": "dirt_podzol_side",
@@ -2465,6 +2528,11 @@
         "type": "block"
     },
     "44": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 23
+        },
         "damageValues": {
             "0": {
                 "name": "Stone Slab",
@@ -2489,9 +2557,6 @@
                 "texture": "sandstone_normal",
                 "texture_bottom": "sandstone_bottom",
                 "texture_top": "sandstone_top"
-            },
-            "130": {
-                "alias": "126:128"
             },
             "131": {
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
@@ -2525,10 +2590,12 @@
                 "texture_bottom": "quartz_block_bottom",
                 "texture_top": "quartz_block_top"
             },
-            "2": {
-                "alias": "126:0"
-            },
             "3": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 25
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
                 "name": "Cobblestone Slab",
                 "texture": "cobblestone"
@@ -2600,6 +2667,11 @@
         "type": "block"
     },
     "49": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 13
+        },
         "id": "minecraft:obsidian",
         "image": "obsidian.png",
         "name": "Obsidian",
@@ -2877,6 +2949,11 @@
         "name": "Rail"
     },
     "67": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 24
+        },
         "id": "minecraft:stone_stairs",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7f/Grid_Cobblestone_Stairs.png",
         "name": "Cobblestone Stairs"
@@ -2940,11 +3017,21 @@
         "name": "Stone Button"
     },
     "78": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 16
+        },
         "id": "minecraft:snow_layer",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/31/Grid_Snow_%28cover%29.png",
         "name": "Snow"
     },
     "79": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 14
+        },
         "id": "minecraft:ice",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2e/Grid_Ice.png",
         "name": "Ice"
@@ -2959,6 +3046,11 @@
         "type": "block"
     },
     "80": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 15
+        },
         "id": "minecraft:snow",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6c/Grid_Snow.png",
         "name": "Snow Block"
