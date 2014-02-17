@@ -130,6 +130,7 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data,
     var no_track_achievements = [];
     var main_track_players = {
         none: [],
+        noadventuringtime: [],
         all: []
     };
     $.each(achievement_data, function(achievement_id, achievement_info) {
@@ -168,8 +169,12 @@ function display_achievements_stat_data(achievement_data, achievement_stat_data,
                 main_track_progress = achievement_id;
             }
         });
-        if (main_track_progress == main_track.slice(-1)[0] && has_adventuring_time && missing_no_track.length == 0) {
-            main_track_progress = 'all';
+        if (main_track_progress == main_track.slice(-1)[0] && missing_no_track.length == 0) {
+            if (has_adventuring_time) {
+                main_track_progress = 'all';
+            } else {
+                main_track_progress = 'noadventuringtime';
+            }
         }
         var person = people.personByMinecraft(minecraft_nick);
         if (person == undefined) {
