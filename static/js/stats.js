@@ -85,6 +85,7 @@ function display_leaderboard_stat_data(stat_data, string_data, people) {
         var minplayers = data['minplayers'];
         var minplayerhtml = html_player_list(people.sorted(minplayers));
         var value = prettify_stats_value(stat[1], data['value']);
+        var secondvalue = prettify_stats_value(stat[1], data['secondvalue']);
         var minvalue = prettify_stats_value(stat[1], data['minvalue']);
 
         row = '<tr class="leaderboard-row"><td class="stat">' + name + '</td><td class="leading-player">' + playerhtml + '</td><td class="value">' + value + '</td><td class="second-player">' + secondplayerhtml + '</td><td class="secondvalue">' + secondvalue + '</td></tr>';
