@@ -28,10 +28,17 @@ function display_leaderboard_stat_data(stat_data, string_data, people) {
                 if (playerstat['id'] === key) {
                     found = true;
                     if (value > playerstat['value']) {
+                        stats[index]['secondplayers'] = stats[index]['players'];
+                        stats[index]['secondvalue'] = stats[index]['value'];
                         stats[index]['players'] = [player];
                         stats[index]['value'] = value;
                     } else if (value == playerstat['value']) {
                         stats[index]['players'].push(player);
+                    } else if (value > playerstat['secondvalue']) {
+                        stats[index]['secondplayers'] = [player];
+                        stats[index]['secondvalue'] = value;
+                    } else if (value == playerstat['secondvalue']) {
+                        stats[index]['secondplayers'].push(player);
                     }
                     if (value < playerstat['minvalue']) {
                         stats[index]['minplayers'] = [player];
@@ -51,6 +58,8 @@ function display_leaderboard_stat_data(stat_data, string_data, people) {
                     'name': name,
                     'players': [player],
                     'value': value,
+                    'secondplayers': [],
+                    'secondvalue': 0,
                     'minplayers': [player],
                     'minvalue': value
                 });
@@ -71,12 +80,14 @@ function display_leaderboard_stat_data(stat_data, string_data, people) {
 
         var players = data['players'];
         var playerhtml = html_player_list(people.sorted(players));
+        var secondplayers = data['secondplayers'];
+        var secondplayerhtml = html_player_list(people.sorted(secondplayers));
         var minplayers = data['minplayers'];
         var minplayerhtml = html_player_list(people.sorted(minplayers));
         var value = prettify_stats_value(stat[1], data['value']);
         var minvalue = prettify_stats_value(stat[1], data['minvalue']);
 
-        row = '<tr class="leaderboard-row"><td class="stat">' + name + '</td><td class="leading-player">' + playerhtml + '</td><td class="value">' + value + '</td><td class="trailing-player">' + minplayerhtml + '</td><td class="minvalue">' + minvalue + '</td></tr>';
+        row = '<tr class="leaderboard-row"><td class="stat">' + name + '</td><td class="leading-player">' + playerhtml + '</td><td class="value">' + value + '</td><td class="second-player">' + secondplayerhtml + '</td><td class="secondvalue">' + secondvalue + '</td></tr>';
         loading_leaderboards.before(row);
     });
 
