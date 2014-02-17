@@ -164,6 +164,11 @@
         "name": "Brick Stairs"
     },
     "109": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 28
+        },
         "id": "minecraft:stone_brick_stairs",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/af/Grid_Stone_Brick_Stairs.png",
         "name": "Stone Brick Stairs"
@@ -348,6 +353,11 @@
         "name": "Cocoa"
     },
     "128": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 37
+        },
         "id": "minecraft:sandstone_stairs",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/0d/Grid_Sandstone_Stairs.png",
         "name": "Sandstone Stairs"
@@ -417,8 +427,24 @@
         "name": "Beacon"
     },
     "139": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 26
+        },
+        "damageValues": {
+            "1": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 27
+                },
+                "image": "mossycobblestonewall.png",
+                "name": "Mossy Cobblestone Wall"
+            }
+        },
         "id": "minecraft:cobblestone_wall",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a9/Grid_Cobblestone_Wall.png",
+        "image": "cobblestonewall.png",
         "name": "Cobblestone Wall"
     },
     "14": {
@@ -515,10 +541,20 @@
         },
         "damageValues": {
             "1": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 36
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/8d/Grid_Chiseled_Quartz_Block.png",
                 "name": "Chiseled Quartz Block"
             },
             "2": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 35
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/59/Grid_Pillar_Quartz_Block.png",
                 "name": "Pillar Quartz Block"
             },
@@ -536,6 +572,11 @@
         "name": "Block of Quartz"
     },
     "156": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 33
+        },
         "id": "minecraft:quartz_stairs",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c5/Grid_Quartz_Stairs.png",
         "name": "Quartz Stairs"
@@ -746,6 +787,16 @@
         "id": "minecraft:barrier",
         "image": "barrier.png",
         "name": "Barrier"
+    },
+    "167": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 30
+        },
+        "id": "minecraft:iron_trapdoor",
+        "image": "irontrapdoor.png",
+        "name": "Iron Trapdoor"
     },
     "17": {
         "damageValues": {
@@ -1081,11 +1132,21 @@
         },
         "damageValues": {
             "1": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 40
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1b/Grid_Decorative_Sandstone.png",
                 "name": "Chiseled Sandstone",
                 "texture": "sandstone_carved"
             },
             "2": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 39
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/22/Grid_Smooth_Sandstone.png",
                 "name": "Smooth Sandstone",
                 "texture": "sandstone_smooth"
@@ -2539,6 +2600,11 @@
                 "texture": "stone_slab_side"
             },
             "1": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 38
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
                 "name": "Sandstone Slab",
                 "texture": "sandstone_normal",
@@ -2606,6 +2672,11 @@
                 "texture": "brick"
             },
             "5": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 29
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
                 "name": "Stone Brick Slab",
                 "texture": "stonebrick"
@@ -2616,6 +2687,11 @@
                 "texture": "nether_brick"
             },
             "7": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 34
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
                 "name": "Quartz Slab",
                 "texture": "quartz_block_side",
@@ -2659,6 +2735,11 @@
         "type": "block"
     },
     "48": {
+        "cloud": {
+            "x": 0,
+            "y": 1,
+            "z": 27
+        },
         "id": "minecraft:mossy_cobblestone",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7d/Grid_Moss_Stone.png",
         "name": "Moss Stone",
@@ -3205,8 +3286,13 @@
         "name": "Stained Glass"
     },
     "96": {
+        "cloud": {
+            "x": 1,
+            "y": 2,
+            "z": 3
+        },
         "id": "minecraft:trapdoor",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b2/Grid_Trapdoor.png",
+        "image": "trapdoor.png",
         "name": "Trapdoor"
     },
     "97": {
@@ -3247,14 +3333,29 @@
         },
         "damageValues": {
             "1": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 30
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/23/Grid_Mossy_Stone_Brick.png",
                 "name": "Mossy Stone Brick"
             },
             "2": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 31
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/85/Grid_Cracked_Stone_Brick.png",
                 "name": "Cracked Stone Brick"
             },
             "3": {
+                "cloud": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 32
+                },
                 "image": "chiseledstonebrick.png",
                 "name": "Chiseled Stone Brick"
             }
