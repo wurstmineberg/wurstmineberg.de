@@ -218,6 +218,11 @@
         "name": "Nether Wart"
     },
     "116": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 7
+        },
         "id": "minecraft:enchanting_table",
         "image": "enchantmenttable.png",
         "name": "Enchantment Table"
@@ -381,6 +386,11 @@
         "type": "block"
     },
     "130": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 6
+        },
         "id": "minecraft:ender_chest",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Grid_Ender_Chest.png",
         "name": "Ender Chest"
@@ -422,6 +432,11 @@
         "name": "Command Block"
     },
     "138": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 29
+        },
         "id": "minecraft:beacon",
         "image": "beacon.png",
         "name": "Beacon"
@@ -481,11 +496,39 @@
         "name": "Mob Head"
     },
     "145": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 8
+        },
+        "damageValues": {
+            "4": {
+                "cloud": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 9
+                },
+                "name": "Slightly Damaged Anvil"
+            },
+            "8": {
+                "cloud": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 10
+                },
+                "name": "Very Damaged Anvil"
+            }
+        },
         "id": "minecraft:anvil",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/13/Grid_Anvil.png",
+        "image": "anvil.png",
         "name": "Anvil"
     },
     "146": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 5
+        },
         "id": "minecraft:trapped_chest",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Trapped_Chest.png",
         "name": "Trapped Chest"
@@ -1606,6 +1649,11 @@
         "name": "Golden Boots"
     },
     "318": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 16
+        },
         "id": "minecraft:flint",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/82/Grid_Flint.png",
         "name": "Flint"
@@ -1627,6 +1675,11 @@
         "name": "Cooked Porkchop"
     },
     "321": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 27
+        },
         "id": "minecraft:painting",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cc/Grid_Painting.png",
         "name": "Painting"
@@ -1639,30 +1692,55 @@
             }
         },
         "id": "minecraft:golden_apple",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Golden_Apple.png",
+        "image": "goldapple.png",
         "name": "Golden Apple"
     },
     "323": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 11
+        },
         "id": "minecraft:sign",
         "image": "sign.png",
         "name": "Sign"
     },
     "324": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 17
+        },
         "id": "minecraft:wooden_door",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cd/Grid_Wooden_Door.png",
         "name": "Wooden Door"
     },
     "325": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 13
+        },
         "id": "minecraft:bucket",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Bucket.png",
         "name": "Bucket"
     },
     "326": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 14
+        },
         "id": "minecraft:water_bucket",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bf/Grid_Water_Bucket.png",
         "name": "Water Bucket"
     },
     "327": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 15
+        },
         "id": "minecraft:lava_bucket",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cf/Grid_Lava_Bucket.png",
         "name": "Lava Bucket"
@@ -1673,6 +1751,11 @@
         "name": "Minecart"
     },
     "329": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 24
+        },
         "id": "minecraft:saddle",
         "image": "saddle.png",
         "name": "Saddle"
@@ -1697,6 +1780,11 @@
         "type": "block"
     },
     "330": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 18
+        },
         "id": "minecraft:iron_door",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/27/Grid_Iron_Door.png",
         "name": "Iron Door"
@@ -1712,6 +1800,11 @@
         "name": "Snowball"
     },
     "333": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 23
+        },
         "id": "minecraft:boat",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/59/Grid_Boat.png",
         "name": "Boat"
@@ -1999,6 +2092,11 @@
         "name": "Cake"
     },
     "355": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 19
+        },
         "id": "minecraft:bed",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a3/Grid_Bed.png",
         "name": "Bed"
@@ -2069,6 +2167,11 @@
         "name": "Rotten Flesh"
     },
     "368": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 0
+        },
         "id": "minecraft:ender_pearl",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/13/Grid_Ender_Pearl.png",
         "name": "Ender Pearl"
@@ -2201,6 +2304,11 @@
         "name": "Cauldron"
     },
     "381": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 21
+        },
         "id": "minecraft:ender_eye",
         "image": "eyeofender.png",
         "name": "Eye of Ender"
@@ -2338,6 +2446,11 @@
         "name": "Emerald"
     },
     "389": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 12
+        },
         "id": "minecraft:item_frame",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c5/Grid_Item_Frame.png",
         "name": "Item Frame"
@@ -2352,6 +2465,11 @@
         "type": "block"
     },
     "390": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 28
+        },
         "id": "minecraft:flower_pot",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/89/Grid_Flower_Pot.png",
         "name": "Flower Pot"
@@ -2377,6 +2495,11 @@
         "name": "Poisonous Potato"
     },
     "395": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 20
+        },
         "id": "minecraft:map",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c7/Grid_Empty_Map.png",
         "name": "Empty Map"
@@ -2522,11 +2645,21 @@
         "type": "block"
     },
     "420": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 25
+        },
         "id": "minecraft:lead",
         "image": "lead.png",
         "name": "Lead"
     },
     "421": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 26
+        },
         "id": "minecraft:name_tag",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/97/Grid_Name_Tag.png",
         "name": "Name Tag"
@@ -2799,6 +2932,11 @@
         "type": "block"
     },
     "50": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 3
+        },
         "id": "minecraft:torch",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/32/Grid_Torch.png",
         "name": "Torch",
@@ -2836,6 +2974,11 @@
         "type": "block"
     },
     "54": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 4
+        },
         "id": "minecraft:chest",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c1/Grid_Chest.png",
         "name": "Chest",
@@ -2869,6 +3012,11 @@
         "type": "block"
     },
     "58": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+        },
         "id": "minecraft:crafting_table",
         "image": "craftingtable.png",
         "name": "Crafting Table",
@@ -2972,6 +3120,11 @@
         "type": "block"
     },
     "61": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 2
+        },
         "damageValues": {
             "2": {
                 "texture_north": "furnace_front_on"
@@ -3020,6 +3173,11 @@
         "name": "Wooden Door"
     },
     "65": {
+        "cloud": {
+            "x": 1,
+            "y": 1,
+            "z": 22
+        },
         "id": "minecraft:ladder",
         "image": "ladder.png",
         "name": "Ladder"
