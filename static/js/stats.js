@@ -92,7 +92,7 @@ function display_leaderboard_stat_data(stat_data, string_data, people) {
         loading_leaderboards.before(row);
     });
 
-    $('.loading-stat').remove();
+    $('#loading-stat-leaderboard-table').remove();
 }
 
 function prepare_achievements(achievement_data, item_data) {
