@@ -330,11 +330,15 @@ function display_deathgames_stat_data(death_games_log, people) {
         });
         var statRow = $('#deathgames-stat-row-' + statName);
         statRow.children('.leading-player').html(html_player_list(bestPlayers));
-        if (bestValue !== null) {
+        if (bestValue === null) {
+            statRow.children('.value').html('');
+        } else {
             statRow.children('.value').html(bestValue);
         }
         statRow.children('.second-player').html(html_player_list(secondPlayers));
-        if (secondValue !== null) {
+        if (secondValue === null) {
+            statRow.children('.secondvalue').html('');
+        } else {
             statRow.children('.secondvalue').html(secondValue);
         }
     });
