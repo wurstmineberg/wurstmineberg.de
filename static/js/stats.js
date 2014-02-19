@@ -229,6 +229,7 @@ function display_deathgames_log(death_games_log, people) {
     death_games_log['log'].forEach(function(logEntry) {
         $('#loading-deathgames-log').after('<tr><td>' + logEntry['date'] + '</td><td>' + html_player_list([people.personById(logEntry['attacker'])]) + '</td><td>' + html_player_list([people.personById(logEntry['target'])]) + '</td><td>' + (logEntry['success'] ? '<span class="glyphicon glyphicon-ok text-success"></span>' : '<span class="glyphicon glyphicon-remove text-danger"></span>') + '</td></tr>');
     });
+    $('#loading-deathgames-log').remove();
 }
 
 function display_deathgames_stat_data(death_games_log, people) {
