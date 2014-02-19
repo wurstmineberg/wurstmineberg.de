@@ -233,7 +233,103 @@ function display_deathgames_log(death_games_log, people) {
 }
 
 function display_deathgames_stat_data(death_games_log, people) {
-    //TODO
+    var log = death_games_log['log'];
+    var stats = {
+        'kills': function(person) {
+            return log.filter(function(logEntry) {
+                if (logEntry['success']) {
+                    return (logEntry['attacker'] == person.id);
+                } else {
+                    return (logEntry['target'] == person.id);
+                }
+            }).length;
+        },
+        'deaths': function(person) {
+            return log.filter(function(logEntry) {
+                if (logEntry['success']) {
+                    return (logEntry['target'] == person.id);
+                } else {
+                    return (logEntry['attacker'] == person.id);
+                }
+            }).length;
+        },
+        'diamonds': function(person) {
+            ret = 0;
+            log.forEach(function(logEntry) {
+                if (logEntry['attacker'] == person.id) {
+                    if (logEntry['success']) {
+                        ret++;
+                    } else {
+                        ret--;
+                    }
+                } else if (logEntry['target'] == person.id) {
+                    if (logEntry['success']) {
+                        ret--;
+                    } else {
+                        ret++;
+                    }
+                }
+            });
+            return ret;
+        },
+        'attacks': function(person) {
+            return log.filter(function(logEntry) {
+                return (logEntry['attacker'] == person.id);
+            }).length;
+        },
+        'attacks-success': function(person) {
+            return log.filter(function(logEntry) {
+                return (logEntry['attacker'] == person.id && logEntry['success']);
+            }).length;
+        },
+        'attacks-fail': function(person) {
+            return log.filter(function(logEntry) {
+                return (logEntry['attacker'] == person.id && !logEntry['success']);
+            }).length;
+        },
+        'defense': function(person) {
+            return log.filter(function(logEntry) {
+                return (logEntry['target'] == person.id);
+            }).length;
+        },
+        'defense-success': function(person) {
+            return log.filter(function(logEntry) {
+                return (logEntry['target'] == person.id && !logEntry['success']);
+            }).length;
+        },
+        'defense-fail': function(person) {
+            return log.filter(function(logEntry) {
+                return (logEntry['target'] == person.id && logEntry['fail']);
+            }).length;
+        }
+    }
+    $.each(stats, function(statName, statFunction) {
+        var bestValue = 0;
+        var bestPlayers = [];
+        var secondValue = 0;
+        var secondPlayers = [];
+        people.activePeople().forEach(function(person) {
+            var statForPerson = statFunction(person);
+            if (statForPerson > bestValue) {
+                secondValue = bestValue;
+                secondPlayers = bestPlayers;
+                bestValue = statForPerson;
+                bestPlayers = [person];
+            } else if (statForPerson == bestValue) {
+                bestPlayers.push(player);
+            } else if (statForPerson > secondValue) {
+                secondValue = statForPerson;
+                secondPlayers = [person];
+            } else if (statForPerson == secondValue) {
+                secondPlayers.push(player);
+            }
+        });
+        var statRow = $('#deathgames-stat-row-' + statName);
+        statRow.children('.leading-player').html(html_player_list(bestPlayers));
+        statRow.children('.value').html(bestValue);
+        statRow.children('.second-player').html(html_player_list(secondPlayers));
+        statRow.children('.secondvalue').html(secondValue);
+    });
 }
 
 function load_leaderboard_stat_data() {
