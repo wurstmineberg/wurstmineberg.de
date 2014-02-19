@@ -225,6 +225,16 @@ function display_biomes_stat_data(achievement_stat_data, biome_data, people) {
     $('#loading-achievements-table-biome-track').remove();
 }
 
+function display_deathgames_log(death_games_log, people) {
+    death_games_log['log'].forEach(function(logEntry) {
+        $('#loading-deathgames-log').after('<tr><td>' + logEntry['date'] + '</td><td>' + html_player_list([people.personById(logEntry['attacker'])]) + '</td><td>' + html_player_list([people.personById(logEntry['target'])]) + '</td><td>' + (logEntry['success'] ? '<span class="glyphicon glyphicon-ok text-success"></span>' : '<span class="glyphicon glyphicon-remove text-danger"></span>') + '</td></tr>');
+    });
+}
+
+function display_deathgames_stat_data(death_games_log, people) {
+    #TODO
+}
+
 function load_leaderboard_stat_data() {
     $.when(API.statData(), API.stringData(), API.people())
         .done(function(stat_data, string_data, people) {
@@ -246,7 +256,17 @@ function load_achievements_stat_data() {
     });
 }
 
+function load_deathgames_stat_data() {
+    $.when(API.deathGamesLog(), API.people()).done(function(death_games_log, people) {
+        display_deathgames_log(death_games_log, people);
+        display_deathgames_stat_data(death_games_log, people);
+    }).fail(function() {
+        $('#loading-deathgames-log').html('<td colspan="4">Error: Could not load Death Games log</td>');
+    });
+}
+
 select_tab_with_id("tab-stats-leaderboard");
 bind_tab_events();
 load_leaderboard_stat_data();
 load_achievements_stat_data();
+load_deathgames_stat_data();

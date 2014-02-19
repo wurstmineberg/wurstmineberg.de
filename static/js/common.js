@@ -289,6 +289,10 @@ var API = {
         return API.biomeData().then(function(biome_data) {
             return new BiomeInfo(biome_data);
         });
+    },
+    
+    deathGamesLog: function() {
+        return API.ajaxJSONDeferred('//api.wurstmineberg.de/deathgames/log.json');
     }
 }
 
