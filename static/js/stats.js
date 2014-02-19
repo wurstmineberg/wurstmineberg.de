@@ -232,7 +232,7 @@ function display_deathgames_log(death_games_log, people) {
 }
 
 function display_deathgames_stat_data(death_games_log, people) {
-    #TODO
+    //TODO
 }
 
 function load_leaderboard_stat_data() {
