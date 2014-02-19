@@ -316,12 +316,12 @@ function display_deathgames_stat_data(death_games_log, people) {
                 bestValue = statForPerson;
                 bestPlayers = [person];
             } else if (statForPerson == bestValue) {
-                bestPlayers.push(player);
+                bestPlayers.push(person);
             } else if (statForPerson > secondValue) {
                 secondValue = statForPerson;
                 secondPlayers = [person];
             } else if (statForPerson == secondValue) {
-                secondPlayers.push(player);
+                secondPlayers.push(person);
             }
         });
         var statRow = $('#deathgames-stat-row-' + statName);
