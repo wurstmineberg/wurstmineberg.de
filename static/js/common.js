@@ -65,17 +65,17 @@ function People (people_data) {
     
     this.sorted = function(peopleList) {
         var ret = [];
-        people_data.forEach(function(person) {
+        this.list.forEach(function(person) {
             if (person.id in peopleList) {
-                ret.push(this.personById(person.id));
+                ret.push(person);
             } else {
                 peopleList.forEach(function(otherPerson) {
                     if (person.id == otherPerson.id) {
-                        ret.push(this.personById(person.id));
+                        ret.push(person);
                     }
-                }, this);
+                });
             }
-        }, this);
+        });
         return ret;
     };
 }
