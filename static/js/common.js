@@ -66,7 +66,7 @@ function People (people_data) {
     this.sorted = function(peopleList) {
         var ret = [];
         this.list.forEach(function(person) {
-            if (person.id in peopleList) {
+            if (_.contains(peopleList, person.id)) {
                 ret.push(person);
             } else {
                 peopleList.forEach(function(otherPerson) {
