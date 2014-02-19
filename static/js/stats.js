@@ -308,20 +308,20 @@ function display_deathgames_stat_data(death_games_log, people) {
         }
     }
     $.each(stats, function(statName, statFunction) {
-        var bestValue = 0;
+        var bestValue = null;
         var bestPlayers = [];
-        var secondValue = 0;
+        var secondValue = null;
         var secondPlayers = [];
         participating.forEach(function(person) {
             var statForPerson = statFunction(person);
-            if (statForPerson > bestValue) {
+            if (bestValue === null || statForPerson > bestValue) {
                 secondValue = bestValue;
                 secondPlayers = bestPlayers;
                 bestValue = statForPerson;
                 bestPlayers = [person];
             } else if (statForPerson == bestValue) {
                 bestPlayers.push(person);
-            } else if (statForPerson > secondValue) {
+            } else if (secondValue === null || statForPerson > secondValue) {
                 secondValue = statForPerson;
                 secondPlayers = [person];
             } else if (statForPerson == secondValue) {
@@ -330,9 +330,13 @@ function display_deathgames_stat_data(death_games_log, people) {
         });
         var statRow = $('#deathgames-stat-row-' + statName);
         statRow.children('.leading-player').html(html_player_list(bestPlayers));
-        statRow.children('.value').html(bestValue);
+        if (bestValue !== null) {
+            statRow.children('.value').html(bestValue);
+        }
         statRow.children('.second-player').html(html_player_list(secondPlayers));
-        statRow.children('.secondvalue').html(secondValue);
+        if (secondValue !== null) {
+            statRow.children('.secondvalue').html(secondValue);
+        }
     });
 }
 
