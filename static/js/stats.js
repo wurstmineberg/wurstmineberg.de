@@ -234,6 +234,10 @@ function display_deathgames_log(death_games_log, people) {
 
 function display_deathgames_stat_data(death_games_log, people) {
     var log = death_games_log['log'];
+    var participating = people.activePeople();
+    if ('participating' in death_games_log) {
+        participating = people.sorted(death_games_log['participating']);
+    }
     var stats = {
         'kills': function(person) {
             return log.filter(function(logEntry) {
@@ -308,7 +312,7 @@ function display_deathgames_stat_data(death_games_log, people) {
         var bestPlayers = [];
         var secondValue = 0;
         var secondPlayers = [];
-        people.activePeople().forEach(function(person) {
+        participating.forEach(function(person) {
             var statForPerson = statFunction(person);
             if (statForPerson > bestValue) {
                 secondValue = bestValue;
