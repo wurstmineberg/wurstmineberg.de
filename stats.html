@@ -17,6 +17,7 @@
         <ul id="pagination" class="nav nav-tabs">
             <li><a id="tab-stats-leaderboard" class="tab-item" href="#leaderboards">Leaderboards</a></li>
             <li><a id="tab-stats-achievements" class="tab-item" href="#achievements">Achievements</a></li>
+            <li><a id="tab-stats-deathgames" class="tab-item" href="#deathgames">Death Games</a></li>
         </ul>
         <div id="stats-leaderboard" class="stats-section">
             <table id="stats-leaderboard-table" class="table table-responsive stats-table">
@@ -80,10 +81,98 @@
                 </div>
             </div>
         </div>
+        <div id="stats-deathgames" class="stats-section">
+            <table id="deathgames-stats-table" class="table table-responsive stats-table">
+                <tbody>
+                    <tr>
+                        <th>Stat</th>
+                        <th>Leading player(s)</th>
+                        <th>Value</th>
+                        <th>Second place</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr class="deathgames-stats-row" id="deathgames-stats-row-kills">
+                        <td class="stat">Kills</td>
+                        <td class="leading-player">(loading)</td>
+                        <td class="value">(loading)</td>
+                        <td class="second-player">(loading)</td>
+                        <td class="secondvalue">(loading)</td>
+                    </tr>
+                    <tr class="deathgames-stats-row" id="deathgames-stats-row-deaths">
+                        <td class="stat">Deaths</td>
+                        <td class="leading-player">(loading)</td>
+                        <td class="value">(loading)</td>
+                        <td class="second-player">(loading)</td>
+                        <td class="secondvalue">(loading)</td>
+                    </tr>
+                    <tr class="deathgames-stats-row" id="deathgames-stats-row-diamonds">
+                        <td class="stat">Diamonds earned (kills minus deaths)</td>
+                        <td class="leading-player">(loading)</td>
+                        <td class="value">(loading)</td>
+                        <td class="second-player">(loading)</td>
+                        <td class="secondvalue">(loading)</td>
+                    </tr>
+                    <tr class="deathgames-stats-row" id="deathgames-stats-row-attacks">
+                        <td class="stat">Attacks total</td>
+                        <td class="leading-player">(loading)</td>
+                        <td class="value">(loading)</td>
+                        <td class="second-player">(loading)</td>
+                        <td class="secondvalue">(loading)</td>
+                    </tr>
+                    <tr class="deathgames-stats-row" id="deathgames-stats-row-attacks-success">
+                        <td class="stat">Successful attacks</td>
+                        <td class="leading-player">(loading)</td>
+                        <td class="value">(loading)</td>
+                        <td class="second-player">(loading)</td>
+                        <td class="secondvalue">(loading)</td>
+                    </tr>
+                    <tr class="deathgames-stats-row" id="deathgames-stats-row-attacks-fail">
+                        <td class="stat">Failed attacks</td>
+                        <td class="leading-player">(loading)</td>
+                        <td class="value">(loading)</td>
+                        <td class="second-player">(loading)</td>
+                        <td class="secondvalue">(loading)</td>
+                    </tr>
+                    <tr class="deathgames-stats-row" id="deathgames-stats-row-defense">
+                        <td class="stat">Defenses total</td>
+                        <td class="leading-player">(loading)</td>
+                        <td class="value">(loading)</td>
+                        <td class="second-player">(loading)</td>
+                        <td class="secondvalue">(loading)</td>
+                    </tr>
+                    <tr class="deathgames-stats-row" id="deathgames-stats-row-defense-success">
+                        <td class="stat">Successful defenses</td>
+                        <td class="leading-player">(loading)</td>
+                        <td class="value">(loading)</td>
+                        <td class="second-player">(loading)</td>
+                        <td class="secondvalue">(loading)</td>
+                    </tr>
+                    <tr class="deathgames-stats-row" id="deathgames-stats-row-defense-fail">
+                        <td class="stat">Failed defenses</td>
+                        <td class="leading-player">(loading)</td>
+                        <td class="value">(loading)</td>
+                        <td class="second-player">(loading)</td>
+                        <td class="secondvalue">(loading)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2>Log</h2>
+            <table id="deathgames-log-table" class="table table-responsive stats-table">
+                <tbody>
+                    <tr>
+                        <th>Date</th>
+                        <th>Attacker</th>
+                        <th>Target</th>
+                        <th>Success</th>
+                    </tr>
+                    <tr id="loading-deathgames-log" class="loading-stat">
+                        <td colspan="4">Loading Death Games log…</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <!--#include file="/static/html/footer.html" -->
     <script src="/static/js/stats.js"></script>
-    <script>
-    </script>
     </body>
 </html>
