@@ -222,6 +222,7 @@ function display_biomes_stat_data(achievement_stat_data, biome_data, people) {
     $.each(biomeStats, function(numBiomes, people_list) {
         $('#stats-achievements-table-biome-track tbody tr:last').after('<tr><td>' + numBiomes + '</td><td>' + html_player_list(people.sorted(people_list)) + '</td></tr>');
     });
+    $('#loading-achievements-table-biome-track').remove();
 }
 
 function load_leaderboard_stat_data() {
