@@ -334,9 +334,7 @@ function bind_tab_events() {
         });
     });
     
-    if (location.hash !== '') {
-        $('a[href="' + location.hash + '"]').tab('show');
-    }
+    if (location.hash !== '') $('a[href="' + location.hash + '"]').tab('show');
     return $('a.tab-item').on('shown.bs.tab', function(e) {
         return location.hash = $(e.target).attr('href').substr(1);
     });
