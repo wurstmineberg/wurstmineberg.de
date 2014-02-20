@@ -1747,7 +1747,7 @@
     },
     "328": {
         "id": "minecraft:minecart",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/58/Grid_Minecart.png",
+        "image": "minecart.png",
         "name": "Minecart"
     },
     "329": {
@@ -2007,73 +2007,153 @@
         "name": "Cooked Fish"
     },
     "351": {
+        "cloud": {
+            "x": -1,
+            "y": 1,
+            "z": 15
+        },
         "damageValues": {
             "0": {
                 "name": "Ink Sac"
             },
             "1": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/0d/Grid_Rose_Red.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 14
+                },
+                "image": "rosered.png",
                 "name": "Rose Red"
             },
             "10": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a6/Grid_Lime_Dye.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 5
+                },
+                "image": "limedye.png",
                 "name": "Lime Dye"
             },
             "11": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/df/Grid_Dandelion_Yellow.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 4
+                },
+                "image": "dandelionyellow.png",
                 "name": "Dandelion Yellow"
             },
             "12": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/ae/Grid_Light_Blue_Dye.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 3
+                },
+                "image": "lightbluedye.png",
                 "name": "Light Blue Dye"
             },
             "13": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/8f/Grid_Magenta_Dye.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 2
+                },
+                "image": "magentadye.png",
                 "name": "Magenta Dye"
             },
             "14": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b2/Grid_Orange_Dye.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 1
+                },
+                "image": "orangedye.png",
                 "name": "Orange Dye"
             },
             "15": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c0/Grid_Bone_Meal.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 0
+                },
+                "image": "bonemeal.png",
                 "name": "Bone Meal"
             },
             "2": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fd/Grid_Cactus_Green.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 13
+                },
+                "image": "cactusgreen.png",
                 "name": "Cactus Green"
             },
             "3": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7d/Grid_Cocoa_Beans.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 12
+                },
+                "image": "cocoabeans.png",
                 "name": "Cocoa Beans"
             },
             "4": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 11
+                },
                 "image": "lapislazuli.png",
                 "name": "Lapis Lazuli"
             },
             "5": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a0/Grid_Purple_Dye.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 10
+                },
+                "image": "purpledye.png",
                 "name": "Purple Dye"
             },
             "6": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ca/Grid_Cyan_Dye.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 9
+                },
+                "image": "cyandye.png",
                 "name": "Cyan Dye"
             },
             "7": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/16/Grid_Light_Gray_Dye.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 8
+                },
+                "image": "lightgraydye.png",
                 "name": "Light Gray Dye"
             },
             "8": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/54/Grid_Gray_Dye.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 7
+                },
+                "image": "graydye.png",
                 "name": "Gray Dye"
             },
             "9": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Pink_Dye.png",
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 6
+                },
+                "image": "pinkdye.png",
                 "name": "Pink Dye"
             }
         },
         "id": "minecraft:dye",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d6/Grid_Ink_Sac.png",
+        "image": "inksac.png",
         "name": "Dye"
     },
     "352": {

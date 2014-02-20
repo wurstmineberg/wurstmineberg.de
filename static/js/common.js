@@ -208,6 +208,17 @@ function ItemData (itemData) {
             return new Item(id, itemData[id.toString()]);
         }
     };
+    
+    this.favItem = function(person) {
+        if (!person.fav_item || !('id' in person.fav_item)) {
+            return null;
+        }
+        if ('Damage' in person.fav_item) {
+            return this.itemByDamage(person.fav_item['id'], person.fav_item['Damage']);
+        } else {
+            return this.itemByDamage(person.fav_item['id']);
+        }
+    };
 }
 
 var API = {
@@ -231,7 +242,13 @@ var API = {
     itemData: function() {
         return API.ajaxJSONDeferred('/static/json/items.json');
     },
-
+    
+    items: function() {
+        return API.itemData().then(function(itemData) {
+            return new ItemData(itemData);
+        });
+    },
+    
     achievementData: function() {
         return API.ajaxJSONDeferred('/static/json/achievements.json');
     },

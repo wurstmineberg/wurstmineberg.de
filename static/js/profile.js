@@ -21,7 +21,7 @@ function initialize_datatables() {
     new FixedHeader(table)
 }
 
-function display_user_data(person, item_data) {
+function display_user_data(person, items) {
     $('.panel-loading').removeClass('loading');
     
     var name = person.interfaceName;
@@ -56,22 +56,11 @@ function display_user_data(person, item_data) {
     
     $('#user-description').html(description);
     
-    var fav_item = person.fav_item;
+    var fav_item = items.favItem(person);
     if (fav_item) {
-        if ('id' in fav_item) {
-            var fav_item_data = fav_item;
-            if (fav_item['id'].toString() in item_data) {
-                fav_item_data = item_data[fav_item['id'].toString()];
-                if ('Damage' in fav_item && (fav_item['id'] + ':' + fav_item['Damage']) in item_data) {
-                    fav_item_data = item_data[fav_item['id'] + ':' + fav_item['Damage']];
-                }
-            }
-            $('#fav-item').removeClass('hidden');
-            if ('image' in fav_item_data) {
-                $('#fav-item').append('<img src="' + fav_item_data['image'] + '" /> ');
-            }
-            $('#fav-item').append('name' in fav_item_data ? fav_item_data['name'] : fav_item['id']);
-        }
+        $('#fav-item').removeClass('hidden');
+        $('#fav-item').append(fav_item.htmlImage());
+        $('#fav-item').append(fav_item.name);
     }
     
     var social_links = $('#social-links');
@@ -105,9 +94,8 @@ function initialize_inventory(tbody, rows, cols) {
     }
 }
 
-function display_slot(cell, stack, item_data, string_data) {
-    var itemData = new ItemData(item_data);
-    var item = itemData.itemByDamage(stack.id, stack.Damage);
+function display_slot(cell, stack, items, string_data) {
+    var item = items.itemByDamage(stack.id, stack.Damage);
     cell.children('div').children('div').append(item.htmlImage());
     var name = item.name || stack['id'].toString();
     if ('tag' in stack) {
@@ -146,7 +134,7 @@ function display_slot(cell, stack, item_data, string_data) {
     }
 }
 
-function display_inventory(player_data, item_data, string_data) {
+function display_inventory(player_data, items, string_data) {
     $('tr.loading').remove();
     $('.inventory-opt-out').removeClass('inventory-opt-out').addClass('inventory-opt-in');
     initialize_inventory($('#main-inventory > tbody'), 3, 9);
@@ -161,19 +149,19 @@ function display_inventory(player_data, item_data, string_data) {
                 cell = $('#main-inventory .inv-row-' + (Math.floor(stack['Slot'] / 9) - 1) + ' .inv-cell-' + (stack['Slot'] % 9));
             }
             if (cell !== undefined) {
-                display_slot(cell, stack, item_data, string_data);
+                display_slot(cell, stack, items, string_data);
             }
         }
     });
     player_data['EnderItems'].forEach(function(stack) {
         if ('Slot' in stack && stack['Slot'] >= 0 && stack['Slot'] < 27) {
             var cell = $('#ender-chest-table .inv-row-' + Math.floor(stack['Slot'] / 9) + ' .inv-cell-' + (stack['Slot'] % 9));
-            display_slot(cell, stack, item_data, string_data);
+            display_slot(cell, stack, items, string_data);
         }
     });
 }
 
-function display_stat_data(stat_data, string_data, item_data, achievement_data, biomes) {
+function display_stat_data(stat_data, string_data, items, achievement_data, biomes) {
     var loading_stat_general = $('#loading-stat-general-table');
     var loading_stat_item = $('#loading-stat-items-table');
     var loading_stat_block = $('#loading-stat-blocks-table');
@@ -187,15 +175,13 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
     var mobs = [];
     var achievements = [];
     
-    var itemData = new ItemData(item_data);
-    
     $.each(stat_data, function(key, value) {
         stat = key.split('.');
         var name;
 
         if (stat[0] === 'stat') {
             if (stat[1] === 'craftItem' || stat[1] === 'useItem' || stat[1] === 'breakItem' || stat[1] === 'mineBlock') {
-                var item = itemData.itemById(stat.slice(2).join(':'));
+                var item = items.itemById(stat.slice(2).join(':'));
                 var name = item.name || stat.slice(2).join(':');
                 var actionIndex = stat[1];
                 var count = value;
@@ -470,10 +456,10 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
     //initialize_datatables();
 }
 
-function load_stat_data(person, string_data, item_data, achievement_data, biomes) {
+function load_stat_data(person, string_data, achievement_data, biomes, items) {
     if (person.option('show_inventory')) {
         $.when(API.playerData(person)).done(function(player_data) {
-            display_inventory(player_data, item_data, string_data);
+            display_inventory(player_data, items, string_data);
         }).fail(function() {
             $('.inventory-table .loading td').html('Error: Could not load ' + person.minecraft + '.dat');
         });
@@ -481,7 +467,7 @@ function load_stat_data(person, string_data, item_data, achievement_data, biomes
         $('.panel').before('<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Want to show you inventory?</strong> Since you have not set a preference for this, your inventory and Ender chest will be displayed on this page once we get everything working. You can activate this feature now using the command <code>opt show_inventory on</code>, or permanently deactivate it with <code>opt show_inventory off</code>.</div>');
     }
     $.when(API.personStatData(person)).done(function(stat_data) {
-        display_stat_data(stat_data, string_data, item_data, achievement_data, biomes);
+        display_stat_data(stat_data, string_data, items, achievement_data, biomes);
     }).fail(function() {
         $('.loading-stat').html('<td colspan="7">Error: Could not load ' + person.minecraft + '.json</td>');
     });
@@ -489,14 +475,13 @@ function load_stat_data(person, string_data, item_data, achievement_data, biomes
 
 function load_user_data() {
     var username = get_user_name();
-
-    $.when(API.personById(username), API.stringData(), API.itemData(), API.achievementData(), API.biomes())
-        .done(function(person, string_data, item_data, achievement_data, biomes) {
-            load_stat_data(person, string_data, item_data, achievement_data, biomes);
-            display_user_data(person, item_data);
-        }).fail(function() {
-            $('.loading').html('Error: User with this name not found');
-        });
+    
+    $.when(API.personById(username), API.stringData(), API.achievementData(), API.biomes(), API.items()).done(function(person, string_data, achievement_data, biomes, items) {
+        load_stat_data(person, string_data, achievement_data, biomes, items);
+        display_user_data(person, items);
+    }).fail(function() {
+        $('.loading').html('Error: User with this name not found');
+    });
 }
 
 
