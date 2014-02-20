@@ -1732,7 +1732,7 @@
             "z": 14
         },
         "id": "minecraft:water_bucket",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bf/Grid_Water_Bucket.png",
+        "image": "waterbucket.png",
         "name": "Water Bucket"
     },
     "327": {

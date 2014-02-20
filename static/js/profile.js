@@ -161,7 +161,7 @@ function display_inventory(player_data, items, string_data) {
     });
 }
 
-function display_stat_data(stat_data, string_data, items, achievement_data, biomes) {
+function display_stat_data(stat_data, string_data, item_data, achievement_data, biomes) {
     var loading_stat_general = $('#loading-stat-general-table');
     var loading_stat_item = $('#loading-stat-items-table');
     var loading_stat_block = $('#loading-stat-blocks-table');
@@ -181,7 +181,7 @@ function display_stat_data(stat_data, string_data, items, achievement_data, biom
 
         if (stat[0] === 'stat') {
             if (stat[1] === 'craftItem' || stat[1] === 'useItem' || stat[1] === 'breakItem' || stat[1] === 'mineBlock') {
-                var item = items.itemById(stat.slice(2).join(':'));
+                var item = item_data.itemById(stat.slice(2).join(':'));
                 var name = item.name || stat.slice(2).join(':');
                 var actionIndex = stat[1];
                 var count = value;
