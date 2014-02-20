@@ -159,6 +159,11 @@
         "name": "Fence Gate"
     },
     "108": {
+        "cloud": {
+            "x": -1,
+            "y": 1,
+            "z": 20
+        },
         "id": "minecraft:brick_stairs",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3c/Grid_Brick_Stairs.png",
         "name": "Brick Stairs"
@@ -562,6 +567,11 @@
         "name": "Daylight Sensor"
     },
     "152": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 1
+        },
         "id": "minecraft:redstone_block",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2e/Grid_Block_of_Redstone.png",
         "name": "Block of Redstone"
@@ -635,67 +645,147 @@
         "name": "Dropper"
     },
     "159": {
+        "cloud": {
+            "x": -1,
+            "y": 1,
+            "z": 23
+        },
         "damageValues": {
             "0": {
                 "name": "White Stained Clay"
             },
             "1": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 24
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3c/Grid_Orange_Stained_Clay.png",
                 "name": "Orange Stained Clay"
             },
             "10": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 33
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6a/Grid_Purple_Stained_Clay.png",
                 "name": "Purple Stained Clay"
             },
             "11": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 34
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/91/Grid_Blue_Stained_Clay.png",
                 "name": "Blue Stained Clay"
             },
             "12": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 35
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/20/Grid_Brown_Stained_Clay.png",
                 "name": "Brown Stained Clay"
             },
             "13": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 36
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/19/Grid_Green_Stained_Clay.png",
                 "name": "Green Stained Clay"
             },
             "14": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 37
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cd/Grid_Red_Stained_Clay.png",
                 "name": "Red Stained Clay"
             },
             "15": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 38
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/91/Grid_Black_Stained_Clay.png",
                 "name": "Black Stained Clay"
             },
             "2": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 25
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ce/Grid_Magenta_Stained_Clay.png",
                 "name": "Magenta Stained Clay"
             },
             "3": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 26
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a0/Grid_Light_Blue_Stained_Clay.png",
                 "name": "Light Blue Stained Clay"
             },
             "4": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 27
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ef/Grid_Yellow_Stained_Clay.png",
                 "name": "Yellow Stained Clay"
             },
             "5": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 28
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/aa/Grid_Lime_Stained_Clay.png",
                 "name": "Lime Stained Clay"
             },
             "6": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 29
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/68/Grid_Pink_Stained_Clay.png",
                 "name": "Pink Stained Clay"
             },
             "7": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 30
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/18/Grid_Gray_Stained_Clay.png",
                 "name": "Gray Stained Clay"
             },
             "8": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 31
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/47/Grid_Light_Gray_Stained_Clay.png",
                 "name": "Light Gray Stained Clay"
             },
             "9": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 32
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/78/Grid_Cyan_Stained_Clay.png",
                 "name": "Cyan Stained Clay"
             }
@@ -713,67 +803,147 @@
         "type": "block"
     },
     "160": {
+        "cloud": {
+            "x": -3,
+            "y": 1,
+            "z": 3
+        },
         "damageValues": {
             "0": {
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_White_Stained_Glass_Pane.png",
                 "name": "White Stained Glass Pane"
             },
             "1": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 5
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f1/Grid_Orange_Stained_Glass_Pane.png",
                 "name": "Orange Stained Glass Pane"
             },
             "10": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 23
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/41/Grid_Purple_Stained_Glass_Pane.png",
                 "name": "Purple Stained Glass Pane"
             },
             "11": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 25
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fe/Grid_Blue_Stained_Glass_Pane.png",
                 "name": "Blue Stained Glass Pane"
             },
             "12": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 27
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ce/Grid_Brown_Stained_Glass_Pane.png",
                 "name": "Brown Stained Glass Pane"
             },
             "13": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 29
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9c/Grid_Green_Stained_Glass_Pane.png",
                 "name": "Green Stained Glass Pane"
             },
             "14": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 31
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/71/Grid_Red_Stained_Glass_Pane.png",
                 "name": "Red Stained Glass Pane"
             },
             "15": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 33
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7b/Grid_Black_Stained_Glass_Pane.png",
                 "name": "Black Stained Glass Pane"
             },
             "2": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 7
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/91/Grid_Magenta_Stained_Glass_Pane.png",
                 "name": "Magenta Stained Glass Pane"
             },
             "3": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 9
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Light_Blue_Stained_Glass_Pane.png",
                 "name": "Light Blue Stained Glass Pane"
             },
             "4": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 11
+                },
                 "name": "Yellow Stained Glass Pane"
             },
             "5": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 13
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/ae/Grid_Lime_Stained_Glass_Pane.png",
                 "name": "Lime Stained Glass Pane"
             },
             "6": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 15
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_Pink_Stained_Glass_Pane.png",
                 "name": "Pink Stained Glass Pane"
             },
             "7": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 17
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f0/Grid_Gray_Stained_Glass_Pane.png",
                 "name": "Gray Stained Glass Pane"
             },
             "8": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 19
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/79/Grid_Light_Gray_Stained_Glass_Pane.png",
                 "name": "Light Gray Stained Glass Pane"
             },
             "9": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 21
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/97/Grid_Cyan_Stained_Glass_Pane.png",
                 "name": "Cyan Stained Glass Pane"
             }
@@ -879,67 +1049,147 @@
         "name": "Hay Bale"
     },
     "171": {
+        "cloud": {
+            "x": -2,
+            "y": 1,
+            "z": 16
+        },
         "damageValues": {
             "0": {
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/72/Grid_White_Carpet.png",
                 "name": "White Carpet"
             },
             "1": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 17
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3c/Grid_Orange_Carpet.png",
                 "name": "Orange Carpet"
             },
             "10": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 26
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_Purple_Carpet.png",
                 "name": "Purple Carpet"
             },
             "11": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 27
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5a/Grid_Blue_Carpet.png",
                 "name": "Blue Carpet"
             },
             "12": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 28
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/ad/Grid_Brown_Carpet.png",
                 "name": "Brown Carpet"
             },
             "13": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 29
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/41/Grid_Green_Carpet.png",
                 "name": "Green Carpet"
             },
             "14": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 30
+                },
                 "name": "Red Carpet"
             },
             "15": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 31
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e6/Grid_Black_Carpet.png",
                 "name": "Black Carpet"
             },
             "2": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 18
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Magenta_Carpet.png",
                 "name": "Magenta Carpet"
             },
             "3": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 19
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4b/Grid_Light_Blue_Carpet.png",
                 "name": "Light Blue Carpet"
             },
             "4": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 20
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/63/Grid_Yellow_Carpet.png",
                 "name": "Yellow Carpet"
             },
             "5": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 21
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/34/Grid_Lime_Carpet.png",
                 "name": "Lime Carpet"
             },
             "6": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 22
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/be/Grid_Pink_Carpet.png",
                 "name": "Pink Carpet"
             },
             "7": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 23
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2b/Grid_Gray_Carpet.png",
                 "name": "Gray Carpet"
             },
             "8": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 24
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3a/Grid_Light_Gray_Carpet.png",
                 "name": "Light Gray Carpet"
             },
             "9": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 25
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Grid_Cyan_Carpet.png",
                 "name": "Cyan Carpet"
             }
@@ -949,6 +1199,11 @@
         "name": "Carpet"
     },
     "172": {
+        "cloud": {
+            "x": -1,
+            "y": 1,
+            "z": 22
+        },
         "id": "minecraft:hardened_clay",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6d/Grid_Hardened_Clay.png",
         "name": "Hardened Clay"
@@ -1056,6 +1311,11 @@
         "type": "block"
     },
     "20": {
+        "cloud": {
+            "x": -3,
+            "y": 1,
+            "z": 0
+        },
         "id": "minecraft:glass",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/00/Grid_Glass.png",
         "name": "Glass",
@@ -1790,6 +2050,11 @@
         "name": "Iron Door"
     },
     "331": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 0
+        },
         "id": "minecraft:redstone",
         "image": "redstonedust.png",
         "name": "Redstone Dust"
@@ -1820,14 +2085,24 @@
         "name": "Milk"
     },
     "336": {
+        "cloud": {
+            "x": -1,
+            "y": 1,
+            "z": 18
+        },
         "id": "minecraft:brick",
         "image": "brick.png",
         "name": "Brick"
     },
     "337": {
+        "cloud": {
+            "x": -1,
+            "y": 1,
+            "z": 16
+        },
         "id": "minecraft:clay_ball",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/38/Grid_Clay_%28Item%29.png",
-        "name": "Clay"
+        "image": "clay.png",
+        "name": "Clay Ball"
     },
     "338": {
         "id": "minecraft:reeds",
@@ -1908,81 +2183,161 @@
         "name": "Raw Fish"
     },
     "35": {
+        "cloud": {
+            "x": -2
+            "y": 1,
+            "z": 0
+        },
         "damageValues": {
             "0": {
                 "name": "White Wool"
             },
             "1": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 1
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/07/Grid_Orange_Wool.png",
                 "name": "Orange Wool",
                 "texture": "wool_colored_orange"
             },
             "10": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 10
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/51/Grid_Purple_Wool.png",
                 "name": "Purple Wool",
                 "texture": "wool_colored_purple"
             },
             "11": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "x": 11
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/40/Grid_Blue_Wool.png",
                 "name": "Blue Wool",
                 "texture": "wool_colored_blue"
             },
             "12": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 12
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Brown_Wool.png",
                 "name": "Brown Wool",
                 "texture": "wool_colored_brown"
             },
             "13": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 13
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_Green_Wool.png",
                 "name": "Green Wool",
                 "texture": "wool_colored_green"
             },
             "14": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 14
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Red_Wool.png",
                 "name": "Red Wool",
                 "texture": "wool_colored_red"
             },
             "15": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 15
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/45/Grid_Black_Wool.png",
                 "name": "Black Wool",
                 "texture": "wool_colored_black"
             },
             "2": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 2
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fd/Grid_Magenta_Wool.png",
                 "name": "Magenta Wool",
                 "texture": "wool_colored_magenta"
             },
             "3": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 3
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fb/Grid_Light_Blue_Wool.png",
                 "name": "Light Blue Wool",
                 "texture": "wool_colored_light_blue"
             },
             "4": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 4
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ed/Grid_Yellow_Wool.png",
                 "name": "Yellow Wool",
                 "texture": "wool_colored_yellow"
             },
             "5": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 5
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a2/Grid_Lime_Wool.png",
                 "name": "Lime Wool",
                 "texture": "wool_colored_lime"
             },
             "6": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 6
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b3/Grid_Pink_Wool.png",
                 "name": "Pink Wool",
                 "texture": "wool_colored_pink"
             },
             "7": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 7
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d3/Grid_Gray_Wool.png",
                 "name": "Gray Wool",
                 "texture": "wool_colored_gray"
             },
             "8": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 8
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e5/Grid_Light_Gray_Wool.png",
                 "name": "Light Gray Wool",
                 "texture": "wool_colored_silver"
             },
             "9": {
+                "cloud": {
+                    "x": -2,
+                    "y": 1,
+                    "z": 9
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/cd/Grid_Cyan_Wool.png",
                 "name": "Cyan Wool",
                 "texture": "wool_colored_cyan"
@@ -2182,6 +2537,11 @@
         "name": "Bed"
     },
     "356": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 3
+        },
         "id": "minecraft:repeater",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e6/Grid_Redstone_Repeater.png",
         "name": "Repeater"
@@ -2824,51 +3184,6 @@
                 "texture_bottom": "sandstone_bottom",
                 "texture_top": "sandstone_top"
             },
-            "128": {
-                "name": "Stone Slab",
-                "subtype": "slab-top",
-                "texture": "stone_slab_side"
-            },
-            "129": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
-                "name": "Sandstone Slab",
-                "subtype": "slab-top",
-                "texture": "sandstone_normal",
-                "texture_bottom": "sandstone_bottom",
-                "texture_top": "sandstone_top"
-            },
-            "131": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f7/Grid_Cobblestone_Slab.png",
-                "name": "Cobblestone Slab",
-                "subtype": "slab-top",
-                "texture": "cobblestone"
-            },
-            "132": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
-                "name": "Brick Slab",
-                "subtype": "slab-top",
-                "texture": "brick"
-            },
-            "133": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Bricks_Slab.png",
-                "name": "Stone Brick Slab",
-                "subtype": "slab-top",
-                "texture": "stonebrick"
-            },
-            "134": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
-                "name": "Nether Brick Slab",
-                "subtype": "slab-top",
-                "texture": "nether_brick"
-            },
-            "135": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Quartz_Slab.png",
-                "name": "Quartz Slab",
-                "subtype": "slab-top",
-                "texture": "quartz_block_side",
-                "texture_bottom": "quartz_block_bottom",
-                "texture_top": "quartz_block_top"
-            },
             "3": {
                 "cloud": {
                     "x": 0,
@@ -2880,6 +3195,11 @@
                 "texture": "cobblestone"
             },
             "4": {
+                "cloud": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 21
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Brick_Slab.png",
                 "name": "Brick Slab",
                 "texture": "brick"
@@ -2920,6 +3240,11 @@
         "type": "block"
     },
     "45": {
+        "cloud": {
+            "x": -1,
+            "y": 1,
+            "z": 19
+        },
         "id": "minecraft:brick_block",
         "image": "bricks.png",
         "name": "Brick",
@@ -3326,6 +3651,11 @@
         "name": "Redstone Torch"
     },
     "76": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 2
+        },
         "id": "minecraft:redstone_torch",
         "image": "redstonetorch.png",
         "name": "Redstone Torch"
@@ -3380,9 +3710,14 @@
         "name": "Cactus"
     },
     "82": {
+        "cloud": {
+            "x": -1,
+            "y": 1,
+            "z": 17
+        },
         "id": "minecraft:clay",
         "image": "clayblock.png",
-        "name": "Clay"
+        "name": "Clay Block"
     },
     "83": {
         "id": "minecraft:reeds",
@@ -3454,67 +3789,147 @@
         "name": "Repeater"
     },
     "95": {
+        "cloud": {
+            "x": -3,
+            "y": 1,
+            "z": 2
+        },
         "damageValues": {
             "0": {
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/92/Grid_White_Stained_Glass.png",
                 "name": "White Stained Glass"
             },
             "1": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "x": 4
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Orange_Stained_Glass.png",
                 "name": "Orange Stained Glass"
             },
             "10": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 22
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b8/Grid_Purple_Stained_Glass.png",
                 "name": "Purple Stained Glass"
             },
             "11": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 24
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/35/Grid_Blue_Stained_Glass.png",
                 "name": "Blue Stained Glass"
             },
             "12": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 26
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Brown_Stained_Glass.png",
                 "name": "Brown Stained Glass"
             },
             "13": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 28
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5f/Grid_Green_Stained_Glass.png",
                 "name": "Green Stained Glass"
             },
             "14": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 30
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d8/Grid_Red_Stained_Glass.png",
                 "name": "Red Stained Glass"
             },
             "15": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 32
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9f/Grid_Black_Stained_Glass.png",
                 "name": "Black Stained Glass"
             },
             "2": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 6
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4d/Grid_Magenta_Stained_Glass.png",
                 "name": "Magenta Stained Glass"
             },
             "3": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 8
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/25/Grid_Light_Blue_Stained_Glass.png",
                 "name": "Light Blue Stained Glass"
             },
             "4": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 10
+                },
                 "name": "Yellow Stained Glass"
             },
             "5": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 12
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/a5/Grid_Lime_Stained_Glass.png",
                 "name": "Lime Stained Glass"
             },
             "6": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 14
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/71/Grid_Pink_Stained_Glass.png",
                 "name": "Pink Stained Glass"
             },
             "7": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 16
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bb/Grid_Gray_Stained_Glass.png",
                 "name": "Gray Stained Glass"
             },
             "8": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 18
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/26/Grid_Light_Gray_Stained_Glass.png",
                 "name": "Light Gray Stained Glass"
             },
             "9": {
+                "cloud": {
+                    "x": -3,
+                    "y": 1,
+                    "z": 20
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f3/Grid_Cyan_Stained_Glass.png",
                 "name": "Cyan Stained Glass"
             }
