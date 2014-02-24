@@ -459,7 +459,7 @@ function prettify_stats_value(key, value) {
             final_value += minutes + 'min '
         }
     } else if (key.startsWith('damage')) {
-        final_value = (value / 2) + ' hearts';
+        final_value = (value / 2) + ' hearts (not compensated for <a href="https://bugs.mojang.com/browse/MC-47698">MC-47698</a>)';
     }
 
     return final_value;
