@@ -64,6 +64,7 @@
         },
         "mobs": {
             "CaveSpider": "Cave Spider",
+            "EntityHorse": "Horse",
             "LavaSlime": "Magma Cube",
             "MushroomCow": "Mooshroom",
             "PigZombie": "Zombie Pigman"
