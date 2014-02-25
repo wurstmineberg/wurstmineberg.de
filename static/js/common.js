@@ -259,7 +259,7 @@ var API = {
 
     people: function() {
         return API.peopleData().then(function(people_data) {
-            return new People(people_data);
+            return new People('people' in people_data ? people_data['people'] : people_data);
         });
     },
 
