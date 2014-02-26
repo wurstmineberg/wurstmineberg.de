@@ -977,7 +977,7 @@
             }
         },
         "id": "minecraft:log2",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d6/Grid_Acacia_Wood.png",
+        "image": "acaciawood.png",
         "name": "Wood"
     },
     "163": {
@@ -1528,7 +1528,7 @@
     "263": {
         "damageValues": {
             "1": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/54/Grid_Charcoal_%28Item%29.png",
+                "image": "charcoal.png",
                 "name": "Charcoal"
             }
         },
@@ -2216,7 +2216,7 @@
                 "cloud": {
                     "x": -2,
                     "y": 1,
-                    "x": 11
+                    "z": 11
                 },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/40/Grid_Blue_Wool.png",
                 "name": "Blue Wool",
@@ -3803,7 +3803,7 @@
                 "cloud": {
                     "x": -3,
                     "y": 1,
-                    "x": 4
+                    "z": 4
                 },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bd/Grid_Orange_Stained_Glass.png",
                 "name": "Orange Stained Glass"
