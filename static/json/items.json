@@ -2680,7 +2680,7 @@
     },
     "379": {
         "id": "minecraft:brewing_stand",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/70/Grid_Brewing_Stand.png",
+        "image": "brewingstand.png",
         "name": "Brewing Stand"
     },
     "38": {
