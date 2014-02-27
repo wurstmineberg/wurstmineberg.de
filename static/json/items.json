@@ -234,7 +234,7 @@
     },
     "117": {
         "id": "minecraft:brewing_stand",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/70/Grid_Brewing_Stand.png",
+        "image": "brewingstand.png",
         "name": "Brewing Stand"
     },
     "118": {
@@ -550,7 +550,7 @@
     },
     "149": {
         "id": "minecraft:unpowered_comparator",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ea/Grid_Redstone_Comparator.png",
+        "image": "comparator.png",
         "name": "Comparator"
     },
     "15": {
@@ -560,6 +560,11 @@
         "solid": true,
         "texture": "iron_ore",
         "type": "block"
+    },
+    "150": {
+        "id": "minecraft:powered_comparator",
+        "image": "comparator.png",
+        "name": "Comparator"
     },
     "151": {
         "id": "minecraft:daylight_detector",
@@ -3030,7 +3035,7 @@
     },
     "404": {
         "id": "minecraft:comparator",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ea/Grid_Redstone_Comparator.png",
+        "image": "comparator.png",
         "name": "Comparator"
     },
     "405": {
