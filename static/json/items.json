@@ -288,6 +288,11 @@
         "name": "Dragon Egg"
     },
     "123": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 7
+        },
         "id": "minecraft:redstone_lamp",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fa/Grid_Redstone_Lamp.png",
         "name": "Redstone Lamp"
@@ -401,6 +406,11 @@
         "name": "Ender Chest"
     },
     "131": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 12
+        },
         "id": "minecraft:tripwire_hook",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/90/Grid_Tripwire_Hook.png",
         "name": "Tripwire Hook"
@@ -491,6 +501,11 @@
         "name": "Potatoes"
     },
     "143": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 10
+        },
         "id": "minecraft:wooden_button",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c6/Grid_Wooden_Button.png",
         "name": "Wooden Button"
@@ -539,11 +554,21 @@
         "name": "Trapped Chest"
     },
     "147": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 28
+        },
         "id": "minecraft:light_weighted_pressure_plate",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b9/Grid_Weighted_Pressure_Plate_%28Light%29.png",
         "name": "Weighted Pressure Plate (Light)"
     },
     "148": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 29
+        },
         "id": "minecraft:heavy_weighted_pressure_plate",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/65/Grid_Weighted_Pressure_Plate_%28Heavy%29.png",
         "name": "Weighted Pressure Plate (Heavy)"
@@ -567,6 +592,11 @@
         "name": "Comparator"
     },
     "151": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 8
+        },
         "id": "minecraft:daylight_detector",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/18/Grid_Daylight_Sensor.png",
         "name": "Daylight Sensor"
@@ -587,6 +617,11 @@
         "name": "Nether Quartz Ore"
     },
     "154": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 15
+        },
         "id": "minecraft:hopper",
         "image": "hopper.png",
         "name": "Hopper"
@@ -640,11 +675,21 @@
         "name": "Quartz Stairs"
     },
     "157": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 20
+        },
         "id": "minecraft:activator_rail",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/50/Grid_Activator_Rail.png",
         "name": "Activator Rail"
     },
     "158": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 14
+        },
         "id": "minecraft:dropper",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7f/Grid_Dropper.png",
         "name": "Dropper"
@@ -1405,6 +1450,11 @@
         "name": "Music Disc: C418 \u2014 wait"
     },
     "23": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 13
+        },
         "damageValues": {
             "0": {
                 "texture_bottom": "furnace_front_vertical"
@@ -1470,6 +1520,11 @@
         "type": "block"
     },
     "25": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 31
+        },
         "id": "minecraft:noteblock",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1d/Grid_Note_Block.png",
         "name": "Note Block",
@@ -1572,6 +1627,11 @@
         "name": "Wooden Shovel"
     },
     "27": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 18
+        },
         "damageValues": {
             "1": {
                 "texture_top": "rail_golden_powered"
@@ -1635,6 +1695,11 @@
         "name": "Diamond Axe"
     },
     "28": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 19
+        },
         "damageValues": {
             "1": {
                 "texture_top": "rail_detector_powered"
@@ -1699,6 +1764,11 @@
     },
     "29": {
         "FIXME": "orientation",
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 6
+        },
         "id": "minecraft:sticky_piston",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/32/Grid_Sticky_Piston.png",
         "name": "Sticky Piston",
@@ -2011,6 +2081,11 @@
         "name": "Lava Bucket"
     },
     "328": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 21
+        },
         "id": "minecraft:minecart",
         "image": "minecart.png",
         "name": "Minecart"
@@ -2027,6 +2102,11 @@
     },
     "33": {
         "FIXME": "All rotational values",
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 5
+        },
         "damageValues": {
             "1": {
                 "texture_bottom": "piston_bottom",
@@ -2134,11 +2214,21 @@
         "name": "Slimeball"
     },
     "342": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 22
+        },
         "id": "minecraft:chest_minecart",
         "image": "minecartwithchest.png",
         "name": "Minecart with Chest"
     },
     "343": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 23
+        },
         "id": "minecraft:furnace_minecart",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7f/Grid_Powered_Minecart.png",
         "name": "Minecart with Furnace"
@@ -3034,6 +3124,11 @@
         "name": "Enchanted Book"
     },
     "404": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 4
+        },
         "id": "minecraft:comparator",
         "image": "comparator.png",
         "name": "Comparator"
@@ -3049,11 +3144,21 @@
         "name": "Nether Quartz"
     },
     "407": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 25
+        },
         "id": "minecraft:tnt_minecart",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/93/Grid_Minecart_with_TNT.png",
         "name": "Minecart with TNT"
     },
     "408": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 24
+        },
         "id": "minecraft:hopper_minecart",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/78/Grid_Minecart_with_Hopper.png",
         "name": "Minecart with Hopper"
@@ -3258,6 +3363,11 @@
         "type": "block"
     },
     "46": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 16
+        },
         "id": "minecraft:tnt",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2b/Grid_TNT.png",
         "name": "TNT",
@@ -3593,6 +3703,11 @@
         "name": "Ladder"
     },
     "66": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 17
+        },
         "id": "minecraft:rail",
         "image": "rail.png",
         "name": "Rail"
@@ -3613,6 +3728,11 @@
         "name": "Sign"
     },
     "69": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 9
+        },
         "id": "minecraft:lever",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/33/Grid_Lever.png",
         "name": "Lever"
@@ -3626,6 +3746,11 @@
         "type": "block"
     },
     "70": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 27
+        },
         "id": "minecraft:stone_pressure_plate",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/46/Grid_Stone_Pressure_Plate.png",
         "name": "Stone Pressure Plate"
@@ -3636,6 +3761,11 @@
         "name": "Iron Door"
     },
     "72": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 26
+        },
         "id": "minecraft:wooden_pressure_plate",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d4/Grid_Wooden_Pressure_Plate.png",
         "name": "Wooden Pressure Plate"
@@ -3666,6 +3796,11 @@
         "name": "Redstone Torch"
     },
     "77": {
+        "cloud": {
+            "x": 0,
+            "y": 2,
+            "z": 11
+        },
         "id": "minecraft:stone_button",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/81/Grid_Stone_Button.png",
         "name": "Stone Button"
