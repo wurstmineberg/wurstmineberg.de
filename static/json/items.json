@@ -1512,7 +1512,7 @@
     },
     "260": {
         "id": "minecraft:apple",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/39/Grid_Red_Apple.png",
+        "image": "apple.png",
         "name": "Apple"
     },
     "261": {
@@ -3476,27 +3476,27 @@
                 "texture": "sapling_birch"
             },
             "1": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c6/Grid_Sapling_Spruce.png",
+                "image": "sprucesapling.png",
                 "name": "Spruce Sapling",
                 "texture": "sapling_spruce"
             },
             "2": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b4/Grid_Sapling_Birch.png",
+                "image": "birchsapling.png",
                 "name": "Birch Sapling",
                 "texture": "sapling_birch"
             },
             "3": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7f/Grid_Sapling_Jungle.png",
+                "image": "junglesapling.png",
                 "name": "Jungle Sapling",
                 "texture": "sapling_jungle"
             },
             "4": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5b/Grid_Acacia_Sapling.png",
+                "image": "acaciasapling.png",
                 "name": "Acacia Sapling",
                 "texture": "sapling_acacia"
             },
             "5": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c5/Grid_Dark_Oak_Sapling.png",
+                "image": "darkoaksapling.png",
                 "name": "Dark Oak Sapling",
                 "texture": "sapling_oak"
             }
