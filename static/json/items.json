@@ -219,7 +219,7 @@
     },
     "115": {
         "id": "minecraft:nether_wart",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f2/Grid_Nether_Wart_Seeds.png",
+        "image": "netherwart.png",
         "name": "Nether Wart"
     },
     "116": {
@@ -1079,7 +1079,7 @@
                 "texture_top": "log_birch_top"
             },
             "3": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/5e/Grid_Wood_%28Jungle%29.png",
+                "image": "junglewood.png",
                 "name": "Jungle Wood",
                 "texture": "log_jungle",
                 "texture_top": "log_jungle_top"
@@ -1311,7 +1311,7 @@
                 "texture_uncolored": "leaves_oak_opaque"
             },
             "1": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/08/Grid_Leaves_%28Pine%29.png",
+                "image": "spruceleaves.png",
                 "name": "Spruce Leaves",
                 "texture_uncolored": "leaves_spruce_opaque"
             },
@@ -2735,7 +2735,7 @@
     },
     "372": {
         "id": "minecraft:nether_wart",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f2/Grid_Nether_Wart_Seeds.png",
+        "image": "netherwart.png",
         "name": "Nether Wart"
     },
     "373": {
@@ -3430,7 +3430,7 @@
                 "texture": "planks_birch"
             },
             "3": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Wooden_Plank_%28Jungle%29.png",
+                "image": "junglewoodplanks.png",
                 "name": "Jungle Wood Planks",
                 "texture": "planks_jungle"
             },
