@@ -6,15 +6,12 @@ wurstmineberg.de website
 Trying to make collaborative website updates a little less funky.
 wurstmineberg.de is meant to be updated via pulls from here, with as little changes to the deployed website directly as possible.  
 
-### Update for the new server:
-Since stuff is organized nicely now, we can do
+General management
+------------------  
+Like most of our repositories, this is also connected to our autodeploy setup, so pushed commits should go live on the website very soon.  
 
-    cd /opt/hub/wurstmineberg/wurstmineberg-web; git pull origin master
-    
-And everything should be fine and dandy.  
-You can also use this handy alias:
+For bigger changes, see the dev branch of this repository, which is set up to be displayed on the [dev version of our site](http://dev.wurstmineberg.de/), which is handy for testing out experimental features.
 
-    alias pullweb='cd /opt/hub/wurstmineberg/wurstmineberg-web/; git pull origin master; cd -'
 
 Things in this repo
 -------------------
