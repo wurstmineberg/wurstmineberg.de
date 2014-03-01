@@ -234,7 +234,7 @@
         "icon": 322,
         "iconName": "minecraft:golden_apple",
         "requires": "buildBetterPickaxe",
-        "runobjective": "apple"
+        "runobjective": "opple"
     },
     "portal": {
         "description": "Build a portal to the Nether",
