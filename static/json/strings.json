@@ -39,6 +39,7 @@
             "animalsBred": "Animals Bred",
             "boatOneCm": "Distance by Boat",
             "climbOneCm": "Distance Climbed",
+            "crouchedOneCm": "Distance Crouched",
             "damageDealt": "Damage Dealt",
             "damageTaken": "Damage Taken",
             "deaths": "Number of Deaths",
@@ -56,7 +57,9 @@
             "pigOneCm": "Distance by Pig",
             "playOneMinute": "Time Played / Idled",
             "playerKills": "Player Kills",
+            "sprintedOneCm": "Distance Sprinted",
             "swimOneCm": "Distance Swum",
+            "timeSinceDeath": "Time Since Last Death",
             "treasureFished": "Treasure Fished",
             "walkOneCm": "Distance Walked"
         },
