@@ -303,7 +303,7 @@ function display_deathgames_stat_data(death_games_log, people) {
         },
         'defense-fail': function(person) {
             return log.filter(function(logEntry) {
-                return (logEntry['target'] == person.id && logEntry['fail']);
+                return (logEntry['target'] == person.id && logEntry['success']);
             }).length;
         }
     }
