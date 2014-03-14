@@ -433,7 +433,7 @@ function prettify_stats_value(key, value) {
         } else {
             final_value = value + 'cm';
         }
-    } else if (key.endsWith('OneMinute')) {
+    } else if (key == 'playOneMinute' || key == 'timeSinceDeath') {
         var minutes = Math.floor(minecraft_ticks_to_real_minutes(value));
         var hours = 0;
         var days = 0;
@@ -459,7 +459,7 @@ function prettify_stats_value(key, value) {
             final_value += minutes + 'min '
         }
     } else if (key.startsWith('damage')) {
-        final_value = (value / 2) + ' hearts (not compensated for <a href="https://bugs.mojang.com/browse/MC-47698">MC-47698</a>)';
+        final_value = (Math.floor(value / 10) / 2) + ' hearts';
     }
 
     return final_value;
