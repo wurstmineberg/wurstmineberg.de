@@ -353,7 +353,7 @@
                     "y": 2,
                     "z": 29
                 },
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/60/Grid_Spruce_Wood_Slab.png",
+                "image": "sprucewoodslab.png",
                 "name": "Spruce Wood Slab"
             },
             "2": {
@@ -362,7 +362,7 @@
                     "y": 2,
                     "z": 30
                 },
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Birch_Wood_Slab.png",
+                "image": "birchwoodslab.png",
                 "name": "Birch Wood Slab"
             },
             "3": {
@@ -371,7 +371,7 @@
                     "y": 2,
                     "z": 31
                 },
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/3f/Grid_Jungle_Wood_Slab.png",
+                "image": "junglewoodslab.png",
                 "name": "Jungle Wood Slab"
             },
             "4": {
@@ -380,7 +380,7 @@
                     "y": 2,
                     "z": 32
                 },
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b3/Grid_Acacia_Wood_Slab.png",
+                "image": "acaciawoodslab.png",
                 "name": "Acacia Wood Slab"
             },
             "5": {
@@ -389,12 +389,12 @@
                     "y": 2,
                     "z": 33
                 },
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_Dark_Oak_Wood_Slab.png",
+                "image": "darkoakwoodslab.png",
                 "name": "Dark Oak Wood Slab"
             }
         },
         "id": "minecraft:wooden_slab",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
+        "image": "oakwoodslab.png",
         "name": "Wooden Slab"
     },
     "127": {
@@ -3111,7 +3111,7 @@
             }
         },
         "id": "minecraft:red_flower",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/49/Grid_Rose.png",
+        "image": "rose.png",
         "name": "Flower",
         "render_type": "cross",
         "solid": false,
@@ -3391,12 +3391,12 @@
         "name": "Carrot on a Stick"
     },
     "399": {
+        "always_glow": true,
         "cloud": {
             "x": -1,
             "y": 2,
             "z": 39
         },
-        "always_glow": true,
         "id": "minecraft:nether_star",
         "image": "netherstar.png",
         "name": "Nether Star"
@@ -3613,7 +3613,7 @@
                     "y": 1,
                     "z": 38
                 },
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
+                "image": "sandstoneslab.png",
                 "name": "Sandstone Slab",
                 "texture": "sandstone_normal",
                 "texture_bottom": "sandstone_bottom",
@@ -3668,7 +3668,7 @@
             }
         },
         "id": "minecraft:stone_slab",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
+        "image": "stoneslab.png",
         "name": "Slab",
         "solid": false,
         "subtype": "slab",
