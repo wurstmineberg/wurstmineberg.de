@@ -1511,52 +1511,52 @@
     },
     "2256": {
         "id": "minecraft:record_13",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/55/Grid_Gold_Disc.png",
+        "image": "musicdisc13.png",
         "name": "Music Disc: C418 \u2014 13"
     },
     "2257": {
         "id": "minecraft:record_cat",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c4/Grid_Green_Disc.png",
+        "image": "musicdisccat.png",
         "name": "Music Disc: C418 \u2014 cat"
     },
     "2258": {
         "id": "minecraft:record_blocks",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4d/Grid_Blocks_Disc.png",
+        "image": "musicdiscblocks.png",
         "name": "Music Disc: C418 \u2014 blocks"
     },
     "2259": {
         "id": "minecraft:record_chirp",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/be/Grid_Chirp_Disc.png",
+        "image": "musicdiscchirp.png",
         "name": "Music Disc: C418 \u2014 chirp"
     },
     "2260": {
         "id": "minecraft:record_far",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/9e/Grid_Far_Disc.png",
+        "image": "musicdiscfar.png",
         "name": "Music Disc: C418 \u2014 far"
     },
     "2261": {
         "id": "minecraft:record_mall",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b8/Grid_Mall_Disc.png",
+        "image": "musicdiscmall.png",
         "name": "Music Disc: C418 \u2014 mall"
     },
     "2262": {
         "id": "minecraft:record_mellohi",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/7a/Grid_Mellohi_Disc.png",
+        "image": "musicdiscmellohi.png",
         "name": "Music Disc: C418 \u2014 mellohi"
     },
     "2263": {
         "id": "minecraft:record_stal",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1d/Grid_Stal_Disc.png",
+        "image": "musicdiscstal.png",
         "name": "Music Disc: C418 \u2014 stal"
     },
     "2264": {
         "id": "minecraft:record_strad",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/a/aa/Grid_Strad_Disc.png",
+        "image": "musicdiscstrad.png",
         "name": "Music Disc: C418 \u2014 strad"
     },
     "2265": {
         "id": "minecraft:record_ward",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/da/Grid_Ward_Disc.png",
+        "image": "musicdiscward.png",
         "name": "Music Disc: C418 \u2014 ward"
     },
     "2266": {
@@ -1566,7 +1566,7 @@
     },
     "2267": {
         "id": "minecraft:record_wait",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/67/Grid_wait_Disc.png",
+        "image": "musicdiscwait.png",
         "name": "Music Disc: C418 \u2014 wait"
     },
     "23": {
