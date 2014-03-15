@@ -51,7 +51,7 @@
             "horseOneCm": "Distance by Horse",
             "jump": "Jumps",
             "junkFished": "Junk Fished",
-            "leaveGame": "Games quit",
+            "leaveGame": "Games Quit",
             "minecartOneCm": "Distance by Minecart",
             "mobKills": "Mob Kills",
             "pigOneCm": "Distance by Pig",
@@ -59,7 +59,7 @@
             "playerKills": "Player Kills",
             "sprintOneCm": "Distance Sprinted",
             "swimOneCm": "Distance Swum",
-            "timeSinceDeath": "Time Since Last Death",
+            "timeSinceDeath": "Time Played Since Last Death",
             "treasureFished": "Treasure Fished",
             "walkOneCm": "Distance Walked"
         },
