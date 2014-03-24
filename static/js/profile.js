@@ -25,27 +25,21 @@ function display_user_data(person, items) {
     $('.panel-loading').removeClass('loading');
     
     var name = person.interfaceName;
-    var ava;
     var head;
     
-    $('#username').removeClass('hidden');
+    $('avatar').replaceWith(person.html_ava(32));
     $('#username').text(name);
+    $('#username').removeClass('hidden');
 
     if (person.minecraft) {
-        var minecraft = person.minecraft;
-
-        ava = '/assets/img/ava/' + minecraft + '.png';
-        $('#avatar').attr('src', ava);
-        $('#avatar').removeClass('hidden');
-        
-        head = 'https://minotar.net/avatar/' + minecraft;
-        $('#head').attr('src', head);
-        $('#head').attr('title', minecraft);
+        $('#head').attr('src', '/assets/img/head/180/' + person.id + '.png');
+        $('#head').attr('srcset', '/assets/img/head/180/' + person.id + '.png 1x, /assets/img/head/360/' + person.id + '.png 2x');
+        $('#head').attr('title', person.minecraft);
         $('#head').removeClass('hidden');
 
         if (minecraft.toLowerCase() !== name.toLowerCase()) {
-            $('#username').html(name + ' <span class="muted"> (Minecraft: ' + minecraft + ')</span>');
-        };
+            $('#username').html(name + ' <span class="muted"> (Minecraft: ' + person.minecraft + ')</span>');
+        }
     }
     
     var description = person.description
