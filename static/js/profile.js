@@ -37,7 +37,7 @@ function display_user_data(person, items) {
         $('#head').attr('title', person.minecraft);
         $('#head').removeClass('hidden');
 
-        if (minecraft.toLowerCase() !== name.toLowerCase()) {
+        if (person.minecraft.toLowerCase() !== name.toLowerCase()) {
             $('#username').html(name + ' <span class="muted"> (Minecraft: ' + person.minecraft + ')</span>');
         }
     }
