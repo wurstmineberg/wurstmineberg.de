@@ -27,7 +27,7 @@ function display_user_data(person, items) {
     var name = person.interfaceName;
     var head;
     
-    $('avatar').replaceWith(person.html_ava(32));
+    $('#avatar').replaceWith(person.html_ava(32));
     $('#username').text(name);
     $('#username').removeClass('hidden');
 
