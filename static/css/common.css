@@ -145,13 +145,6 @@ a {
     margin-right: 0.5em;
 }
 
-#avatar {
-    float: left;
-    margin-right: 1em;
-    display: inline-block;
-    height: 32px;
-}
-
 #head {
     float: left;
     margin: 0 1em 1em 0;
@@ -163,6 +156,12 @@ a {
 
 .panel-heading {
     display: block;
+}
+
+.panel-heading .avatar {
+    float: left;
+    margin-right: 1em;
+    display: inline-block;
 }
 
 .inventory-opt-out {
