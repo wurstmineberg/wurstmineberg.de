@@ -32,7 +32,7 @@ function Person (person_data) {
         };
     }();
     this.html_ava = function(size) {
-        return '<img class="avatar" style="width: ' + size + 'px; height: ' + size + 'px;" src="/assets/img/ava/' + this.minecraft + '.png" />';
+        return '<img class="avatar" style="width: ' + size + 'px; height: ' + size + 'px;" src="/assets/img/ava/' + this.minecraft + '.png" onerror="this.onerror = null; this.src=\'/assets/img/head/' + size + '/' + this.id + '.png\'" />';
     };
 }
 
