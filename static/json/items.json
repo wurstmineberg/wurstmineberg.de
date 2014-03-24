@@ -3551,15 +3551,15 @@
                 "texture": "stone_slab_side"
             },
             "1": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2a/Grid_Sandstone_Slab.png",
+                "image": "sandstoneslab.png",
                 "name": "Double Sandstone Slab",
                 "texture": "sandstone_normal",
                 "texture_bottom": "sandstone_bottom",
                 "texture_top": "sandstone_top"
             },
             "2": {
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4e/Grid_Wooden_Slab.png",
-                "name": "Double Wooden Slab",
+                "image": "oakwoodslab.png",
+                "name": "Double Stone-Wood Slab",
                 "texture": "planks_oak"
             },
             "3": {
@@ -3591,7 +3591,7 @@
             }
         },
         "id": "minecraft:double_stone_slab",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Stone_Slab.png",
+        "image": "stoneslab.png",
         "name": "Double Slab",
         "solid": true,
         "type": "block"
@@ -3618,6 +3618,15 @@
                 "texture": "sandstone_normal",
                 "texture_bottom": "sandstone_bottom",
                 "texture_top": "sandstone_top"
+            },
+            "2": {
+                "cloud": {
+                    "x": 1,
+                    "y": 2,
+                    "z": 40
+                },
+                "image": "oakwoodslab.png",
+                "name": "Stone-Wood Slab"
             },
             "3": {
                 "cloud": {
