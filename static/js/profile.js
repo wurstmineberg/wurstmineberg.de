@@ -1,11 +1,13 @@
 function get_user_name() {
     var user;
-    var url = document.URL;
-    var username = url.substring(url.lastIndexOf("/") + 1, url.length).toLowerCase();
-    hashindex = username.lastIndexOf("#");
-    if (hashindex > 0) {
-        username = username.substring(0, username.lastIndexOf("#"));
-    };
+    var url = $(location).attr('pathname');
+    if (url == '/people/') {
+        window.location.replace('/people');
+    }
+    if (url.endsWith('/')) {
+        url = url.substring(0, url.length - 1);
+    }
+    var username = url.substring('/people/'.length, url.length).toLowerCase();
     return username;
 }
 
