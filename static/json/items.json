@@ -1615,7 +1615,7 @@
                     "y": 1,
                     "z": 40
                 },
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1b/Grid_Decorative_Sandstone.png",
+                "image": "chiseledsandstone.png",
                 "name": "Chiseled Sandstone",
                 "texture": "sandstone_carved"
             },
@@ -1625,13 +1625,13 @@
                     "y": 1,
                     "z": 39
                 },
-                "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/22/Grid_Smooth_Sandstone.png",
+                "image": "smoothsandstone.png",
                 "name": "Smooth Sandstone",
                 "texture": "sandstone_smooth"
             }
         },
         "id": "minecraft:sandstone",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/12/Grid_Sandstone.png",
+        "image": "sandstone.png",
         "name": "Sandstone",
         "solid": true,
         "texture": "sandstone_normal",
