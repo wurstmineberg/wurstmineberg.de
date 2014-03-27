@@ -23,7 +23,7 @@ function initialize_datatables() {
     new FixedHeader(table)
 }
 
-function display_user_data(person, items) {
+function display_user_data(person) {
     $('.panel-loading').removeClass('loading');
     
     var name = person.interfaceName;
@@ -51,13 +51,6 @@ function display_user_data(person, items) {
     }
     
     $('#user-description').html(description);
-    
-    var fav_item = items.favItem(person);
-    if (fav_item) {
-        $('#fav-item').removeClass('hidden');
-        $('#fav-item').append(fav_item.htmlImage());
-        $('#fav-item').append(fav_item.name);
-    }
     
     var social_links = $('#social-links');
     if (person.reddit) {
@@ -157,8 +150,16 @@ function display_inventory(player_data, items, string_data) {
     });
 }
 
-function displayProfileData(person) {
+function displayProfileData(person, items) {
+    // Date of Whitelisting
     $('#profile-stat-row-dow').children('.value').html(person.joinDate.getFullYear() + '-' + (person.joinDate.getMonth() + 1) + '-' + person.joinDate.getDate());
+    // Favorite Item
+    var fav_item = items.favItem(person);
+    if (fav_item) {
+        $('#profile-stat-row-fav-item').children('.value').html(fav_item.htmlImage() + fav_item.name);
+    } else {
+        $('#profile-stat-row-fav-item').children('.value').html('<span class="muted">none</span>');
+    }
 }
 
 function display_stat_data(stat_data, string_data, item_data, achievement_data, biomes) {
@@ -486,8 +487,8 @@ function load_user_data() {
     
     $.when(API.personById(username), API.stringData(), API.achievementData(), API.biomes(), API.items()).done(function(person, string_data, achievement_data, biomes, items) {
         load_stat_data(person, string_data, achievement_data, biomes, items);
-        display_user_data(person, items);
-        displayProfileData(person);
+        display_user_data(person);
+        displayProfileData(person, items);
     }).fail(function() {
         $('.loading').html('Error: User with this name not found');
     });
