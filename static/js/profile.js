@@ -450,7 +450,7 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
             value = '<span class="glyphicon glyphicon-remove text-danger"></span>'
         }
 
-        row = '<tr id="achievement-row-' + name + '" class="achievement-row"><img class="achievement-image' + (dict['fancy'] ? ' fancy' : '') + '" src="' + dict['image'] + '" /><td class="name"><a href="#" data-toggle="tooltip" data-placement="right" rel="tooltip" class="text-link" title="' + description + '">' + name + '</a></td><td class="value">' + value + '</td></tr>';
+        row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td><img class="achievement-image' + (dict['fancy'] ? ' fancy' : '') + '" src="' + dict['image'] + '" /></td><td class="name"><a href="#" data-toggle="tooltip" data-placement="right" rel="tooltip" class="text-link" title="' + description + '">' + name + '</a></td><td class="value">' + value + '</td></tr>';
         loading_stat_achievements.before(row);
     });
 
