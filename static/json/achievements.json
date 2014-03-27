@@ -126,6 +126,7 @@
     "exploreAllBiomes": {
         "description": "Discover all biomes",
         "displayname": "Adventuring Time",
+        "fancy": true,
         "icon": 313,
         "id": 27,
         "requires": "theEnd",
