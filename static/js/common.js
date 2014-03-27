@@ -157,6 +157,7 @@ function Item(numericID, itemInfo) {
     };
     if (itemInfo) {
         this.id = itemInfo.id;
+        this.image = itemInfo.image;
         this.name = itemInfo.name;
     }
     this.isBlock = numericID <= 255;

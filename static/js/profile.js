@@ -299,9 +299,11 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
                 }
                 
                 achievements.push({
-                    'id': id,
-                    'name': name,
                     'description': description,
+                    'fancy' : 'fancy' in achievement_data[id] ? achievement_data[id]['fancy'] : false,
+                    'id': id,
+                    'image': '/assets/img/grid/' + item_data.itemById(achievement_data[id]['icon'].toString()).image,
+                    'name': name,
                     'value': final_value
                 });
             };
@@ -317,9 +319,15 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
                 return;
             };
         });
-
+        
         if (!alreadyExisting) {
-            achievements.push({'name': achievement_dict['displayname'], 'description': achievement_dict['description'], 'value': 'No'});
+            achievements.push({
+                'description': achievement_dict['description'],
+                'fancy': 'fancy' in achievement_dict ? achievement_dict['fancy'] : false,
+                'image': '/assets/img/grid/' + item_data.itemById(achievement_dict['icon'].toString()).image,
+                'name': achievement_dict['displayname'],
+                'value': 'No'
+            });
         };
     });
 
@@ -442,7 +450,7 @@ function display_stat_data(stat_data, string_data, item_data, achievement_data, 
             value = '<span class="glyphicon glyphicon-remove text-danger"></span>'
         }
 
-        row = '<tr id="achievement-row-' + name + '" class="achievement-row"><td class="name"><a href="#" data-toggle="tooltip" data-placement="right" rel="tooltip" class="text-link" title="' + description + '">' + name + '</a></td><td class="value">' + value + '</td></tr>';
+        row = '<tr id="achievement-row-' + name + '" class="achievement-row"><img class="achievement-image' + (dict['fancy'] ? ' fancy' : '') + '" src="' + dict['image'] + '" /><td class="name"><a href="#" data-toggle="tooltip" data-placement="right" rel="tooltip" class="text-link" title="' + description + '">' + name + '</a></td><td class="value">' + value + '</td></tr>';
         loading_stat_achievements.before(row);
     });
 
