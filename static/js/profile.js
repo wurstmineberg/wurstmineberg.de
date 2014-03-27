@@ -494,6 +494,6 @@ function load_user_data() {
 }
 
 
-select_tab_with_id("tab-stats-general");
+select_tab_with_id("tab-stats-profile");
 bind_tab_events();
 load_user_data();
