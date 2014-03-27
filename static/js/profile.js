@@ -157,6 +157,10 @@ function display_inventory(player_data, items, string_data) {
     });
 }
 
+function displayProfileData(person) {
+    $('#profile-stat-row-dow').children('.value').html(person.joinDate.getFullYear() + '-' + (person.joinDate.getMonth() + 1) + '-' + person.joinDate.getDate());
+}
+
 function display_stat_data(stat_data, string_data, item_data, achievement_data, biomes) {
     var loading_stat_general = $('#loading-stat-general-table');
     var loading_stat_item = $('#loading-stat-items-table');
@@ -483,6 +487,7 @@ function load_user_data() {
     $.when(API.personById(username), API.stringData(), API.achievementData(), API.biomes(), API.items()).done(function(person, string_data, achievement_data, biomes, items) {
         load_stat_data(person, string_data, achievement_data, biomes, items);
         display_user_data(person, items);
+        displayProfileData(person);
     }).fail(function() {
         $('.loading').html('Error: User with this name not found');
     });

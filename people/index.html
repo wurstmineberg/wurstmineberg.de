@@ -55,19 +55,35 @@
         <h2>Statistics</h2>
 
         <ul id="pagination" class="nav nav-tabs">
+            <li><a id="tab-stats-profile" class="tab-item" href="#profile">Profile</a></li>
             <li><a id="tab-stats-general" class="tab-item" href="#general">General</a></li>
             <li><a id="tab-stats-blocks" class="tab-item" href="#blocks">Blocks</a></li>
             <li><a id="tab-stats-items" class="tab-item" href="#items">Items</a></li>
             <li><a id="tab-stats-mobs" class="tab-item" href="#mobs">Mobs</a></li>
             <li><a id="tab-stats-achievements" class="tab-item" href="#achievements">Achievements</a></li>
         </ul>
-
-        <div id="stats-general" class="stats-section">
+        
+        <div id="stats-profile" class="stats-section">
+            <table id="stats-profile-table" class="table table-responsive stats-table">
+                <tbody>
+                    <tr>
+                        <th>Info</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr class="profile-stat-row" id="profile-stat-row-dow">
+                        <td>Date of Whitelisting</td>
+                        <td class="value">(loading)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="stats-general" class="stats-section hidden">
             <table id="stats-general-table" class="table table-responsive stats-table">
                 <tbody>
                     <tr>
                         <th>Stat</th>
-                        <th>Info</th>
+                        <th>Value</th>
                     </tr>
                     <tr id="loading-stat-general-table" class="loading-stat">
                         <td colspan="2">Loading stat data…</td>

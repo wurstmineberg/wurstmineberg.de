@@ -1,8 +1,17 @@
+function dateObjectFromUTC(s) { // modified from http://stackoverflow.com/a/15518848/667338
+    if (s.length == 10) {
+        s += ' 00:00:00';
+    }
+    s = s.split(/\D/);
+    return new Date(Date.UTC(+s[0], --s[1], +s[2], +s[3], +s[4], +s[5], 0));
+}
+
 function Person (person_data) {
     // Propertys set themselves when instantiated
     this.id = person_data['id'];
     this.description = person_data['description'];
     this.irc = person_data['irc'];
+    this.joinDate = dateObjectFromUTC(person_data['join_date']);
     this.minecraft = person_data['minecraft'];
     this.reddit = person_data['reddit'];
     this.status = 'status' in person_data ? person_data['status'] : 'later';
