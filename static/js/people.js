@@ -17,10 +17,10 @@ function display_people_data(people) {
         } else {
             description = $('<td>', {'class': 'description'}).html(person['description']);
         }
-        $td = $('<td>', {'class': 'people-avatar'}).html(person.html_ava(32));
-        $td.append($('<td>', {'class': 'username'}).html(name));
-        $td.append(description);
-        $('#loading-' + person.status + "-table").before($('<tr>', {'id': person.id}).html($td));
+        $tr = $('<tr>', {'id': person.id}).html($('<td>', {'class': 'people-avatar'}).html(person.html_ava(32)));
+        $tr.append($('<td>', {'class': 'username'}).html(name));
+        $tr.append(description);
+        $('#loading-' + person.status + "-table").before($tr);
     });
     
     $('.loading').remove();
