@@ -8,13 +8,13 @@ function dateObjectFromUTC(s) { // modified from http://stackoverflow.com/a/1551
 
 function imageStack(images, attributes) {
     attributes = typeof attributes === undefined ? {} : attributes;
-    attributes[src] = images[0];
+    attributes['src'] = images[0];
     function errorHandler(imgs, attrs, index) {
         return function() {
             if (index >= imgs.length) {
                 return;
             }
-            attrs[src] = imgs[index + 1];
+            attrs['src'] = imgs[index + 1];
             $(this).replaceWith($('<img>', attrs).on('error', errorHandler(imgs, attrs, index + 1)));
         };
     }
