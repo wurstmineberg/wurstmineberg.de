@@ -87,9 +87,13 @@ function display_leaderboard_stat_data(stat_data, string_data, people) {
         var value = prettify_stats_value(stat[1], data['value']);
         var secondvalue = prettify_stats_value(stat[1], data['secondvalue']);
         var minvalue = prettify_stats_value(stat[1], data['minvalue']);
-
-        row = '<tr class="leaderboard-row"><td class="stat"><a href="//i.wurstmineberg.de/wurstminestats/statspage/' + stat[1] + '.png">' + name + '</a></td><td class="leading-player">' + playerhtml + '</td><td class="value">' + value + '</td><td class="second-player">' + secondplayerhtml + '</td><td class="secondvalue">' + secondvalue + '</td></tr>';
-        loading_leaderboards.before(row);
+        
+        $row = $('<tr>', {'class': 'leaderboard-row'}).html($('<td>', {'class': 'stat'}).html('<a href="//i.wurstmineberg.de/wurstminestats/statspage/' + stat[1] + '.png">' + name + '</a>'));
+        $row.append($('<td>', {'class': 'leading-player'}).html(playerhtml));
+        $row.append($('<td>', {'class': 'value'}).html(value));
+        $row.append($('<td>', {'class': 'second-player'}).html(secondplayerhtml));
+        $row.append($('<td>', {'class': 'secondvalue'}).html(secondvalue));
+        loading_leaderboards.before($row);
     });
 
     $('#loading-stat-leaderboard-table').remove();
@@ -220,14 +224,20 @@ function display_biomes_stat_data(achievement_stat_data, biome_data, people) {
     });
     //TODO sort by number of biomes
     $.each(biomeStats, function(numBiomes, people_list) {
-        $('#stats-achievements-table-biome-track tbody tr:last').after('<tr><td>' + numBiomes + '</td><td>' + html_player_list(people.sorted(people_list)) + '</td></tr>');
+        $tr = $('<tr>').html($('<td>').html(numBiomes));
+        $tr.append($('<td>').html(html_player_list(people.sorted(people_list))));
+        $('#stats-achievements-table-biome-track tbody tr:last').after($tr);
     });
     $('#loading-achievements-table-biome-track').remove();
 }
 
 function display_deathgames_log(death_games_log, people) {
     death_games_log['log'].forEach(function(logEntry) {
-        $('#loading-deathgames-log').after('<tr><td>' + logEntry['date'] + '</td><td>' + html_player_list([people.personById(logEntry['attacker'])]) + '</td><td>' + html_player_list([people.personById(logEntry['target'])]) + '</td><td>' + (logEntry['success'] ? '<span class="glyphicon glyphicon-ok text-success"></span>' : '<span class="glyphicon glyphicon-remove text-danger"></span>') + '</td></tr>');
+        $tr = $('<tr>').html('<td>' + logEntry['date'] + '</td>');
+        $tr.append($('<td>').html(html_player_list([people.personById(logEntry['attacker'])])));
+        $tr.append($('<td>').html(html_player_list([people.personById(logEntry['target'])])));
+        $tr.append($('<td>').html(logEntry['success'] ? '<span class="glyphicon glyphicon-ok text-success"></span>' : '<span class="glyphicon glyphicon-remove text-danger"></span>'));
+        $('#loading-deathgames-log').after($tr);
     });
     $('#loading-deathgames-log').remove();
 }

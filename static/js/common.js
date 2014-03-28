@@ -6,6 +6,19 @@ function dateObjectFromUTC(s) { // modified from http://stackoverflow.com/a/1551
     return new Date(Date.UTC(+s[0], --s[1], +s[2], +s[3], +s[4], +s[5], 0));
 }
 
+function imageStack(images) {
+    function errorHandler(imgs, index) {
+        return function() {
+            if (index >= imgs.length) {
+                return;
+            }
+            $(this).replaceWith($('<img>', {'src': imgs[index + 1]}).on('error', errorHandler(imgs, index + 1)));
+        };
+    }
+    
+    return $('<img>', {'src': images[0]}).on('error', errorHandler(images, 0));
+}
+
 function Person (person_data) {
     // Propertys set themselves when instantiated
     this.id = person_data['id'];
@@ -41,7 +54,28 @@ function Person (person_data) {
         };
     }();
     this.html_ava = function(size) {
-        return '<img class="avatar" style="width: ' + size + 'px; height: ' + size + 'px;" src="/assets/img/ava/' + this.minecraft + '.png" onerror="this.onerror = null; this.src=\'/assets/img/head/' + size + '/' + this.id + '.png\'" />';
+        var imageURLs = [];
+        var hiDPIURLs = [];
+        if ('gravatar' in person_data && size <= 2048) {
+            imageURLs.push('http://www.gravatar.com/avatar/' + md5(person_data['gravatar']) + '?d=404&s=' + size);
+            if (size <= 1024) {
+                hiDPIURLs.push('http://www.gravatar.com/avatar/' + md5(person_data['gravatar']) + '?d=404&s=' + (size * 2));
+            }
+        }
+        imageURLs.push('/assets/img/ava/' + size + '/' + this.id + '.png');
+        hiDPIURLs.push('/assets/img/ava/' + (size * 2) + '/' + this.id + '.png');
+        if (size == 32) {
+            imageURLs.push('/assets/img/ava/' + this.minecraft + '.png');
+        } else if (size == 16) {
+            hiDPIURLs.push('/assets/img/ava/' + this.minecraft + '.png');
+        }
+        imageURLs.push('/assets/img/head/' + size + '/' + this.id + '.png');
+        hiDPIURLs.push('/assets/img/head/' + (size * 2) + '/' + this.id + '.png');
+        //TODO do something with the hiDPI images
+        return imageStack(imageURLs).attr({
+            'class': 'avatar',
+            'style': 'width: ' + size + 'px; height: ' + size + 'px;'
+        });
     };
 }
 
@@ -517,17 +551,18 @@ function username_to_minecraft_nick(username, people) {
 }
 
 function html_player_list(people) {
-    var html = '';
-
+    var $list = $('<span>');
     $.each(people, function(index, person) {
         if (index >= 1) {
-            html += ', ';
+            $list.append(', ');
         };
-
-        html += '<span class="player-avatar-name">' + person.html_ava(16) + '<a class="player" href="/people/' + person.id + '">' + person.interfaceName + '</a></span>';
+        $list.append($('<span>', {'class': 'player-avatar-name'}).html(person.html_ava(16)));
+        $list.append($('<a>', {
+            'class': 'player',
+            'href': '/people/' + person.id
+        }).html(person.interfaceName));
     });
-
-    return html;
+    return $list;
 };
 
 function get_version_url(version, func) {
