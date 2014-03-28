@@ -149,6 +149,11 @@
         "name": "Melon Stem"
     },
     "106": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 29
+        },
         "id": "minecraft:vine",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Vines.png",
         "name": "Vines"
@@ -203,21 +208,41 @@
         "name": "Mycelium"
     },
     "111": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 30
+        },
         "id": "minecraft:waterlily",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/49/Grid_Lily_Pad.png",
         "name": "Lily Pad"
     },
     "112": {
+        "cloud": {
+            "x": 1,
+            "y": 3,
+            "z": 5
+        },
         "id": "minecraft:nether_brick",
         "image": "netherbricks.png",
         "name": "Nether Brick"
     },
     "113": {
+        "cloud": {
+            "x": 1,
+            "y": 3,
+            "z": 7
+        },
         "id": "minecraft:nether_brick_fence",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/59/Grid_Nether_Brick_Fence.png",
         "name": "Nether Brick Fence"
     },
     "114": {
+        "cloud": {
+            "x": 1,
+            "y": 3,
+            "z": 6
+        },
         "id": "minecraft:nether_brick_stairs",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/68/Grid_Nether_Brick_Stairs.png",
         "name": "Nether Brick Stairs"
@@ -283,11 +308,21 @@
         "name": "End Portal Frame"
     },
     "121": {
+        "cloud": {
+            "x": 1,
+            "y": 4,
+            "z": 0
+        },
         "id": "minecraft:end_stone",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/50/Grid_End_Stone.png",
         "name": "End Stone"
     },
     "122": {
+        "cloud": {
+            "x": 1,
+            "y": 4,
+            "z": 5
+        },
         "id": "minecraft:dragon_egg",
         "image": "dragonegg.png",
         "name": "Dragon Egg"
@@ -413,6 +448,11 @@
         "name": "Sandstone Stairs"
     },
     "129": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 20
+        },
         "id": "minecraft:emerald_ore",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e7/Grid_Emerald_Ore.png",
         "name": "Emerald Ore"
@@ -456,6 +496,11 @@
         "name": "String"
     },
     "133": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 13
+        },
         "id": "minecraft:emerald_block",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/27/Grid_Block_of_Emerald.png",
         "name": "Block of Emerald"
@@ -528,6 +573,11 @@
         "name": "Cobblestone Wall"
     },
     "14": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 16
+        },
         "id": "minecraft:gold_ore",
         "image": "goldore.png",
         "name": "Gold Ore",
@@ -629,6 +679,11 @@
         "name": "Comparator"
     },
     "15": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 15
+        },
         "id": "minecraft:iron_ore",
         "image": "ironore.png",
         "name": "Iron Ore",
@@ -662,6 +717,11 @@
         "name": "Block of Redstone"
     },
     "153": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 21
+        },
         "id": "minecraft:quartz_ore",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/82/Grid_Nether_Quartz_Ore.png",
         "name": "Nether Quartz Ore"
@@ -895,6 +955,11 @@
         "name": "Stained Clay"
     },
     "16": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 14
+        },
         "id": "minecraft:coal_ore",
         "image": "coalore.png",
         "name": "Coal Ore",
@@ -1121,6 +1186,11 @@
         "name": "Dark Oak Wood Stairs"
     },
     "165": {
+        "cloud": {
+            "x": 1,
+            "y": 4,
+            "z": 4
+        },
         "id": "minecraft:slime",
         "image": "slimeblock.png",
         "name": "Slime Block"
@@ -1194,6 +1264,11 @@
         "type": "block"
     },
     "170": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 1
+        },
         "id": "minecraft:hay_block",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1f/Grid_Hay_Bale.png",
         "name": "Hay Bale"
@@ -1359,6 +1434,11 @@
         "name": "Hardened Clay"
     },
     "173": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 8
+        },
         "id": "minecraft:coal_block",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/b2/Grid_Block_of_Coal.png",
         "name": "Block of Coal"
@@ -1374,12 +1454,22 @@
         "name": "Packed Ice"
     },
     "175": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 22
+        },
         "damageValues": {
             "0": {
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bc/Grid_Sunflower.png",
                 "name": "Sunflower"
             },
             "1": {
+                "cloud": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 23
+                },
                 "name": "Lilac"
             },
             "2": {
@@ -1391,10 +1481,20 @@
                 "name": "Large Fern"
             },
             "4": {
+                "cloud": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 24
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c3/Grid_Rose_Bush.png",
                 "name": "Rose Bush"
             },
             "5": {
+                "cloud": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 25
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/eb/Grid_Peony.png",
                 "name": "Peony"
             }
@@ -1494,6 +1594,11 @@
         "type": "block"
     },
     "21": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 17
+        },
         "id": "minecraft:lapis_ore",
         "image": "lapislazuliore.png",
         "name": "Lapis Lazuli Ore",
@@ -1502,6 +1607,11 @@
         "type": "block"
     },
     "22": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 11
+        },
         "id": "minecraft:lapis_block",
         "image": "lapislazuliblock.png",
         "name": "Lapis Lazuli Block",
@@ -1711,8 +1821,18 @@
         "name": "Arrow"
     },
     "263": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 0
+        },
         "damageValues": {
             "1": {
+                "cloud": {
+                    "x": 0,
+                    "y": 3,
+                    "z": 1
+                },
                 "image": "charcoal.png",
                 "name": "Charcoal"
             }
@@ -1722,16 +1842,31 @@
         "name": "Coal"
     },
     "264": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 5
+        },
         "id": "minecraft:diamond",
         "image": "diamond.png",
         "name": "Diamond"
     },
     "265": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 2
+        },
         "id": "minecraft:iron_ingot",
         "image": "ironingot.png",
         "name": "Iron Ingot"
     },
     "266": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 4
+        },
         "id": "minecraft:gold_ingot",
         "image": "goldingot.png",
         "name": "Gold Ingot"
@@ -1934,36 +2069,71 @@
         "type": "block"
     },
     "290": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 34
+        },
         "id": "minecraft:wooden_hoe",
         "image": "woodhoe.png",
         "name": "Wooden Hoe"
     },
     "291": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 33
+        },
         "id": "minecraft:stone_hoe",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/ba/Grid_Stone_Hoe.png",
         "name": "Stone Hoe"
     },
     "292": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 32
+        },
         "id": "minecraft:iron_hoe",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f8/Grid_Iron_Hoe.png",
         "name": "Iron Hoe"
     },
     "293": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 31
+        },
         "id": "minecraft:diamond_hoe",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c9/Grid_Diamond_Hoe.png",
         "name": "Diamond Hoe"
     },
     "294": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 35
+        },
         "id": "minecraft:golden_hoe",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/77/Grid_Gold_Hoe.png",
         "name": "Gold Hoe"
     },
     "295": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 2
+        },
         "id": "minecraft:wheat_seeds",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/68/Grid_Seeds.png",
         "name": "Seeds"
     },
     "296": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 0
+        },
         "id": "minecraft:wheat",
         "image": "wheat.png",
         "name": "Wheat"
@@ -2018,6 +2188,11 @@
         "type": "block"
     },
     "30": {
+        "cloud": {
+            "x": 1,
+            "y": 4,
+            "z": 1
+        },
         "id": "minecraft:web",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/36/Grid_Cobweb.png",
         "name": "Cobweb",
@@ -2076,6 +2251,11 @@
         "name": "Iron Boots"
     },
     "31": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 26
+        },
         "damageValues": {
             "0": {
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Dead_Bush.png",
@@ -2089,6 +2269,11 @@
                 "texture_uncolored": "tallgrass"
             },
             "2": {
+                "cloud": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 27
+                },
                 "color_map": "foliage",
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e1/Grid_Tall_Grass3.png",
                 "name": "Fern",
@@ -2164,6 +2349,11 @@
         "name": "Raw Porkchop"
     },
     "32": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 28
+        },
         "id": "minecraft:deadbush",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Dead_Bush.png",
         "name": "Dead Bush",
@@ -2454,6 +2644,11 @@
         "name": "Clock"
     },
     "348": {
+        "cloud": {
+            "x": 1,
+            "y": 3,
+            "z": 2
+        },
         "id": "minecraft:glowstone_dust",
         "image": "glowstonedust.png",
         "name": "Glowstone Dust"
@@ -2917,11 +3112,21 @@
         "name": "Melon"
     },
     "361": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 6
+        },
         "id": "minecraft:pumpkin_seeds",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/72/Grid_Pumpkin_Seeds.png",
         "name": "Pumpkin Seeds"
     },
     "362": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 4
+        },
         "id": "minecraft:melon_seeds",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/75/Grid_Melon_Seeds.png",
         "name": "Melon Seeds"
@@ -2989,14 +3194,19 @@
     "369": {
         "cloud": {
             "x": -1,
-            "y": 2,
-            "z": 37
+            "y": 4,
+            "z": 6
         },
         "id": "minecraft:blaze_rod",
         "image": "blazerod.png",
         "name": "Blaze Rod"
     },
     "37": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 12
+        },
         "id": "minecraft:yellow_flower",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/49/Grid_Dandelion.png",
         "name": "Dandelion",
@@ -3009,6 +3219,11 @@
         "name": "Ghast Tear"
     },
     "371": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 3
+        },
         "id": "minecraft:gold_nugget",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1d/Grid_Gold_Nugget.png",
         "name": "Gold Nugget"
@@ -3064,47 +3279,92 @@
         "name": "Brewing Stand"
     },
     "38": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 13
+        },
         "damageValues": {
             "0": {
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/c7/Grid_Poppy.png",
                 "name": "Poppy"
             },
             "1": {
+                "cloud": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 14
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Grid_Blue_Orchid.png",
                 "name": "Blue Orchid",
                 "texture": "flower_blue_orchid"
             },
             "2": {
+                "cloud": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 15
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/3/33/Grid_Allium.png",
                 "name": "Allium",
                 "texture": "flower_allium"
             },
             "3": {
+                "cloud": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 16
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/7/79/Grid_Azure_Bluet.png",
                 "name": "Azure Bluet",
                 "texture": "flower_houstonia"
             },
             "4": {
+                "cloud": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 17
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/6f/Grid_Red_Tulip.png",
                 "name": "Red Tulip",
                 "texture": "flower_tulip_red"
             },
             "5": {
+                "cloud": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 18
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/ec/Grid_Orange_Tulip.png",
                 "name": "Orange Tulip",
                 "texture": "flower_tulip_orange"
             },
             "6": {
+                "cloud": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 19
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/4/4f/Grid_White_Tulip.png",
                 "name": "White Tulip",
                 "texture": "flower_tulip_white"
             },
             "7": {
+                "cloud": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 20
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/6/61/Grid_Pink_Tulip.png",
                 "name": "Pink Tulip",
                 "texture": "flower_tulip_pink"
             },
             "8": {
+                "cloud": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 21
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/f6/Grid_Oxeye_Daisy.png",
                 "name": "Oxeye Daisy",
                 "texture": "flower_oxeye_daisy"
@@ -3261,6 +3521,11 @@
         "name": "Written Book"
     },
     "388": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 6
+        },
         "id": "minecraft:emerald",
         "image": "emerald.png",
         "name": "Emerald"
@@ -3276,6 +3541,11 @@
         "name": "Item Frame"
     },
     "39": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 10
+        },
         "id": "minecraft:brown_mushroom",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d8/Grid_Brown_Mushroom.png",
         "name": "Brown Mushroom",
@@ -3358,7 +3628,7 @@
         "cloud": {
             "x": -1,
             "y": 2,
-            "z": 38
+            "z": 37
         },
         "damageValues": {
             "0": {
@@ -3395,7 +3665,7 @@
         "cloud": {
             "x": -1,
             "y": 2,
-            "z": 39
+            "z": 38
         },
         "id": "minecraft:nether_star",
         "image": "netherstar.png",
@@ -3415,6 +3685,11 @@
         "type": "block"
     },
     "40": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 11
+        },
         "id": "minecraft:red_mushroom",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/01/Grid_Red_Mushroom.png",
         "name": "Red Mushroom",
@@ -3459,11 +3734,21 @@
         "name": "Comparator"
     },
     "405": {
+        "cloud": {
+            "x": 1,
+            "y": 3,
+            "z": 4
+        },
         "id": "minecraft:netherbrick",
         "image": "netherbrick.png",
         "name": "Nether Brick"
     },
     "406": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 7
+        },
         "id": "minecraft:quartz",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/2b/Grid_Nether_Quartz.png",
         "name": "Nether Quartz"
@@ -3489,6 +3774,11 @@
         "name": "Minecart with Hopper"
     },
     "41": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 10
+        },
         "id": "minecraft:gold_block",
         "image": "goldblock.png",
         "name": "Block of Gold",
@@ -3512,6 +3802,11 @@
         "name": "Diamond Horse Armor"
     },
     "42": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 9
+        },
         "id": "minecraft:iron_block",
         "image": "ironblock.png",
         "name": "Block of Iron",
@@ -3659,6 +3954,11 @@
                 "texture": "stonebrick"
             },
             "6": {
+                "cloud": {
+                    "x": 1,
+                    "y": 3,
+                    "z": 6
+                },
                 "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/dd/Grid_Nether_Brick_Slab.png",
                 "name": "Nether Brick Slab",
                 "texture": "nether_brick"
@@ -3885,6 +4185,11 @@
         "type": "block"
     },
     "56": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 19
+        },
         "id": "minecraft:diamond_ore",
         "image": "diamondore.png",
         "name": "Diamond Ore",
@@ -3893,6 +4198,11 @@
         "type": "block"
     },
     "57": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 12
+        },
         "id": "minecraft:diamond_block",
         "image": "diamondblock.png",
         "name": "Block of Diamond",
@@ -4170,6 +4480,11 @@
         "name": "Wooden Pressure Plate"
     },
     "73": {
+        "cloud": {
+            "x": 0,
+            "y": 3,
+            "z": 18
+        },
         "id": "minecraft:redstone_ore",
         "image": "redstoneore.png",
         "name": "Redstone Ore"
@@ -4244,6 +4559,11 @@
         "name": "Snow Block"
     },
     "81": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 8
+        },
         "id": "minecraft:cactus",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/f/fb/Grid_Cactus.png",
         "name": "Cactus"
@@ -4259,6 +4579,11 @@
         "name": "Clay Block"
     },
     "83": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 9
+        },
         "id": "minecraft:reeds",
         "image": "sugarcane.png",
         "name": "Sugar Cane"
@@ -4279,21 +4604,41 @@
         "name": "Fence"
     },
     "86": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 5
+        },
         "id": "minecraft:pumpkin",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/be/Grid_Pumpkin.png",
         "name": "Pumpkin"
     },
     "87": {
+        "cloud": {
+            "x": 1,
+            "y": 3,
+            "z": 0
+        },
         "id": "minecraft:netherrack",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_Netherrack.png",
         "name": "Netherrack"
     },
     "88": {
+        "cloud": {
+            "x": 1,
+            "y": 3,
+            "z": 1
+        },
         "id": "minecraft:soul_sand",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e4/Grid_Soul_Sand.png",
         "name": "Soul Sand"
     },
     "89": {
+        "cloud": {
+            "x": 1,
+            "y": 3,
+            "z": 3
+        },
         "id": "minecraft:glowstone",
         "image": "glowstone.png",
         "name": "Glowstone"
@@ -4313,6 +4658,11 @@
         "name": "Nether Portal"
     },
     "91": {
+        "cloud": {
+            "x": 0,
+            "y": 4,
+            "z": 7
+        },
         "id": "minecraft:lit_pumpkin",
         "image": "jackolantern.png",
         "name": "Jack o'Lantern"
@@ -4562,6 +4912,11 @@
         "name": "Stone Brick"
     },
     "99": {
+        "cloud": {
+            "x": 1,
+            "y": 4,
+            "z": 2
+        },
         "id": "minecraft:brown_mushroom_block",
         "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/07/Grid_Huge_Brown_Mushroom.png",
         "name": "Huge Brown Mushroom"
