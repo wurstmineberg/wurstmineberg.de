@@ -6,17 +6,20 @@ function dateObjectFromUTC(s) { // modified from http://stackoverflow.com/a/1551
     return new Date(Date.UTC(+s[0], --s[1], +s[2], +s[3], +s[4], +s[5], 0));
 }
 
-function imageStack(images) {
-    function errorHandler(imgs, index) {
+function imageStack(images, attributes) {
+    attributes = typeof attributes === undefined ? {} : attributes;
+    attributes[src] = images[0];
+    function errorHandler(imgs, attrs, index) {
         return function() {
             if (index >= imgs.length) {
                 return;
             }
-            $(this).replaceWith($('<img>', {'src': imgs[index + 1]}).on('error', errorHandler(imgs, index + 1)));
+            attrs[src] = imgs[index + 1];
+            $(this).replaceWith($('<img>', attrs).on('error', errorHandler(imgs, attrs, index + 1)));
         };
     }
     
-    return $('<img>', {'src': images[0]}).on('error', errorHandler(images, 0));
+    return $('<img>', attributes).on('error', errorHandler(images, attributes, 0));
 }
 
 function Person (person_data) {
@@ -72,7 +75,7 @@ function Person (person_data) {
         imageURLs.push('/assets/img/head/' + size + '/' + this.id + '.png');
         hiDPIURLs.push('/assets/img/head/' + (size * 2) + '/' + this.id + '.png');
         //TODO do something with the hiDPI images
-        return imageStack(imageURLs).attr({
+        return imageStack(imageURLs, {
             'class': 'avatar',
             'style': 'width: ' + size + 'px; height: ' + size + 'px;'
         });
