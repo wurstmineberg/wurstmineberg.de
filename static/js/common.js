@@ -1,4 +1,7 @@
 function dateObjectFromUTC(s) { // modified from http://stackoverflow.com/a/15518848/667338
+    if (typeof s !== 'string') {
+        return undefined;
+    }
     if (s.length == 10) {
         s += ' 00:00:00';
     }
@@ -7,7 +10,7 @@ function dateObjectFromUTC(s) { // modified from http://stackoverflow.com/a/1551
 }
 
 function imageStack(images, attributes) {
-    attributes = typeof attributes === undefined ? {} : attributes;
+    attributes = typeof attributes === 'undefined' ? {} : attributes;
     attributes['src'] = images[0];
     function errorHandler(imgs, attrs, index) {
         return function() {

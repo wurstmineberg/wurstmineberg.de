@@ -3225,7 +3225,7 @@
             "z": 3
         },
         "id": "minecraft:gold_nugget",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/1d/Grid_Gold_Nugget.png",
+        "image": "goldnugget.png",
         "name": "Gold Nugget"
     },
     "372": {

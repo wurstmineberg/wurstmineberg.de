@@ -152,7 +152,11 @@ function display_inventory(player_data, items, string_data) {
 
 function displayProfileData(person, items) {
     // Date of Whitelisting
-    $('#profile-stat-row-dow').children('.value').html(person.joinDate.getFullYear() + '-' + (person.joinDate.getMonth() + 1) + '-' + person.joinDate.getDate());
+    if (person.joinDate) {
+        $('#profile-stat-row-dow').children('.value').html(person.joinDate.getFullYear() + '-' + (person.joinDate.getMonth() + 1) + '-' + person.joinDate.getDate());
+    } else {
+        $('#profile-stat-row-dow').children('.value').html($('<span>', {'class': 'muted'}).html('not yet'));
+    }
     // Favorite Item
     var fav_item = items.favItem(person);
     if (fav_item) {
