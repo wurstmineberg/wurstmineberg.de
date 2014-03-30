@@ -174,6 +174,24 @@ function displayProfileData(person, items) {
             $('#profile-stat-row-last-seen').children('.value').html($('<span>', {'class': 'muted'}).html('not yet'));
         }
     });
+    // Status
+    function statusDisplay(status) {
+        if (status == 'postfreeze') {
+            if (new Date() - person.joinDate < 1000 * 60 * 60 * 24 * 7) { // whitelisted less than a week ago
+                return 'new member (may still be <a href="http://wiki.wurstmineberg.de/Server_invitations">vetoed</a>)';
+            }
+            return 'later member (post-<a href="http://wiki.wurstmineberg.de/Server_invitations#History">freeze</a>)';
+        }
+        var statuses = {
+            'former': 'former member (unwhitelisted for inactivity)',
+            'founding': 'founding member',
+            'invited': 'invited but not whitelisted yet',
+            'later': 'later member (pre-<a href="http://wiki.wurstmineberg.de/Server_invitations#History">freeze</a>)',
+            'vetoed': 'former member (unwhitelisted by <a href="http://wiki.wurstmineberg.de/Server_invitations">veto</a>)'
+        }
+        return status in statuses ? statuses[status] : status;
+    }
+    $('#profile-stat-row-status').children('.value').html(statusDisplay(person.status || 'later'));
 }
 
 function display_stat_data(stat_data, string_data, item_data, achievement_data, biomes) {
