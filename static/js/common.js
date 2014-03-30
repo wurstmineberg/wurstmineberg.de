@@ -368,7 +368,11 @@ var API = {
     
     lastSeen: function(person) {
         return API.ajaxJSONDeferred('//api.wurstmineberg.de/server/sessions/lastseen.json').then(function(lastSeenData) {
-            return 'leaveTime' in lastSeenData[person.id] ? dateObjectFromUTC(lastSeenData[person.id]['leaveTime']) : 'currentlyOnline';
+            if (person.id in lastSeenData) {
+                return 'leaveTime' in lastSeenData[person.id] ? dateObjectFromUTC(lastSeenData[person.id]['leaveTime']) : 'currentlyOnline';
+            } else {
+                return null;
+            }
         });
     }
 }
