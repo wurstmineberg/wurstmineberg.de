@@ -178,7 +178,7 @@ function displayProfileData(person, items) {
     function statusDisplay(status) {
         if (status == 'postfreeze') {
             if (new Date() - person.joinDate < 1000 * 60 * 60 * 24 * 7) { // whitelisted less than a week ago
-                return 'new member (may still be <a href="http://wiki.wurstmineberg.de/Server_invitations">vetoed</a>)';
+                return 'new member (may still be <a href="http://wiki.wurstmineberg.de/Server_invitations#Hard_requirements">vetoed</a>)';
             }
             return 'later member (post-<a href="http://wiki.wurstmineberg.de/Server_invitations#History">freeze</a>)';
         }
@@ -187,7 +187,7 @@ function displayProfileData(person, items) {
             'founding': 'founding member',
             'invited': 'invited but not whitelisted yet',
             'later': 'later member (pre-<a href="http://wiki.wurstmineberg.de/Server_invitations#History">freeze</a>)',
-            'vetoed': 'former member (unwhitelisted by <a href="http://wiki.wurstmineberg.de/Server_invitations">veto</a>)'
+            'vetoed': 'former member (unwhitelisted by <a href="http://wiki.wurstmineberg.de/Server_invitations#Hard_requirements">veto</a>)'
         }
         return status in statuses ? statuses[status] : status;
     }
