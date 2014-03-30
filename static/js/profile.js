@@ -153,7 +153,7 @@ function display_inventory(player_data, items, string_data) {
 function displayProfileData(person, items) {
     // Date of Whitelisting
     if (person.joinDate) {
-        $('#profile-stat-row-dow').children('.value').html(person.joinDate.getFullYear() + '-' + (person.joinDate.getMonth() + 1) + '-' + person.joinDate.getDate());
+        $('#profile-stat-row-dow').children('.value').html(person.joinDate.getFullYear() + '-' + zeroFill(person.joinDate.getMonth() + 1, 2) + '-' + zeroFill(person.joinDate.getDate(), 2));
     } else {
         $('#profile-stat-row-dow').children('.value').html($('<span>', {'class': 'muted'}).html('not yet'));
     }
@@ -169,7 +169,7 @@ function displayProfileData(person, items) {
         if (lastSeen == 'currentlyOnline') {
             $('#profile-stat-row-last-seen').children('.value').html('currently online');
         } else if (lastSeen) {
-            $('#profile-stat-row-last-seen').children('.value').html(lastSeen.getFullYear() + '-' + (lastSeen.getMonth() + 1) + '-' + lastSeen.getDate() + ' ' + lastSeen.getHours() + ':' + lastSeen.getMinutes() + ':' + lastSeen.getSeconds());
+            $('#profile-stat-row-last-seen').children('.value').html(lastSeen.getFullYear() + '-' + zeroFill(lastSeen.getMonth() + 1, 2) + '-' + zeroFill(lastSeen.getDate(), 2) + ' ' + zeroFill(lastSeen.getHours(), 2) + ':' + zeroFill(lastSeen.getMinutes(), 2) + ':' + zeroFill(lastSeen.getSeconds(), 2));
         } else {
             $('#profile-stat-row-last-seen').children('.value').html($('<span>', {'class': 'muted'}).html('not yet'));
         }
