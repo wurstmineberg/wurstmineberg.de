@@ -361,6 +361,12 @@ var API = {
     deathGamesLog: function() {
         return API.ajaxJSONDeferred('//api.wurstmineberg.de/deathgames/log.json');
     }
+    
+    lastSeen: function(person) {
+        return API.ajaxJSONDeferred('//api.wurstmineberg.de/server/sessions/lastseen.json').then(function(lastSeenData) {
+            return 'leaveTime' in lastSeenData[person.id] ? dateObjectFromUTC(lastSeenData[person.id]['leaveTime']) : 'currentlyOnline';
+        });
+    }
 }
 
 

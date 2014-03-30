@@ -162,8 +162,18 @@ function displayProfileData(person, items) {
     if (fav_item) {
         $('#profile-stat-row-fav-item').children('.value').html(fav_item.htmlImage() + fav_item.name);
     } else {
-        $('#profile-stat-row-fav-item').children('.value').html('<span class="muted">none</span>');
+        $('#profile-stat-row-fav-item').children('.value').html($('<span>', {'class': 'muted'}).html('none'));
     }
+    // Last Seen
+    $.when(API.lastSeen(person)).done(function(lastSeen) {
+        if (lastSeen == 'currentlyOnline') {
+            $('#profile-stat-row-last-seen').children('.value').html('currently online');
+        } else if (lastSeen) {
+            $('#profile-stat-row-last-seen').children('.value').html(lastSeen.getFullYear() + '-' + (lastSeen.getMonth() + 1) + '-' + lastSeen.getDate() + ' ' + lastSeen.getHours() + ':' + lastSeen.getMinutes() + ':' + lastSeen.getSeconds());
+        } else {
+            $('#profile-stat-row-last-seen').children('.value').html($('<span>', {'class': 'muted'}).html('not yet'));
+        }
+    });
 }
 
 function display_stat_data(stat_data, string_data, item_data, achievement_data, biomes) {
