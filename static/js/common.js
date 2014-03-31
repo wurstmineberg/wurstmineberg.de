@@ -64,20 +64,13 @@ function Person (person_data) {
         };
     }();
     this.html_ava = function(size) {
-        var imageURLs = [];
-        var hiDPIURLs = [];
+        var imageURLs = ['/assets/img/ava/' + size + '/' + this.id + '.png'];
+        var hiDPIURLs = ['/assets/img/ava/' + (size * 2) + '/' + this.id + '.png'];
         if ('gravatar' in person_data && size <= 2048) {
             imageURLs.push('http://www.gravatar.com/avatar/' + md5(person_data['gravatar']) + '?d=404&s=' + size);
             if (size <= 1024) {
                 hiDPIURLs.push('http://www.gravatar.com/avatar/' + md5(person_data['gravatar']) + '?d=404&s=' + (size * 2));
             }
-        }
-        imageURLs.push('/assets/img/ava/' + size + '/' + this.id + '.png');
-        hiDPIURLs.push('/assets/img/ava/' + (size * 2) + '/' + this.id + '.png');
-        if (size == 32) {
-            imageURLs.push('/assets/img/ava/' + this.minecraft + '.png');
-        } else if (size == 16) {
-            hiDPIURLs.push('/assets/img/ava/' + this.minecraft + '.png');
         }
         imageURLs.push('/assets/img/head/' + size + '/' + this.id + '.png');
         hiDPIURLs.push('/assets/img/head/' + (size * 2) + '/' + this.id + '.png');
