@@ -33,6 +33,7 @@ function Person (person_data) {
     // Propertys set themselves when instantiated
     this.id = person_data['id'];
     this.description = person_data['description'];
+    this.invitedBy = person_data['invitedBy'];
     this.irc = person_data['irc'];
     this.joinDate = dateObjectFromUTC(person_data['join_date']);
     this.minecraft = person_data['minecraft'];

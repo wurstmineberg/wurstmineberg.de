@@ -164,6 +164,16 @@ function displayProfileData(person, items) {
     } else {
         $('#profile-stat-row-fav-item').children('.value').html($('<span>', {'class': 'muted'}).html('none'));
     }
+    // Invited By
+    if (person.invitedBy) {
+        $.when(API.personById(person.invitedBy)).done(function(invitedBy) {
+            $('#profile-stat-row-invited-by').children('.value').html(html_player_list([invitedBy]));
+        });
+    } else if (person.status == 'founding') {
+        $('#profile-stat-row-invited-by').children('.value').html($('<span>', {'class': 'muted'}).html('no one (founding member)'));
+    } else {
+        $('#profile-stat-row-invited-by').children('.value').html($('<span>', {'class': 'text-danger'}).html('unknown'));
+    }
     // Last Seen
     $.when(API.lastSeen(person)).done(function(lastSeen) {
         if (lastSeen == 'currentlyOnline') {

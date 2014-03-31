@@ -477,7 +477,7 @@
             "z": 6
         },
         "id": "minecraft:ender_chest",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/5/56/Grid_Ender_Chest.png",
+        "image": "enderchest.png",
         "name": "Ender Chest"
     },
     "131": {
