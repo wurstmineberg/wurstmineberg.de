@@ -269,7 +269,7 @@
     },
     "118": {
         "id": "minecraft:cauldron",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ca/Grid_Cauldron.png",
+        "image": "cauldron.png",
         "name": "Cauldron"
     },
     "119": {
@@ -3042,8 +3042,13 @@
         "name": "Bone"
     },
     "353": {
+        "cloud": {
+            "x": -1,
+            "y": 4,
+            "z": 8
+        },
         "id": "minecraft:sugar",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/9/96/Grid_Sugar.png",
+        "image": "sugar.png",
         "name": "Sugar"
     },
     "354": {
@@ -3214,6 +3219,11 @@
         "texture": "flower_dandelion"
     },
     "370": {
+        "cloud": {
+            "x": -1,
+            "y": 4,
+            "z": 9
+        },
         "id": "minecraft:ghast_tear",
         "image": "ghasttear.png",
         "name": "Ghast Tear"
@@ -3229,14 +3239,220 @@
         "name": "Gold Nugget"
     },
     "372": {
+        "cloud": {
+            "x": -1,
+            "y": 4,
+            "z": 5
+        },
         "id": "minecraft:nether_wart",
         "image": "netherwart.png",
         "name": "Nether Wart"
     },
     "373": {
+        "cloud": {
+            "x": -1,
+            "y": 4,
+            "z": 3
+        },
         "damageValues": {
             "0": {
                 "name": "Water Bottle"
+            },
+            "16": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 13
+                },
+                "name": "Awkward Potion"
+            },
+            "16384": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 17
+                },
+                "image": "splashpotion.png",
+                "name": "Splash Mundane Potion"
+            },
+            "16386": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 19
+                },
+                "image": "splashspeedpotion.png",
+                "name": "Splash Potion of Swiftness"
+            },
+            "16389": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 31
+                },
+                "image": "splashhealthpotion.png",
+                "name": "Splash Potion of Healing"
+            },
+            "16393": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 25
+                },
+                "image": "splashstrengthpotion.png",
+                "name": "Splash Potion of Strength"
+            },
+            "16418": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 23
+                },
+                "image": "splashspeedpotion.png",
+                "name": "Splash Potion of Swiftness \u2161"
+            },
+            "16425": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 29
+                },
+                "image": "splashstrengthpotion.png",
+                "name": "Splash Potion of Strength \u2161"
+            },
+            "16450": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 21
+                },
+                "image": "splashspeedpotion.png",
+                "name": "Splash Potion of Swiftness, extended"
+            },
+            "16453": {
+                "always_glow": true,
+                "image": "splashhealthpotion.png",
+                "name": "Splash Potion of Healing"
+            },
+            "16457": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 27
+                },
+                "image": "splashstrengthpotion.png",
+                "name": "Splash Potion of Strength, extended"
+            },
+            "32": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 14
+                },
+                "name": "Thick Potion"
+            },
+            "64": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 15
+                },
+                "name": "Mundane Potion, extended"
+            },
+            "8192": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 16
+                },
+                "name": "Mundane Potion"
+            },
+            "8194": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 18
+                },
+                "image": "speedpotion.png",
+                "name": "Potion of Swiftness"
+            },
+            "8197": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 30
+                },
+                "image": "healthpotion.png",
+                "name": "Potion of Healing"
+            },
+            "8201": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 24
+                },
+                "image": "strengthpotion.png",
+                "name": "Potion of Strength"
+            },
+            "8226": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 22
+                },
+                "image": "speedpotion.png",
+                "name": "Potion of Swiftness \u2161"
+            },
+            "8233": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 28
+                },
+                "image": "strengthpotion.png",
+                "name": "Potion of Strength \u2161"
+            },
+            "8258": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 20
+                },
+                "image": "speedpotion.png",
+                "name": "Potion of Swiftness, extended"
+            },
+            "8261": {
+                "always_glow": true,
+                "image": "healthpotion.png",
+                "name": "Potion of Healing"
+            },
+            "8265": {
+                "always_glow": true,
+                "cloud": {
+                    "x": -1,
+                    "y": 4,
+                    "z": 26
+                },
+                "image": "strengthpotion.png",
+                "name": "Potion of Strength, extended"
             }
         },
         "id": "minecraft:potion",
@@ -3244,8 +3460,13 @@
         "name": "Potion"
     },
     "374": {
+        "cloud": {
+            "x": -1,
+            "y": 4,
+            "z": 2
+        },
         "id": "minecraft:glass_bottle",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/22/Grid_Glass_Bottle.png",
+        "image": "bottle.png",
         "name": "Glass Bottle"
     },
     "375": {
@@ -3259,21 +3480,41 @@
         "name": "Spider Eye"
     },
     "376": {
+        "cloud": {
+            "x": -1,
+            "y": 4,
+            "z": 10
+        },
         "id": "minecraft:fermented_spider_eye",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/2/29/Grid_Fermented_Spider_Eye.png",
+        "image": "fermentedspidereye.png",
         "name": "Fermented Spider Eye"
     },
     "377": {
+        "cloud": {
+            "x": -1,
+            "y": 4,
+            "z": 7
+        },
         "id": "minecraft:blaze_powder",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/0/09/Grid_Blaze_Powder.png",
+        "image": "blazepowder.png",
         "name": "Blaze Powder"
     },
     "378": {
+        "cloud": {
+            "x": -1,
+            "y": 4,
+            "z": 11
+        },
         "id": "minecraft:magma_cream",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/e/e8/Grid_Magma_Cream.png",
+        "image": "magmacream.png",
         "name": "Magma Cream"
     },
     "379": {
+        "cloud": {
+            "x": -1,
+            "y": 4,
+            "z": 0
+        },
         "id": "minecraft:brewing_stand",
         "image": "brewingstand.png",
         "name": "Brewing Stand"
@@ -3379,8 +3620,13 @@
         "type": "block"
     },
     "380": {
+        "cloud": {
+            "x": -1,
+            "y": 4,
+            "z": 1
+        },
         "id": "minecraft:cauldron",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/c/ca/Grid_Cauldron.png",
+        "image": "cauldron.png",
         "name": "Cauldron"
     },
     "381": {
@@ -3394,8 +3640,13 @@
         "name": "Eye of Ender"
     },
     "382": {
+        "cloud": {
+            "x": -1,
+            "y": 4,
+            "z": 12
+        },
         "id": "minecraft:speckled_melon",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/1/11/Grid_Glistering_Melon.png",
+        "image": "goldmelon.png",
         "name": "Glistering Melon"
     },
     "383": {
@@ -3501,8 +3752,13 @@
         "name": "Spawn Egg"
     },
     "384": {
+        "cloud": {
+            "x": -1,
+            "y": 4,
+            "z": 4
+        },
         "id": "minecraft:experience_bottle",
-        "image": "http://hydra-media.cursecdn.com/minecraft.gamepedia.com/b/bf/Grid_Bottle_o%27_Enchanting.png",
+        "image": "xpbottle.png",
         "name": "Bottle o'Enchanting"
     },
     "385": {

@@ -1,10 +1,10 @@
 function display_people_data(people) {
     people.list.forEach(function(person) {
-        if (!person.status in ['founding', 'later', 'postfreeze', 'former']) {
+        if (!person.status in ['founding', 'later', 'postfreeze', 'former', 'vetoed']) {
             return;
         }
         var minecraft = '';
-        
+        var status = person.status == 'vetoed' ? 'former' : person.status;
         if (person.minecraft && person.minecraft.toLowerCase() !== person.interfaceName.toLowerCase()) {
             minecraft = '<p class="muted">' + person['minecraft'] + '</p>'
         };
@@ -20,7 +20,7 @@ function display_people_data(people) {
         $tr = $('<tr>', {'id': person.id}).html($('<td>', {'class': 'people-avatar'}).html(person.html_ava(32)));
         $tr.append($('<td>', {'class': 'username'}).html(name));
         $tr.append(description);
-        $('#loading-' + person.status + "-table").before($tr);
+        $('#loading-' + status + "-table").before($tr);
     });
     
     $('.loading').remove();
