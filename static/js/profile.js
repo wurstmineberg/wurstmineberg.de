@@ -521,7 +521,7 @@ function load_stat_data(person, string_data, achievement_data, biomes, items) {
             $('.inventory-table .loading td').html('Error: Could not load ' + person.minecraft + '.dat');
         });
     } else if (person.option_is_default('show_inventory')) {
-        $('.panel').before('<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Want to show you inventory?</strong> Since you have not set a preference for this, your inventory and Ender chest will be displayed on this page once we get everything working. You can activate this feature now using the command <code>opt show_inventory on</code>, or permanently deactivate it with <code>opt show_inventory off</code>.</div>');
+        $('.panel').before('<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Want to show you inventory?</strong> Since you have not set a preference for this, your inventory and Ender chest will be displayed on this page once we get everything working. You can activate this feature now using the command <code>!<a href="//wiki.wurstmineberg.de/Commands#Option">Option</a> show_inventory on</code>, or permanently deactivate it with <code>!Option show_inventory off</code>.</div>');
     }
     $.when(API.personStatData(person)).done(function(stat_data) {
         display_stat_data(stat_data, string_data, items, achievement_data, biomes);
