@@ -11,7 +11,7 @@ function display_people_data(people) {
         };
         var $description;
         if (!person.description) {
-            $description = $('<td>', {'class': 'description small muted'}).html('You can update your description using the command <code>People ' + person.id + ' description &lt;value&gt;...</code>.');
+            $description = $('<td>', {'class': 'description small muted'}).html('You can update your description using the command <code>!<a href="//wiki.wurstmineberg.de/Commands#People">People</a> ' + person.id + ' description &lt;value&gt;...</code>.');
         } else {
             $description = $('<td>', {'class': 'description'}).html(person['description']);
         }
