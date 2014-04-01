@@ -5,21 +5,19 @@ function display_people_data(people) {
         }
         var minecraft = '';
         var status = person.status == 'vetoed' ? 'former' : person.status;
+        var $name = $('<td>', {'class': 'username'}).html($('<a>', {'href': '/people/' + person.id}).text(person.interfaceName));
         if (person.minecraft && person.minecraft.toLowerCase() !== person.interfaceName.toLowerCase()) {
-            minecraft = '<p class="muted">' + person['minecraft'] + '</p>'
+            $name.append($('<p>', {'class': 'muted'}).text(person['minecraft']));
         };
-        
-        name = '<a href="/people/' + person.id + '">' + person.interfaceName + '</a>' + minecraft;
-        
-        var description;
+        var $description;
         if (!person.description) {
-            description = $('<td>', {'class': 'description small muted'}).html('Hier könnte Ihre Beschreibung stehen! (You can update your description using the command <code>people ' + person.id + ' description</code>.)');
+            $description = $('<td>', {'class': 'description small muted'}).html('You can update your description using the command <code>People ' + person.id + ' description &lt;value&gt;...</code>.');
         } else {
-            description = $('<td>', {'class': 'description'}).html(person['description']);
+            $description = $('<td>', {'class': 'description'}).html(person['description']);
         }
-        $tr = $('<tr>', {'id': person.id}).html($('<td>', {'class': 'people-avatar'}).html(person.html_ava(32)));
-        $tr.append($('<td>', {'class': 'username'}).html(name));
-        $tr.append(description);
+        var $tr = $('<tr>', {'id': person.id}).html($('<td>', {'class': 'people-avatar'}).html(person.html_ava(32)));
+        $tr.append($name);
+        $tr.append($description);
         $('#loading-' + status + "-table").before($tr);
     });
     

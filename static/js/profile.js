@@ -40,13 +40,14 @@ function display_user_data(person) {
         $('#head').removeClass('hidden');
 
         if (person.minecraft.toLowerCase() !== name.toLowerCase()) {
-            $('#username').html(name + ' <span class="muted"> (Minecraft: ' + person.minecraft + ')</span>');
+            $('#username').append(' ');
+            $('#username').append($('<span>', {'class': 'muted'}).text('(Minecraft: ' + person.minecraft + ')'));
         }
     }
     
     var description = person.description
     if (!description) {
-        description = 'Hier könnte Ihre Beschreibung stehen! (You can update your description using the command <code>people ' + person.id + ' description <value></code>.)';
+        description = 'You can update your description using the command <code>!People ' + person.id + ' description &lt;value&gt;...</code>.';
         $('#user-description').addClass('muted');
     }
     

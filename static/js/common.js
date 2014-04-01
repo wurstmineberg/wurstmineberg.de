@@ -574,7 +574,7 @@ function html_player_list(people) {
         $list.append($('<a>', {
             'class': 'player',
             'href': '/people/' + person.id
-        }).html(person.interfaceName));
+        }).text(person.interfaceName));
     });
     return $list;
 };
