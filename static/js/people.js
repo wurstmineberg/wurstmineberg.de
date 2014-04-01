@@ -27,13 +27,12 @@ function display_people_data(people) {
 };
 
 function load_people_data() {
-    $.when(API.people())
-        .done(function(people) {
-            display_people_data(people);
-        })
-        .fail(function() {
-            $('.loading').children('td').html('Error: could not load people.json');
-        });
+    $.when(API.people()).done(function(people) {
+        display_people_data(people);
+    })
+    .fail(function() {
+        $('.loading').children('td').html('Error: could not load people.json');
+    });
 };
 
 load_people_data();

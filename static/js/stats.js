@@ -355,13 +355,12 @@ function display_deathgames_stat_data(death_games_log, people) {
 }
 
 function load_leaderboard_stat_data() {
-    $.when(API.statData(), API.stringData(), API.people())
-        .done(function(stat_data, string_data, people) {
-            display_leaderboard_stat_data(stat_data, string_data, people)
-        })
-        .fail(function() {
-            $('#loading-stat-leaderboard-table').html('<td colspan="7">Error: Could not load api.wurstmineberg.de/server/playerstats/general.json</td>');
-        });
+    $.when(API.statData(), API.stringData(), API.people()).done(function(stat_data, string_data, people) {
+        display_leaderboard_stat_data(stat_data, string_data, people)
+    })
+    .fail(function() {
+        $('#loading-stat-leaderboard-table').html('<td colspan="7">Error: Could not load api.wurstmineberg.de/server/playerstats/general.json</td>');
+    });
 }
 
 function load_achievements_stat_data() {

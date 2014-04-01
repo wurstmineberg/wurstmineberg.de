@@ -166,8 +166,11 @@ function displayProfileData(person, items) {
     }
     // Invited By
     if (person.invitedBy) {
+        $('#profile-stat-row-invited-by').children('.value').html($('<a>', {'href': '/people/' + person.invitedBy}).html(person.invitedBy));
         $.when(API.personById(person.invitedBy)).done(function(invitedBy) {
             $('#profile-stat-row-invited-by').children('.value').html(html_player_list([invitedBy]));
+        }).fail(function() {
+            //
         });
     } else if (person.status == 'founding') {
         $('#profile-stat-row-invited-by').children('.value').html($('<span>', {'class': 'muted'}).html('no one (founding member)'));
@@ -183,6 +186,8 @@ function displayProfileData(person, items) {
         } else {
             $('#profile-stat-row-last-seen').children('.value').html($('<span>', {'class': 'muted'}).html('not yet'));
         }
+    }).fail(function() {
+        $('#profile-stat-row-last-seen').children('.value').html($('<span>', {'class': 'text-danger'}).html('error, try refreshing'));
     });
     // Status
     function statusDisplay(status) {

@@ -602,11 +602,7 @@ function get_version_url(version, func) {
 };
 
 function display_funding_data() {
-    $.when(API.moneys()).fail(function() {
-        $('.funding-month').html('(error)');
-        $('.funding-progressbar').removeClass('active');
-        $('.funding-progressbar').children('.progress-bar').addClass('progress-bar-danger');
-    }).done(function(money_data) {
+    $.when(API.moneys()).done(function(money_data) {
         $('.funding-progressbar').removeClass('active progress-striped');
         $('.funding-progressbar').empty();
         var funding_total = 0.0;
@@ -710,6 +706,10 @@ function display_funding_data() {
         }
         $('.funding-progressbar').attr('title', funding_total.toFixed(2) + '€ out of ' + spending_monthly.toFixed(2) + '€');
         $('.funding-progressbar').tooltip();
+    }).fail(function() {
+        $('.funding-month').html('(error)');
+        $('.funding-progressbar').removeClass('active');
+        $('.funding-progressbar').children('.progress-bar').addClass('progress-bar-danger');
     });
 };
 
