@@ -30,7 +30,9 @@ function zeroFill(n, l, r) { //FROM http://stackoverflow.com/a/21541030/667338
 }
 
 function sanitized(string, allowedTags) { //FROM http://stackoverflow.com/a/11892228/667338
-    function sanitize(el, allowedTags) {
+    allowedTags = typeof allowedTags === 'undefined' ? [] : allowedTags;
+    
+    function sanitize(el) {
         // Remove all tags from element `el' that aren't in the allowedTags list.
         var tags = Array.prototype.slice.apply(el.getElementsByTagName('*'), [0]);
         for (var i = 0; i < tags.length; i++) {
@@ -50,8 +52,6 @@ function sanitized(string, allowedTags) { //FROM http://stackoverflow.com/a/1189
         }
         p.parentNode.removeChild(p);
     }
-    
-    allowedTags = typeof allowedTags === 'undefined' ? [] : allowedTags;
     
     var div = document.createElement('div');
     div.innerHTML = string;
