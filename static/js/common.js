@@ -49,7 +49,7 @@ function sanitized(string, allowedTags) { //FROM http://stackoverflow.com/a/1189
             last = e;
         }
         p.parentNode.removeChild(p);
-    }​
+    }
     
     allowedTags = typeof allowedTags === 'undefined' ? [] : allowedTags;
     
