@@ -1,87 +1,80 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <!--#include file="/static/html/header.html" -->
-</head>
-<body>
-    <!--#include file="/static/html/navigation.html" -->
-    
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">All the people</h3>
+    <head>
+        <title>the people of Wurstmineberg</title>
+        <!--#include file="/static/html/header.html" -->
+    </head>
+    <body>
+        <!--#include file="/static/html/navigation.html" -->
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">All the people</h3>
+                </div>
+                <div class="panel-body">
+                    <p class="lead">Here's a list of all the people on the whitelist. Players are ranked in order of whitelisting.</p>
+                    <p>To keep player info updated, we kind of rely on the players themselves, so this info may be incomplete or nonsensical. Whoopsie.</p>
+                </div>
             </div>
-            <div class="panel-body">
-                <p class="lead">Here's a list of all the people on the whitelist. Players are ranked in order of whitelisting.</p>
-                <p>To keep player info updated, we kind of rely on the players themselves, so this info may be incomplete or nonsensical. Whoopsie.</p>
-            </div>
-        </div>
-        <div>
-            <h2 id="founding">Founding members</h2>
-            <table class="table table-responsive people-table">
-                <tbody>
-                    <tr>
-                        <th>&nbsp;</th>
-                        <th>Name</th>
-                        <th>Info</th>
-                    </tr>
-                    <tr id="loading-founding-table" class="loading">
-                        <td colspan="7">Is this thing on?</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h2 id="later">Later members</h2>
-            <table class="table table-responsive people-table">
-                <tbody>
-                    <tr>
-                        <th>&nbsp;</th>
-                        <th>Name</th>
-                        <th>Info</th>
-                    </tr>
-                    <tr id="loading-later-table" class="loading">
-                        <td colspan="7">This isn't working…</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h2 id="postfreeze">Later members (post-<a href="http://wiki.wurstmineberg.de/Server_invitations#History">freeze</a>)</h2>
-            <table class="table table-responsive people-table">
-                <tbody>
-                    <tr>
-                        <th>&nbsp;</th>
-                        <th>Name</th>
-                        <th>Info</th>
-                    </tr>
-                    <tr id="loading-postfreeze-table" class="loading">
-                        <td colspan="7">Seriously, something is wrong.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h2 id="former">Former members</h2>
-            <table class="table table-responsive table people-table">
-                <tbody>
-                    <tr id="former-table" class="loading">
-                        <th colspan="7"></th>
-                    </tr>
-                    <tr>
-                        <th>&nbsp;</th>
-                        <th>Name</th>
-                        <th>Info</th>
-                    </tr>
-                    <tr id="loading-former-table" class="loading">
-                        <td colspan="7">Do you even JavaScript?</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> <!-- table -->
-    </div> <!-- /container -->
-
-    <!--#include file="/static/html/footer.html" -->
-    <script src="/static/js/people.js"></script>
-
-<script>
-</script>
-</body>
+            <div>
+                <h2 id="founding">Founding members</h2>
+                <table class="table table-responsive people-table">
+                    <tbody>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Name</th>
+                            <th>Info</th>
+                        </tr>
+                        <tr id="loading-founding-table" class="loading">
+                            <td colspan="7">Is this thing on?</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2 id="later">Later members</h2>
+                <table class="table table-responsive people-table">
+                    <tbody>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Name</th>
+                            <th>Info</th>
+                        </tr>
+                        <tr id="loading-later-table" class="loading">
+                            <td colspan="7">This isn't working…</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2 id="postfreeze">Later members (post-<a href="http://wiki.wurstmineberg.de/Server_invitations#History">freeze</a>)</h2>
+                <table class="table table-responsive people-table">
+                    <tbody>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Name</th>
+                            <th>Info</th>
+                        </tr>
+                        <tr id="loading-postfreeze-table" class="loading">
+                            <td colspan="7">Seriously, something is wrong.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2 id="former">Former members</h2>
+                <table class="table table-responsive table people-table">
+                    <tbody>
+                        <tr id="former-table" class="loading">
+                            <th colspan="7"></th>
+                        </tr>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Name</th>
+                            <th>Info</th>
+                        </tr>
+                        <tr id="loading-former-table" class="loading">
+                            <td colspan="7">Do you even JavaScript?</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> <!-- table -->
+        </div> <!-- /container -->
+        <!--#include file="/static/html/footer.html" -->
+        <script src="/static/js/people.js"></script>
+    </body>
 </html>

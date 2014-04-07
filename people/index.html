@@ -1,180 +1,169 @@
 <!DOCTYPE html>
-
 <html>
-<head>
-    <!--#include file="/static/html/header.html" -->
-</head>
-<body>
-    <!--#include file="/static/html/navigation.html" -->
-
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <img id="avatar" class="hidden" src="" alt="avatar" />
-                <h3 id="username" class="panel-title panel-loading">Loading data…</h3>
-            </div>
-            <div class="panel-body">
-                <div class="lead">
-                    <img id="head" class="hidden img-rounded" src="" alt="head" />
-                    <div id="user-info">
-                        <p id="user-description" class="panel-loading">Loading user data…</p>
-                        <p id="social-links" class="hidden"></p>
-                        <div class="inventory-opt-out pull-left">
-                            <h2 id="inventory">Inventory</h2>
-                            <table id="main-inventory" class="inventory-table">
-                                <tbody>
-                                    <tr class="loading">
-                                        <td>loading…</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div style="height: 29px;"></div>
-                            <table id="hotbar-table" class="inventory-table">
-                                <tbody>
-                                    <tr class="loading">
-                                        <td>loading…</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="inventory-opt-out">
-                            <h2 id="enderchest">Ender chest</h2>
-                            <table id="ender-chest-table" class="inventory-table">
-                                <tbody>
-                                    <tr class="loading">
-                                        <td>loading…</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+    <head>
+        <title>profile page — Wurstmineberg</title>
+        <!--#include file="/static/html/header.html" -->
+    </head>
+    <body>
+        <!--#include file="/static/html/navigation.html" -->
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <img id="avatar" class="hidden" src="" alt="avatar" />
+                    <h3 id="username" class="panel-title panel-loading">Loading data…</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="lead">
+                        <img id="head" class="hidden img-rounded" src="" alt="head" />
+                        <div id="user-info">
+                            <p id="user-description" class="panel-loading">Loading user data…</p>
+                            <p id="social-links" class="hidden"></p>
+                            <div class="inventory-opt-out pull-left">
+                                <h2 id="inventory">Inventory</h2>
+                                <table id="main-inventory" class="inventory-table">
+                                    <tbody>
+                                        <tr class="loading">
+                                            <td>loading…</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="height: 29px;"></div>
+                                <table id="hotbar-table" class="inventory-table">
+                                    <tbody>
+                                        <tr class="loading">
+                                            <td>loading…</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="inventory-opt-out">
+                                <h2 id="enderchest">Ender chest</h2>
+                                <table id="ender-chest-table" class="inventory-table">
+                                    <tbody>
+                                        <tr class="loading">
+                                            <td>loading…</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <h2>Statistics</h2>
+            <ul id="pagination" class="nav nav-tabs">
+                <li><a id="tab-stats-profile" class="tab-item" href="#profile">Profile</a></li>
+                <li><a id="tab-stats-general" class="tab-item" href="#general">General</a></li>
+                <li><a id="tab-stats-blocks" class="tab-item" href="#blocks">Blocks</a></li>
+                <li><a id="tab-stats-items" class="tab-item" href="#items">Items</a></li>
+                <li><a id="tab-stats-mobs" class="tab-item" href="#mobs">Mobs</a></li>
+                <li><a id="tab-stats-achievements" class="tab-item" href="#achievements">Achievements</a></li>
+            </ul>
+            <div id="stats-profile" class="stats-section">
+                <table id="stats-profile-table" class="table table-responsive stats-table">
+                    <tbody>
+                        <tr>
+                            <th>Info</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr class="profile-stat-row" id="profile-stat-row-dow">
+                            <td>Date of Whitelisting</td>
+                            <td class="value">(loading)</td>
+                        </tr>
+                        <tr class="profile-stat-row" id="profile-stat-row-fav-item">
+                            <td>Favorite Item</td>
+                            <td class="value">(loading)</td>
+                        </tr>
+                        <tr class="profile-stat-row" id="profile-stat-row-invited-by">
+                            <td>Invited By</td>
+                            <td class="value">(loading)</td>
+                        </tr>
+                        <tr class="profile-stat-row" id="profile-stat-row-last-seen">
+                            <td>Last Seen</td>
+                            <td class="value">(loading)</td>
+                        </tr>
+                        <tr class="profile-stat-row" id="profile-stat-row-status">
+                            <td>Status</td>
+                            <td class="value">(loading)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="stats-general" class="stats-section hidden">
+                <table id="stats-general-table" class="table table-responsive stats-table">
+                    <tbody>
+                        <tr>
+                            <th>Stat</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr id="loading-stat-general-table" class="loading-stat">
+                            <td colspan="2">Loading stat data…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="stats-blocks" class="stats-section hidden">
+                <table id="stats-blocks-table" class="table table-responsive stats-table">
+                    <tbody>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Block</th>
+                            <th>Times Crafted</th>
+                            <th>Times Used</th>
+                            <th>Times Mined</th>
+                        </tr>
+                        <tr id="loading-stat-blocks-table" class="loading-stat">
+                            <td colspan="5">Loading stat data…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="stats-items" class="stats-section hidden">
+                <table id="stats-items-table" class="table table-responsive stats-table">
+                    <tbody>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Item</th>
+                            <th>Times Depleted</th>
+                            <th>Times Crafted</th>
+                            <th>Times Used</th>
+                        </tr>
+                        <tr id="loading-stat-items-table" class="loading-stat">
+                            <td colspan="5">Loading stat data…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="stats-mobs" class="stats-section hidden">
+                <table id="stats-mobs-table" class="table table-responsive stats-table">
+                    <tbody>
+                        <tr>
+                            <th>Mob</th>
+                            <th>Killed</th>
+                            <th>Killed By</th>
+                        </tr>
+                        <tr id="loading-stat-mobs-table" class="loading-stat">
+                            <td colspan="3">Loading stat data…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="stats-achievements" class="stats-section hidden">
+                <table id="stats-achievements-table" class="table table-responsive stats-table">
+                    <tbody>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Achievement</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr id="loading-stat-achievements-table" class="loading-stat">
+                            <td colspan="3">Loading stat data…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <h2>Statistics</h2>
-
-        <ul id="pagination" class="nav nav-tabs">
-            <li><a id="tab-stats-profile" class="tab-item" href="#profile">Profile</a></li>
-            <li><a id="tab-stats-general" class="tab-item" href="#general">General</a></li>
-            <li><a id="tab-stats-blocks" class="tab-item" href="#blocks">Blocks</a></li>
-            <li><a id="tab-stats-items" class="tab-item" href="#items">Items</a></li>
-            <li><a id="tab-stats-mobs" class="tab-item" href="#mobs">Mobs</a></li>
-            <li><a id="tab-stats-achievements" class="tab-item" href="#achievements">Achievements</a></li>
-        </ul>
-        
-        <div id="stats-profile" class="stats-section">
-            <table id="stats-profile-table" class="table table-responsive stats-table">
-                <tbody>
-                    <tr>
-                        <th>Info</th>
-                        <th>Value</th>
-                    </tr>
-                    <tr class="profile-stat-row" id="profile-stat-row-dow">
-                        <td>Date of Whitelisting</td>
-                        <td class="value">(loading)</td>
-                    </tr>
-                    <tr class="profile-stat-row" id="profile-stat-row-fav-item">
-                        <td>Favorite Item</td>
-                        <td class="value">(loading)</td>
-                    </tr>
-                    <tr class="profile-stat-row" id="profile-stat-row-invited-by">
-                        <td>Invited By</td>
-                        <td class="value">(loading)</td>
-                    </tr>
-                    <tr class="profile-stat-row" id="profile-stat-row-last-seen">
-                        <td>Last Seen</td>
-                        <td class="value">(loading)</td>
-                    </tr>
-                    <tr class="profile-stat-row" id="profile-stat-row-status">
-                        <td>Status</td>
-                        <td class="value">(loading)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <div id="stats-general" class="stats-section hidden">
-            <table id="stats-general-table" class="table table-responsive stats-table">
-                <tbody>
-                    <tr>
-                        <th>Stat</th>
-                        <th>Value</th>
-                    </tr>
-                    <tr id="loading-stat-general-table" class="loading-stat">
-                        <td colspan="2">Loading stat data…</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div id="stats-blocks" class="stats-section hidden">
-            <table id="stats-blocks-table" class="table table-responsive stats-table">
-                <tbody>
-                    <tr>
-                        <th>&nbsp;</th>
-                        <th>Block</th>
-                        <th>Times Crafted</th>
-                        <th>Times Used</th>
-                        <th>Times Mined</th>
-                    </tr>
-                    <tr id="loading-stat-blocks-table" class="loading-stat">
-                        <td colspan="5">Loading stat data…</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div id="stats-items" class="stats-section hidden">
-            <table id="stats-items-table" class="table table-responsive stats-table">
-                <tbody>
-                    <tr>
-                        <th>&nbsp;</th>
-                        <th>Item</th>
-                        <th>Times Depleted</th>
-                        <th>Times Crafted</th>
-                        <th>Times Used</th>
-                    </tr>
-                    <tr id="loading-stat-items-table" class="loading-stat">
-                        <td colspan="5">Loading stat data…</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div id="stats-mobs" class="stats-section hidden">
-            <table id="stats-mobs-table" class="table table-responsive stats-table">
-                <tbody>
-                    <tr>
-                        <th>Mob</th>
-                        <th>Killed</th>
-                        <th>Killed By</th>
-                    </tr>
-                    <tr id="loading-stat-mobs-table" class="loading-stat">
-                        <td colspan="3">Loading stat data…</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div id="stats-achievements" class="stats-section hidden">
-            <table id="stats-achievements-table" class="table table-responsive stats-table">
-                <tbody>
-                    <tr>
-                        <th>&nbsp;</th>
-                        <th>Achievement</th>
-                        <th>Value</th>
-                    </tr>
-                    <tr id="loading-stat-achievements-table" class="loading-stat">
-                        <td colspan="3">Loading stat data…</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-
-    </div>
-
-    <!--#include file="/static/html/footer.html" -->
-    <script src="/static/js/profile.js"></script>
-</body>
+        <!--#include file="/static/html/footer.html" -->
+        <script src="/static/js/profile.js"></script>
+    </body>
 </html>
