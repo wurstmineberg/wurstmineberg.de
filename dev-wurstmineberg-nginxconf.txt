@@ -9,17 +9,21 @@ server {
         ssi on;
     }
     
-    location /people/ {
-        ssi on;
-        try_files /people/index.html =404;
-    }
-    
     location /doc/ {
         alias /usr/share/doc/;
         autoindex on;
         allow 127.0.0.1;
         allow ::1;
         deny all;
+    }
+    
+    location /people/ {
+        ssi on;
+        try_files /people/index.html =404;
+    }
+    
+    location /static/ {
+        proxy_pass http://assets.wurstmineberg.de/
     }
     
     location ~ \.php$ {
