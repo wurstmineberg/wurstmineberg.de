@@ -23,7 +23,7 @@ server {
     }
     
     location /static/ {
-        proxy_pass http://assets.wurstmineberg.de/
+        proxy_pass http://assets.wurstmineberg.de/;
     }
     
     location ~ \.php$ {
