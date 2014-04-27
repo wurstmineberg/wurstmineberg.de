@@ -17,6 +17,7 @@
             </div>
             <ul id="pagination" class="nav nav-tabs">
                 <li><a id="tab-stats-leaderboard" class="tab-item" href="#leaderboards">Leaderboards</a></li>
+                <li><a id="tab-stats-mobs" class="tab-item" href="#mobs">Mobs</a></li>
                 <li><a id="tab-stats-achievements" class="tab-item" href="#achievements">Achievements</a></li>
                 <li><a id="tab-stats-deathgames" class="tab-item" href="#deathgames">Death Games</a></li>
             </ul>
@@ -36,9 +37,42 @@
                     </tbody>
                 </table>
             </div>
+            <div id="stats-mobs" class="stats-section hidden">
+                <h2>By Mob</h2>
+                <table id="mobs-stats-table-bymob" class="table table-responsive stats-table">
+                    <tbody>
+                        <tr>
+                            <th>Stat</th>
+                            <th>Most killed player(s)</th>
+                            <th>Value</th>
+                            <th>Player(s) most killed by</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr id="loading-mobs-bymob" class="loading-stat">
+                            <td colspan="5">Loading stat data…</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>By Player</h2>
+                <table id="mobs-stats-table-byplayer" class="table table-responsive stats-table">
+                    <tbody>
+                        <tr>
+                            <th>Stat</th>
+                            <th>Most killed mob(s)</th>
+                            <th>Value</th>
+                            <th>Mob(s) most killed by</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr id="loading-mobs-byplayer" class="loading-stat">
+                            <td colspan="5">Loading stat data…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div id="stats-achievements" class="stats-section hidden">
                 <div class="row">
                     <div class="col-lg-6 col-sm-12">
+                        <h2>Achievement Progress<h2>
                         <table id="stats-achievements-table-main-track" class="table table-responsive">
                             <tbody>
                                 <tr>
@@ -68,6 +102,7 @@
                         </table>
                     </div>
                     <div class="col-lg-6 col-sm-12">
+                        <h2>Adventuring Time</h2>
                         <table id="stats-achievements-table-biome-track" class="table table-responsive">
                             <tbody>
                                 <tr>
@@ -84,6 +119,7 @@
                 </div>
             </div>
             <div id="stats-deathgames" class="stats-section hidden">
+                <h2>Highlights</h2>
                 <table id="deathgames-stats-table" class="table table-responsive stats-table">
                     <tbody>
                         <tr>
