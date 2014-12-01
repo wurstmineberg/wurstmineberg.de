@@ -23,7 +23,7 @@
             </ul>
             <div id="stats-leaderboard" class="section">
                 <table id="stats-leaderboard-table" class="table table-responsive stats-table">
-                    <tbody>
+                    <thead>
                         <tr>
                             <th>Stat</th>
                             <th>Leading player(s)</th>
@@ -31,6 +31,8 @@
                             <th>Second place</th>
                             <th>Value</th>
                         </tr>
+                    </thead>
+                    <tbody>
                         <tr id="loading-stat-leaderboard-table" class="loading-stat">
                             <td colspan="5">Loading stat data…</td>
                         </tr>
@@ -42,7 +44,7 @@
                 <h2>By Mob</h2>
                 -->
                 <table id="mobs-stats-table-bymob" class="table table-responsive stats-table">
-                    <tbody>
+                    <thead>
                         <tr>
                             <th>Mob</th>
                             <th>Most killed player(s)</th>
@@ -50,6 +52,8 @@
                             <th>Player(s) most killed by</th>
                             <th>Value</th>
                         </tr>
+                    </thead>
+                    <tbody>
                         <tr id="loading-mobs-bymob" class="loading-stat">
                             <td colspan="5">Loading stat data…</td>
                         </tr>
@@ -58,7 +62,7 @@
                 <!--
                 <h2>By Player</h2>
                 <table id="mobs-stats-table-byplayer" class="table table-responsive stats-table">
-                    <tbody>
+                    <thead>
                         <tr>
                             <th>Player</th>
                             <th>Most killed mob(s)</th>
@@ -66,6 +70,8 @@
                             <th>Mob(s) most killed by</th>
                             <th>Value</th>
                         </tr>
+                    </thead>
+                    <tbody>
                         <tr id="loading-mobs-byplayer" class="loading-stat">
                             <td colspan="5">Loading stat data…</td>
                         </tr>
@@ -78,12 +84,14 @@
                     <div class="col-lg-6 col-sm-12">
                         <h2>Achievement Progress</h2>
                         <table id="stats-achievements-table-main-track" class="table table-responsive">
-                            <tbody>
+                            <thead>
                                 <tr>
                                     <th>&nbsp;</th>
                                     <th>Achievement</th>
                                     <th>Player(s)</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr id="achievement-row-none">
                                     <td><img class="achievement-image" src="/static/img/grid/air.png" /></td>
                                     <td class="muted">no achievements yet</td>
@@ -108,11 +116,13 @@
                     <div class="col-lg-6 col-sm-12">
                         <h2>Adventuring Time</h2>
                         <table id="stats-achievements-table-biome-track" class="table table-responsive">
-                            <tbody>
+                            <thead>
                                 <tr>
                                     <th>Biomes visited</th>
                                     <th>Player(s)</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr id="loading-achievements-table-biome-track" class="loading-stat">
                                     <td colspan="2">Loading Adventuring Time data…</td>
                                 </tr>
@@ -125,7 +135,7 @@
             <div id="stats-deathgames" class="section hidden">
                 <h2>Highlights</h2>
                 <table id="deathgames-stats-table" class="table table-responsive stats-table">
-                    <tbody>
+                    <thead>
                         <tr>
                             <th>Stat</th>
                             <th>Leading player(s)</th>
@@ -133,6 +143,8 @@
                             <th>Second place</th>
                             <th>Value</th>
                         </tr>
+                    </thead>
+                    <tbody>
                         <tr class="deathgames-stats-row" id="deathgames-stat-row-kills">
                             <td class="stat">Kills</td>
                             <td class="leading-player">(loading)</td>
@@ -200,13 +212,15 @@
                 </table>
                 <h2>Log</h2>
                 <table id="deathgames-log-table" class="table table-responsive stats-table">
-                    <tbody>
+                    <thead>
                         <tr>
                             <th>Date</th>
                             <th>Attacker</th>
                             <th>Target</th>
                             <th>Success</th>
                         </tr>
+                    </thead>
+                    <tbody>
                         <tr id="loading-deathgames-log" class="loading-stat">
                             <td colspan="4">Loading Death Games log…</td>
                         </tr>
