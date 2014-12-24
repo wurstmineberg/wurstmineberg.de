@@ -2,10 +2,10 @@
 <html>
     <head>
         <title>profile page — Wurstmineberg</title>
-        <!--#include file="/static/html/header.html" -->
+        {{ !header }}
     </head>
     <body>
-        <!--#include file="/static/html/navigation.html" -->
+        {{ !navigation }}
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -264,7 +264,7 @@
                 </table>
             </div>
         </div>
-        <!--#include file="/static/html/footer.html" -->
+        {{ !footer }}
         <script src="/static/js/profile.js"></script>
     </body>
 </html>

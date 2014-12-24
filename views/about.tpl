@@ -2,10 +2,10 @@
 <html>
     <head>
         <title>about Wurstmineberg</title>
-        <!--#include file="/static/html/header.html" -->
+        {{ !header }}
     </head>
     <body>
-        <!--#include file="/static/html/navigation.html" -->
+        {{ !navigation }}
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -46,6 +46,6 @@
             <p>To finance our server, we thought it'd be a nice idea to copy <a href="http://uberspace.de">Uberspace's</a> model: You settle for the amount you want to contribute every month and send that to Jemus42, who rented and pays the server. The relevant reddit threads are <a href="http://www.reddit.com/r/wurstmineberg/comments/1lykcp/geldgeldgeld/">here for the pledges, where people said what they's be willing to contribute</a> and the older thread about <a href="http://www.reddit.com/r/wurstmineberg/comments/1k5abo/psa_sollten_wir_ein_vserverupgrade_wollen_dies/">the general situation and what server we'd be getting</a>. There's also a private spreadsheet where Jemus42 collects data about what everyone has pledged to pay, what expenses we have and of course the actual transactions will be collected there as well. For obvious reasons, this isn't be public.</p>
             <p>To contribute, you'll need to talk to Jemus42. You can chat him up via Jabber at <a href="xmpp:jemus42@kuchen.io"><code>jemus42@kuchen.io</code></a>.</p>
         </div> <!-- /container -->
-        <!--#include file="/static/html/footer.html" -->
+        {{ !footer }}
     </body>
 </html>
