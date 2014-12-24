@@ -6,7 +6,13 @@ Wurstmineberg website
 import bottle
 import os.path
 
-application = bottle.Bottle() # aliased as application for uwsgi to find
+class StripPathMiddleware(bottle.Bottle):
+    """Get that slash out of the request"""
+    def __call__(self, e, *args, **kwargs):
+        e['PATH_INFO'] = e['PATH_INFO'].rstrip('/')
+        return super().__call__(e, *args, **kwargs)
+
+application = StripPathMiddleware()
 
 working_directory = os.path.dirname(__file__)
 bottle.TEMPLATE_PATH = [
@@ -46,14 +52,5 @@ def index():
 def index(person):
     return template_variables
 
-class StripPathMiddleware:
-    """Get that slash out of the request"""
-    def __init__(self, a):
-        self.app = a
-    
-    def __call__(self, e, h):
-        e['PATH_INFO'] = e['PATH_INFO'].rstrip('/')
-        return self.app(e, h)
-
 if __name__ == '__main__':
-    bottle.run(app=StripPathMiddleware(application), host='0.0.0.0', port=8081)
+    bottle.run(app=application, host='0.0.0.0', port=8081)
