@@ -51,12 +51,11 @@
                     <a class="btn btn-default" href="https://github.com/wurstmineberg">Github Organization <i class="fa fa-chevron-right"></i></a>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h2 id="teamspeak"><img src="http://assets.wurstmineberg.de/img/grid/musicdisc11.png" alt="" /> Voice Stuffs</h2>
+                    <h2 id="teamspeak"><img src="http://assets.wurstmineberg.de/img/grid/musicdisc11.png" alt="" /> TeamSpeak</h2>
                     <p>How cliché, right? Yes, kind of. But everything's better than group Skype call bulshittery and the likes. Because sometimes it's just nice to talk to people.</p>
-                    <p>For Teamspeak, you can get the password on the IRC and the client, if necessary, over <a href="http://www.teamspeak.com/?page=downloads">there</a>.</p>
-                    <p>There's a Mumble server now, too, but no one really uses it. You happy now?</p>
-                    <a class="btn btn-default" href="ts3server://wurstmineberg.de">Join Teamspeak <i class="fa fa-chevron-right"></i></a>
-                    <a class="btn btn-default" href="mumble://wurstmineberg.de">Join Mumble <i class="fa fa-chevron-right"></i></a>
+                    <p>You can get the password on the IRC and the client, if necessary, over <a href="http://www.teamspeak.com/?page=downloads">there</a>.</p>
+                    <p><small>And if you ask why we don't have a mumble server, you may or may not be punched in the mood.</small></p>
+                    <a class="btn btn-default" href="ts3server://wurstmineberg.de">Join TeamSpeak <i class="fa fa-chevron-right"></i></a>
                 </div>
                 <div class="clearfix visible-md"></div> <!-- row break < lg -->
                 <div class="col-lg-3 col-md-6">
