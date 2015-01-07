@@ -20,7 +20,7 @@ bottle.TEMPLATE_PATH = [
     os.path.join(working_directory, 'views')
 ]
 
-include_files = ['footer', 'header', 'navigation', 'singleservingfooter']
+include_files = ['footer', 'header', 'navigation']
 template_variables = {}
 
 for name in include_files:
