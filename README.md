@@ -1,16 +1,13 @@
-wurstmineberg.de
-=================
+This repository contains the website **[wurstmineberg.de](http://wurstmineberg.de/)**.
 
-Trying to make collaborative website updates a little less funky.
-wurstmineberg.de is meant to be updated via pulls from here, with as little changes to the deployed website directly as possible.  
+wurstmineberg.de is meant to be updated via pulls from here, with as little changes to the deployed website directly as possible.
 
-General management
-------------------  
-Like most of our repositories, this is also connected to our autodeploy setup, so pushed commits should go live on the website very soon.  
+# General management
 
-For bigger changes, see the dev branch of this repository, which is set up to be displayed on the [dev version of our site](http://dev.wurstmineberg.de/), which is handy for testing out experimental features.
+Like most of our repositories, this is also connected to [our autodeploy setup](https://github.com/fenhl/gitdir-autodeploy), so pushed commits should go live on the website very soon.
 
-Credits
--------
+Please commit all changes to the dev branch of this repository first, which is set up to be displayed on [dev.wurstmineberg.de](http://dev.wurstmineberg.de/). The dev branch may then be merged into master after making sure that things look right.
 
-- CSS/JS is [Bootstrap 3](http://getbootstrap.com/)
+# Credits
+
+*   CSS/JS is [Bootstrap 3](http://getbootstrap.com/)
