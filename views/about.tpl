@@ -21,7 +21,7 @@
                 </div>
             </div>
             <h2 id="hosting">Hosting <small>Because Minecraft doesn't run on potatoes</small></h2>
-            <p>Since our user expansion in September '13, we were capable to cough up the funds for a <em>real</em> server. We are now running on a dedicated server from <a href="http://www.nessus.at/">Nessus</a>, where other services known for their <a href="http://www.soup.io/">magnificient performance</a> have been hosted on before. Specifically, <a href="http://www.nessus.at/produkte/rootserver/l">this is our current server</a>. It seems to be able to handle our server with reasonable load while also generating our <a href="http://overview.wurstmineberg.de">map overview</a> once a day, so it's quite the step up from our previous vServer solution.</p>
+            <p>Our hosting situation has changed many times now. We started out on a spare MacBook in a living room, tried commercial Minecraft server hosters, set everything up ourselves on a VPS and then moved on to hosting on a physical server.</p>
             <p>For more details and a brief history of the server, read <a href="http://wiki.wurstmineberg.de/Hosting">the Hosting article on our wiki</a>.</p>
             <h2 id="joining">Joining <small>Want to play with us?</small></h2>
             <p>If you're thinking about joining the server or wondering how you can, read on. First, though, there are a few things we would like to let you know about what playing on the server is like.</p>
