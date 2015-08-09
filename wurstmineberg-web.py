@@ -4,7 +4,17 @@ Wurstmineberg website
 """
 
 import bottle
+import contextlib
 import os.path
+
+try:
+    import uwsgi
+    uwsgi_options = uwsgi.opt
+except ImportError:
+    uwsgi_options = {}
+
+if uwsgi_options.get('is_dev', False):
+    bottle.debug()
 
 class StripPathMiddleware(bottle.Bottle):
     """Get that slash out of the request"""
@@ -21,7 +31,9 @@ bottle.TEMPLATE_PATH = [
 ]
 
 include_files = ['footer', 'header', 'navigation']
-template_variables = {}
+template_variables = {
+    'host': 'dev.wurstmineberg.de' if uwsgi_options.get('is_dev', False) else 'wurstmineberg.de'
+}
 
 for name in include_files:
     with open(os.path.join(working_directory, 'views/includes', name + '.html')) as file:
