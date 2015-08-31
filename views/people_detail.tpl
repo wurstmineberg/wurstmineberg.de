@@ -46,6 +46,11 @@
                                     </tbody>
                                 </table>
                                 <div style="height: 29px;"></div>
+                                <table id="offhand-slot-table" class="inventory-table" style="float: right;">
+                                    <tr class="loading">
+                                        <td>loading…</td>
+                                    </tr>
+                                </table>
                                 <table id="armor-table" class="inventory-table">
                                     <tbody>
                                         <tr class="loading">
