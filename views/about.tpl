@@ -9,26 +9,27 @@
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">So… About this server</h3>
+                    <h3 class="panel-title">About Wurstmineberg</h3>
                 </div>
                 <div class="panel-body">
-                    <p class="lead">TL;DR: Whitelisted vanilla Minecraft server, small number of people, lots of fiddling in the background.</p>
+                    <p class="lead">Wurstmineberg is a whitelisted Minecraft server with a small number of active people. Our main world is a vanilla snapshot world where we try to run the latest and greatest stuff, at least if it is not too broken. We also have a second modded world that is reset regularly. We do a lot of background and infrastructure work to make the most out of the vanilla Minecraft experience.</p>
                 </div>
                 <div class="panel-footer">
                     <p>Regular server adress: <code>wurstmineberg.de</code></p>
+                    <p><a href="http://wiki.{{host}}/Mod">Modded server</a> address: <code>mod.wurstmineberg.de</code></p>
                     <p><a href="http://wiki.{{host}}/Creative">Creative server</a> adress: <code>creative.wurstmineberg.de</code></p>
                     <p>Weekly minigames on Saturday: <code>minigame.wurstmineberg.de</code></p>
                     <p>In case of <a href="http://wiki.{{host}}/Ultra_Softcore">USC</a>: <code>usc.wurstmineberg.de</code><p>
                 </div>
             </div>
             <h2 id="hosting">Hosting <small>Because Minecraft doesn't run on potatoes</small></h2>
-            <p>Our hosting situation has changed many times now. We started out on a spare MacBook in a living room, tried commercial Minecraft server hosters, set everything up ourselves on a VPS and then moved on to hosting on a physical server.</p>
+            <p>Our hosting situation has changed many times now. We started out on a spare MacBook in a living room, tried commercial Minecraft server hosters, set everything up ourselves on a VPS and then moved on to hosting on a physical server. Our server is quite powerful right now and is able to run multiple world simultaneously without any major issues.</p>
             <p>For more details and a brief history of the server, read <a href="http://wiki.{{host}}/Hosting">the Hosting article on our wiki</a>.</p>
             <h2 id="joining">Joining <small>Want to play with us?</small></h2>
             <p>If you're thinking about joining the server or wondering how you can, read on. First, though, there are a few things we would like to let you know about what playing on the server is like.</p>
             <ul>
                 <li>We're a <a href="http://minecraft.gamepedia.com/Version_history/Development_versions">snapshot</a> server, which means that we're helping Mojang improve their game. Expect weirdness and make yourself familiar with <a href="https://bugs.mojang.com/">the bug tracker</a>.</li>
-                <li>We're pretty much end-game, as far as <a href="/stats#achievements">the achievement progress</a> is concerned. The original dragon has been dead for ages and the <a href="http://wiki.{{host}}/Category:End">End</a> has been turned into <a href="http://wiki.{{host}}/Ender_ender_2.0">an XP farm</a>. The lunchbox which will be part of your <a href="http://wiki.{{host}}/Tour">server tour</a> has things like an Ender chest in it. We also have beacons pretty much everywhere. If you want to start from scratch, expect to be playing singleplayer style for a while.</li>
+                <li>We're pretty much end-game on the main world, as far as <a href="/stats#achievements">the achievement progress</a> is concerned. The original dragon has been dead for ages and the <a href="http://wiki.{{host}}/Category:End">End</a> has been turned into <a href="http://wiki.{{host}}/Ender_ender_2.0">an XP farm</a>. The lunchbox which will be part of your <a href="http://wiki.{{host}}/Tour">server tour</a> has things like an Ender chest in it. We also have beacons pretty much everywhere. If you want to start from scratch, expect to be playing singleplayer style for a while.</li>
             </ul>
             <p>Now for the actual invitation process, read <a href="http://wiki.{{host}}/Invitations">this wiki page</a>. See <a href="/">the main page</a> for ways to contact us.</p>
             <h2 id="starter">Getting started</h2>

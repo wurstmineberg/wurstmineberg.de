@@ -14,7 +14,7 @@
                 <div class="panel-body">
                     <p class="lead">Here's a list of all the people who are or have been on the whitelist.</p>
                     <p>Players are ranked chronologically by the date they were invited or whitelisted.</p>
-                    <p>To keep player info updated, we kind of rely on the players themselves, so this info may be incomplete or nonsensical. You can use <code>!<a href="http://wiki.wurstmineberg.de/Commands#People">People</a></code> to update some of your info.</p>
+                    <p>To keep player info updated, we kind of rely on the players themselves, so this info may be incomplete or nonsensical. If you are on the server you can use <code>!<a href="http://wiki.wurstmineberg.de/Commands#People">People</a></code> to update some of your info.</p>
                 </div>
             </div>
             <div>
