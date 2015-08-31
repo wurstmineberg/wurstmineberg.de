@@ -37,7 +37,7 @@ template_variables = {
 
 for name in include_files:
     with open(os.path.join(working_directory, 'views/includes', name + '.html')) as file:
-        template_variables[name] = file.read()
+        template_variables[name] = bottle.template(file.read(), **template_variables)
 
 @application.route('/')
 @bottle.view('index')
