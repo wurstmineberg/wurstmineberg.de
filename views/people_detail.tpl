@@ -274,6 +274,6 @@
             </div>
         </div>
         {{ !footer }}
-        <script src="/static/js/profile.js"></script>
+        <script src="http://assets.{{host}}/js/profile.js"></script>
     </body>
 </html>

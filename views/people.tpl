@@ -96,6 +96,6 @@
             </div> <!-- table -->
         </div> <!-- /container -->
         {{ !footer }}
-        <script src="/static/js/people.js"></script>
+        <script src="http://assets.{{host}}/js/people.js"></script>
     </body>
 </html>

@@ -72,6 +72,6 @@
             </div> <!-- /row -->
         </div> <!-- /container -->
         {{ !footer }}
-        <script src="/static/js/home.js"></script>
+        <script src="http://assets.{{home}}/js/home.js"></script>
     </body>
 </html>

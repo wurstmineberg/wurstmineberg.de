@@ -229,6 +229,6 @@
             </div>
         </div>
         {{ !footer }}
-        <script src="/static/js/stats.js"></script>
+        <script src="http://assets.{{host}}/js/stats.js"></script>
     </body>
 </html>
