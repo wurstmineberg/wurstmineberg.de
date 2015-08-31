@@ -106,7 +106,7 @@
                                     <td class="achievement-players">&nbsp;</td>
                                 </tr>
                                 <tr id="achievement-row-all">
-                                    <td><img class="achievement-image fancy" src="/assets/img/grid-wurstpick.png" /></td>
+                                    <td><img class="achievement-image fancy" src="/static/img/grid-wurstpick.png" /></td>
                                     <td class="muted">all achievements</td>
                                     <td class="achievement-players">&nbsp;</td>
                                 </tr>
