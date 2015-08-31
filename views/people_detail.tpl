@@ -145,6 +145,8 @@
                             <th>Times Crafted</th>
                             <th>Times Used</th>
                             <th>Times Mined</th>
+                            <th>Times Dropped</th>
+                            <th>Times Picked Up</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -163,6 +165,8 @@
                             <th>Times Crafted</th>
                             <th>Times Used</th>
                             <th>Times Depleted</th>
+                            <th>Times Dropped</th>
+                            <th>Times Picked Up</th>
                         </tr>
                     </thead>
                     <tbody>
