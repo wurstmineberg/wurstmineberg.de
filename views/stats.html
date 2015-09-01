@@ -2,10 +2,10 @@
 <html>
     <head>
         <title>Wurstmineberg stats</title>
-        {{ !header }}
+        {% include 'includes/header.html' %}
     </head>
     <body>
-        {{ !navigation }}
+        {% include 'includes/navigation.html' %}
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -228,7 +228,7 @@
                 </table>
             </div>
         </div>
-        {{ !footer }}
-        <script src="http://assets.{{host}}/js/stats.js"></script>
+        {% include 'includes/footer.html' %}
+        <script src="http://assets.{{g.host}}/js/stats.js"></script>
     </body>
 </html>

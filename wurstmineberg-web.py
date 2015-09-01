@@ -3,9 +3,9 @@
 Wurstmineberg website
 """
 
-import bottle
-import contextlib
-import os.path
+from flask import Flask, render_template, g
+from util import templated
+app = Flask(__name__, template_folder='views')
 
 try:
     import uwsgi
@@ -13,56 +13,37 @@ try:
 except ImportError:
     uwsgi_options = {}
 
-if uwsgi_options.get('is_dev', False):
-    bottle.debug()
 
-class StripPathMiddleware(bottle.Bottle):
-    """Get that slash out of the request"""
-    def __call__(self, e, *args, **kwargs):
-        e['PATH_INFO'] = e['PATH_INFO'].rstrip('/')
-        return super().__call__(e, *args, **kwargs)
+@app.before_request
+def load_template_vars():
+	g.host = 'dev.wurstmineberg.de' if uwsgi_options.get('is_dev', False) else 'wurstmineberg.de'
 
-application = StripPathMiddleware()
 
-working_directory = os.path.dirname(__file__)
-bottle.TEMPLATE_PATH = [
-    os.path.join(working_directory, 'views/includes'),
-    os.path.join(working_directory, 'views')
-]
-
-include_files = ['footer', 'header', 'navigation']
-template_variables = {
-    'host': 'dev.wurstmineberg.de' if uwsgi_options.get('is_dev', False) else 'wurstmineberg.de'
-}
-
-for name in include_files:
-    with open(os.path.join(working_directory, 'views/includes', name + '.html')) as file:
-        template_variables[name] = bottle.template(file.read(), **template_variables)
-
-@application.route('/')
-@bottle.view('index')
+@app.route('/')
+@templated('index.html')
 def index():
-    return template_variables
+    return None
 
-@application.route('/about')
-@bottle.view('about')
-def index():
-    return template_variables
+@app.route('/about')
+@templated()
+def about():
+    return None
 
-@application.route('/stats')
-@bottle.view('stats')
-def index():
-    return template_variables
+@app.route('/stats')
+@templated()
+def stats():
+    return None
 
-@application.route('/people')
-@bottle.view('people')
-def index():
-    return template_variables
+@app.route('/people')
+@templated()
+def people():
+    return None
 
-@application.route('/people/<person:re:[a-z][0-9a-z]{1,15}>')
-@bottle.view('people_detail')
-def index(person):
-    return template_variables
+@app.route('/people/<person>')
+@templated('people_detail.html')
+def people_detail(person):
+    return person
 
 if __name__ == '__main__':
-    bottle.run(app=application, host='0.0.0.0', port=8081)
+    app.run(debug=False)
+
