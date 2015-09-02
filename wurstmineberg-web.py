@@ -46,7 +46,7 @@ def before_request():
         import logging
         from logging import FileHandler
         app.config['PROPAGATE_EXCEPTIONS'] = True
-        file_handler = FileHandler('/var/log/uwsgi/python/wurstmineberg' + '-dev' if is_dev else '' + '.log')
+        file_handler = FileHandler('/var/log/uwsgi/python/wurstmineberg' + ('-dev' if is_dev else '') + '.log')
         file_handler.setLevel(logging.WARNING)
         app.logger.addHandler(file_handler)
 

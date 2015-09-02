@@ -1,4 +1,5 @@
 import contextlib
+import json
 
 DEFAULT_DB_CONFIG = {
     "connectionstring": "host=localhost dbname=wurstmineberg",
