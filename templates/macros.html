@@ -1,0 +1,7 @@
+{% macro wiki(page_name, text) -%}
+<a href="http://wiki.{{g.host}}/{{ page_name }}">{{ text }}</a>
+{%- endmacro %}
+
+{% macro mcwiki(page_name, text) -%}
+<a href="http://minecraft.gamepedia.com/{{ page_name }}">{{ text }}</a>
+{%- endmacro %}
