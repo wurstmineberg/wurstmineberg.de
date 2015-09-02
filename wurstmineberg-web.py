@@ -37,17 +37,26 @@ if not production:
 
 @app.before_request
 def before_request():
-    # Template variables
-    g.host = 'dev.wurstmineberg.de' if uwsgi_options.get('is_dev', False) else 'wurstmineberg.de'
+    is_dev = uwsgi_options.get('is_dev', False)
 
-    if not production:
-        g.assetserver = '/assetserver'
-    else:
+    # Template variables
+    g.host = 'dev.wurstmineberg.de' if is_dev else 'wurstmineberg.de'
+
+    if production:
+        import logging
+        from logging import FileHandler
+        file_handler = FileHandler('/var/log/uwsgi/wurstmineberg' + '-dev' if is_dev else '' + '.log')
+        file_handler.setLevel(logging.WARNING)
+        app.logger.addHandler(file_handler)
+
         g.assetserver = 'http://assets.' + g.host
+    else:
+        g.assetserver = '/assetserver'
 
     # Initialize database connection
     dbconfig = config.get_db_config()
     g.people = PeopleDB(dbconfig['connectionstring'])
+
 
 @app.route('/')
 @templated('index.html')
