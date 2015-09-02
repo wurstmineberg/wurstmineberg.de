@@ -10,13 +10,13 @@
         {% endblock %} {# head_meta #}
 
         {% block styles %}
-        <link rel="shortcut icon" href="http://assets.{{g.host}}/img/favicon.ico" />
+        <link rel="shortcut icon" href="{{g.assetserver}}/img/favicon.ico" />
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" />
         <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 
-        <link rel="stylesheet" href="http://assets.{{g.host}}/css/common.css" />
-        <link rel="stylesheet" href="http://assets.{{g.host}}/css/responsive.css" />
+        <link rel="stylesheet" href="{{g.assetserver}}/css/common.css" />
+        <link rel="stylesheet" href="{{g.assetserver}}/css/responsive.css" />
         {% endblock %} {# styles #}
         {% block page_styles %}
         {% endblock %}
@@ -66,14 +66,19 @@
                     </li>
                 </ul>
                 {% block navbar_right %}
-                <div class="navbar-right funding-progress-container">
-                        <p class="navbar-text">Funding<span class="funding-text"> <span class="funding-for">for </span><span class="funding-month">(loading)</span><span class="funding-month-small">(loading)</span></span>:</p>
-                        <div class="funding-progressbar progress progress-striped active" data-placement="bottom">
-                            <div class="progress-bar" style="width: 100%;">
-                            <span class="sr-only">loading</span>
-                        </div>
-                    </div>
-                </div>
+                <ul class="navbar-personaltools navbar-nav navbar-userloggedin navbar-right">
+                    <li class="dropdown navbar-personaltools-tools open">
+                        <a class="dropdown-toggle glyphicon glyphicon-user navbar-userloggedin" href="#" data-toggle="dropdown" title="You are logged in as Farthen." aria-expanded="true"></a>
+                        <ul class="p-personal-tools dropdown-menu dropdown-menu-right">
+                            <li id="pt-userpage"><a href="/User:Farthen" dir="auto" title="Your user page [ctrl-alt-.]" accesskey=".">Farthen</a></li>
+                            <li id="pt-mytalk"><a href="/User_talk:Farthen" class="new" title="Your talk page [ctrl-alt-n]" accesskey="n">Talk</a></li>
+                            <li id="pt-preferences"><a href="/Special:Preferences" title="Your preferences">Preferences</a></li>
+                            <li id="pt-watchlist"><a href="/Special:Watchlist" title="A list of pages you are monitoring for changes [ctrl-alt-l]" accesskey="l">Watchlist</a></li>
+                            <li id="pt-mycontris"><a href="/Special:Contributions/Farthen" title="A list of your contributions [ctrl-alt-y]" accesskey="y">Contributions</a></li>
+                            <li id="pt-logout"><a href="/index.php?title=Special:UserLogout&amp;returnto=Main+Page" title="Log out">Log out</a></li>
+                        </ul>
+                    </li>
+                </ul>
                 {% endblock %} {# navbar_right #}
             </div><!-- /.navbar-collapse -->
         </nav>
@@ -88,10 +93,10 @@
 
         {% block scripts %}
         <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
-        <script src="http://assets.{{g.host}}/js/underscore-min.js"></script>
+        <script src="{{g.assetserver}}/js/underscore-min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <script src="//jquerymy.com/js/md5.js"></script>
-        <script src="http://assets.{{g.host}}/js/common.js"></script>
+        <script src="{{g.assetserver}}/js/common.js"></script>
         <script type="text/javascript">
             // run by default
             linkify_headers();
