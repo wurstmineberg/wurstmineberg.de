@@ -5,7 +5,7 @@ Wurstmineberg website
 
 from flask import Flask, render_template, g
 from util import templated
-app = Flask(__name__, template_folder='views')
+app = application = Flask(__name__, template_folder='views')
 
 try:
     import uwsgi

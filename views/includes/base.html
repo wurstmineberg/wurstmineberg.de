@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Wurstmineberg{% endblock %}</title>
+        {% include 'includes/head.html' %}
+    </head>
+    <body>
+        {% block body %}
+        {% include 'includes/navigation.html' %}
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div> <!-- /container -->
+        {% include 'includes/footer.html' %}
+        {% endblock %}
+    </body>
+</html>

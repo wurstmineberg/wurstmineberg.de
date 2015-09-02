@@ -1,3 +1,4 @@
+{% block navigation %}
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -34,6 +35,7 @@
                 </ul>
             </li>
         </ul>
+        {% block navbar_right %}
         <div class="navbar-right funding-progress-container">
             	<p class="navbar-text">Funding<span class="funding-text"> <span class="funding-for">for </span><span class="funding-month">(loading)</span><span class="funding-month-small">(loading)</span></span>:</p>
             	<div class="funding-progressbar progress progress-striped active" data-placement="bottom">
@@ -42,5 +44,7 @@
                 </div>
             </div>
         </div>
+        {% endblock %}
     </div><!-- /.navbar-collapse -->
 </nav>
+{% endblock %}
