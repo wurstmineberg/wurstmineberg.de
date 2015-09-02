@@ -3,16 +3,22 @@
 Wurstmineberg website
 """
 
-from flask import Flask, render_template, send_from_directory, g
+from flask import Flask, g, render_template, send_from_directory
+from flask.ext.login import LoginManager
 from util import templated
 
 import config
+from routes import page
 
 import sys
 sys.path.append('/opt/py')
 from people import PeopleDB
 
-app = application = Flask(__name__, template_folder='views')
+global app
+app = application = Flask(__name__)
+app.register_blueprint(page)
+#login_manager = LoginManager()
+#login_manager.init_app(app)
 
 # uwsgi starts the application differently
 production = __name__ != '__main__'
@@ -57,33 +63,6 @@ def before_request():
     # Initialize database connection
     dbconfig = config.get_db_config()
     g.people = PeopleDB(dbconfig['connectionstring'])
-
-
-@app.route('/')
-@templated('index.html')
-def index():
-    return None
-
-@app.route('/about')
-@templated()
-def about():
-    return None
-
-@app.route('/stats')
-@templated()
-def stats():
-    return None
-
-@app.route('/people')
-@templated()
-def people():
-    return None
-
-@app.route('/people/<person>')
-@templated('people_detail.html')
-def people_detail(person):
-    return {'person': person}
-
 
 if __name__ == '__main__':
     app.run(debug=True)
