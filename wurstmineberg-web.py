@@ -42,7 +42,7 @@ def people():
 @app.route('/people/<person>')
 @templated('people_detail.html')
 def people_detail(person):
-    return person
+    return {'person': person}
 
 if __name__ == '__main__':
     app.run(debug=False)
