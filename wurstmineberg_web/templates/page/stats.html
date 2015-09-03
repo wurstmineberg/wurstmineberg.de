@@ -6,7 +6,7 @@
 <script src="{{g.assetserver}}/js/stats.js"></script>
 {% endblock %}
 
-{% block content %}
+{% block page_content %}
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">Statistics</h3>
@@ -128,7 +128,7 @@
                     </tr>
                 </tbody>
             </table>
-            <p>For players who don't have <a href="http://minecraft.gamepedia.com/Achievements#exploreAllBiomes">Adventuring Time</a>, only biomes required for the achievement are counted here.</p>
+            <p>For players who don't have {{ mcwiki('Achievements#exploreAllBiomes', 'Adventuring Time') }}, only biomes required for the achievement are counted here.</p>
         </div>
     </div>
 </div>
@@ -145,69 +145,24 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="deathgames-stats-row" id="deathgames-stat-row-kills">
-                <td class="stat">Kills</td>
+            {% macro deathgames_stats_row(id, name) -%}
+            <tr class="deathgames-stats-row" id="deathgames-stat-row-{{ id }}">
+                <td class="stat">{{ name }}</td>
                 <td class="leading-player">(loading)</td>
                 <td class="value">(loading)</td>
                 <td class="second-player">(loading)</td>
                 <td class="secondvalue">(loading)</td>
             </tr>
-            <tr class="deathgames-stats-row" id="deathgames-stat-row-deaths">
-                <td class="stat">Deaths</td>
-                <td class="leading-player">(loading)</td>
-                <td class="value">(loading)</td>
-                <td class="second-player">(loading)</td>
-                <td class="secondvalue">(loading)</td>
-            </tr>
-            <tr class="deathgames-stats-row" id="deathgames-stat-row-diamonds">
-                <td class="stat">Diamonds earned (kills minus deaths)</td>
-                <td class="leading-player">(loading)</td>
-                <td class="value">(loading)</td>
-                <td class="second-player">(loading)</td>
-                <td class="secondvalue">(loading)</td>
-            </tr>
-            <tr class="deathgames-stats-row" id="deathgames-stat-row-attacks">
-                <td class="stat">Attacks total</td>
-                <td class="leading-player">(loading)</td>
-                <td class="value">(loading)</td>
-                <td class="second-player">(loading)</td>
-                <td class="secondvalue">(loading)</td>
-            </tr>
-            <tr class="deathgames-stats-row" id="deathgames-stat-row-attacks-success">
-                <td class="stat">Successful attacks</td>
-                <td class="leading-player">(loading)</td>
-                <td class="value">(loading)</td>
-                <td class="second-player">(loading)</td>
-                <td class="secondvalue">(loading)</td>
-            </tr>
-            <tr class="deathgames-stats-row" id="deathgames-stat-row-attacks-fail">
-                <td class="stat">Failed attacks</td>
-                <td class="leading-player">(loading)</td>
-                <td class="value">(loading)</td>
-                <td class="second-player">(loading)</td>
-                <td class="secondvalue">(loading)</td>
-            </tr>
-            <tr class="deathgames-stats-row" id="deathgames-stat-row-defense">
-                <td class="stat">Defenses total</td>
-                <td class="leading-player">(loading)</td>
-                <td class="value">(loading)</td>
-                <td class="second-player">(loading)</td>
-                <td class="secondvalue">(loading)</td>
-            </tr>
-            <tr class="deathgames-stats-row" id="deathgames-stat-row-defense-success">
-                <td class="stat">Successful defenses</td>
-                <td class="leading-player">(loading)</td>
-                <td class="value">(loading)</td>
-                <td class="second-player">(loading)</td>
-                <td class="secondvalue">(loading)</td>
-            </tr>
-            <tr class="deathgames-stats-row" id="deathgames-stat-row-defense-fail">
-                <td class="stat">Failed defenses</td>
-                <td class="leading-player">(loading)</td>
-                <td class="value">(loading)</td>
-                <td class="second-player">(loading)</td>
-                <td class="secondvalue">(loading)</td>
-            </tr>
+            {%- endmacro %}
+            {{ deathgames_stats_row('kills', 'Kills') }}
+            {{ deathgames_stats_row('deaths', 'Deaths') }}
+            {{ deathgames_stats_row('diamonds', 'Diamonds earned (kills minus deaths)') }}
+            {{ deathgames_stats_row('attacks', 'Attacks total') }}
+            {{ deathgames_stats_row('attacks-success', 'Successful attacks') }}
+            {{ deathgames_stats_row('attacks-fail', 'Failed attacks') }}
+            {{ deathgames_stats_row('defense', 'Defenses total') }}
+            {{ deathgames_stats_row('defense-success', 'Successful defenses') }}
+            {{ deathgames_stats_row('defense-fail', 'Failed defenses') }}
         </tbody>
     </table>
     <h2>Log</h2>
@@ -227,4 +182,4 @@
         </tbody>
     </table>
 </div>
-{% endblock %}
+{% endblock %} {# page_content #}

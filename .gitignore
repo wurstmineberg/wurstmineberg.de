@@ -5,3 +5,7 @@
 /assets/world
 /assetserver
 __pycache__
+.env
+
+# Because secret keys
+wurstmineberg_web/settings.py

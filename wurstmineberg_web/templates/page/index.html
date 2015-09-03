@@ -4,15 +4,15 @@
 <script src="{{g.assetserver}}/js/home.js"></script>
 {% endblock %}
 
-{% block content %}
+{% block page_content %}
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">The Wurst<wbr>mine<wbr>berg Mine<wbr>craft Server</h3>
     </div>
     <div class="panel-body">
         <p class="lead">Wurstmineberg is a whitelisted multi world <a href="http://www.minecraft.net/">Minecraft</a> server. We run several worlds on a dedicated root server.</p>
-        <p>The main world usually runs the latest version of Minecraft, including the latest <a href="http://minecraft.gamepedia.com/Version_history/Development_versions">snapshots</a> if they're not too broken. Therefore we can't run any serverside mods there, sorry. But we do have some awesome selfmade tools that really replace lots of that functionality. We also have a <a href="http://wiki.{{g.host}}/Mod">modded server</a> if you like mods.</p>
-        <p>If you're interested in playing with us, we have some <a href="http://wiki.{{g.host}}/Invitations">requirements</a>. In the meantime, you can check out the IRC and Twitter section below.</p>
+        <p>The main world usually runs the latest version of Minecraft, including the latest {{ mcwiki('Version_history/Development_versions', 'snapshots') }} if they're not too broken. Therefore we can't run any serverside mods there, sorry. But we do have some awesome selfmade tools that really replace lots of that functionality. We also have a {{ wiki('Mod', 'modded server') }} if you like mods.</p>
+        <p>If you're interested in playing with us, we have some {{ wiki('Invitations', 'requirements') }}. In the meantime, you can check out the IRC and Twitter section below.</p>
     </div>
     <div class="panel-footer" id="serverinfo">
         loading server status…
@@ -59,8 +59,8 @@
     <div class="col-lg-3 col-md-6">
         <h2 id="wiki"><img src="{{g.assetserver}}/img/grid/enchantedbook.png" alt="" /> Wiki</h2>
         <p>We have <a href="http://www.mediawiki.org/">MediaWiki</a> to harvest the glorious benefits of wiki-technology for our purposes.</p>
-        <p>Besides meta stuff, we're also writing articles about <a href="http://wiki.{{g.host}}/Category:Projects">projects</a> on the server itself. This might not seem like a big deal as of now, but things are slowly coming together, and eventually we'll have documented <em>all</em> the things.</p>
-        <p>There are also articles about <a href="http://wiki.{{g.host}}/Category:Fictional">fictional content</a>. Fun stuff.
+        <p>Besides meta stuff, we're also writing articles about {{ wiki('Category:Projects', 'projects') }} on the server itself. This might not seem like a big deal as of now, but things are slowly coming together, and eventually we'll have documented <em>all</em> the things.</p>
+        <p>There are also articles about {{ wiki('Category:Fictional', 'fictional content') }}. Fun stuff.</p>
         <a class="btn btn-default" href="http://wiki.{{g.host}}/">Visit Wiki <i class="fa fa-chevron-right"></i></a>
     </div>
     <div class="col-lg-3 col-md-6">
@@ -69,4 +69,4 @@
         <a class="btn btn-default" href="http://news.wurstmineberg.de/">View Site <i class="fa fa-chevron-right"></i></a>
     </div>
 </div> <!-- /row -->
-{% endblock %}
+{% endblock %} {# page_content #}

@@ -6,7 +6,7 @@
 <script src="{{g.assetserver}}/js/profile.js"></script>
 {% endblock %}
 
-{% block content %}
+{% block page_content %}
 <div class="panel panel-default">
     <div class="panel-heading">
         <img id="avatar" class="hidden" src="" alt="avatar" />
@@ -82,42 +82,21 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="profile-stat-row" id="profile-stat-row-dow">
-                <td>Date of Whitelisting</td>
+            {% macro profile_stat_row(id, title) -%}
+            <tr class="profile-stat-row" id="profile-stat-row-{{ id }}">
+                <td>{{ title }}</td>
                 <td class="value">(loading)</td>
             </tr>
-            <tr class="profile-stat-row" id="profile-stat-row-fav-color">
-                <td>Favorite Color</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr class="profile-stat-row" id="profile-stat-row-fav-item">
-                <td>Favorite Item</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr class="profile-stat-row" id="profile-stat-row-invited-by">
-                <td>Invited By</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr class="profile-stat-row" id="profile-stat-row-last-death">
-                <td>Last Death</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr class="profile-stat-row" id="profile-stat-row-last-seen">
-                <td>Last Seen</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr class="profile-stat-row" id="profile-stat-row-people-invited-prefreeze">
-                <td>People “Invited” (pre-<a href="http://wiki.wurstmineberg.de/Server_invitations#History">freeze</a>)</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr class="profile-stat-row" id="profile-stat-row-people-invited">
-                <td>People Invited (post-freeze)</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr class="profile-stat-row" id="profile-stat-row-status">
-                <td>Status</td>
-                <td class="value">(loading)</td>
-            </tr>
+            {%- endmacro %}
+            {{ profile_stat_row('dow', 'Date of Whitelisting') }}
+            {{ profile_stat_row('fav-color', 'Favorite Color') }}
+            {{ profile_stat_row('fav-item', 'Favorite Item') }}
+            {{ profile_stat_row('invited-by', 'Invited By') }}
+            {{ profile_stat_row('last-death', 'Last Death') }}
+            {{ profile_stat_row('last-seen', 'Last Seen') }}
+            {{ profile_stat_row('people-invited-prefreeze', 'People “Invited” (pre-' ~ wiki('Server_invitations#History', 'freeze') ~ ')') }}
+            {{ profile_stat_row('people-invited', 'People Invited (post-freeze)') }}
+            {{ profile_stat_row('status', 'Status') }}
         </tbody>
     </table>
 </div>
@@ -233,43 +212,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr id="minigames-stat-row-deathgames-kills">
-                <td>Kills</td>
+            {% macro profile_deathgames_stat_row(id, title) -%}
+            <tr id="minigames-stat-row-deathgames-{{ id }}">
+                <td>{{ title }}</td>
                 <td class="value">(loading)</td>
             </tr>
-            <tr id="minigames-stat-row-deathgames-deaths">
-                <td>Deaths</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr id="minigames-stat-row-deathgames-diamonds">
-                <td>Diamonds earned (kills minus deaths)</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr id="minigames-stat-row-deathgames-attacks">
-                <td>Attacks total</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr id="minigames-stat-row-deathgames-attacks-success">
-                <td>Successful attacks</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr id="minigames-stat-row-deathgames-attacks-fail">
-                <td>Failed attacks</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr id="minigames-stat-row-deathgames-defense">
-                <td>Defenses total</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr id="minigames-stat-row-deathgames-defense-success">
-                <td>Successful defenses</td>
-                <td class="value">(loading)</td>
-            </tr>
-            <tr id="minigames-stat-row-deathgames-defense-fail">
-                <td>Failed defenses</td>
-                <td class="value">(loading)</td>
-            </tr>
+            {%- endmacro %}
+            {{ profile_deathgames_stat_row('kills', 'Kills') }}
+            {{ profile_deathgames_stat_row('deaths', 'Deaths') }}
+            {{ profile_deathgames_stat_row('diamonds', 'Diamonds earned (kills minus deaths)') }}
+            {{ profile_deathgames_stat_row('attacks', 'Attacks total') }}
+            {{ profile_deathgames_stat_row('attacks-success', 'Successful attacks') }}
+            {{ profile_deathgames_stat_row('attacks-fail', 'Failed attacks') }}
+            {{ profile_deathgames_stat_row('defense', 'Defenses total') }}
+            {{ profile_deathgames_stat_row('defense-success', 'Successful defenses') }}
+            {{ profile_deathgames_stat_row('defense-fail', 'Failed defenses') }}
         </tbody>
     </table>
 </div>
-{% endblock %}
+{% endblock %} {# page_content #}

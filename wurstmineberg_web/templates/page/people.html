@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block page_scripts %}
+<script src="{{g.assetserver}}/js/people.js"></script>
+{% endblock %}
+
+{% block title %}People - Wurstmineberg{% endblock %}
+
+{% block page_content %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">All the people</h3>
+    </div>
+    <div class="panel-body">
+        <p class="lead">Here's a list of all the people who are or have been on the whitelist.</p>
+        <p>Players are ranked chronologically by the date they were invited or whitelisted.</p>
+        <p>To keep player info updated, we kind of rely on the players themselves, so this info may be incomplete or nonsensical. If you are on the server you can use <code>!<a href="http://wiki.wurstmineberg.de/Commands#People">People</a></code> to update some of your info.</p>
+    </div>
+</div>
+<div>
+    {% macro people_table(id, name) -%}
+    <h2 id="{{ id }}">{{ name }}</h2>
+    <table class="table table-responsive people-table">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>Name</th>
+                <th>Info</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="loading-{{ id }}-table" class="loading">
+                <td colspan="3">Is this thing on?</td>
+            </tr>
+        </tbody>
+    </table>
+    {%- endmacro %}
+    {{ people_table('founding', 'Founding members') }}
+    {{ people_table('later', 'Later members (pre-' ~ wiki('Server_invitations#History', 'freeze') ~ ')') }}
+    {{ people_table('postfreeze', 'Later members (post-' ~ wiki('Server_invitations#History', 'freeze') ~ ')') }}
+    {{ people_table('former', 'Former members') }}
+    {{ people_table('guest', 'Invited people and guests') }}
+</div> <!-- table -->
+{% endblock %} {# page_content #}
