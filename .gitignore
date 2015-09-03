@@ -4,6 +4,7 @@
 /assets/ts
 /assets/world
 /assetserver
+/wurstmineberg_web/assets
 __pycache__
 .env
 

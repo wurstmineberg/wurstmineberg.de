@@ -13,7 +13,7 @@ MarkupSafe==0.23
 oauthlib==1.0.3
 passlib==1.6.5
 git+https://github.com/wurstmineberg/people.git#egg=people
-psycopg2==2.6.1
+psycopg2
 PyJWT==1.4.0
 python-social-auth==0.2.12
 python3-openid==3.0.6
