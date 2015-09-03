@@ -10,4 +10,7 @@ production = __name__ != '__main__'
 debug = not production
 
 application = create_app(production)
-application.run(debug=debug)
+
+if __name__ == '__main__':
+	application.run(debug=debug)
+
