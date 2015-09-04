@@ -37,7 +37,7 @@ class Person(Base):
 
     @classmethod
     def get_by_slack_nick(self, slack_nick):
-        return Person.query.filter(Person.data[('slack'),('nick')].astext == slack_nick).first()
+        return Person.query.filter(Person.data[('slack'),('username')].astext == slack_nick).first()
 
     @classmethod
     def get_by_slack_id(self, slack_id):

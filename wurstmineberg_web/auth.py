@@ -94,14 +94,14 @@ def verify_auth(user=None, backend=None, response=None, *args, **kwargs):
 
                     if person:
                         person.data['slack']['id'] = slackid
-                        person.data['slack']['nick'] = slacknick
+                        person.data['slack']['username'] = slacknick
                         person.commit_data()
                         return {
                             'person': person
                         }
                     else:
                         raise AuthFailed("This Slack account is unkown. \
-                            Please contact Wurstmineberg admins to add your Slack nick to your profile.")
+                            Please contact Wurstmineberg admins to add your Slack username to your profile.")
         raise AuthFailed("This user is not valid.")
     else:
         return {'is_new': False}
