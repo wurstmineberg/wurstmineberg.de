@@ -37,7 +37,6 @@ def people_detail(person):
 @page.route('/login')
 def login():
     if g.user and g.user.is_authenticated():
-        raise KeyError(g.user)
         return redirect('/profile')
     else:
         return render_template('login.html')

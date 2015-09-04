@@ -3,10 +3,10 @@ import flask.ext.login as login
 
 from social.apps.flask_app.template_filters import backends
 from social.pipeline.partial import partial
-from social.exceptions import AuthFailed
+from social.exceptions import SocialAuthBaseException, AuthFailed
 from social.backends.slack import SlackOAuth2
 
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, request, session, flash, url_for, Markup
 from flask.views import View, MethodView
 from people import PeopleDB
 
@@ -15,7 +15,7 @@ from .database import db_session
 
 login_manager = login.LoginManager()
 login_manager.login_view = 'page.login'
-login_manager.login_message = 'Log in plz'
+login_manager.login_message = 'Please log in to view this page.'
 login_manager.init_app(app)
 
 app.config['SOCIAL_AUTH_USER_MODEL'] = 'wurstmineberg_web.models.User'
@@ -44,10 +44,14 @@ def inject_user():
     except AttributeError:
         return {'user': None}
 
-#@app.errorhandler(500)
-#def error_handler(error):
-#    if isinstance(error, SocialAuthBaseException):
-#        return redirect('/loginerror')
+@app.errorhandler(500)
+def error_handler(error):
+    if not isinstance(error, SocialAuthBaseException):
+        flash(Markup.escape(str(error)), 'login_error')
+        return render_template('login.html')
+    else:
+        flash(Markup.escape(str(error)), 'error')
+        return render_template('index.html')
 
 #@partial
 #def check_token(strategy=None, details=None, user=None, response=None, backend=None, *args, **kwargs):
@@ -73,6 +77,13 @@ def inject_user():
 #    else:
 #        return {'is_new': False}
 #        #return redirect('/complete/' + backend)
+
+class SlackAccountUnkown(AuthFailed):
+    def __init__(self, backend, *args, **kwargs):
+        super().__init__(backend)
+
+    def __str__(self):
+        return 'This Slack account is unkown. Please contact Wurstmineberg admins to add your Slack username to your profile.'
 
 def verify_auth(user=None, backend=None, response=None, *args, **kwargs):
     if not user:
@@ -100,8 +111,7 @@ def verify_auth(user=None, backend=None, response=None, *args, **kwargs):
                             'person': person
                         }
                     else:
-                        raise AuthFailed("This Slack account is unkown. \
-                            Please contact Wurstmineberg admins to add your Slack username to your profile.")
+                        raise SlackAccountUnkown(backend, user=user, response=response, **kwargs)
         raise AuthFailed("This user is not valid.")
     else:
         return {'is_new': False}
@@ -149,6 +159,6 @@ class VerifyToken(MethodView):
             return render_template(self.get_template_name(), display_error=True, backend=self.get_backend())
 
 
-verify_token_view = VerifyToken.as_view('verify_token')
-app.add_url_rule('/verify_token/', view_func=verify_token_view, defaults={'error': None})
-app.add_url_rule('/verify_token/<error>', view_func=verify_token_view)
+#verify_token_view = VerifyToken.as_view('verify_token')
+#app.add_url_rule('/verify_token/', view_func=verify_token_view, defaults={'error': None})
+#app.add_url_rule('/verify_token/<error>', view_func=verify_token_view)

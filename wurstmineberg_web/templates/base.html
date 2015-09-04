@@ -94,6 +94,22 @@
 
 {% block content %}
 <div class="container">
+    {% block flashes %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    {% if category == "error" -%}
+    <div class="alert alert-danger" role="alert">
+        {{ message }}
+    </div>
+    {%- else -%}
+    <div class="alert alert-info" role="alert">
+        {{ message }}
+    </div>
+    {%- endif -%}
+    {% endfor %}
+    {% endwith %}
+    {% endblock %} {# flashes #}
+
     {% block page_content %}
     {% endblock %}
 </div>

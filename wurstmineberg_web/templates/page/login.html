@@ -5,6 +5,10 @@
 
 {% block title %}Login - Wurstmineberg{% endblock %}
 
+{# Override flashes as we display them further below #}
+{% block flashes %}
+{% endblock %}
+
 {% block page_content %}
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -12,14 +16,24 @@
     </div>
     <div class="panel-body">
         <p class="lead">To create an account or log in please login using your associated Slack username.</p>
-        <p>We only save your Slack username and its ID.</p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        {% if category == "login_error" -%}
+        <div class="alert alert-danger" role="alert">
+            <b>Login Error!</b> We were unable to log you in. Reason: {{ message }}
+        </div>
+        {%- else -%}
+        <div class="alert alert-info" role="alert">
+            {{ message }}
+        </div>
+        {%- endif -%}
+        {% endfor %}
+        {% endwith %}
         <p><a href="{{ url_for("social.auth", backend="slack") }}"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"></a></p>
+        <p>We only save your Slack username and its ID.</p>
     </div>
     <div class="panel-footer">
         Wurstmineberg is not created by, affiliated with, or supported by Slack Technologies, Inc.
     </div>
 </div>
 {% endblock %} {# page_content #}
-
-{% block scripts %}
-{% endblock %}
