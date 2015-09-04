@@ -5,7 +5,6 @@ Wurstmineberg website
 
 from flask import Flask, g, render_template, send_from_directory
 from flask_bootstrap import Bootstrap
-from people import PeopleDB
 
 app = None
 
@@ -58,10 +57,6 @@ def create_app(production):
             g.assetserver = 'http://assets.' + g.host
         else:
             g.assetserver = '/assetserver'
-
-        # Initialize database connection
-        dbconfig = config.get_db_config()
-        g.people = PeopleDB(dbconfig['connectionstring'])
 
     return app
 

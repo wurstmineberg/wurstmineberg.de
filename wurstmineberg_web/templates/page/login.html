@@ -1,35 +1,25 @@
 {% extends 'base.html' %}
 
 {% block page_scripts %}
-<script src="{{g.assetserver}}/js/people.js"></script>
 {% endblock %}
 
 {% block title %}Login - Wurstmineberg{% endblock %}
 
 {% block page_content %}
-<a href="{{ url_for("social.auth", backend="mineid") }}">MineID OAuth2</a> <br />
-<a href="{{ url_for("social.auth", backend="google-oauth2") }}">Google</a> <br />
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Login</h3>
+    </div>
+    <div class="panel-body">
+        <p class="lead">To create an account or log in please login using your associated Slack username.</p>
+        <p>We only save your Slack username and its ID.</p>
+        <p><a href="{{ url_for("social.auth", backend="slack") }}"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"></a></p>
+    </div>
+    <div class="panel-footer">
+        Wurstmineberg is not created by, affiliated with, or supported by Slack Technologies, Inc.
+    </div>
+</div>
 {% endblock %} {# page_content #}
 
 {% block scripts %}
-<script src="https://login.persona.org/include.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(function () {
-    $('#persona').on('click', function (e) {
-        e.preventDefault();
-        var self = $(this);
-        navigator.id.get(function (assertion) {
-            if (assertion) {
-                self.parent('form')
-                        .find('input[type=hidden]')
-                        .attr('value', assertion)
-                        .end()
-                    .submit();
-            } else {
-                alert('Some error occurred');
-            }
-        });
-    });
-});
-</script>
 {% endblock %}
