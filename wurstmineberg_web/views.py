@@ -42,11 +42,10 @@ def profile(wmbid):
         return abort(404)
     return {'wmbid': wmbid, 'person': person}
 
-@login_required
 @app.route('/profile')
+@login_required
 def get_profile():
     return redirect('/people/{}'.format(g.user.wmbid))
-
 
 @app.route('/login')
 def login():
@@ -55,13 +54,14 @@ def login():
     else:
         return render_template('login.html')
 
-@login_required
 @app.route('/preferences')
+@login_required
 @templated()
 def preferences():
     return None
 
 @app.route('/logout')
+@login_required
 def logout():
     """Logout view"""
     logout_user()

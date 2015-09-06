@@ -72,12 +72,13 @@
         </ul>
         {% block navbar_right %}
         <ul class="navbar-personaltools navbar-userloggedin nav navbar-nav navbar-right">
-            {% if g.user and g.user.is_authenticated %}
+            {% if g.user and g.user.is_authenticated() %}
             <li class="navbar-personaltools-tools">
                 <a class="dropdown-toggle glyphicon glyphicon-user navbar-user-loggedin" href="#" data-toggle="dropdown" title="You are logged in as Farthen." aria-expanded="true"></a>
                 <ul class="p-personal-tools dropdown-menu dropdown-menu-right">
                     <li id="pt-userpage"><a href="/people/{{ g.user.wmbid }}" dir="auto" title="Your user page [ctrl-alt-.]" accesskey=".">{{ g.user.person.display_name }}</a></li>
                     <li id="pt-preferences"><a href="/preferences" title="Your preferences">Preferences</a></li>
+                    <li id="pt-logout"><a href="/logout" title="Your preferences">Log out</a></li>
                 </ul>
             </li>
             {% else %}

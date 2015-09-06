@@ -28,9 +28,18 @@ class User(Base, UserMixin):
     active = Column(Boolean, default=True)
     person = relationship('Person', uselist=False, backref=backref('user', uselist=False))
 
-    @property
     def is_active(self):
         return self.active
+
+    def is_authenticated(self):
+        if self.is_anonymous():
+            return False
+        return super().is_authenticated()
+
+    def get_id(self):
+        if self.is_anonymous():
+            return None
+        return super().get_id()
 
 
 class Person(Base):

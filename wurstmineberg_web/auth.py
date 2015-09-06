@@ -14,7 +14,7 @@ from .models import User, Person#, UserTokens
 from .database import db_session
 
 login_manager = login.LoginManager()
-login_manager.login_view = 'page.login'
+login_manager.login_view = 'login'
 login_manager.login_message = 'Please log in to view this page.'
 login_manager.init_app(app)
 
