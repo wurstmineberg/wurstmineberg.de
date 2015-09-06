@@ -3,10 +3,10 @@ import flask.ext.login as login
 
 from social.apps.flask_app.template_filters import backends
 from social.pipeline.partial import partial
-from social.exceptions import SocialAuthBaseException, AuthFailed
+from social.exceptions import AuthFailed
 from social.backends.slack import SlackOAuth2
 
-from flask import redirect, render_template, request, session, flash, url_for, Markup
+from flask import redirect, render_template, request, session
 from flask.views import View, MethodView
 from people import PeopleDB
 
@@ -44,14 +44,6 @@ def inject_user():
     except AttributeError:
         return {'user': None}
 
-@app.errorhandler(500)
-def error_handler(error):
-    if not isinstance(error, SocialAuthBaseException):
-        flash(Markup.escape(str(error)), 'login_error')
-        return render_template('login.html')
-    else:
-        flash(Markup.escape(str(error)), 'error')
-        return render_template('index.html')
 
 #@partial
 #def check_token(strategy=None, details=None, user=None, response=None, backend=None, *args, **kwargs):

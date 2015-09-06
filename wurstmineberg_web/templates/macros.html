@@ -2,6 +2,34 @@
 <a href="http://wiki.{{g.host}}/{{ page_name }}">{{ text }}</a>
 {%- endmacro %}
 
+{% macro wiki_url(page_name) -%}
+http://wiki.{{g.host}}/{{ page_name }}
+{%- endmacro %}
+
 {% macro mcwiki(page_name, text) -%}
 <a href="http://minecraft.gamepedia.com/{{ page_name }}">{{ text }}</a>
+{%- endmacro %}
+
+{% macro link(url, text, class="") -%}
+<a href="{{url}}" class="{{class}}">{{ text }}</a>
+{%- endmacro %}
+
+{% macro twitter_user_url(username) -%}
+https://twitter.com/{{username}}
+{% endmacro %}
+
+{% macro person_display_name_with_muted_minecraft(person, in_list=False) -%}
+{{ person.display_name }}
+{% if person.minecraft_name.lower() != person.display_name.lower() %}{% if in_list %}<br>{% endif %}<span class="muted">{% if not in_list%}(Minecraft: {% endif %}{{ person.minecraft_name }}{% if not in_list %}){% endif %}</span>{% endif %}
+{%- endmacro %}
+
+{% macro person_avatar(person, size) -%}
+{%- set img_urls = person.avatar_urls(size) -%}
+{% if img_urls[0] -%}
+<img id="avatar" class="avatar" src="{{ img_urls[0] }}" srcset="{{ img_urls[0] }} 1x, {{ img_urls[1] }} 2x" alt="avatar" />
+{%- endif -%}
+{%- endmacro %}
+
+{% macro profile_url(wmbid) -%}
+/people/{{ wmbid }}
 {%- endmacro %}

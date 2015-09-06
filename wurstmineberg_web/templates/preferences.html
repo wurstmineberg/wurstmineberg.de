@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block page_scripts %}
+{% endblock %}
+
+{% block title %}Login - Wurstmineberg{% endblock %}
+
+{% block page_content %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <img id="avatar" class="hidden" src="" alt="avatar" />
+        <h3 id="username" class="panel-title panel-loading">Loading data…</h3>
+    </div>
+    <div class="panel-body">
+        <div class="lead">
+            <img id="head" class="hidden img-rounded" src="" alt="head" />
+            <div id="user-info">
+                <p id="user-description" class="panel-loading">Loading user data…</p>
+                <p id="social-links" class="hidden"></p>
+                <div class="inventory-opt-out pull-left">
+                    <h2 id="inventory">Inventory</h2>
+                    <table id="main-inventory" class="inventory-table">
+                        <tbody>
+                            <tr class="loading">
+                                <td>loading…</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="height: 29px;"></div>
+                    <table id="hotbar-table" class="inventory-table">
+                        <tbody>
+                            <tr class="loading">
+                                <td>loading…</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="inventory-opt-out">
+                    <h2 id="enderchest">Ender chest</h2>
+                    <table id="ender-chest-table" class="inventory-table">
+                        <tbody>
+                            <tr class="loading">
+                                <td>loading…</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="height: 29px;"></div>
+                    <table id="offhand-slot-table" class="inventory-table" style="float: right;">
+                        <tr class="loading">
+                            <td>loading…</td>
+                        </tr>
+                    </table>
+                    <table id="armor-table" class="inventory-table">
+                        <tbody>
+                            <tr class="loading">
+                                <td>loading…</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {# page_content #}

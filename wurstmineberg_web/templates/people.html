@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block page_scripts %}
-<script src="{{g.assetserver}}/js/people.js"></script>
 {% endblock %}
 
 {% block title %}People - Wurstmineberg{% endblock %}
@@ -29,15 +28,25 @@
             </tr>
         </thead>
         <tbody>
-            <tr id="loading-{{ id }}-table" class="loading">
-                <td colspan="3">Is this thing on?</td>
+            {% for person in people.get(id, []) %}
+            <tr id="person-row-{{person.wmbid}}">
+                <td class="people-avatar">
+                    {{ person_avatar(person, 32) }}
+                </td>
+                <td class="username">
+                    {{ link(profile_url(person.wmbid), person.display_name) }}
+                    {% if person.minecraft_name.lower() != person.display_name.lower() %}<br><span class="muted">{{ person.minecraft_name }}</span>{% endif %}
+                </td>
+                <td class="description">
+                    {{ person.description|safe }}
+                </td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
     {%- endmacro %}
     {{ people_table('founding', 'Founding members') }}
-    {{ people_table('later', 'Later members (pre-' ~ wiki('Server_invitations#History', 'freeze') ~ ')') }}
-    {{ people_table('postfreeze', 'Later members (post-' ~ wiki('Server_invitations#History', 'freeze') ~ ')') }}
+    {{ people_table('later', 'Later members') }}
     {{ people_table('former', 'Former members') }}
     {{ people_table('guest', 'Invited people and guests') }}
 </div> <!-- table -->

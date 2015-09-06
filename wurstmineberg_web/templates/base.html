@@ -1,4 +1,4 @@
-{% from 'macros.html' import wiki, mcwiki %}
+{% from 'macros.html' import wiki, wiki_url, mcwiki, link, twitter_user_url, person_display_name_with_muted_minecraft, person_avatar, profile_url %}
 {%- extends 'bootstrap/base.html' %}
 
 {% block title %}Wurstmineberg{% endblock %}
@@ -72,20 +72,19 @@
         </ul>
         {% block navbar_right %}
         <ul class="navbar-personaltools navbar-userloggedin nav navbar-nav navbar-right">
-            {#<li class="navbar-personaltools-tools">
+            {% if g.user and g.user.is_authenticated %}
+            <li class="navbar-personaltools-tools">
                 <a class="dropdown-toggle glyphicon glyphicon-user navbar-user-loggedin" href="#" data-toggle="dropdown" title="You are logged in as Farthen." aria-expanded="true"></a>
                 <ul class="p-personal-tools dropdown-menu dropdown-menu-right">
-                    <li id="pt-userpage"><a href="/people/person" dir="auto" title="Your user page [ctrl-alt-.]" accesskey=".">Farthen</a></li>
-                    <li id="pt-mytalk"><a href="/User_talk:Farthen" class="new" title="Your talk page [ctrl-alt-n]" accesskey="n">Talk</a></li>
-                    <li id="pt-preferences"><a href="/Special:Preferences" title="Your preferences">Preferences</a></li>
-                    <li id="pt-watchlist"><a href="/Special:Watchlist" title="A list of pages you are monitoring for changes [ctrl-alt-l]" accesskey="l">Watchlist</a></li>
-                    <li id="pt-mycontris"><a href="/Special:Contributions/Farthen" title="A list of your contributions [ctrl-alt-y]" accesskey="y">Contributions</a></li>
-                    <li id="pt-logout"><a href="/index.php?title=Special:UserLogout&amp;returnto=Main+Page" title="Log out">Log out</a></li>
+                    <li id="pt-userpage"><a href="/people/{{ g.user.wmbid }}" dir="auto" title="Your user page [ctrl-alt-.]" accesskey=".">{{ g.user.person.display_name }}</a></li>
+                    <li id="pt-preferences"><a href="/preferences" title="Your preferences">Preferences</a></li>
                 </ul>
-            </li>#}
+            </li>
+            {% else %}
             <li>
                 <li class="navbar-user-notloggedin"><a href="/login" title="You are not logged in."><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>Log in</a>
             </li>
+            {% endif %}
         </ul>
         {% endblock %} {# navbar_right #}
     </div><!-- /.navbar-collapse -->

@@ -10,7 +10,7 @@ app = None
 
 def create_app(production):
     global app
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder='templates/')
     app.config.from_object('wurstmineberg_web.settings')
 
     from social.apps.flask_app.routes import social_auth
@@ -18,10 +18,10 @@ def create_app(production):
     import wurstmineberg_web.views
     import wurstmineberg_web.config
     import wurstmineberg_web.auth
+    import wurstmineberg_web.error
 
     app.secret_key = config.get_db_config()['secret_key']
 
-    app.register_blueprint(views.page)
     app.register_blueprint(social_auth)
     Bootstrap(app)
 
@@ -41,10 +41,10 @@ def create_app(production):
 
     @app.before_request
     def before_request():
-        is_dev = uwsgi_options.get('is_dev', False)
+        g.is_dev = uwsgi_options.get('is_dev', False)
 
         # Template variables
-        g.host = 'dev.wurstmineberg.de' if is_dev else 'wurstmineberg.de'
+        g.host = 'dev.wurstmineberg.de' if g.is_dev else 'wurstmineberg.de'
 
         if production:
             import logging

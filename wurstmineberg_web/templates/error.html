@@ -23,7 +23,10 @@
         </div>
         {% endfor %}
         {% endwith %}
+        Maybe you want to go to the <a href={{ url_for('index') }}>home page</a> instead?
     </div>
+    {% if report %}
     <div class="panel-footer">Please report this to the Wurstmineberg site admins.</div>
+    {% endif %}
 </div>
 {% endblock %} {# page_content #}

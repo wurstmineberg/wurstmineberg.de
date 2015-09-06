@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort, redirect, g
+from flask import render_template, abort, redirect, g
 from jinja2 import TemplateNotFound
 from .util import templated
 from .models import Person
@@ -7,34 +7,48 @@ from flask.ext.login import login_required, logout_user
 
 from wurstmineberg_web import app
 
-page = Blueprint('page', __name__, template_folder='templates/page')
 
-@page.route('/')
+@app.route('/')
 @templated('index.html')
 def index():
     return None
 
-@page.route('/about')
+@app.route('/about')
 @templated()
 def about():
     return None
 
-@page.route('/stats')
+@app.route('/stats')
 @templated()
 def stats():
     return None
 
-@page.route('/people')
+@app.route('/people/')
 @templated()
 def people():
-    return None
+    people = Person.get_people_ordered_by_status()
+    for key in ['founding', 'later', 'former', 'guest', 'invited', 'vetoed']:
+        people[key] = people.get(key, [])
 
-@page.route('/people/<person>')
-@templated('people_detail.html')
-def people_detail(person):
-    return {'person': person}
+    people['guest'].extend(people['invited'])
+    people['former'].extend(people['vetoed'])
+    return {'people': people}
 
-@page.route('/login')
+@app.route('/people/<wmbid>')
+@templated('profile.html')
+def profile(wmbid):
+    person = Person.get_person(wmbid)
+    if not person:
+        return abort(404)
+    return {'wmbid': wmbid, 'person': person}
+
+@login_required
+@app.route('/profile')
+def get_profile():
+    return redirect('/people/{}'.format(g.user.wmbid))
+
+
+@app.route('/login')
 def login():
     if g.user and g.user.is_authenticated():
         return redirect('/profile')
@@ -42,13 +56,14 @@ def login():
         return render_template('login.html')
 
 @login_required
-@page.route('/login_done')
+@app.route('/preferences')
 @templated()
-def login_done():
+def preferences():
     return None
 
-@page.route('/logout')
+@app.route('/logout')
 def logout():
     """Logout view"""
     logout_user()
     return redirect('/')
+
