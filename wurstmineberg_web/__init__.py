@@ -5,6 +5,7 @@ Wurstmineberg website
 
 from flask import Flask, g, render_template, send_from_directory
 from flask_bootstrap import Bootstrap
+from flask_wtf import CsrfProtect
 
 app = None
 
@@ -24,6 +25,7 @@ def create_app(production):
 
     app.register_blueprint(social_auth)
     Bootstrap(app)
+    CsrfProtect(app)
 
     database.init_db()
 

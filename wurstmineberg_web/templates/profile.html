@@ -28,7 +28,7 @@
                 {%- if person.description -%}
                 {{ person.description|safe }}
                 {% else %}
-                You can update your description in your {{ link(url_for('index'), 'preferences') }}.
+                You can update your description in your {{ link(url_for('preferences'), 'preferences') }}.
                 {%- endif %}
                 </p>
                 {% if person.twitter_name or person.website or person.wiki -%}

@@ -1,7 +1,8 @@
-from flask import render_template, abort, redirect, g
+from flask import render_template, abort, redirect, g, request, flash
 from jinja2 import TemplateNotFound
 from .util import templated
 from .models import Person
+from .forms import *
 
 from flask.ext.login import login_required, logout_user
 
@@ -54,11 +55,25 @@ def login():
     else:
         return render_template('login.html')
 
-@app.route('/preferences')
+@app.route('/preferences', methods=('GET', 'POST'))
 @login_required
 @templated()
 def preferences():
-    return None
+    form = MyForm()
+
+    def set_data():
+        form.name.data = g.user.person.data.get('name', g.user.wmbid)
+        form.description.data = g.user.person.data.get('description', '')
+
+    if request.method == 'GET':
+        set_data()
+    if form.validate_on_submit():
+        g.user.person.data['name'] = form.name.data
+        g.user.person.data['description'] = form.description.data
+        g.user.person.commit_data()
+        set_data()
+        flash('Successfully saved data')
+    return {'form': form}
 
 @app.route('/logout')
 @login_required
