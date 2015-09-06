@@ -12,4 +12,4 @@ debug = not production
 application = create_app(production)
 
 if __name__ == '__main__':
-	application.run(debug=debug)
+    application.run()

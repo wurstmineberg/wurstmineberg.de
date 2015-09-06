@@ -45,31 +45,6 @@ def inject_user():
         return {'user': None}
 
 
-#@partial
-#def check_token(strategy=None, details=None, user=None, response=None, backend=None, *args, **kwargs):
-#    if user is None:
-#        # This user is not yet registered. Verify token.
-#        if 'initial-user-token' in session and session['initial-user-token']:
-#            token = session['initial-user-token']
-#            entry = db_session.query(UserTokens).filter_by(token = token).first()
-#            if entry:
-#                wmbid = entry.wmbid
-#                fields = dict((name, kwargs.get(name) or details.get(name))
-#                  for name in strategy.setting('USER_FIELDS', ['email']))
-#                user = strategy.create_user(**fields)
-#                user.wmbid = wmbid
-#                return {
-#                    'user': user,
-#                    'is_new': True,
-#                }
-#            else:
-#                return redirect('/verify_token/error')
-#        else:
-#            return redirect('/verify_token/')
-#    else:
-#        return {'is_new': False}
-#        #return redirect('/complete/' + backend)
-
 class SlackAccountUnkown(AuthFailed):
     def __init__(self, backend, *args, **kwargs):
         super().__init__(backend)

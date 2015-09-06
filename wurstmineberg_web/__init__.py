@@ -27,7 +27,6 @@ def create_app(production):
 
     database.init_db()
 
-
     if not production:
         import os
         # Because of bugs https://gist.github.com/uniphil/7777590 we need to use absolute paths
@@ -47,13 +46,6 @@ def create_app(production):
         g.host = 'dev.wurstmineberg.de' if g.is_dev else 'wurstmineberg.de'
 
         if production:
-            import logging
-            from logging import FileHandler
-            app.config['PROPAGATE_EXCEPTIONS'] = True
-            file_handler = FileHandler('/tmp/flask.log')
-            file_handler.setLevel(logging.WARNING)
-            app.logger.addHandler(file_handler)
-
             g.assetserver = 'http://assets.' + g.host
         else:
             g.assetserver = '/assetserver'
