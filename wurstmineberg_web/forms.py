@@ -73,7 +73,7 @@ class ColorField(StringField):
     @color_dict.setter
     def color_dict(self, value):
         if value:
-            self.data = '#{:x}{:x}{:x}'.format(value['red'], value['green'], value['blue'])
+            self.data = '#{:02x}{:02x}{:02x}'.format(value['red'], value['green'], value['blue'])
 
 class MyForm(Form):
     name = StringField('Name', validators=[EmptyOrValidatorValidator(validators.Length(min=2, max=20))], description={
