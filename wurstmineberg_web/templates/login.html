@@ -17,6 +17,7 @@
     </div>
     <div class="panel-body">
         <p class="lead">To create an account or log in please login using your associated Slack username.</p>
+        <p>You can only log in if you are a whitelisted member of our server and in our Slack community. To become a member see {{ link('/about#joining', 'our about page') }} for more instructions. If you don't have Slack yet, please ask in {{ link('/#irc', 'our IRC channel') }} or on {{ link(twitter_user_url('wurstmineberg'), 'Twitter') }} for an invite.</p>
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% for category, message in messages %}
         {% if category == "login_error" -%}
@@ -30,8 +31,8 @@
         {%- endif -%}
         {% endfor %}
         {% endwith %}
-        <p><a href="{{ url_for("social.auth", backend="slack") }}?keep=1"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"></a></p>
-        <p>We only save your Slack username and its ID.</p>
+        <p><a class="btn btn-default slack-login-button" style="" href="{{ url_for("social.auth", backend="slack") }}?keep=1">Login with <img class="logo" alt="Slack" src="{{g.assetserver}}/img/logo/slack_cmyk_300_86.png" srcset="{{g.assetserver}}/img/logo/slack_cmyk_300_86.png 1x, https://{{g.assetserver}}/img/logo/slack_cmyk_300_86.png 2x"></a></p>
+        <p class="muted">We only save your Slack username and its ID.</p>
     </div>
     <div class="panel-footer">
         Wurstmineberg is not created by, affiliated with, or supported by Slack Technologies, Inc.

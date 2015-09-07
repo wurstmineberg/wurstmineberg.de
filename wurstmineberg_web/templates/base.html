@@ -1,4 +1,4 @@
-{% from 'macros.html' import wiki, wiki_url, mcwiki, link, twitter_user_url, person_display_name_with_muted_minecraft, person_avatar, profile_url %}
+{% from 'macros.html' import wiki, wiki_url, mcwiki, link, twitter_user_url, person_display_name_with_muted_minecraft, person_avatar, profile_url, render_flashes %}
 {%- extends 'bootstrap/base.html' %}
 
 {% block title %}Wurstmineberg{% endblock %}
@@ -95,19 +95,7 @@
 {% block content %}
 <div class="container">
     {% block flashes %}
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% for category, message in messages %}
-    {% if category == "error" -%}
-    <div class="alert alert-danger" role="alert">
-        {{ message }}
-    </div>
-    {%- else -%}
-    <div class="alert alert-info" role="alert">
-        {{ message }}
-    </div>
-    {%- endif -%}
-    {% endfor %}
-    {% endwith %}
+    {{ render_flashes() }}
     {% endblock %} {# flashes #}
 
     {% block page_content %}

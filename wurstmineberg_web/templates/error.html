@@ -20,6 +20,7 @@
         {% with messages = get_flashed_messages() %}
         {% for message in messages %}
         <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             {{ message }}
         </div>
         {% endfor %}

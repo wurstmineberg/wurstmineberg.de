@@ -1,8 +1,10 @@
 from wurstmineberg_web import app
 
+from flask import Markup
 from flask_wtf import Form
-from wtforms import StringField, TextAreaField
-from wtforms.validators import DataRequired, ValidationError
+from wtforms import StringField, TextAreaField, widgets
+from wtforms import validators
+import wtforms
 import bleach
 
 
@@ -16,6 +18,89 @@ def html_whitelist_filter(data):
 
     return bleach.clean(data, tags=tags, attributes=attributes, styles=styles, strip=True)
 
+def twitter_username_filter(username):
+    if username and len(username) >= 1 and username[0] == u'@':
+        return username[1:]
+    return username
+
+_email_validator = validators.Email()
+
+class EmptyOrValidatorValidator():
+    def __init__(self, validator):
+        self.validator = validator
+
+    def __call__(self, form, field):
+        if field.data and not field.data.isspace():
+            return self.validator(form, field)
+        return True
+
+class ColorWidget(widgets.Input):
+    def __init__(input_type=None):
+        return super().__init__(input_type=input_type)
+
+    def __call__(self, field, **kwargs):
+        ret = '<span class="form-colorpicker input-group" data-format="hex">'
+        ret += super().__call__(field, **kwargs)
+        ret += '<span class="input-group-addon"><i></i></span>'
+        ret += '</span>'
+        return Markup(ret)
+
+
+import binascii
+class ColorField(StringField):
+
+    def __init__(self, *args, validators=[], **kwargs):
+        validators.append(EmptyOrValidatorValidator(wtforms.validators.Regexp('#([0-9a-f]{6})')))
+        super().__init__(*args, validators=validators, **kwargs)
+        self.widget = ColorWidget()
+        self.data_default = {'red': None, 'green': None, 'blue': None}
+        self.data = self.data_default
+
+    @property
+    def color_dict(self):
+        if self.data and len(self.data) == 7:
+            red = int(self.data[1:3], 16)
+            green = int(self.data[3:5], 16)
+            blue = int(self.data[5:7], 16)
+            return {
+                'red': red,
+                'green': green,
+                'blue': blue
+            }
+        else:
+            return None
+
+    @color_dict.setter
+    def color_dict(self, value):
+        if value:
+            self.data = '#{:x}{:x}{:x}'.format(value['red'], value['green'], value['blue'])
+
 class MyForm(Form):
-    name = StringField('Name', validators=[DataRequired()])
-    description = TextAreaField('Description', filters=[html_whitelist_filter])
+    name = StringField('Name', validators=[EmptyOrValidatorValidator(validators.Length(min=2, max=20))], description={
+        'text': 'The name that will be used when adressing you and referring to you'
+        })
+    description = TextAreaField('Description',
+        description={
+            'text': 'Allowed HTML tags: a href, em, s, span class="muted"',
+            'placeholder': 'A small text (up to 1000 characters) that describes you.'},
+        validators=[EmptyOrValidatorValidator(validators.Length(max=1000))],
+        filters=[html_whitelist_filter])
+    gravatar = StringField('Gravatar email',
+        description={'text': 'The email associated with your gravatar account', 
+            'placeholder': 'user@example.com'},
+        validators=[EmptyOrValidatorValidator(validators.Email())])
+    mojira = StringField('Mojira username',
+        description={'text': 'Your username on the Mojira bug tracker'})
+    twitter = StringField('Twitter username',
+        description={'text': 'Your twitter @username'},
+        filters=[twitter_username_filter],
+        validators=[EmptyOrValidatorValidator(validators.Regexp('[A-Za-z0-9_]+'))])
+    website = StringField('Website',
+        description={'text': 'The URL of your website',
+            'placeholder': 'http://www.example.com'},
+        validators=[EmptyOrValidatorValidator(validators.URL())])
+    favcolor = ColorField('Favorite Color',
+        description={'text': 'Your favorite color, used for statistics',
+            'placeholder': 'Enter a hex RGB color like #000000 or use the color picker on the right'},
+        widget=ColorWidget())
+
