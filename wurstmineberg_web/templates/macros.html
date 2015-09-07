@@ -18,6 +18,10 @@ http://wiki.{{g.host}}/{{ page_name }}
 https://twitter.com/{{username}}
 {% endmacro %}
 
+{% macro mojira_user_url(username) -%}
+https://bugs.mojang.com/secure/ViewProfile.jspa?name={{username}}
+{% endmacro %}
+
 {% macro person_display_name_with_muted_minecraft(person, in_list=False) -%}
 {{ person.display_name }}
 {% if person.minecraft_name.lower() != person.display_name.lower() %}{% if in_list %}<br>{% endif %}<span class="muted">{% if not in_list%}(Minecraft: {% endif %}{{ person.minecraft_name }}{% if not in_list %}){% endif %}</span>{% endif %}

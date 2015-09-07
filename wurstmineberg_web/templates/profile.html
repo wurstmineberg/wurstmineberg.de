@@ -42,6 +42,9 @@
                     {% if person.wiki -%}
                     {{ link(wiki_url(person.wiki), 'Wiki', class="social-link") }}
                     {%-endif %}
+                    {% if person.mojira -%}
+                    {{ link(mojira_user_url(person.mojira), 'Mojira', class="social-link") }}
+                    {% endif %}
                 </p>
                 {%- endif %}
                 <div class="inventory-container">

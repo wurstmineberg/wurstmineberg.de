@@ -114,6 +114,10 @@ class Person(Base):
             return twitter.get('username', None)
 
     @property
+    def mojira(self):
+        return self.data.get('mojira', None)
+
+    @property
     def website(self):
         return self.data.get('website', None)
 

@@ -86,7 +86,7 @@ class MyForm(Form):
         validators=[EmptyOrValidatorValidator(validators.Length(max=1000))],
         filters=[html_whitelist_filter])
     gravatar = StringField('Gravatar email',
-        description={'text': 'The email associated with your gravatar account', 
+        description={'text': 'The email associated with your gravatar account',
             'placeholder': 'user@example.com'},
         validators=[EmptyOrValidatorValidator(validators.Email())])
     mojira = StringField('Mojira username',
