@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h2 id="costs"><img src="http://assets.{{host}}/img/grid/emerald.png" alt="" /> Costs</h2>
-                    <p>Since we're running on an actual server that requires actual monies to run, we decided to try a "Donate if you will, or don't But it woud be pretty dandy if you would"-model. See our <a href="http://{{host}}/about#finance">finance section</a> for more info. Otherwise you can still chip in via flattr, even though it doesn't really do much except show appreciation, which is also cool.</p>
+                    <p>Since we're running on an actual server that requires actual monies to run, we decided to try a "Donate if you will, or don't But it would be pretty dandy if you would"-model. See our <a href="http://{{host}}/about#finance">finance section</a> for more info. Otherwise you can still chip in via flattr, even though it doesn't really do much except show appreciation, which is also cool.</p>
                     <a class="btn btn-default" href="http://flattr.com/thing/1751759/The-Wurstmineberg-Minecraft-Server" target="_blank">Chip in <i class="fa fa-chevron-right"></i></a>
                 </div>
             </div> <!-- /row -->
