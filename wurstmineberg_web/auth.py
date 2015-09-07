@@ -52,6 +52,13 @@ class SlackAccountUnkown(AuthFailed):
     def __str__(self):
         return 'This Slack account is unkown. Please contact Wurstmineberg admins to add your Slack username to your profile.'
 
+class SlackTeamInvalid(AuthFailed):
+    def __init__(self, backend, *args, **kwargs):
+        super().__init__(backend)
+
+    def __str__(self):
+        return 'This Slack team is invalid. You must select the Wurstmineberg Slack team at the login screen.'
+
 def verify_auth(user=None, backend=None, response=None, *args, **kwargs):
     if not user:
         # Only allow Slack logins
@@ -66,11 +73,12 @@ def verify_auth(user=None, backend=None, response=None, *args, **kwargs):
                     # First match by Slack ID if that is set
                     person = Person.get_by_slack_id(slackid)
 
-                    # If not match by Slack nick and save the Slack ID
+                    # If not match by Slack nick
                     if not person:
                         person = Person.get_by_slack_nick(slacknick)
 
                     if person:
+                        # save the Slack ID and username for later
                         person.data['slack']['id'] = slackid
                         person.data['slack']['username'] = slacknick
                         person.commit_data()
@@ -79,6 +87,8 @@ def verify_auth(user=None, backend=None, response=None, *args, **kwargs):
                         }
                     else:
                         raise SlackAccountUnkown(backend, user=user, response=response, **kwargs)
+            else:
+                raise SlackTeamInvalid(backend)
         raise AuthFailed("This user is not valid.")
     else:
         return {'is_new': False}
