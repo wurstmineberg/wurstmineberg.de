@@ -64,8 +64,7 @@ def preferences():
 
     def set_data():
         form.name.data = data.get('name', '')
-        if not form.name.data:
-            form.name.description['placeholder'] = g.user.wmbid
+        form.name.description['placeholder'] = g.user.wmbid
         form.description.data = data.get('description', '')
         form.gravatar.data = data.get('gravatar', '')
         form.mojira.data = data.get('mojira', '')
