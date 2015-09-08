@@ -30,7 +30,7 @@ https://bugs.mojang.com/secure/ViewProfile.jspa?name={{username}}
 {% macro person_avatar(person, size) -%}
 {%- set img_urls = person.avatar_urls(size) -%}
 {% if img_urls[0] -%}
-<img id="avatar" class="avatar" src="{{ img_urls[0] }}" srcset="{{ img_urls[0] }} 1x, {{ img_urls[1] }} 2x" alt="avatar" />
+<img id="avatar-{{person.wmbid}}" class="avatar" src="{{ img_urls[0] }}" srcset="{{ img_urls[0] }} 1x, {{ img_urls[1] }} 2x" alt="avatar" />
 {%- endif -%}
 {%- endmacro %}
 
