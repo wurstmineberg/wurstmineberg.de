@@ -29,11 +29,11 @@ def stats():
 @templated()
 def people():
     people = Person.get_people_ordered_by_status()
-    for key in ['founding', 'later', 'profile_former', 'guest', 'invited', 'vetoed']:
+    for key in ['founding', 'later', 'former', 'guest', 'invited', 'vetoed']:
         people[key] = people.get(key, [])
 
     people['guest'].extend(people['invited'])
-    people['profile_former'].extend(people['vetoed'])
+    people['former'].extend(people['vetoed'])
     return {'people': people}
 
 @app.route('/people/<wmbid>')
@@ -47,7 +47,7 @@ def profile(wmbid):
 @app.route('/profile')
 @login_required
 def get_profile():
-    return redirect('/people/{}'.profile_format(g.user.wmbid))
+    return redirect('/people/{}'.format(g.user.wmbid))
 
 @app.route('/login')
 def login():
