@@ -21,8 +21,6 @@ def create_app(production):
     import wurstmineberg_web.auth
     import wurstmineberg_web.error
 
-    app.secret_key = config.get_db_config()['secret_key']
-
     app.register_blueprint(social_auth)
     Bootstrap(app)
     CsrfProtect(app)

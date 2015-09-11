@@ -2,8 +2,7 @@ import contextlib
 import json
 
 DEFAULT_DB_CONFIG = {
-    "connectionstring": "postgresql://localhost/wurstmineberg",
-    "secret_key": "bla"
+    "connectionstring": "postgresql://localhost/wurstmineberg"
 }
 
 def get_db_config(config_filename='/opt/wurstmineberg/config/database.json'):
