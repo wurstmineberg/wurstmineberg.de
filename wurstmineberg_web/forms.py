@@ -2,7 +2,7 @@ from wurstmineberg_web import app
 
 from flask import Markup
 from flask_wtf import Form
-from wtforms import StringField, TextAreaField, widgets
+from wtforms import StringField, TextAreaField, BooleanField, widgets
 from wtforms import validators
 import wtforms
 import bleach
@@ -75,10 +75,9 @@ class ColorField(StringField):
         if value:
             self.data = '#{:02x}{:02x}{:02x}'.format(value['red'], value['green'], value['blue'])
 
-class MyForm(Form):
+class ProfileForm(Form):
     name = StringField('Name', validators=[EmptyOrValidatorValidator(validators.Length(min=2, max=20))], description={
-        'text': 'The name that will be used when adressing you and referring to you'
-        })
+        'text': 'The name that will be used when adressing you and referring to you'})
     description = TextAreaField('Description',
         description={
             'text': 'Allowed HTML tags: a href, em, s, span class="muted"',
@@ -104,3 +103,39 @@ class MyForm(Form):
             'placeholder': 'Enter a hex RGB color like #000000 or use the color picker on the right'},
         widget=ColorWidget())
 
+class SettingsFormFactory():
+    options = {
+        #'activity_tweets': {
+        #    'name': 'Activity Tweets',
+        #    'description': 'When this option is off, the bot will refrain from @mentioning you in\
+        #        achievement and death tweets (this feature is not yet implemented).',
+        #    'default': True
+        #},
+        #'inactivity_tweets': {
+        #    'description': 'When this option is on, the bot will send you a tweet after a random\
+        #        time (between 1 and 6 months) of inactivity (this feature is not yet implemented,\
+        #        see here for the feature request) and on your whitelisting anniversary (not yet\
+        #        implemented either, see here for the feature request). When it\'s off, it will\
+        #        still tweet about your anniversary, but without @mentioning you.'
+        #},
+        'show_inventory': {
+            'name': 'Show inventory',
+            'description': 'Whether or not your profile page should show your inventory and ender\
+                chest content.',
+            'default': False
+        }
+    }
+
+    def __call__(self):
+        F = type('SettingsForm', (Form, ), {})
+        for name, option in self.options.items():
+            value = False
+            if 'default' in option:
+                value = option['default']
+            field = BooleanField(option['name'],
+                default=value,
+                description={'text': option['description']})
+            setattr(F, name, field)
+        return F
+
+SettingsForm = SettingsFormFactory()()

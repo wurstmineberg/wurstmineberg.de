@@ -39,7 +39,9 @@
                     {% if person.minecraft_name.lower() != person.display_name.lower() %}<br><span class="muted">{{ person.minecraft_name }}</span>{% endif %}
                 </td>
                 <td class="description">
+                    {% if person.description %}
                     {{ person.description|safe }}
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
