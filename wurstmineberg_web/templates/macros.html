@@ -27,10 +27,10 @@ https://bugs.mojang.com/secure/ViewProfile.jspa?name={{username}}
 {% if person.minecraft_name.lower() != person.display_name.lower() %}{% if in_list %}<br>{% endif %}<span class="muted">{% if not in_list%}(Minecraft: {% endif %}{{ person.minecraft_name }}{% if not in_list %}){% endif %}</span>{% endif %}
 {%- endmacro %}
 
-{% macro person_avatar(person, size) -%}
+{% macro person_avatar(person, size, class=None) -%}
 {%- set img_urls = person.avatar_urls(size) -%}
 {% if img_urls[0] -%}
-<img id="avatar-{{person.wmbid}}" class="avatar" src="{{ img_urls[0] }}" srcset="{{ img_urls[0] }} 1x, {{ img_urls[1] }} 2x" alt="avatar" />
+<img class="avatar avatar-{{person.wmbid}}{% if class %}} {{class}}{% endif %}" src="{{ img_urls[0] }}" srcset="{{ img_urls[0] }} 1x, {{ img_urls[1] }} 2x" alt="avatar" style="width: {{size}}px; height: {{ size }}px;" />
 {%- endif -%}
 {%- endmacro %}
 

@@ -149,6 +149,11 @@ class Person(Base):
         # TODO do something with the hiDPI images
         return (imageURLs[0], hiDPIURLs[0])
 
+    @property
+    def has_avatar(self):
+        return self.data.get('gravatar', None) is not None or self.data.get('minecraft') is not None
+
+
 # We don't need this right now, leave the infrastructure in place if needed later
 #class UserTokens(Base):
 #    __tablename__ = 'user_tokens'
