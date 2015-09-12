@@ -73,7 +73,7 @@
             {% if g.user and g.user.is_authenticated() %}
             <li class="navbar-personaltools-tools">
                 {% if g.user.person.has_avatar %}
-                <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="You are logged in as Farthen." aria-expanded="true">{{ person_avatar(g.user.person, 32) }}</a>
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="You are logged in as {{ g.user.wmbid }}." aria-expanded="true">{{ person_avatar(g.user.person, 32) }}</a>
                 {% else %}
                 <a class="dropdown-toggle glyphicon glyphicon-user navbar-user-loggedin" href="#" data-toggle="dropdown" title="You are logged in as Farthen." aria-expanded="true"></a>
                 {% endif %}
