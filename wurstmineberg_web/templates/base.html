@@ -114,17 +114,16 @@
 
 {% block scripts %}
 {{ super() }}
-<script src="{{g.assetserver}}/js/underscore-min.js"></script>
+<script src="http://underscorejs.org/underscore-min.js"></script>
 <script src="//jquerymy.com/js/md5.js"></script>
 <script src="{{g.assetserver}}/js/common.js"></script>
 <script type="text/javascript">
     // run by default
-    linkify_headers();
-    configure_navigation();
-    set_anchor_height();
+    linkifyHeaders();
+    configureNavigation();
+    setAnchorHeight();
     displayFundingData();
-    $(".use-tooltip").tooltip();
-    $("abbr").tooltip();
+    initializeTooltips();
     // mark as dev.wurstmineberg.de
     if (isDev) {
         $('.navbar-brand').after($('<span>').css({
