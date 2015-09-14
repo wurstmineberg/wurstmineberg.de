@@ -130,11 +130,9 @@ class Person(Base):
         return self.data.get('description', None)
 
     def playerhead_url(self, size):
-        root_url = '' if g.is_dev else 'http://wurstmineberg.de'
-        return '{}/assets/img/head/{}/{}.png'.format(root_url, size, self.wmbid)
+        return 'http://api.{}/v2/player/{}/skin/render/head/{}.png'.format(g.host, self.wmbid, size)
 
     def avatar_urls(self, size):
-        # custom avatar, saved in /assets
         imageURLs = []
         hiDPIURLs = []
         # gravatar
@@ -143,10 +141,14 @@ class Person(Base):
             if (size <= 1024):
                 hiDPIURLs.append('http://www.gravatar.com/avatar/{}?d=404&s={}'.format(md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(size) * 2))
         # player head
-        root_url = '' if g.is_dev else 'http://wurstmineberg.de'
-        imageURLs.append(self.playerhead_url(size));
-        hiDPIURLs.append(self.playerhead_url(size * 2));
-        # TODO do something with the hiDPI images
+        if size <= 1024:
+            imageURLs.append(self.playerhead_url(size));
+        else:
+            imageURLs.append(self.playerhead_url(1024));
+        if size <= 512:
+            hiDPIURLs.append(self.playerhead_url(size * 2));
+        else:
+            hiDPIURLs.append(self.playerhead_url(1024));
         return (imageURLs[0], hiDPIURLs[0])
 
     @property
