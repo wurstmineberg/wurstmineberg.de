@@ -28,10 +28,8 @@ https://bugs.mojang.com/secure/ViewProfile.jspa?name={{username}}
 {%- endmacro %}
 
 {% macro person_avatar(person, size, class=None) -%}
-{%- set img_urls = person.avatar_urls(size) -%}
-{% if img_urls[0] -%}
-<img class="avatar avatar-{{person.wmbid}}{% if class %}} {{class}}{% endif %}" src="{{ img_urls[0] }}" srcset="{{ img_urls[0] }} 1x, {{ img_urls[1] }} 2x" alt="avatar" style="width: {{size}}px; height: {{ size }}px;" />
-{%- endif -%}
+{%- set ava_info = person.avatar(size) -%}
+<img class="avatar avatar-{{person.wmbid}}{% if ava_info['pixelate'] %} nearest-neighbor{% endif %}{% if class %} {{class}}{% endif %}" src="{{ ava_info['url'] }}" srcset="{{ ava_info['url'] }} 1x, {{ ava_info['hiDPI'] }} 2x" alt="avatar" style="width: {{size}}px; height: {{size}}px;" />
 {%- endmacro %}
 
 {% macro profile_url(wmbid) -%}

@@ -132,24 +132,22 @@ class Person(Base):
     def playerhead_url(self, size):
         return 'http://api.{}/v2/player/{}/skin/render/head/{}.png'.format(g.host, self.wmbid, size)
 
-    def avatar_urls(self, size):
+    def avatar(self, size):
         imageURLs = []
         hiDPIURLs = []
         # gravatar
-        if 'gravatar' in self.data and size <= 2048:
-            imageURLs.append('http://www.gravatar.com/avatar/{}?d=404&s={}'.format(md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(size)))
-            if (size <= 1024):
-                hiDPIURLs.append('http://www.gravatar.com/avatar/{}?d=404&s={}'.format(md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(size) * 2))
+        if 'gravatar' in self.data:
+            return {
+                'url': 'http://www.gravatar.com/avatar/{}?d=404&s={}'.format(md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(min(size, 2048))),
+                'hiDPI': 'http://www.gravatar.com/avatar/{}?d=404&s={}'.format(md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(min(size * 2, 2048))),
+                'pixelate': False
+            }
         # player head
-        if size <= 1024:
-            imageURLs.append(self.playerhead_url(size));
-        else:
-            imageURLs.append(self.playerhead_url(1024));
-        if size <= 512:
-            hiDPIURLs.append(self.playerhead_url(size * 2));
-        else:
-            hiDPIURLs.append(self.playerhead_url(1024));
-        return (imageURLs[0], hiDPIURLs[0])
+        return {
+            'url': self.playerhead_url(min(size, 1024)),
+            'hiDPI': self.playerhead_url(min(size * 2, 1024)),
+            'pixelate': True
+        }
 
     @property
     def has_avatar(self):
