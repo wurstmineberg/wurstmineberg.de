@@ -21,7 +21,7 @@
     <div class="panel-body">
         <div class="lead">
             {% if person.minecraft_name -%}
-            <img id="head" title="{{ person.minecraft_name }}" class="img-rounded" alt="head" src="/assets/img/head/180/{{wmbid}}.png" srcset="/assets/img/head/180/{{wmbid}} 1x, /assets/img/head/360/{{wmbid}} 2x" />
+            <img id="profile-skin" class="nearest-neighbor" title="{{ person.minecraft_name }}" alt="{{ person.minecraft_name }}" src="http://api.{{g.host}}/v2/player/{{wmbid}}/skin/render/front/180.png" srcset="http://api.{{g.host}}/v2/player/{{wmbid}}/skin/render/front/180.png 1x, http://api.{{g.host}}/v2/player/{{wmbid}}/skin/render/front/360.png 2x" />
             {%- endif %}
             <div id="user-info">
                 <p id="user-description">
