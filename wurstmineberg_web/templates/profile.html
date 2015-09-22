@@ -21,7 +21,10 @@
     <div class="panel-body">
         <div class="lead">
             {% if person.minecraft_name -%}
-            <img id="profile-skin" class="nearest-neighbor" {% if person.wmbid == 'dinnerbone' %}style="transform: rotate(180deg);"{% endif %} title="{{ person.minecraft_name }}" alt="{{ person.minecraft_name }}" src="http://api.{{g.host}}/v2/player/{{wmbid}}/skin/render/front/180.png" srcset="http://api.{{g.host}}/v2/player/{{wmbid}}/skin/render/front/180.png 1x, http://api.{{g.host}}/v2/player/{{wmbid}}/skin/render/front/360.png 2x" />
+            <div id="profile-skin">
+                <img class="nearest-neighbor drop-shadow" {% if person.wmbid == 'dinnerbone' %}style="transform: rotate(180deg);"{% endif %} title="{{ person.minecraft_name }}" alt="{{ person.minecraft_name }}" src="http://api.{{g.host}}/v2/player/{{wmbid}}/skin/render/front/180.png" srcset="http://api.{{g.host}}/v2/player/{{wmbid}}/skin/render/front/180.png 1x, http://api.{{g.host}}/v2/player/{{wmbid}}/skin/render/front/360.png 2x" />
+                <img class="nearest-neighbor foreground-image" {% if person.wmbid == 'dinnerbone' %}style="transform: rotate(180deg);"{% endif %} title="{{ person.minecraft_name }}" alt="{{ person.minecraft_name }}" src="http://api.{{g.host}}/v2/player/{{wmbid}}/skin/render/front/180.png" srcset="http://api.{{g.host}}/v2/player/{{wmbid}}/skin/render/front/180.png 1x, http://api.{{g.host}}/v2/player/{{wmbid}}/skin/render/front/360.png 2x" />
+            </div>
             {%- endif %}
             <div id="user-info">
                 <p id="user-description">
