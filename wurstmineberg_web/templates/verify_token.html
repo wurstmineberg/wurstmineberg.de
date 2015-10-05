@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block page_scripts %}
+{% endblock %}
+
+{% block title %}Verify Token - Wurstmineberg{% endblock %}
+
+{% block page_content %}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <p class="lead">Verify User Token</p>
+        <p>It seems like you want to create a new account. As we are a whitelisted server this is a semi-manual process. Ask for a person in chat to generate a user token for you.</p>
+        <p>Once you have aquired a token you can enter it here. Please note that tokens are bound to a specific Wurstmineberg ID and expire after using them. If something bad happens you need to ask for a new token.</p>
+        {% if display_error %}
+        <div class="alert alert-danger" role="alert">
+            <b>Invalid token!</b> We were unable to verify your token. Please try again.
+        </div>
+        {% endif %}
+        <p>
+            <form class="input-group" method="post">
+                <input type="text" class="form-control" name="user-token" placeholder="User token">
+                <div class="input-group-btn">
+                    <button type="submit" value="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </p>
+        <div>
+            <form action="/disconnect/{{ backend }}/" method="post">
+                <button class="btn btn-danger">Cancel Authentication</button>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %} {# page_content #}

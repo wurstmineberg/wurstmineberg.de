@@ -3,3 +3,10 @@
 /assets/serverstatus
 /assets/ts
 /assets/world
+/assetserver
+/wurstmineberg_web/assets
+__pycache__
+.env
+
+# Because secret keys
+wurstmineberg_web/settings.py

@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% set active_page = 'preferences' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block page_styles%}
+<link href="{{g.assetserver}}/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page_scripts %}
+<script src="{{g.assetserver}}/js/bootstrap-colorpicker.js"></script>
+<script src="{{g.assetserver}}/js/preferences.js"></script>
+{% endblock %}
+
+{% block flashes %}
+{# hide default flashes location #}
+{% endblock %}
+
+{% block title %}Preferences - Wurstmineberg{% endblock %}
+
+{% block page_content %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 id="heading" class="panel-title panel-loading">Preferences</h3>
+    </div>
+    <div class="panel-body">
+        <div class="lead">
+            <p>Change your user preferences.</p>
+        </div>
+        <div>
+            <p>These preferences control the display and behavior of this website, of the bot and of other Wurstmineberg sites and services.</p>
+        </div>
+    </div>
+</div>
+{{ render_flashes() }}
+<div>
+    <div class="panel with-nav-tabs panel-default">
+        <div class="panel-heading">
+            <ul id="pagination" class="nav nav-tabs" rol="tablist">
+                <li class="{% if displayed_tab == 'profile' %}active{% endif %}"><a id="tab-profile" href="#profile" data-toggle="tab">Profile</a></li>
+                <li class="{% if displayed_tab == 'settings' %}active{% endif %}"><a id="tab-settings" href="#settings" data-toggle="tab">Settings</a></li>
+            </ul>
+        </div>
+
+        {% macro gen_field(form, field) -%}
+        {%- if form.errors and field.short_name in form.errors -%}
+        <div class="alert alert-danger col-sm-10 col-sm-offset-2" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            {% for message in form.errors[field.short_name] -%}
+            {{ message }}
+            {%- endfor %}
+        </div>
+        {%- endif -%}
+        <div class="form-group">
+            {%- if field.type == 'BooleanField' -%}
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        {{ field() }} {{field.label}}
+                    </label>
+                </div>
+            </div>
+            {%- else -%}
+            <label for="input_description" class="col-sm-2 control-label">{{ field.label }}</label>
+            <div class="col-sm-10">
+                {% if 'placeholder' in field.description %}
+                {{ field(class="form-control", placeholder=field.description['placeholder']) }}
+                {% else %}
+                {{ field(class="form-control") }}
+                {% endif %}
+            </div>
+            {% endif %}
+            {% if 'text' in field.description %}
+            <div class="col-sm-10 col-sm-offset-2">
+                <span class="muted">{{ field.description['text'] }}</span>
+            </div>
+            {% endif %}
+        </div>
+        {% endmacro %}
+
+        <div id="preferences-body" class="section panel-body">
+            <div class="panel-content tab-content">
+                <div class="tab-pane {% if displayed_tab == 'profile' %}active{% endif %}" id="profile">
+                    <div class="container-fluid form-group">
+                        <p class="col-sm-10 col-sm-offset-2 preferences-profile-lead">These preferences control how you are displayed to other people visiting the site</p>
+                    </div>
+                    <form class="form-horizontal" method="post" role="form" action="/preferences?tab=profile">
+
+                        {{profile_form.hidden_tag()}}
+                        {{ gen_field(profile_form, profile_form.name) }}
+                        {{ gen_field(profile_form, profile_form.description) }}
+                        {{ gen_field(profile_form, profile_form.gravatar) }}
+                        {{ gen_field(profile_form, profile_form.mojira) }}
+                        {{ gen_field(profile_form, profile_form.twitter) }}
+                        {{ gen_field(profile_form, profile_form.website) }}
+                        {{ gen_field(profile_form, profile_form.favcolor) }}
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default" value="save-profile" name="save">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane {% if displayed_tab == 'settings' %}active{% endif %}" id="settings">
+                    <p class="col-sm-10 col-sm-offset-2 preferences-profile-lead">These preferences change the behavior of several tools and functions like on this website, the bot etc.</p>
+                    <form class="form-horizontal" method="post" role="form" action="/preferences?tab=settings">
+
+                        {{settings_form.hidden_tag()}}
+                        {% for field in settings_form -%}
+                        {% if not bootstrap_is_hidden_field(field) %}
+                        {{ gen_field(settings_form, field) }}
+                        {% endif %}
+                        {%- endfor %}
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default" value="save-settings" name="save">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} {# page_content #}

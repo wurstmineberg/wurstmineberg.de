@@ -1,0 +1,55 @@
+{% macro wiki(page_name, text) -%}
+<a href="http://wiki.{{g.host}}/{{ page_name }}">{{ text }}</a>
+{%- endmacro %}
+
+{% macro wiki_url(page_name) -%}
+http://wiki.{{g.host}}/{{ page_name }}
+{%- endmacro %}
+
+{% macro mcwiki(page_name, text) -%}
+<a href="http://minecraft.gamepedia.com/{{ page_name }}">{{ text }}</a>
+{%- endmacro %}
+
+{% macro link(url, text, class="") -%}
+<a href="{{url}}" class="{{class}}">{{ text }}</a>
+{%- endmacro %}
+
+{% macro twitter_user_url(username) -%}
+https://twitter.com/{{username}}
+{% endmacro %}
+
+{% macro mojira_user_url(username) -%}
+https://bugs.mojang.com/secure/ViewProfile.jspa?name={{username}}
+{% endmacro %}
+
+{% macro person_display_name_with_muted_minecraft(person, in_list=False) -%}
+{{ person.display_name }}
+{% if person.minecraft_name.lower() != person.display_name.lower() %}{% if in_list %}<br>{% endif %}<span class="muted">{% if not in_list%}(Minecraft: {% endif %}{{ person.minecraft_name }}{% if not in_list %}){% endif %}</span>{% endif %}
+{%- endmacro %}
+
+{% macro person_avatar(person, size, class=None) -%}
+{%- set ava_info = person.avatar(size) -%}
+<img class="avatar avatar-{{person.wmbid}}{% if ava_info['pixelate'] %} nearest-neighbor{% endif %}{% if class %} {{class}}{% endif %}" src="{{ ava_info['url'] }}" srcset="{{ ava_info['url'] }} 1x, {{ ava_info['hiDPI'] }} 2x" alt="avatar" style="width: {{size}}px; height: {{size}}px;" />
+{%- endmacro %}
+
+{% macro profile_url(wmbid) -%}
+/people/{{ wmbid }}
+{%- endmacro %}
+
+{% macro render_flashes() -%}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+{% if category == "error" -%}
+<div class="alert alert-danger" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <span class="sr-only">Error:</span>
+    {{ message }}
+</div>
+{%- else -%}
+<div class="alert alert-info" role="alert">
+    {{ message }}
+</div>
+{%- endif -%}
+{% endfor %}
+{% endwith %}
+{% endmacro %}
