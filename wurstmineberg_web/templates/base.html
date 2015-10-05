@@ -68,7 +68,7 @@
         </ul>
         {% block navbar_right %}
         <ul class="navbar-personaltools navbar-userloggedin nav navbar-nav navbar-right">
-            {% if g.user and g.user.is_authenticated() %}
+            {% if g.user and g.user.is_authenticated %}
             <li class="navbar-personaltools-tools">
                 {% if g.user.person.has_avatar %}
                 <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="You are logged in as {{ g.user.person.display_name }}." aria-expanded="true">{{ person_avatar(g.user.person, 32) }}</a>

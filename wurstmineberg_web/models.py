@@ -31,13 +31,14 @@ class User(Base, UserMixin):
     def is_active(self):
         return self.active
 
+    @property
     def is_authenticated(self):
-        if self.is_anonymous():
+        if self.is_anonymous:
             return False
-        return super().is_authenticated()
+        return super().is_authenticated
 
     def get_id(self):
-        if self.is_anonymous():
+        if self.is_anonymous:
             return None
         return super().get_id()
 

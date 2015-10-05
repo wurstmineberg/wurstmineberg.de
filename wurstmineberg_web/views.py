@@ -51,7 +51,7 @@ def get_profile():
 
 @app.route('/login')
 def login():
-    if g.user and g.user.is_authenticated():
+    if g.user and g.user.is_authenticated:
         return redirect('/profile')
     else:
         return render_template('login.html')
