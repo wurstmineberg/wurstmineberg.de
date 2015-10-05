@@ -80,24 +80,28 @@ class ProfileForm(Form):
         'text': 'The name that will be used when adressing you and referring to you'})
     description = TextAreaField('Description',
         description={
-            'text': 'Allowed HTML tags: a href, em, s, span class="muted"',
+            'text': 'Allowed HTML tags: a href, em, s, span class="muted". 1000 characters maximum.',
             'placeholder': 'A small text (up to 1000 characters) that describes you.'},
         validators=[EmptyOrValidatorValidator(validators.Length(max=1000))],
         filters=[html_whitelist_filter])
     gravatar = StringField('Gravatar email',
         description={'text': 'The email associated with your gravatar account',
             'placeholder': 'user@example.com'},
-        validators=[EmptyOrValidatorValidator(validators.Email())])
+        validators=[EmptyOrValidatorValidator(validators.Email()),
+                    validators.Length(max=2000)])
     mojira = StringField('Mojira username',
-        description={'text': 'Your username on the Mojira bug tracker'})
+        description={'text': 'Your username on the Mojira bug tracker'},
+        validators=[validators.Length(max=50)])
     twitter = StringField('Twitter username',
-        description={'text': 'Your twitter @username'},
+        description={'text': 'Your Twitter @username'},
         filters=[twitter_username_filter],
-        validators=[EmptyOrValidatorValidator(validators.Regexp('[A-Za-z0-9_]+'))])
+        validators=[EmptyOrValidatorValidator(validators.Regexp('[A-Za-z0-9_]+')),
+                    validators.Length(max=15)])
     website = StringField('Website',
         description={'text': 'The URL of your website',
             'placeholder': 'http://www.example.com'},
-        validators=[EmptyOrValidatorValidator(validators.URL())])
+        validators=[EmptyOrValidatorValidator(validators.URL()),
+                    validators.Length(max=2000)])
     favcolor = ColorField('Favorite Color',
         description={'text': 'Your favorite color, used for statistics',
             'placeholder': 'Enter a hex RGB color like #000000 or use the color picker on the right'},
