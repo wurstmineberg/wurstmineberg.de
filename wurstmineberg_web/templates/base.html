@@ -116,6 +116,12 @@
 <script src="//jquerymy.com/js/md5.js"></script>
 <script src="{{g.assetserver}}/js/common.js"></script>
 <script type="text/javascript">
+    // expose current user to js, if logged in
+    {% if g.user and g.user.is_authenticated %}
+    var currentUser = '{{g.user.wmbid}}';
+    {% else %}
+    var currentUser = null;
+    {% endif %}
     // run by default
     linkifyHeaders();
     configureNavigation();
