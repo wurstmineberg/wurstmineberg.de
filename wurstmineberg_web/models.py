@@ -139,8 +139,8 @@ class Person(Base):
         # gravatar
         if 'gravatar' in self.data:
             return {
-                'url': 'http://www.gravatar.com/avatar/{}?d=404&s={}'.format(md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(min(size, 2048))),
-                'hiDPI': 'http://www.gravatar.com/avatar/{}?d=404&s={}'.format(md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(min(size * 2, 2048))),
+                'url': 'https://www.gravatar.com/avatar/{}?d=404&s={}'.format(md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(min(size, 2048))),
+                'hiDPI': 'https://www.gravatar.com/avatar/{}?d=404&s={}'.format(md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(min(size * 2, 2048))),
                 'pixelate': False
             }
         # player head
