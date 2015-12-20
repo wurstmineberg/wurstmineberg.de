@@ -13,7 +13,7 @@
 {{ super() }}
 <link rel="shortcut icon" href="{{g.assetserver}}/img/favicon.ico" />
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" />
-<link href="http://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext" rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext" rel='stylesheet' type='text/css'>
 
 <link rel="stylesheet" href="{{g.assetserver}}/css/common.css" />
 <link rel="stylesheet" href="{{g.assetserver}}/css/responsive.css" />
@@ -52,17 +52,17 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><span class="fa fa-book"></span>Wiki<b class="caret"></b></a>
                 <ul class="dropdown-menu p-navigation" id="p-navigation">
-                    <li id="n-mainpage-description"><a href="http://wiki.{{g.host}}/" title="Visit the main page [ctrl-alt-z]" accesskey="z">Main page</a></li>
-                    <li id="n-currentevents"><a href="http://wiki.{{g.host}}/Wurstmineberg_Wiki:Current_events" title="Find background information on current events">Current events</a></li>
-                    <li id="n-recentchanges"><a href="http://wiki.{{g.host}}/Special:RecentChanges" title="A list of recent changes in the wiki [ctrl-alt-r]" accesskey="r">Recent changes</a></li>
-                    <li id="n-randompage"><a href="http://wiki.{{g.host}}/Special:Random" title="Load a random page [ctrl-alt-x]" accesskey="x">Random page</a></li>
+                    <li id="n-mainpage-description"><a href="//wiki.{{g.host}}/" title="Visit the main page [ctrl-alt-z]" accesskey="z">Main page</a></li>
+                    <li id="n-currentevents"><a href="//wiki.{{g.host}}/Wurstmineberg_Wiki:Current_events" title="Find background information on current events">Current events</a></li>
+                    <li id="n-recentchanges"><a href="//wiki.{{g.host}}/Special:RecentChanges" title="A list of recent changes in the wiki [ctrl-alt-r]" accesskey="r">Recent changes</a></li>
+                    <li id="n-randompage"><a href="//wiki.{{g.host}}/Special:Random" title="Load a random page [ctrl-alt-x]" accesskey="x">Random page</a></li>
                     <li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>
                 </ul>
             </li>
             <li class="dropdown {% if active_page == 'more' %}active{% endif %}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><span class="fa fa-ellipsis-h"></span>More<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="http://alltheitems.{{g.host}}/">All The Items</a></li>
+                    <li><a href="//alltheitems.{{g.host}}/">All The Items</a></li>
                 </ul>
             </li>
         </ul>
@@ -112,7 +112,7 @@
 
 {% block scripts %}
 {{ super() }}
-<script src="http://underscorejs.org/underscore-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="//jquerymy.com/js/md5.js"></script>
 <script src="{{g.assetserver}}/js/common.js"></script>
 <script type="text/javascript">

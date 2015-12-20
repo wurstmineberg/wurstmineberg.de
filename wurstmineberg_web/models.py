@@ -131,7 +131,7 @@ class Person(Base):
         return self.data.get('description', None)
 
     def playerhead_url(self, size):
-        return 'http://api.{}/v2/player/{}/skin/render/head/{}.png'.format(g.host, self.wmbid, size)
+        return '//api.{}/v2/player/{}/skin/render/head/{}.png'.format(g.host, self.wmbid, size)
 
     def avatar(self, size):
         imageURLs = []

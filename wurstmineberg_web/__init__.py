@@ -42,7 +42,7 @@ def create_app(production):
         g.host = 'dev.wurstmineberg.de' if g.is_dev else 'wurstmineberg.de'
 
         if production:
-            g.assetserver = 'http://assets.' + g.host
+            g.assetserver = 'https://assets.' + g.host
         else:
             g.assetserver = '/assetserver'
 
