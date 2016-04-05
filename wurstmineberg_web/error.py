@@ -1,3 +1,6 @@
+import io
+import traceback
+
 from wurstmineberg_web import app
 
 from social.exceptions import SocialAuthBaseException, AuthFailed
@@ -17,4 +20,4 @@ def error_handler(error):
         code = 500
     report = code == 500
     flash(Markup.escape(str(error)), 'error')
-    return render_template('error.html', error=error, report=report), code
+    return render_template('error.html', error=error, io=io, report=report, traceback=traceback), code

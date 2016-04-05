@@ -25,6 +25,15 @@
                     {{ message }}
                 </div>
                 {% endfor %}
+            {% elif isinstance(error, Exception) %}
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    {{ error.__class__.__name__ }}: {{ error }}
+                </div>
+                {% with tb = io.StringIO() %}
+                    {% traceback.print_exc(file=tb) %}
+                    <pre>{{ tb.getvalue() }}</pre>
+                {% endwith %}
             {% else %}
                 <div class="alert alert-danger" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
