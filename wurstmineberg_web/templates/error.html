@@ -18,12 +18,19 @@
     <div class="panel-body">
         <p class="lead">This is a sad time. An error occured.</p>
         {% with messages = get_flashed_messages() %}
-        {% for message in messages %}
-        <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            {{ message }}
-        </div>
-        {% endfor %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    unknown error :(
+                </div>
+            {% endif %}
         {% endwith %}
         <p>Maybe you want to go to the <a href={{ url_for('index') }}>home page</a> instead?</p>
     </div>
