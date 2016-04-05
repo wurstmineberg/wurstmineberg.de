@@ -15,6 +15,6 @@ def error_handler(error):
         code = error.code
     except AttributeError:
         code = 500
-    report = error.code == 500
+    report = code == 500
     flash(Markup.escape(str(error)), 'error')
     return render_template('error.html', report=report), error.code
