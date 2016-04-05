@@ -30,10 +30,7 @@
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     {{ error.__class__.__name__ }}: {{ error }}
                 </div>
-                {% with tb = io.StringIO() %}
-                    {% do traceback.print_exc(file=tb) %}
-                    <pre>{{ tb.getvalue() }}</pre>
-                {% endwith %}
+                <pre>{{ traceback.format_exc() }}</pre>
             {% else %}
                 <div class="alert alert-danger" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
