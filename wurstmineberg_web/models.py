@@ -144,9 +144,15 @@ class Person(Base):
                 'pixelate': False
             }
         # player head
+        if self.minecraft_name is not None:
+            return {
+                'url': self.playerhead_url(min(size, 1024)),
+                'hiDPI': self.playerhead_url(min(size * 2, 1024)),
+                'pixelate': True
+            }
         return {
-            'url': self.playerhead_url(min(size, 1024)),
-            'hiDPI': self.playerhead_url(min(size * 2, 1024)),
+            'url': '{}/img/grid-unknown.png'.format(g.assetserver),
+            'hiDPI': '{}/img/grid-unknown.png'.format(g.assetserver),
             'pixelate': True
         }
 
