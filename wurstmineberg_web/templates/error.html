@@ -4,7 +4,7 @@
 {% block page_scripts %}
 {% endblock %}
 
-{% block title %}Error - Wurstmineberg{% endblock %}
+{% block title %}Error — Wurstmineberg{% endblock %}
 
 {# Override flashes as we display them further below #}
 {% block flashes %}
@@ -16,7 +16,7 @@
         <h3 class="panel-title">Application Error</h3>
     </div>
     <div class="panel-body">
-        <p class="lead">This is a sad time. An Error occured.</p>
+        <p class="lead">This is a sad time. An error occured.</p>
         {% with messages = get_flashed_messages() %}
         {% for message in messages %}
         <div class="alert alert-danger" role="alert">
@@ -25,7 +25,7 @@
         </div>
         {% endfor %}
         {% endwith %}
-        Maybe you want to go to the <a href={{ url_for('index') }}>home page</a> instead?
+        <p>Maybe you want to go to the <a href={{ url_for('index') }}>home page</a> instead?</p>
     </div>
     {% if report %}
     <div class="panel-footer">Please report this to the Wurstmineberg site admins.</div>
