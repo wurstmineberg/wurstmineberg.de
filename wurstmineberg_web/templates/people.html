@@ -36,7 +36,7 @@
                 </td>
                 <td class="username">
                     {{ link(profile_url(person.wmbid), person.display_name) }}
-                    {% if person.minecraft_name is None %}
+                    {% if person.minecraft_name is none %}
                         <br /><span class="muted">no Minecraft account</span>
                     {% elif person.minecraft_name.lower() != person.display_name.lower() %}
                         <br /><span class="muted">{{ person.minecraft_name }}</span>
