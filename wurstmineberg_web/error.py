@@ -17,4 +17,4 @@ def error_handler(error):
         code = 500
     report = code == 500
     flash(Markup.escape(str(error)), 'error')
-    return render_template('error.html', report=report), error.code
+    return render_template('error.html', report=report), code
