@@ -31,7 +31,7 @@
                     {{ error.__class__.__name__ }}: {{ error }}
                 </div>
                 {% with tb = io.StringIO() %}
-                    {% traceback.print_exc(file=tb) %}
+                    {% do traceback.print_exc(file=tb) %}
                     <pre>{{ tb.getvalue() }}</pre>
                 {% endwith %}
             {% else %}
