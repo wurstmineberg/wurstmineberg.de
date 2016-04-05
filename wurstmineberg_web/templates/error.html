@@ -25,7 +25,7 @@
                     {{ message }}
                 </div>
                 {% endfor %}
-            {% elif isinstance(error, Exception) %}
+            {% elif is_exception(error) %}
                 <div class="alert alert-danger" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     {{ error.__class__.__name__ }}: {{ error }}

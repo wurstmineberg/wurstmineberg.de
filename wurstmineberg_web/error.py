@@ -20,4 +20,4 @@ def error_handler(error):
         code = 500
     report = code == 500
     flash(Markup.escape(str(error)), 'error')
-    return render_template('error.html', error=error, isinstance=isinstance, report=report, traceback=traceback), code
+    return render_template('error.html', error=error, is_exception=lambda v: isinstance(v, Exception), report=report, traceback=traceback), code
