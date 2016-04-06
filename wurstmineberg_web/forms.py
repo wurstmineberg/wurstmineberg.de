@@ -77,7 +77,7 @@ class ColorField(StringField):
 
 class ProfileForm(Form):
     name = StringField('Name', validators=[EmptyOrValidatorValidator(validators.Length(min=2, max=20))], description={
-        'text': 'The name that will be used when adressing you and referring to you'})
+        'text': 'The name that will be used when addressing you and referring to you'})
     description = TextAreaField('Description',
         description={
             'text': 'Allowed HTML tags: a href, em, s, span class="muted". 1000 characters maximum.',
