@@ -109,6 +109,11 @@ class ProfileForm(Form):
 
 class SettingsFormFactory():
     options = {
+        'allow_online_notifications': {
+            'name': 'Allow others to receive online notifications for you',
+            'description': 'This website will soon™ have a feature where members can ask to receive notifications when players join/leave the main world. If you disable this setting, no one will receive these notifications when you join/leave.',
+            'default': True
+        },
         #'activity_tweets': {
         #    'name': 'Activity Tweets',
         #    'description': 'When this option is off, the bot will refrain from @mentioning you in\
@@ -122,6 +127,11 @@ class SettingsFormFactory():
         #        implemented either, see here for the feature request). When it\'s off, it will\
         #        still tweet about your anniversary, but without @mentioning you.'
         #},
+        'public_info': {
+            'name': 'User data is public',
+            'description': 'When this option is off, only server members logged in on the website can view your profile page and statistics. Note that your data is still publicly accessible via the API.',
+            'default': True
+        },
         'show_inventory': {
             'name': 'Show inventory',
             'description': 'Whether or not your profile page should show your inventory and ender\
