@@ -134,8 +134,7 @@ class SettingsFormFactory():
         },
         'show_inventory': {
             'name': 'Show inventory',
-            'description': 'Whether or not your profile page should show your inventory and ender\
-                chest content.',
+            'description': 'Whether or not your profile page should show your inventory and Ender chest content.',
             'default': False
         }
     }
