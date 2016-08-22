@@ -2,11 +2,12 @@ from wurstmineberg_web import app
 
 from flask import Markup
 from flask_wtf import Form
-from wtforms import StringField, TextAreaField, BooleanField, widgets
+from wtforms import StringField, TextAreaField, BooleanField, SelectField, widgets
 from wtforms import validators
 import wtforms
-import bleach
 
+import bleach
+import pytz
 
 def html_whitelist_filter(data):
     tags = ['a', 'em', 's', 'span']
@@ -149,6 +150,8 @@ class SettingsFormFactory():
                 default=value,
                 description={'text': option['description']})
             setattr(F, name, field)
+        timezones = ['Etc/UTC', 'Europe/Berlin', 'Europe/Vienna'] + pytz.all_timezones
+        setattr(F, 'timezone', SelectField('Time zone', default='UTC', choices=timezones, coerce=pytz.timezone))
         return F
 
 SettingsForm = SettingsFormFactory()()
