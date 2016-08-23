@@ -31,7 +31,7 @@
         {%- endif -%}
         {% endfor %}
         {% endwith %}
-        <p><a class="btn btn-default slack-login-button" style="" href="{{ url_for("social.auth", backend="slack") }}?keep=1">Login with <img class="logo" alt="Slack" src="{{g.assetserver}}/img/logo/slack_cmyk_300_86.png" srcset="{{g.assetserver}}/img/logo/slack_cmyk_300_86.png 1x, https://{{g.assetserver}}/img/logo/slack_cmyk_300_86.png 2x"></a></p>
+        <p><a class="btn btn-default slack-login-button" style="" href="{{ url_for("social.auth", backend="slack") }}?keep=1">Login with <img class="logo" alt="Slack" src="{{g.assetserver}}/img/logo/slack_cmyk_300_86.png" srcset="{{g.assetserver}}/img/logo/slack_cmyk_300_86.png 1x, {{g.assetserver}}/img/logo/slack_cmyk_300_86.png 2x"></a></p>
         <p class="muted">We only save your Slack username and its ID.</p>
     </div>
     <div class="panel-footer">
