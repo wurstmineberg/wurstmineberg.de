@@ -83,6 +83,25 @@
 </div>
 <div id="stats-advancements" class="section hidden">
     <p>This tab shows {{ mcwiki('Advancements', 'advancements') }}, a new feature in {{ mcwiki('1.12', 'Minecraft 1.12') }} replacing <a href="#achievements">achievements</a>. Only players who have logged in since {{ mcwiki('17w13a', 'snapshot 17w13a') }} will be displayed here.</p>
+    <p>More detailed stats can be found on the <a href="/people">profile pages</a>.</p>
+    <div class="row">
+        <div class="col-lg-6 col-sm-12">
+            <h2>Leaderboard</h2>
+            <table id="stats-advancements-table-leaderboard" class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th>Advancements completed</th>
+                        <th>Player(s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="advancements-leaderboard-row-loading" class="loading-stat">
+                        <td colspan="2">Loading advancements data…</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <h2>Coming {{ wiki('Soon™', 'soon™') }}</h2>
 </div>
 <div id="stats-achievements" class="section hidden">
