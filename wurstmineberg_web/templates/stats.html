@@ -19,6 +19,7 @@
 <ul id="pagination" class="nav nav-tabs">
     <li><a id="tab-stats-leaderboard" class="tab-item" href="#leaderboards">Leaderboards</a></li>
     <li><a id="tab-stats-mobs" class="tab-item" href="#mobs">Mobs</a></li>
+    <li><a id="tab-stats-advancements" class="tab-item" href="#advancements">Advancements</a></li>
     <li><a id="tab-stats-achievements" class="tab-item" href="#achievements">Achievements</a></li>
     <li><a id="tab-stats-deathgames" class="tab-item" href="#deathgames">Death Games</a></li>
 </ul>
@@ -80,7 +81,12 @@
     </table>
     -->
 </div>
+<div id="stats-advancements" class="section hidden">
+    <p>This tab shows {{ mcwiki('Advancements', 'advancements') }}, a new feature in {{ mcwiki('1.12', 'Minecraft 1.12') }} replacing <a href="#achievements">achievements</a>. Only players who have logged in since {{ mcwiki('17w13a', 'snapshot 17w13a') }} will be displayed here.</p>
+    <h2>Coming {{ wiki('Soon™', 'soon™') }}</h2>
+</div>
 <div id="stats-achievements" class="section hidden">
+    <p>This tab shows {{ mcwiki('Achievements', 'achievements') }}, an old feature removed in {{ mcwiki('1.12', 'Minecraft 1.12') } and replaced by <a href="#advancements">advancements</a>. Only players who have not logged in since {{ mcwiki('17w13a', 'snapshot 17w13a') }} will be displayed here.</p>
     <div class="row">
         <div class="col-lg-6 col-sm-12">
             <h2>Achievement Progress</h2>
