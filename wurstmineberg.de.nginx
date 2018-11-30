@@ -1,0 +1,26 @@
+upstream _wurstmineberg {
+    server unix:/run/uwsgi/app/wurstmineberg/socket;
+}
+
+server {
+    server_name wurstmineberg.de;
+    server_name gharch.wurstmineberg.de;
+
+    listen 80;
+    listen [::]:80;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    ssl_certificate /etc/letsencrypt/live/inwx/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/inwx/privkey.pem;
+
+    if ($scheme = http) {
+        return 301 https://$host$request_uri;
+    }
+
+    location / {
+        add_header Access-Control-Allow-Origin *;
+        include uwsgi_params;
+        uwsgi_pass _wurstmineberg;
+    }
+}
