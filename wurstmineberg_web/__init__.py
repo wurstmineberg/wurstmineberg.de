@@ -12,7 +12,6 @@ app = None
 def create_app(production):
     global app
     app = Flask(__name__, template_folder='templates/')
-    app.config.from_object('wurstmineberg_web.settings')
 
     from social.apps.flask_app.routes import social_auth
     import wurstmineberg_web.database
