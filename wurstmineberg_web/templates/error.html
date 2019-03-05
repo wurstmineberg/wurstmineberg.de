@@ -20,10 +20,10 @@
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
-                <div class="alert alert-danger" role="alert">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    {{ message }}
-                </div>
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        {{ message }}
+                    </div>
                 {% endfor %}
             {% elif is_exception(error) %}
                 <div class="alert alert-danger" role="alert">
@@ -38,10 +38,14 @@
                 </div>
             {% endif %}
         {% endwith %}
-        <p>Maybe you want to go to the <a href={{ url_for('index') }}>home page</a> instead?</p>
+        <p>Maybe you want to go to the <a href="{{ url_for('index') }}">home page</a> instead?</p>
     </div>
     {% if report %}
-    <div class="panel-footer">Please report this to the Wurstmineberg site admins.</div>
+        {% if reported %}
+            <div class="panel-footer">This error has been reported to the Wurstmineberg site admins. We'll try to fix it soon™.</div>
+        {% else %}
+            <div class="panel-footer">Please report this to the Wurstmineberg site admins.</div>
+        {% endif %}
     {% endif %}
 </div>
 {% endblock %} {# page_content #}
