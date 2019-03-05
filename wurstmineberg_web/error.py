@@ -9,9 +9,6 @@ from wurstmineberg_web import app
 @app.errorhandler(410)
 @app.errorhandler(500)
 def error_handler(error):
-    if isinstance(error, SocialAuthBaseException):
-        flask.flash(flask.Markup.escape(str(error)), 'login_error')
-        return flask.render_template('login.html')
     try:
         code = error.code
     except AttributeError:
