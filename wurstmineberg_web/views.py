@@ -55,7 +55,7 @@ def get_profile():
 def preferences():
     profile_form = forms.ProfileForm()
     settings_form = forms.SettingsForm()
-    data = g.user.person.data
+    data = g.user.data
     last_data = None
     displayed_tab = request.args.get('tab', 'profile')
 
@@ -117,7 +117,7 @@ def preferences():
             else:
                 data.pop('favColor', None)
 
-            g.user.person.commit_data()
+            g.user.commit_data()
             set_data()
             flash('Successfully saved profile')
 
@@ -127,7 +127,7 @@ def preferences():
                 if not isinstance(field, wtforms.HiddenField):
                     options[field.id] = field.data
             data['options'] = options
-            g.user.person.commit_data()
+            g.user.commit_data()
             set_data()
             flash('Successfully saved settings')
 
