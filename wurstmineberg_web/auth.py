@@ -7,6 +7,17 @@ import urllib.parse
 from wurstmineberg_web import app
 from wurstmineberg_web.models import Person
 
+class AnonymousUser(flask_login.AnonymousUserMixin):
+    def __html__(self):
+        return jinja2.Markup('<i>anonymous</i>')
+
+    def __str__(self):
+        return 'anonymous'
+
+    @property
+    def is_admin(self):
+        return False
+
 def is_safe_url(target):
     ref_url = urllib.parse.urlparse(flask.request.host_url)
     test_url = urllib.parse.urlparse(urllib.parse.urljoin(flask.request.host_url, target))
@@ -28,6 +39,7 @@ def setup(app):
     login_manager = flask_login.LoginManager()
     login_manager.login_view = 'discord.login'
     login_manager.login_message = None # Because discord.login does not show flashes, any login message would be shown after a successful login. This would be confusing.
+    login_manager.anonymous_user = AnonymousUser
 
     @login_manager.user_loader
     def load_user(user_id):
