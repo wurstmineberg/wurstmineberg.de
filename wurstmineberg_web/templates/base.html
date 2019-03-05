@@ -83,7 +83,7 @@
             </li>
             {% else %}
             <li>
-                <li class="navbar-user-notloggedin"><a href="/login" title="You are not logged in."><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>Log in</a>
+                <li class="navbar-user-notloggedin"><a href="{{url_for('discord.login')}}" title="You are not logged in."><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>Log in</a>
             </li>
             {% endif %}
         </ul>
@@ -107,6 +107,7 @@
 {% block footer %}
 <hr />
 <p class="muted text-center">The People of wurstmineberg.de 2012–2019</p>
+<p class="muted text-center">Wurstmineberg is not created by, affiliated with, or supported by Discord Inc.</p>
 {% endblock %} {# footer #}
 {% endblock %} {# content #}
 

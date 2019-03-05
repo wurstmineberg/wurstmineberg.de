@@ -49,13 +49,6 @@ def profile(wmbid):
 def get_profile():
     return redirect('/people/{}'.format(g.user.wmbid))
 
-@app.route('/login')
-def login():
-    if g.user and g.user.is_authenticated:
-        return redirect('/profile')
-    else:
-        return render_template('login.html')
-
 @app.route('/preferences', methods=('GET', 'POST'))
 @login_required
 @templated()
