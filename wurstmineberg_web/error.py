@@ -1,10 +1,8 @@
+import flask
 import io
 import traceback
 
 from wurstmineberg_web import app
-
-from social.exceptions import SocialAuthBaseException, AuthFailed
-from flask import render_template, flash, Markup
 
 @app.errorhandler(403)
 @app.errorhandler(404)
@@ -12,12 +10,12 @@ from flask import render_template, flash, Markup
 @app.errorhandler(500)
 def error_handler(error):
     if isinstance(error, SocialAuthBaseException):
-        flash(Markup.escape(str(error)), 'login_error')
-        return render_template('login.html')
+        flask.flash(flask.Markup.escape(str(error)), 'login_error')
+        return flask.render_template('login.html')
     try:
         code = error.code
     except AttributeError:
         code = 500
     report = code == 500
-    flash(Markup.escape(str(error)), 'error')
-    return render_template('error.html', error=error, is_exception=lambda v: isinstance(v, Exception), report=report, traceback=traceback), code
+    flask.flash(flask.Markup.escape(str(error)), 'error')
+    return flask.render_template('error.html', error=error, is_exception=lambda v: isinstance(v, Exception), report=report, traceback=traceback), code
