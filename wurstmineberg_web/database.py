@@ -7,7 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from wurstmineberg_web import app
 
 DEFAULT_DB_CONFIG = {
-    'connectionstring': 'postgresql://localhost/wurstmineberg'
+    'connectionstring': 'postgresql:///wurstmineberg'
 }
 
 def get_db_config(config_filename='/opt/wurstmineberg/config/database.json'):
