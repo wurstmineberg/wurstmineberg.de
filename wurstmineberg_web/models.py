@@ -1,8 +1,9 @@
 import datetime
-from flask import g
+import flask
 import flask_login
-from hashlib import md5
+import hashlib
 import iso8601
+import jinja2
 from sqlalchemy import Column, BigInteger, Integer, String, Boolean, ForeignKey
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship, backref
@@ -59,6 +60,21 @@ class Person(Base, flask_login.UserMixin):
             ppl[status] = self.sorted_people(l)
         return ppl
 
+    def __html__(self):
+        return jinja2.Markup('<a title="{}" href="{}">@{}</a>'.format(self, self.profile_url, jinja2.escape(self.display_name)))
+
+    def __repr__(self):
+        if self.snowflake is None:
+            return 'wurstmineberg_web.models.Person.from_wmbid({!r})'.format(self.wmbid)
+        else:
+            return 'wurstmineberg_web.models.Person.from_snowflake({!r})'.format(self.snowflake)
+
+    def __str__(self):
+        try:
+            return self.display_name
+        except Exception:
+            return repr(self)
+
     def get_id(self): # required by flask_login
         return self.snowflake
 
@@ -108,8 +124,15 @@ class Person(Base, flask_login.UserMixin):
     def wiki(self):
         return self.data.get('wiki', None)
 
+    @property
+    def profile_url(self):
+        if self.wmbid is None:
+            raise NotImplementedError() #TODO implement and use by default, not only if wmbid is None
+        else:
+            flask.url_for('profile', wmbid=str(self.wmbid)) #TODO use only if snowflake is None
+
     def playerhead_url(self, size):
-        return '//api.{}/v2/player/{}/skin/render/head/{}.png'.format(g.host, self.wmbid, size) #TODO update to API v3
+        return '//api.{}/v2/player/{}/skin/render/head/{}.png'.format(flask.g.host, self.wmbid, size) #TODO update to API v3
 
     def avatar(self, size):
         imageURLs = []
@@ -117,8 +140,8 @@ class Person(Base, flask_login.UserMixin):
         # gravatar
         if 'gravatar' in self.data:
             return {
-                'url': 'https://www.gravatar.com/avatar/{}?d=404&s={}'.format(md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(min(size, 2048))),
-                'hiDPI': 'https://www.gravatar.com/avatar/{}?d=404&s={}'.format(md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(min(size * 2, 2048))),
+                'url': 'https://www.gravatar.com/avatar/{}?d=404&s={}'.format(hashlib.md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(min(size, 2048))),
+                'hiDPI': 'https://www.gravatar.com/avatar/{}?d=404&s={}'.format(hashlib.md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(min(size * 2, 2048))),
                 'pixelate': False
             }
         #TODO Discord avatar
@@ -130,8 +153,8 @@ class Person(Base, flask_login.UserMixin):
                 'pixelate': True
             }
         return {
-            'url': '{}/img/grid-unknown.png'.format(g.assetserver),
-            'hiDPI': '{}/img/grid-unknown.png'.format(g.assetserver),
+            'url': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
+            'hiDPI': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
             'pixelate': True
         }
 
