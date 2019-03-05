@@ -2,6 +2,7 @@ import flask
 import flask_dance.contrib.discord
 import flask_login
 import jinja2
+import sqlalchemy.orm.exc
 import urllib.parse
 
 from wurstmineberg_web import app
@@ -44,7 +45,7 @@ def setup(app):
     @login_manager.user_loader
     def load_user(user_id):
         try:
-            return Person(snowflake=user_id)
+            return Person.from_snowflake(user_id)
         except (TypeError, ValueError):
             return None
 
@@ -54,7 +55,7 @@ def setup(app):
     def global_user():
         if flask_login.current_user.is_admin and 'viewAs' in app.config['web']:
             flask.g.view_as = True
-            flask.g.user = Person(snowflake=app.config['web']['viewAs'])
+            flask.g.user = Person.from_snowflake(app.config['web']['viewAs'])
         else:
             flask.g.view_as = False
             flask.g.user = flask_login.current_user
@@ -74,16 +75,14 @@ def setup(app):
         response = flask_dance.contrib.discord.discord.get('/api/v6/users/@me')
         if not response.ok:
             return flask.make_response(('Discord returned error {} at {}: {}'.format(response.status_code, jinja2.escape(response.url), jinja2.escape(response.text)), response.status_code, []))
-        person = Person(snowflake=response.json()['id'])
+        try:
+            person = Person.from_snowflake(response.json()['id'])
+        except sqlalchemy.orm.exc.NoResultFound:
+            flask.flash('You have successfully authenticated your Discord account, but you\'re not in the Wurstmineberg Discord server.', 'error')
+            return flask.redirect(flask.url_for('index'))
         if not person.is_active:
-            try:
-                person.profile_data
-            except FileNotFoundError:
-                flask.flash('You have successfully authenticated your Discord account, but you\'re not in the Wurstmineberg Discord server.', 'error')
-                return flask.redirect(flask.url_for('index'))
-            else:
-                flask.flash('Your account has not yet been whitelisted. Please schedule a server tour in #general.', 'error')
-                return flask.redirect(flask.url_for('index'))
+            flask.flash('Your account has not yet been whitelisted. Please schedule a server tour in #general.', 'error')
+            return flask.redirect(flask.url_for('index'))
         flask_login.login_user(person, remember=True)
         flask.flash(jinja2.Markup('Hello {}.'.format(person.__html__())))
         next_url = flask.session.get('next')

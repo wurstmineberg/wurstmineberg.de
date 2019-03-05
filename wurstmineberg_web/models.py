@@ -22,13 +22,13 @@ class Person(Base, flask_login.UserMixin):
     data = Column(JSONB)
     version = Column(Integer)
 
-    def __new__(cls, *, snowflake=None, wmbid=None):
-        if (snowflake is None) == (wmbid is None):
-            raise ValueError('Must specify exactly one of snowflake or wmbid')
-        if snowflake is not None:
-            return cls.query.filter_by(snowflake=snowflake).one()
-        if wmbid is not None:
-            return cls.query.filter_by(wmbid=wmbid).one()
+    @classmethod
+    def from_snowflake(cls, snowflake):
+        return cls.query.filter_by(snowflake=snowflake).one()
+
+    @classmethod
+    def from_wmbid(cls, wmbid):
+        return cls.query.filter_by(wmbid=wmbid).one()
 
     @classmethod
     def sorted_people(self, people):

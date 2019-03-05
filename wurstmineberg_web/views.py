@@ -39,7 +39,7 @@ def people():
 @app.route('/people/<wmbid>')
 @templated('profile.html')
 def profile(wmbid):
-    person = Person.get_person(wmbid)
+    person = Person.from_wmbid(wmbid)
     if not person:
         return abort(404)
     return {'wmbid': wmbid, 'person': person}
