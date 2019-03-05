@@ -51,6 +51,8 @@ def create_app(production):
         else:
             flask.g.assetserver = '/assetserver'
 
+    wurstmineberg_web.auth.setup(app)
+
     return app
 
 
