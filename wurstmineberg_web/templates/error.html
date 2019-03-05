@@ -30,7 +30,9 @@
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     {{ error.__class__.__name__ }}: {{ error }}
                 </div>
-                <pre>{{ traceback.format_exc() }}</pre>
+                {% if report and not reported %}
+                    <pre>{{ traceback.format_exc() }}</pre>
+                {% endif %}
             {% else %}
                 <div class="alert alert-danger" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -38,14 +40,17 @@
                 </div>
             {% endif %}
         {% endwith %}
-        <p>Maybe you want to go to the <a href="{{ url_for('index') }}">home page</a> instead?</p>
     </div>
-    {% if report %}
-        {% if reported %}
-            <div class="panel-footer">This error has been reported to the Wurstmineberg site admins. We'll try to fix it soon™.</div>
+    <div class="panel-footer">
+        {% if report %}
+            {% if reported %}
+                This error has been reported to the Wurstmineberg site admins. We'll try to fix it soon™.
+            {% else %}
+                <span class="text-danger">Please report this to the Wurstmineberg site admins.</span>
+            {% endif %}
         {% else %}
-            <div class="panel-footer">Please report this to the Wurstmineberg site admins.</div>
+            Maybe you want to go to the <a href="{{ url_for('index') }}">home page</a> instead?
         {% endif %}
-    {% endif %}
+    </div>
 </div>
 {% endblock %} {# page_content #}
