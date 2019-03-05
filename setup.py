@@ -12,6 +12,7 @@ setuptools.setup(
     install_requires=[
         'Flask',
         'Flask-Bootstrap',
+        'Flask-Dance',
         'Flask-WTF',
         'Jinja2',
         'SQLAlchemy',
@@ -20,7 +21,7 @@ setuptools.setup(
         'iso8601',
         'people',
         'pytz',
-        'social'
+        'simplejson'
     ],
     dependency_links=[
         'git+https://github.com/wurstmineberg/people.git#egg=people'

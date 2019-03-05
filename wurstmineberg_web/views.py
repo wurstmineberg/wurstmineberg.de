@@ -5,7 +5,7 @@ from .models import Person
 import wurstmineberg_web.forms as forms
 import wtforms
 
-from flask.ext.login import login_required, logout_user
+from flask_login import login_required, logout_user
 
 from wurstmineberg_web import app
 

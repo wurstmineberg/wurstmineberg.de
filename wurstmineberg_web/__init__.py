@@ -4,8 +4,10 @@ Wurstmineberg website
 """
 
 from flask import Flask, g, render_template, send_from_directory
-from flask_bootstrap import Bootstrap
-from flask_wtf import CsrfProtect
+import flask_bootstrap
+import flask_wtf
+
+import wurstmineberg_web.util
 
 app = None
 
@@ -13,16 +15,18 @@ def create_app(production):
     global app
     app = Flask(__name__, template_folder='templates/')
 
-    from social.apps.flask_app.routes import social_auth
+    app.url_map.strict_slashes = False
+    # load config
+    if wurstmineberg_web.util.CONFIG_PATH.exists():
+        app.config.update(wurstmineberg_web.util.load_json(wurstmineberg_web.util.CONFIG_PATH))
+
     import wurstmineberg_web.database
     import wurstmineberg_web.views
-    import wurstmineberg_web.config
     import wurstmineberg_web.auth
     import wurstmineberg_web.error
 
-    app.register_blueprint(social_auth)
-    Bootstrap(app)
-    CsrfProtect(app)
+    flask_bootstrap.Bootstrap(app)
+    flask_wtf.CSRFProtect(app)
 
     database.init_db()
 

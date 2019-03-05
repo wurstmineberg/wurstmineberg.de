@@ -1,141 +1,87 @@
-from wurstmineberg_web import app, g
-import flask.ext.login as login
+import flask
+import flask_dance.contrib.discord
+import flask_login
+import jinja2
+import urllib.parse
 
-from social.apps.flask_app.template_filters import backends
-from social.pipeline.partial import partial
-from social.exceptions import AuthFailed
-from social.backends.slack import SlackOAuth2
+from wurstmineberg_web import app
+from wurstmineberg_web.models import Person
 
-from flask import redirect, render_template, request, session
-from flask.views import View, MethodView
-from people import PeopleDB
+if 'clientID' not in app.config.get('wurstminebot', {}) or 'clientSecret' not in app.config.get('wurstminebot', {}):
+    return #TODO mount error messages at /login and /auth
+app.config['SECRET_KEY'] = app.config['wurstminebot']['clientSecret']
+app.config['USE_SESSION_FOR_NEXT'] = True
 
-from .models import User, Person#, UserTokens
-from .database import db_session
+app.register_blueprint(flask_dance.contrib.discord.make_discord_blueprint(
+    client_id=app.config['wurstminebot']['clientID'],
+    client_secret=app.config['wurstminebot']['clientSecret'],
+    scope='identify',
+    redirect_to='auth_callback'
+), url_prefix='/login')
 
-login_manager = login.LoginManager()
-login_manager.login_view = 'login'
-login_manager.login_message = 'Please log in to view this page.'
+login_manager = flask_login.LoginManager()
+login_manager.login_view = 'discord.login'
+login_manager.login_message = None # Because discord.login does not show flashes, any login message would be shown after a successful login. This would be confusing.
+
+@login_manager.user_loader
+def load_user(user_id):
+    try:
+        return Person(snowflake=user_id)
+    except (TypeError, ValueError):
+        return None
+
 login_manager.init_app(app)
-
-app.config['SOCIAL_AUTH_USER_MODEL'] = 'wurstmineberg_web.models.User'
-app.config['SOCIAL_AUTH_FIELDS_STORED_IN_SESSION'] = ['keep']
-
-if 'SOCIAL_AUTH_SLACK_TEAM_ID' in app.config:
-    SlackOAuth2.auth_extra_arguments = lambda self: {'team': app.config['SOCIAL_AUTH_SLACK_TEAM_ID']}
-
-app.context_processor(backends)
 
 @app.before_request
 def global_user():
-    g.user = login.current_user
-
-@login_manager.user_loader
-def load_user(userid):
-    try:
-        return User.query.get(userid)
-    except (TypeError, ValueError):
-        pass
+    if flask_login.current_user.is_admin and 'viewAs' in app.config['web']:
+        flask.g.view_as = True
+        flask.g.user = Person(snowflake=app.config['web']['viewAs'])
+    else:
+        flask.g.view_as = False
+        flask.g.user = flask_login.current_user
 
 @app.context_processor
 def inject_user():
     try:
-        return {'user': g.user}
+        return {'user': flask.g.user}
     except AttributeError:
         return {'user': None}
 
+def is_safe_url(target):
+    ref_url = urllib.parse.urlparse(flask.request.host_url)
+    test_url = urllib.parse.urlparse(urllib.parse.urljoin(flask.request.host_url, target))
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
-class SlackAccountUnkown(AuthFailed):
-    def __init__(self, backend, *args, **kwargs):
-        super().__init__(backend)
-
-    def __str__(self):
-        return 'This Slack account is unkown. Please contact Wurstmineberg admins to add your Slack username to your profile.'
-
-class SlackTeamInvalid(AuthFailed):
-    def __init__(self, backend, *args, **kwargs):
-        super().__init__(backend)
-
-    def __str__(self):
-        return 'This Slack team is invalid. You must select the Wurstmineberg Slack team at the login screen.'
-
-def verify_auth(user=None, backend=None, response=None, *args, **kwargs):
-    if not user:
-        # Only allow Slack logins
-        if backend.name == 'slack':
-            # Verify that the team ID is correct
-            if 'team_id' in response and response['team_id'] == app.config['SOCIAL_AUTH_SLACK_TEAM_ID']:
-                # Verify that the response has user name and Slack ID
-                if 'user' in response and 'id' in response:
-                    slackid = response['id']
-                    slacknick = response['user']
-
-                    # First match by Slack ID if that is set
-                    person = Person.get_by_slack_id(slackid)
-
-                    # If not match by Slack nick
-                    if not person:
-                        person = Person.get_by_slack_nick(slacknick)
-
-                    if person:
-                        # save the Slack ID and username for later
-                        person.data['slack']['id'] = slackid
-                        person.data['slack']['username'] = slacknick
-                        person.commit_data()
-                        return {
-                            'person': person
-                        }
-                    else:
-                        raise SlackAccountUnkown(backend, user=user, response=response, **kwargs)
-            else:
-                raise SlackTeamInvalid(backend)
-        raise AuthFailed("This user is not valid.")
-    else:
-        return {'is_new': False}
-
-def verify_slack_username(*args, **kwargs):
-    """Checks if the slack username is in the database"""
-    raise ValueError(kwargs)
-    #element = Person.get_JSONElement()
-
-def create_user(strategy=None, details=None, user=None, response=None, backend=None, person=None, *args, **kwargs):
-    if user is not None:
-        return {'is_new': False}
-
-    fields = {
-        'slackid': person.data['slack']['id'],
-        'wmbid': person.wmbid,
-    }
-
-    return {
-        'is_new': True,
-        'user': strategy.create_user(**fields)
-    }
-
-
-class VerifyToken(MethodView):
-    def get_template_name(self):
-        return 'verify_token.html'
-
-    def get_backend(self):
-        return session['partial_pipeline']['backend']
-
-    def get(self, error):
-        if 'initial-user-token' in session:
-            del session['initial-user-token']
-        display_error = error is not None and error == 'error'
-        return render_template(self.get_template_name(), display_error=display_error, backend=self.get_backend())
-
-    def post(self, error):
-        display_error = error is not None and error == 'error'
-        if 'user-token' in request.form:
-            token = request.form['user-token']
-            session['initial-user-token'] = token
-            return redirect('/complete/' + self.get_backend() + '/')
+@app.route('/auth')
+def auth_callback():
+    if not flask_dance.contrib.discord.discord.authorized:
+        flask.flash('Login failed.', 'error')
+        return flask.redirect(flask.url_for('index'))
+    response = flask_dance.contrib.discord.discord.get('/api/v6/users/@me')
+    if not response.ok:
+        return flask.make_response(('Discord returned error {} at {}: {}'.format(response.status_code, jinja2.escape(response.url), jinja2.escape(response.text)), response.status_code, []))
+    person = Person(snowflake=response.json()['id'])
+    if not person.is_active:
+        try:
+            person.profile_data
+        except FileNotFoundError:
+            flask.flash('You have successfully authenticated your Discord account, but you\'re not in the Wurstmineberg Discord server.', 'error')
+            return flask.redirect(flask.url_for('index'))
         else:
-            return render_template(self.get_template_name(), display_error=True, backend=self.get_backend())
+            flask.flash('Your account has not yet been whitelisted. Please schedule a server tour in #general.', 'error')
+            return flask.redirect(flask.url_for('index'))
+    flask_login.login_user(person, remember=True)
+    flask.flash(jinja2.Markup('Hello {}.'.format(person.__html__())))
+    next_url = flask.session.get('next')
+    if next_url is None:
+        return flask.redirect(flask.url_for('index'))
+    elif is_safe_url(next_url):
+        return flask.redirect(next_url)
+    else:
+        return flask.abort(400)
 
-
-#verify_token_view = VerifyToken.as_view('verify_token')
-#app.add_url_rule('/verify_token/', view_func=verify_token_view, defaults={'error': None})
-#app.add_url_rule('/verify_token/<error>', view_func=verify_token_view)
+@app.route('/logout')
+def logout():
+    flask_login.logout_user()
+    return flask.redirect(flask.url_for('index'))
