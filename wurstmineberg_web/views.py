@@ -140,11 +140,3 @@ def preferences():
 
 
     return {'profile_form': profile_form, 'settings_form': settings_form, 'displayed_tab': displayed_tab}
-
-@app.route('/logout')
-@login_required
-def logout():
-    """Logout view"""
-    logout_user()
-    return redirect('/')
-
