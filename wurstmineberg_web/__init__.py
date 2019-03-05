@@ -3,7 +3,7 @@
 Wurstmineberg website
 """
 
-from flask import Flask, g, render_template, send_from_directory
+import flask
 import flask_bootstrap
 import flask_wtf
 
@@ -13,7 +13,9 @@ app = None
 
 def create_app(production):
     global app
-    app = Flask(__name__, template_folder='templates/')
+    global wurstmineberg_web
+
+    app = flask.Flask(__name__, template_folder='templates/')
 
     app.url_map.strict_slashes = False
     # load config
@@ -35,19 +37,19 @@ def create_app(production):
         # Because of bugs https://gist.github.com/uniphil/7777590 we need to use absolute paths
         @app.route('/assetserver/<path:path>')
         def serve_assetserver(path):
-            return send_from_directory(os.path.join(app.root_path, 'assetserver'), path)
+            return flask.send_from_directory(os.path.join(app.root_path, 'assetserver'), path)
 
     @app.before_request
     def before_request():
-        g.is_dev = uwsgi_options.get('is_dev', False)
+        flask.g.is_dev = uwsgi_options.get('is_dev', False)
 
         # Template variables
-        g.host = 'dev.wurstmineberg.de' if g.is_dev else 'wurstmineberg.de'
+        flask.g.host = 'dev.wurstmineberg.de' if flask.g.is_dev else 'wurstmineberg.de'
 
         if production:
-            g.assetserver = 'https://assets.' + g.host
+            flask.g.assetserver = 'https://assets.' + flask.g.host
         else:
-            g.assetserver = '/assetserver'
+            flask.g.assetserver = '/assetserver'
 
     return app
 
