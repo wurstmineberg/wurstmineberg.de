@@ -8,15 +8,19 @@ server {
 
     listen 80;
     listen [::]:80;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    server_name wurstmineberg.de;
+    server_name gharch.wurstmineberg.de;
+
     listen 443 ssl;
     listen [::]:443 ssl;
 
     ssl_certificate /etc/letsencrypt/live/inwx/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/inwx/privkey.pem;
-
-    if ($scheme = http) {
-        return 301 https://$host$request_uri;
-    }
 
     location / {
         add_header Access-Control-Allow-Origin *;

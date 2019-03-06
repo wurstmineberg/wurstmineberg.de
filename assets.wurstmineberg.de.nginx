@@ -1,0 +1,25 @@
+server {
+    server_name assets.wurstmineberg.de;
+    server_name assets.gharch.wurstmineberg.de;
+
+    listen 80;
+    listen [::]:80;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    server_name assets.wurstmineberg.de;
+    server_name assets.gharch.wurstmineberg.de;
+
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    ssl_certificate /etc/letsencrypt/live/inwx/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/inwx/privkey.pem;
+
+    root /opt/git/github.com/wurstmineberg/assets.wurstmineberg.de/master;
+    autoindex on;
+
+    add_header Access-Control-Allow-Origin *;
+}
