@@ -1,6 +1,7 @@
 import flask
 import flask_dance.contrib.discord
 import flask_login
+import functools
 import jinja2
 import sqlalchemy.orm.exc
 import urllib.parse
