@@ -41,7 +41,7 @@ def key_or_member_required(f):
 @wurstmineberg_web.views.index.child('api', 'API')
 @key_or_member_optional
 def api_index():
-    return flask.redirect(flask.g.view_node.url / 'v3')
+    return flask.redirect((flask.g.view_node / 'v3').url)
 
 @api_index.child('v3', 'version 3')
 @wurstmineberg_web.util.templated('api-index.html')
