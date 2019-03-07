@@ -1,6 +1,7 @@
 import flask
 import flask_login
 import functools
+import requests
 
 import wurstmineberg_web
 import wurstmineberg_web.auth
