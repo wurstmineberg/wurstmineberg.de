@@ -2,6 +2,7 @@ import flask
 import flask_login
 import functools
 import requests
+import simplejson
 
 import wurstmineberg_web
 import wurstmineberg_web.auth
@@ -41,6 +42,19 @@ def key_or_member_required(f):
 
     return wrapper
 
+def json_child(node, name, *args, **kwargs):
+    def decorator(f):
+        @node.child(name + '.json', *args, **kwargs)
+        @functools.wraps(f)
+        def wrapper(*args, **kwargs):
+            result = simplejson.dumps(f(*args, **kwargs), sort_keys=True, indent=4, use_decimal=True)
+            return flask.Response(result, mimetype='application/json')
+
+        wrapper.raw = f
+        return wrapper
+
+    return decorator
+
 @wurstmineberg_web.views.index.child('api', 'API')
 @key_or_member_optional
 def api_index():
@@ -64,14 +78,14 @@ def discord_voice_state():
 def api_money_index():
     pass
 
-@api_money_index.child('overview.json')
-def api_money_overview():
+@json_child(api_money_index, 'overview')
+def money_overview():
     response = requests.get('https://nightd.fenhl.net/wurstmineberg/money/overview.json', auth=('wurstmineberg', wurstmineberg_web.app.config['night']['password']))
     response.raise_for_status()
-    return flask.Response(response.text, mimetype='application/json')
+    return response.json()
 
-@api_money_index.child('transactions.json')
-def api_money_transactions():
+@json_child(api_money_index, 'transactions')
+def money_transactions():
     response = requests.get('https://nightd.fenhl.net/wurstmineberg/money/transactions.json', auth=('wurstmineberg', wurstmineberg_web.app.config['night']['password']))
     response.raise_for_status()
-    return flask.Response(response.text, mimetype='application/json')
+    return response.json()

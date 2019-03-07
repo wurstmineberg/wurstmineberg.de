@@ -41,17 +41,17 @@
 #}
 <h2 id="finance">Financial stuff</h2>
 <p>The Wurstmineberg infrastructure runs on a VPS with monthly costs. Members may contribute to paying for these expenses on a voluntary basis. Depending on how much money is available, we will upgrade or downgrade the hardware on which the server runs.</p>
-<p>Our funding tracker is not quite ready yet. {#TODO#}</p>
-{#
-<div class="funding-progress-container-about">
-        <p class="funding-text-container">Funding<span class="funding-text"> <span class="funding-for">for </span><span class="funding-month">(loading)</span><span class="funding-month-small">(loading)</span></span>:</p>
-        <div class="funding-progressbar progress progress-striped active">
-            <div class="progress-bar" style="width: 100%;">
-            <span class="sr-only">loading</span>
+<div>
+    <p>Current goal: {{money_overview['text']}}</p> {#TODO time remaining #}
+    {% if money_overview['goal'] is none %}
+        <p>Current progress: {{money_overview['amount']}} {{money_overview['currency']}} (no target amount)</p>
+    {% else %}
+        <div class="progress">
+            {% set percent = 100 * money_overview['amount'] / money_overview['goal'] %}
+            <div class="progress-bar progress-bar-success" style="width: {{percent}}%;"><span class="sr-only">{{percent | int}}% funded</span></div> {#TODO display amount and goal as text #}
         </div>
-    </div>
+    {% endif %}
 </div>
-#}
 {% if g.user.is_active %}
     <h3>Contribute</h3>
     <p>If you would like to contribute money, please use one of the methods of transfer below, or contact Fenhl on Discord if none of them work for you. The amount and time of receipt will be published anonymously. Thank you.</p>
@@ -59,15 +59,15 @@
         <div class="col-md-6">
             <h4>bank transfer</h4>
             <p>
-                Name: {{money['name']}}<br />
-                IBAN: {{money['iban']}}<br />
-                BIC: {{money['bic']}}<br />
+                Name: {{money_config['name']}}<br />
+                IBAN: {{money_config['iban']}}<br />
+                BIC: {{money_config['bic']}}<br />
                 Reference: Wurstmineberg
             </p>
         </div>
         <div class="col-md-6">
             <h4>PayPal</h4>
-            <p><a href="https://www.paypal.me/{{money['payPal']}}">paypal.me/{{money['payPal']}}</a></p>
+            <p><a href="https://www.paypal.me/{{money_config['payPal']}}">paypal.me/{{money_config['payPal']}}</a></p>
             <p>Please include the word Wurstmineberg in the note.</p>
         </div>
     </div>

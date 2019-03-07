@@ -1,5 +1,5 @@
 import contextlib
-import json
+import simplejson
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -14,7 +14,7 @@ def get_db_config(config_filename='/opt/wurstmineberg/config/database.json'):
     config = DEFAULT_DB_CONFIG.copy()
     with contextlib.suppress(FileNotFoundError):
         with open(config_filename) as cfg_file:
-            config.update(json.load(cfg_file))
+            config.update(simplejson.load(cfg_file, use_decimal=True))
     return config
 
 engine = create_engine(get_db_config()['connectionstring'], convert_unicode=True)

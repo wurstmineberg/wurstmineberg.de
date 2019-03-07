@@ -18,7 +18,12 @@ def index():
 @index.child('about')
 @templated()
 def about():
-    return {'money': wurstmineberg_web.app.config['money']}
+    import wurstmineberg_web.api
+
+    return {
+        'money_config': wurstmineberg_web.app.config['money'],
+        'money_overview': wurstmineberg_web.api.money_overview.raw()
+    }
 
 @index.child('stats')
 @templated()
