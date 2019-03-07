@@ -11,8 +11,8 @@ def key_or_member_optional(f):
     def wrapper(*args, **kwargs):
         if flask_login.current_user.is_active:
             flask.g.user = flask_login.current_user
-        elif wurstmineberg_web.models.Person.by_api_key() is not None:
-            flask.g.user = wurstmineberg_web.models.Person.by_api_key()
+        elif wurstmineberg_web.models.Person.from_api_key() is not None:
+            flask.g.user = wurstmineberg_web.models.Person.from_api_key()
         else:
             flask.g.user is None
         return f(*args, **kwargs)
@@ -24,8 +24,8 @@ def key_or_member_required(f):
     def wrapper(*args, **kwargs):
         if flask_login.current_user.is_active:
             flask.g.user = flask_login.current_user
-        elif wurstmineberg_web.models.Person.by_api_key() is not None:
-            flask.g.user = wurstmineberg_web.models.Person.by_api_key()
+        elif wurstmineberg_web.models.Person.from_api_key() is not None:
+            flask.g.user = wurstmineberg_web.models.Person.from_api_key()
         else:
             flask.g.user is None
         if flask.g.user is not None and flask.g.user.is_active:
