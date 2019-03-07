@@ -2,6 +2,7 @@ import flask
 import flask_login
 import functools
 
+import wurstmineberg_web.auth
 import wurstmineberg_web.models
 import wurstmineberg_web.util
 import wurstmineberg_web.views
@@ -14,7 +15,7 @@ def key_or_member_optional(f):
         elif wurstmineberg_web.models.Person.from_api_key() is not None:
             flask.g.user = wurstmineberg_web.models.Person.from_api_key()
         else:
-            flask.g.user is None
+            flask.g.user = wurstmineberg_web.auth.AnonymousUser()
         return f(*args, **kwargs)
 
     return wrapper
@@ -27,7 +28,7 @@ def key_or_member_required(f):
         elif wurstmineberg_web.models.Person.from_api_key() is not None:
             flask.g.user = wurstmineberg_web.models.Person.from_api_key()
         else:
-            flask.g.user is None
+            flask.g.user = wurstmineberg_web.auth.AnonymousUser()
         if flask.g.user is not None and flask.g.user.is_active:
             return f(*args, **kwargs)
         return flask.Response(

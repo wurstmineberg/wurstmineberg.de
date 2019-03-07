@@ -23,11 +23,11 @@
 
 {% block page_content %}
     <p>The <strong>Wurstmineberg API</strong> is a part of the website intended to be used with apps other than web browsers. Some endpoints are only available for Wurstmineberg members; using your API key, you can access these without signing into Discord. If asked for login credentials, enter <code>api</code> as the username and your API key as the password.</p>
-    {% if g.user is none %}
-        <p><a href="{{url_for('discord.login')}}">Log in</a> to view your API key.</p>
-    {% else %}
+    {% if g.user.is_active %}
         <p>Your API key: <code>{{g.user.api_key}}</code></p>
         <p>If your API key falls into the wrong hands, please <a class="btn btn-primary" href="{{url_for('reset_api_key', person=g.user.snowflake_or_wmbid)}}">generate a new API key</a>. You will then have to sign in with the new key anywhere you're using the old one.</p>
+    {% else %}
+        <p><a href="{{url_for('discord.login')}}">Log in</a> to view your API key.</p>
     {% endif %}
     <h1>Endpoints</h1>
     <ul>

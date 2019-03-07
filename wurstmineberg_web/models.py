@@ -5,6 +5,7 @@ import hashlib
 import iso8601
 import jinja2
 import random
+import re
 from sqlalchemy import Column, BigInteger, Integer, String, Boolean, ForeignKey
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship, backref
