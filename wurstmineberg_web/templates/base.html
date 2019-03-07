@@ -29,6 +29,12 @@
 {%- endblock %} {# page_head #}
 {% endblock %} {# head #}
 
+{% macro active(page) -%}
+    {%- if (g.view_node.parent.is_index and g.view_node.view_func_node.name == page) or (g.view_node.parents | length > 1 and g.view_node.parents[-2].view_func_node.name == page) %}
+        class="active"
+    {%- endif -%}
+{%- endmacro %}
+
 {% block navbar -%}
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -45,10 +51,10 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul id="navbar-list" class="nav navbar-nav">
-            <li {% if active_page == 'home' %}class="active"{% endif %}><a href="/"><span class="fa fa-home"></span>Home</a></li>
-            <li {% if active_page == 'about' %}class="active"{% endif %}><a href="/about"><span class="fa fa-info-circle"></span>About</a></li>
-            <li {% if active_page in ['people', 'profile'] %}class="active"{% endif %}><a href="/people"><span class="fa fa-users"></span>People</a></li>
-            <li {% if active_page == 'stats' %}class="active"{% endif %}><a href="/stats"><span class="fa fa-table"></span>Statistics</a></li>
+            <li {% if g.view_node.is_index %}class="active"{% endif %}><a href="/"><span class="fa fa-home"></span>Home</a></li>
+            <li class="{{active('about')}}"><a href="/about"><span class="fa fa-info-circle"></span>About</a></li>
+            <li class="{{active('people')}}"><a href="/people"><span class="fa fa-users"></span>People</a></li>
+            <li class="{{active('stats')}}"><a href="/stats"><span class="fa fa-table"></span>Statistics</a></li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><span class="fa fa-book"></span>Wiki<b class="caret"></b></a>
                 <ul class="dropdown-menu p-navigation" id="p-navigation">
@@ -59,7 +65,7 @@
                     <li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>
                 </ul>
             </li>
-            <li class="dropdown {% if active_page == 'more' %}active{% endif %}">
+            <li class="dropdown {{active('api')}}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><span class="fa fa-ellipsis-h"></span>More<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="//alltheitems.{{g.host}}/">All The Items</a></li>
@@ -67,27 +73,27 @@
             </li>
         </ul>
         {% block navbar_right %}
-        <ul class="navbar-personaltools navbar-userloggedin nav navbar-nav navbar-right">
-            {% if g.user and g.user.is_authenticated %}
-            <li class="navbar-personaltools-tools">
-                {% if g.user.has_avatar %}
-                <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="You are logged in as {{ g.user.display_name }}." aria-expanded="true">{{ person_avatar(g.user, 32) }}</a>
+            <ul class="navbar-personaltools navbar-userloggedin nav navbar-nav navbar-right">
+                {% if g.user and g.user.is_authenticated %}
+                    <li class="navbar-personaltools-tools {{active('preferences')}}">
+                        {% if g.user.has_avatar %}
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="You are logged in as {{ g.user.display_name }}." aria-expanded="true">{{ person_avatar(g.user, 32) }}</a>
+                        {% else %}
+                            <a class="dropdown-toggle glyphicon glyphicon-user navbar-user-loggedin" href="#" data-toggle="dropdown" title="You are logged in as {{ g.user.display_name }}." aria-expanded="true"></a>
+                        {% endif %}
+                        <ul class="p-personal-tools dropdown-menu dropdown-menu-right">
+                            <li id="pt-userpage"><a href="/people/{{ g.user.wmbid }}" dir="auto" title="Your user page [ctrl-alt-.]" accesskey=".">{{ g.user.display_name }}</a></li>
+                            <li id="pt-preferences"><a href="/preferences" title="Your preferences">Preferences</a></li>
+                            <li id="pt-logout"><a href="/logout" title="Your preferences">Log out</a></li>
+                        </ul>
+                    </li>
                 {% else %}
-                <a class="dropdown-toggle glyphicon glyphicon-user navbar-user-loggedin" href="#" data-toggle="dropdown" title="You are logged in as Farthen." aria-expanded="true"></a>
+                    <li>
+                        <li class="navbar-user-notloggedin"><a href="{{url_for('discord.login')}}" title="You are not logged in."><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>Log in</a>
+                    </li>
                 {% endif %}
-                <ul class="p-personal-tools dropdown-menu dropdown-menu-right">
-                    <li id="pt-userpage"><a href="/people/{{ g.user.wmbid }}" dir="auto" title="Your user page [ctrl-alt-.]" accesskey=".">{{ g.user.display_name }}</a></li>
-                    <li id="pt-preferences"><a href="/preferences" title="Your preferences">Preferences</a></li>
-                    <li id="pt-logout"><a href="/logout" title="Your preferences">Log out</a></li>
-                </ul>
-            </li>
-            {% else %}
-            <li>
-                <li class="navbar-user-notloggedin"><a href="{{url_for('discord.login')}}" title="You are not logged in."><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>Log in</a>
-            </li>
-            {% endif %}
-        </ul>
-        {% endblock %} {# navbar_right #}
+            </ul>
+        {% endblock navbar_right %}
     </div><!-- /.navbar-collapse -->
 </nav>
 {%- endblock %} {# navbar #}

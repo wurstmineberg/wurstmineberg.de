@@ -11,7 +11,7 @@ from wurstmineberg_web.models import Person
 from wurstmineberg_web.util import templated
 
 @flask_view_tree.index(wurstmineberg_web.app)
-@templated('index.html')
+@templated()
 def index():
     pass
 
@@ -37,7 +37,7 @@ def people():
     return {'people': people}
 
 @people.children(Person.from_snowflake_or_wmbid)
-@templated('profile.html')
+@templated()
 def profile(person):
     return {'person': person}
 
