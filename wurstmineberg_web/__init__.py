@@ -25,6 +25,7 @@ def create_app(production):
     import wurstmineberg_web.database
     import wurstmineberg_web.views
     import wurstmineberg_web.auth
+    import wurstmineberg_web.api
     import wurstmineberg_web.error
 
     flask_bootstrap.Bootstrap(app)

@@ -24,6 +24,15 @@ def is_safe_url(target):
     test_url = urllib.parse.urlparse(urllib.parse.urljoin(flask.request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
+def member_required(f):
+    @functools.wraps(f)
+    def wrapper(*args, **kwargs):
+        if not flask.g.user.is_active:
+            return flask.make_response(("You don't have permission to access this page because you're not a server member.", 403, [])) #TODO template
+        return f(*args, **kwargs)
+
+    return flask_login.login_required(wrapper)
+
 def setup(app):
     if 'clientID' not in app.config.get('wurstminebot', {}) or 'clientSecret' not in app.config.get('wurstminebot', {}):
         return #TODO mount error messages at /login and /auth

@@ -8,9 +8,11 @@ from sqlalchemy import Column, BigInteger, Integer, String, Boolean, ForeignKey
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.orm.attributes import flag_modified
+import string
 
 from wurstmineberg_web.database import Base, db_session
 
+API_KEY_LENGTH = 25
 UID_LENGTH = 16
 
 class Person(Base, flask_login.UserMixin):
@@ -22,6 +24,21 @@ class Person(Base, flask_login.UserMixin):
     active = Column(Boolean, default=True)
     data = Column(JSONB)
     version = Column(Integer)
+    apikey = Column(String(API_KEY_LENGTH))
+
+    @classmethod
+    def from_api_key(cls, key=None, *, exclude=None):
+        if exclude is None:
+            exclude = set()
+        if key is None:
+            auth = flask.request.authorization
+            if auth and auth.username.strip().lower() == 'api':
+                key = auth.password.strip().lower()
+        for person in cls:
+            if person in exclude:
+                continue
+            if key == person.api_key_inner(exclude=exclude):
+                return person
 
     @classmethod
     def from_snowflake(cls, snowflake):
@@ -30,6 +47,13 @@ class Person(Base, flask_login.UserMixin):
     @classmethod
     def from_wmbid(cls, wmbid):
         return cls.query.filter_by(wmbid=wmbid).one()
+
+    @classmethod
+    def from_snowflake_or_wmbid(cls, wmbid_or_snowflake):
+        if re.fullmatch('[a-z][0-9a-z]{1,15}', wmbid_or_snowflake):
+            return cls.from_wmbid(wmbid_or_snowflake)
+        else:
+            return cls.from_snowflake(int(wmbid_or_snowflake))
 
     @classmethod
     def sorted_people(self, people):
@@ -82,6 +106,26 @@ class Person(Base, flask_login.UserMixin):
         return self.active
 
     @property
+    def api_key(self):
+        return self.api_key_inner()
+
+    def api_key_inner(self, *, exclude=None):
+        if exclude is None:
+            exclude = set()
+        if self.apikey is None:
+            new_key = None
+            while new_key is None or self.__class__.from_api_key(new_key, exclude=exclude | {self}) is not None: # to avoid duplicates
+                new_key = ''.join(random.choice(string.ascii_lowercase + string.digits) for i in range(API_KEY_LENGTH))
+            self.apikey = new_key
+            self.commit_data()
+        return self.apikey
+
+    @api_key.deleter
+    def api_key(self):
+        self.apikey = None
+        self.commit_data()
+
+    @property
     def is_admin(self):
         return False #TODO
 
@@ -105,6 +149,13 @@ class Person(Base, flask_login.UserMixin):
     def minecraft_name(self):
         if 'minecraft' in self.data and 'nicks' in self.data['minecraft']:
             return self.data['minecraft']['nicks'][-1]
+
+    @property
+    def snowflake_or_wmbid(self):
+        if self.snowflake is None:
+            return self.wmbid
+        else:
+            return self.snowflake
 
     @property
     def twitter_name(self):

@@ -1,31 +1,31 @@
-from flask import render_template, abort, redirect, g, request, flash
-from jinja2 import TemplateNotFound
-from .util import templated
-from .models import Person
-import wurstmineberg_web.forms as forms
+import flask
+import flask_login
+import flask_view_tree
+import sqlalchemy.orm.exc
 import wtforms
 
-from flask_login import login_required, logout_user
+import wurstmineberg_web
+import wurstmineberg_web.auth
+import wurstmineberg_web.forms
+from wurstmineberg_web.models import Person
+from wurstmineberg_web.util import templated
 
-from wurstmineberg_web import app
-
-
-@app.route('/')
+@flask_view_tree.index(wurstmineberg_web.app)
 @templated('index.html')
 def index():
-    return None
+    pass
 
-@app.route('/about')
+@index.child('about')
 @templated()
 def about():
-    return None
+    pass
 
-@app.route('/stats')
+@index.child('stats')
 @templated()
 def stats():
     return None
 
-@app.route('/people/')
+@index.child('people')
 @templated()
 def people():
     people = Person.get_people_ordered_by_status()
@@ -36,32 +36,40 @@ def people():
     people['former'].extend(people['vetoed'])
     return {'people': people}
 
-@app.route('/people/<wmbid>')
+@people.children(Person.from_snowflake_or_wmbid)
 @templated('profile.html')
-def profile(wmbid):
-    person = Person.from_wmbid(wmbid)
-    if not person:
-        return abort(404)
-    return {'wmbid': wmbid, 'person': person}
+def profile(person):
+    return {'person': person}
 
-@app.route('/profile')
-@login_required
+@profile.catch_init(sqlalchemy.orm.exc.NoResultFound)
+def profile_catch_init(exc, value):
+    return flask.abort(404)
+
+@profile.child('reset-key')
+def reset_api_key(person):
+    if flask.g.user.is_admin or flask.g.user == person:
+        del person.api_key
+        return flask.redirect(flask.url_for('api_index'))
+    else:
+        flask.flash(jinja2.Markup("You are not authorized to regenerate {}'s API key.".format(person.__html__())), 'error')
+        return flask.redirect(flask.url_for('api_index'))
+
+@index.redirect('profile', decorators=[wurstmineberg_web.auth.member_required])
 def get_profile():
-    return redirect('/people/{}'.format(g.user.wmbid))
+    return people, flask.g.user
 
-@app.route('/preferences', methods=('GET', 'POST'))
-@login_required
+@index.child('preferences', methods=['GET', 'POST'], decorators=[wurstmineberg_web.auth.member_required])
 @templated()
 def preferences():
-    profile_form = forms.ProfileForm()
-    settings_form = forms.SettingsForm()
-    data = g.user.data
+    profile_form = wurstmineberg_web.forms.ProfileForm()
+    settings_form = wurstmineberg_web.forms.SettingsForm()
+    data = flask.g.user.data
     last_data = None
-    displayed_tab = request.args.get('tab', 'profile')
+    displayed_tab = flask.request.args.get('tab', 'profile')
 
     def set_data():
         profile_form.name.data = data.get('name', '')
-        profile_form.name.description['placeholder'] = g.user.wmbid
+        profile_form.name.description['placeholder'] = flask.g.user.wmbid
         profile_form.description.data = data.get('description', '')
         profile_form.gravatar.data = data.get('gravatar', '')
         profile_form.mojira.data = data.get('mojira', '')
@@ -76,10 +84,10 @@ def preferences():
 
         last_data = data
 
-    if request.method == 'GET':
+    if flask.request.method == 'GET':
         set_data()
-    elif request.method == 'POST' and 'save' in request.form:
-        submitted_form = request.form['save']
+    elif flask.request.method == 'POST' and 'save' in flask.request.form:
+        submitted_form = flask.request.form['save']
         if submitted_form == 'save-profile' and profile_form.validate():
             if profile_form.name.data and not profile_form.name.data.isspace():
                 data['name'] = profile_form.name.data
@@ -117,9 +125,9 @@ def preferences():
             else:
                 data.pop('favColor', None)
 
-            g.user.commit_data()
+            flask.g.user.commit_data()
             set_data()
-            flash('Successfully saved profile')
+            flask.flash('Successfully saved profile')
 
         if submitted_form == 'save-settings' and settings_form.validate():
             options = data.setdefault('options', {})
@@ -127,9 +135,8 @@ def preferences():
                 if not isinstance(field, wtforms.HiddenField):
                     options[field.id] = field.data
             data['options'] = options
-            g.user.commit_data()
+            flask.g.user.commit_data()
             set_data()
-            flash('Successfully saved settings')
-
+            flask.flash('Successfully saved settings')
 
     return {'profile_form': profile_form, 'settings_form': settings_form, 'displayed_tab': displayed_tab}

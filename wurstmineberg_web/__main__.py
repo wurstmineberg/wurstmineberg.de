@@ -3,6 +3,10 @@
 Wurstmineberg website
 """
 
+import sys
+
+sys.path.append('/opt/py')
+
 from wurstmineberg_web import create_app
 
 # uwsgi starts the application differently
