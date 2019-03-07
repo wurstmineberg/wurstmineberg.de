@@ -183,10 +183,7 @@ class Person(Base, flask_login.UserMixin):
 
     @property
     def profile_url(self):
-        if self.wmbid is None:
-            raise NotImplementedError() #TODO implement and use by default, not only if wmbid is None
-        else:
-            flask.url_for('profile', wmbid=str(self.wmbid)) #TODO use only if snowflake is None
+        flask.url_for('profile', person=str(self.snowflake_or_wmbid))
 
     def playerhead_url(self, size):
         return '//api.{}/v2/player/{}/skin/render/head/{}.png'.format(flask.g.host, self.wmbid, size) #TODO update to API v3
