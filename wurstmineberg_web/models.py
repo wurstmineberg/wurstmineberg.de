@@ -160,6 +160,10 @@ class Person(Base, flask_login.UserMixin):
             return self.snowflake
 
     @property
+    def url_part(self):
+        return str(self.snowflake_or_wmbid)
+
+    @property
     def twitter_name(self):
         twitter = self.data.get('twitter', None)
         if twitter:
