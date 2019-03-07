@@ -34,7 +34,7 @@ class Person(Base, flask_login.UserMixin):
             auth = flask.request.authorization
             if auth and auth.username.strip().lower() == 'api':
                 key = auth.password.strip().lower()
-        for person in cls:
+        for person in cls.query.all():
             if person in exclude:
                 continue
             if key == person.api_key_inner(exclude=exclude):
