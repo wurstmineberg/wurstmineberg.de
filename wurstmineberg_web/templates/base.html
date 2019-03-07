@@ -30,7 +30,7 @@
 {% endblock %} {# head #}
 
 {% macro active(page) -%}
-    {%- if (g.view_node.parent.is_index and g.view_node.view_func_node.name == page) or (g.view_node.parents | length > 1 and g.view_node.parents[-2].view_func_node.name == page) %}
+    {%- if g.view_node is defined and (g.view_node.parent.is_index and g.view_node.view_func_node.name == page) or (g.view_node.parents | length > 1 and g.view_node.parents[-2].view_func_node.name == page) %}
         class="active"
     {%- endif -%}
 {%- endmacro %}
@@ -51,7 +51,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul id="navbar-list" class="nav navbar-nav">
-            <li {% if g.view_node.is_index %}class="active"{% endif %}><a href="/"><span class="fa fa-home"></span>Home</a></li>
+            <li {% if g.view_node is defined and g.view_node.is_index %}class="active"{% endif %}><a href="/"><span class="fa fa-home"></span>Home</a></li>
             <li class="{{active('about')}}"><a href="/about"><span class="fa fa-info-circle"></span>About</a></li>
             <li class="{{active('people')}}"><a href="/people"><span class="fa fa-users"></span>People</a></li>
             <li class="{{active('stats')}}"><a href="/stats"><span class="fa fa-table"></span>Statistics</a></li>
