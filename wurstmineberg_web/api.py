@@ -2,6 +2,7 @@ import flask
 import flask_login
 import functools
 
+import wurstmineberg_web
 import wurstmineberg_web.auth
 import wurstmineberg_web.models
 import wurstmineberg_web.util
@@ -57,3 +58,19 @@ def api_discord_index():
 def discord_voice_state():
     with (wurstmineberg_web.util.BASE_PATH / 'discord' / 'voice-state.json').open() as f:
         return flask.Response(f.read(), mimetype='application/json')
+
+@api_v3_index.child('money')
+def api_money_index():
+    pass
+
+@api_money_index.child('overview.json')
+def api_money_overview():
+    response = requests.get('https://nightd.fenhl.net/wurstmineberg/money/overview.json', auth=('wurstmineberg', wurstmineberg_web.app.config['night']['password']))
+    response.raise_for_status()
+    return flask.Response(response.text, mimetype='application/json')
+
+@api_money_index.child('transactions.json')
+def api_money_transactions():
+    response = requests.get('https://nightd.fenhl.net/wurstmineberg/money/transactions.json', auth=('wurstmineberg', wurstmineberg_web.app.config['night']['password']))
+    response.raise_for_status()
+    return flask.Response(response.text, mimetype='application/json')

@@ -18,12 +18,12 @@ def index():
 @index.child('about')
 @templated()
 def about():
-    pass
+    return {'money': wurstmineberg_web.app.config['money']}
 
 @index.child('stats')
 @templated()
 def stats():
-    return None
+    pass
 
 @index.child('people')
 @templated()

@@ -41,7 +41,7 @@
 #}
 <h2 id="finance">Financial stuff</h2>
 <p>The Wurstmineberg infrastructure runs on a VPS with monthly costs. Members may contribute to paying for these expenses on a voluntary basis. Depending on how much money is available, we will upgrade or downgrade the hardware on which the server runs.</p>
-<p>Our funding tracker is not quite ready yet. {#TODO#} If you would like to contribute, please talk to Fenhl on Discord.</p>
+<p>Our funding tracker is not quite ready yet. {#TODO#}</p>
 {#
 <div class="funding-progress-container-about">
         <p class="funding-text-container">Funding<span class="funding-text"> <span class="funding-for">for </span><span class="funding-month">(loading)</span><span class="funding-month-small">(loading)</span></span>:</p>
@@ -52,4 +52,26 @@
     </div>
 </div>
 #}
+{% if g.user.is_active %}
+    <h3>Contribute</h3>
+    <p>If you would like to contribute money, please use one of the methods of transfer below, or contact Fenhl on Discord if none of them work for you. The amount and time of receipt will be published anonymously. Thank you.</p>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>bank transfer</h4>
+            <p>
+                Name: {{money['name']}}<br />
+                IBAN: {{money['iban']}}<br />
+                BIC: {{money['bic']}}<br />
+                Reference: Wurstmineberg
+            </p>
+        </div>
+        <div class="col-md-6">
+            <h4>PayPal</h4>
+            <p><a href="https://www.paypal.me/{{money['payPal']}}">paypal.me/{{money['payPal']}}</a></p>
+            <p>Please include the word Wurstmineberg in the note.</p>
+        </div>
+    </div>
+{% else %}
+    <p><a href="{{url_for('discord.login')}}">Log in</a> to view ways to contribute.</p>
+{% endif %}
 {% endblock page_content %}
