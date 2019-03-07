@@ -118,13 +118,13 @@ class Person(Base, flask_login.UserMixin):
             while new_key is None or self.__class__.from_api_key(new_key, exclude=exclude | {self}) is not None: # to avoid duplicates
                 new_key = ''.join(random.choice(string.ascii_lowercase + string.digits) for i in range(API_KEY_LENGTH))
             self.apikey = new_key
-            self.commit_data()
+            db_session.commit()
         return self.apikey
 
     @api_key.deleter
     def api_key(self):
         self.apikey = None
-        self.commit_data()
+        db_session.commit()
 
     @property
     def is_admin(self):
