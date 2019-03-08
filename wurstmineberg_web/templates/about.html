@@ -42,14 +42,18 @@
 <h2 id="finance">Financial stuff</h2>
 <p>The Wurstmineberg infrastructure runs on a VPS with monthly costs. Members may contribute to paying for these expenses on a voluntary basis. Depending on how much money is available, we will upgrade or downgrade the hardware on which the server runs.</p>
 <div>
-    <p>Current goal: {{money_overview['text']}}</p> {#TODO time remaining #}
-    {% if money_overview['goal'] is none %}
-        <p>Current progress: {{money_overview['amount']}} {{money_overview['currency']}} (no target amount)</p>
+    {% if money_overview is none %}
+        <p>Financial status currently unavailable, please try again later.</p>
     {% else %}
-        <div class="progress">
-            {% set percent = 100 * money_overview['amount'] / money_overview['goal'] %}
-            <div class="progress-bar progress-bar-success" style="width: {{percent}}%;"><span class="sr-only">{{percent | int}}% funded</span></div> {#TODO display amount and goal as text #}
-        </div>
+        <p>Current goal: {{money_overview['text']}}</p> {#TODO time remaining #}
+        {% if money_overview['goal'] is none %}
+            <p>Current progress: {{money_overview['amount']}} {{money_overview['currency']}} (no target amount)</p>
+        {% else %}
+            <div class="progress">
+                {% set percent = 100 * money_overview['amount'] / money_overview['goal'] %}
+                <div class="progress-bar progress-bar-success" style="width: {{percent}}%;"><span class="sr-only">{{percent | int}}% funded</span></div> {#TODO display amount and goal as text #}
+            </div>
+        {% endif %}
     {% endif %}
 </div>
 {% if g.user.is_active %}
