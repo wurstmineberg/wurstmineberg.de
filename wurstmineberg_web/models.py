@@ -4,6 +4,7 @@ import flask_login
 import hashlib
 import iso8601
 import jinja2
+import people
 import random
 import re
 from sqlalchemy import Column, BigInteger, Integer, String, Boolean, ForeignKey
@@ -57,6 +58,17 @@ class Person(Base, flask_login.UserMixin):
             return cls.from_wmbid(wmbid_or_snowflake)
         else:
             return cls.from_snowflake(int(wmbid_or_snowflake))
+
+    @classmethod
+    def obj_dump(cls, version=3):
+        # use v3 as base as the db probably has v3 anyways
+        obj = {'version': 3, 'people': {}}
+        for person in cls.query.all():
+            person_id = str(person.snowflake_or_wmbid)
+            converter = people.PersonConverter(person_id, person.data, person.version)
+            obj['people'][person_id] = converter.get_version(3)
+        # now for converting everything for realsies
+        return PeopleConverter(obj).get_version(version)
 
     @classmethod
     def sorted_people(self, people):

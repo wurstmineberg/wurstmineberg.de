@@ -1,3 +1,4 @@
+import copy
 import flask
 import flask_login
 import functools
@@ -93,9 +94,7 @@ def money_transactions():
 
 @json_child(api_v3_index, 'people')
 def api_people():
-    import people
-
-    db = people.get_people_db().obj_dump(version=3)
+    db = copy.deepcopy(wurstmineberg_web.models.Person.obj_dump(version=3))
     for person in db['people'].values():
         if 'gravatar' in person:
             person['gravatar'] = 'https://www.gravatar.com/avatar/{}'.format(hashlib.md5(person['gravatar'].encode('utf-8')).hexdigest())
