@@ -68,7 +68,7 @@ class Person(Base, flask_login.UserMixin):
             converter = people.PersonConverter(person_id, person.data, person.version)
             obj['people'][person_id] = converter.get_version(3)
         # now for converting everything for realsies
-        return PeopleConverter(obj).get_version(version)
+        return people.PeopleConverter(obj).get_version(version)
 
     @classmethod
     def sorted_people(self, people):
