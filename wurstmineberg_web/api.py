@@ -1,6 +1,7 @@
 import flask
 import flask_login
 import functools
+import hashlib
 import requests
 import simplejson
 
@@ -55,8 +56,7 @@ def json_child(node, name, *args, **kwargs):
 
     return decorator
 
-@wurstmineberg_web.views.index.child('api', 'API')
-@key_or_member_optional
+@wurstmineberg_web.views.index.child('api', 'API', decorators=[key_or_member_optional])
 def api_index():
     return flask.redirect((flask.g.view_node / 'v3').url)
 
@@ -86,6 +86,17 @@ def money_overview():
 
 @json_child(api_money_index, 'transactions')
 def money_transactions():
+    #TODO show which transactions are mine
     response = requests.get('https://nightd.fenhl.net/wurstmineberg/money/transactions.json', auth=('wurstmineberg', wurstmineberg_web.app.config['night']['password']))
     response.raise_for_status()
     return response.json()
+
+@json_child(api_v3_index, 'people')
+def api_people():
+    import people
+
+    db = people.get_people_db().obj_dump(version=3)
+    for person in db['people'].values():
+        if 'gravatar' in person:
+            person['gravatar'] = 'https://www.gravatar.com/avatar/{}'.format(hashlib.md5(person['gravatar'].encode('utf-8')).hexdigest())
+    return db

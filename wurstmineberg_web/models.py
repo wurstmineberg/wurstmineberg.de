@@ -25,8 +25,9 @@ class Person(Base, flask_login.UserMixin):
     snowflake = Column(BigInteger)
     active = Column(Boolean, default=True)
     data = Column(JSONB)
-    version = Column(Integer)
+    version = Column(Integer, default=3)
     apikey = Column(String(API_KEY_LENGTH))
+    discorddata = Column(JSONB)
 
     @classmethod
     def from_api_key(cls, key=None, *, exclude=None):
@@ -141,7 +142,7 @@ class Person(Base, flask_login.UserMixin):
             return self.data['name']
         if self.wmbid is not None:
             return self.wmbid
-        raise NotImplementedError() #TODO get Discord nick
+        raise NotImplementedError() #TODO get Discord nick first
 
     @property
     def description(self):
