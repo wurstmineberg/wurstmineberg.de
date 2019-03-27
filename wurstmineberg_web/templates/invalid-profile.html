@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}profile not found — Wurstmineberg{% endblock %}
+
+{% block page_content %}
+    <h1>Profile not found</h1>
+    {% if well_formed %}
+        <p>There is no Wurstmineberg member with Wurstmineberg ID or Discord snowflake <code>{{user_id}}</code>.</p>
+    {% else %}
+        <p>“{{user_id}}” is not a valid Wurstmineberg ID or Discord snowflake.</p>
+    {% endif %}
+    <p>Maybe you want to go to the <a href="{{url_for('people')}}">list of people</a> instead?</p>
+{% endblock %}

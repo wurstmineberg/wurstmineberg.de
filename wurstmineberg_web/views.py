@@ -55,8 +55,12 @@ def profile(person):
     return {'person': person}
 
 @profile.catch_init(sqlalchemy.orm.exc.NoResultFound)
-def profile_catch_init(exc, value):
-    return flask.abort(404)
+def profile_catch_not_found(exc, value):
+    return flask.render_template('invalid-profile.html', user_id=value, well_formed=True), 404
+
+@profile.catch_init(ValueError)
+def profile_catch_value_error(exc, value):
+    return flask.render_template('invalid-profile.html', user_id=value, well_formed=False), 404
 
 @profile.child('reset-key')
 def reset_api_key(person):
