@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
+{% macro render_money(amount, currency) -%}
+    {%- if currency == 'EUR' -%}
+        {{'{:.2f}'.format(amount)}}€
+    {%- else -%}
+        {{money_overview['amount']}} {{money_overview['currency']}}
+    {%- endif -%}
+{%- endmacro %}
+
 {% block title %}About — Wurstmineberg{% endblock %}
 
 {% block page_content %}
@@ -33,7 +41,7 @@
 </ul>
 <p>Now for the actual invitation process, just ask one of our members to invite you. See <a href="/">the main page</a> for ways to contact us.</p>
 <h2 id="starter">Getting started</h2>
-<p>We'll be starting from scratch together in our Renascence project, Zucchini. A date poll will be held once this whole finance thing has been sorted to reasonable extent.</p>
+<p>We'll be starting from scratch together in our Renascence project, Zucchini, this April.</p>
 {#
 <p>If you're new and don't know where to go and what to do, chances are you didn't get a {{ wiki('Tour', 'server tour') }} by one of our more senior members. Sorry about that. The first thing you'll see is our {{ wiki('Category:Spawn', 'spawn area') }}, which is rather obviously still being built, like so many things on the server. “Beneath” the spawn area is our {{ wiki('Newther_Hub', 'Nether hub' ) }}, which serves as a central community trafficking area and connects various tunnels to other peoples's Nether portals. Both the Nether hub and spawn area are community oriented builds. All the supplies there are either donated or specifically collected for specific builds or purposes, so… well, the general rule is “Don't be a dick”. If something has a sign with “free to take” on it, you can probably take it. Taking <em>everything</em> is generally frowned upon for reasons of obviousness. Also, even if there are usually some community supplies floating around (like steak), please don't rely on them as your only means of, you know, not starving to death.</p>
 <p>If you'd like to work on community builds like spawners, {{ wiki('Category:Farms', 'farms' ) }} or whatever, please try to ask around some of the other people who may or may not have already started preparations for such builds. It's not about <em>owning</em> a community project, it's just about coordination and not stepping on people's toes. However, experience shows that you probably won't be murdered in your sleep if you build at spawn without discussing every minor detail with everyone. Hanging around on {{ wiki('Slack', 'Slack') }} and/or checking out the <a href="https://twitter.com/wurstmineberg">Twitter account</a> and/or checking out the {{ wiki('/', 'wiki') }} should give a start as to what's currently going on. And sometimes it doesn't.</p>
@@ -45,13 +53,14 @@
     {% if money_overview is none %}
         <p>Financial status currently unavailable, please try again later.</p>
     {% else %}
-        <p>Current goal: {{money_overview['text']}}</p> {#TODO time remaining #}
+        <p>Current goal: {{money_overview['text']}}</p>
         {% if money_overview['goal'] is none %}
-            <p>Current progress: {% if money_overview['currency'] == 'EUR' %}{{'{:.2f}'.format(money_overview['amount'])}}€{% else %}{{money_overview['amount']}} {{money_overview['currency']}}{% endif %} (no target amount)</p>
+            <p>Current progress: {{render_money(money_overview['amount'], money_overview['currency'])}} (no target amount)</p>
         {% else %}
             <div class="progress">
                 {% set percent = 100 * money_overview['amount'] / money_overview['goal'] %}
-                <div class="progress-bar progress-bar-success" style="width: {{percent}}%;"><span class="sr-only">{{percent | int}}% funded</span></div> {#TODO display amount and goal as text #}
+                <div class="progress-bar progress-bar-success" style="min-width: 5em; max-width: calc(100% - 5em); width: {{percent}}%; text-align: right; padding-right: 0.5em;">{{render_money(money_overview['amount'], money_overview['currency'])}}</div>
+                <div style="min-width: 5em; text-align: right; padding-right: 0.5em;">{{render_money(money_overview['goal'], money_overview['currency'])}}</div>
             </div>
         {% endif %}
     {% endif %}
