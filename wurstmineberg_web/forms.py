@@ -2,7 +2,7 @@ from wurstmineberg_web import app
 
 from flask import Markup
 import flask_pagedown.fields
-from flask_wtf import Form
+import flask_wtf
 from wtforms import StringField, TextAreaField, BooleanField, SelectField, widgets
 from wtforms import validators
 import wtforms
@@ -83,19 +83,14 @@ class MarkdownField(flask_pagedown.fields.PageDownField):
         if valuelist:
             self.data = wurstmineberg_web.wiki.tags_to_mentions(valuelist[0])
 
-class ProfileForm(Form):
+class ProfileForm(flask_wtf.FlaskForm):
     name = StringField('Name', validators=[EmptyOrValidatorValidator(validators.Length(min=2, max=20))], description={
         'text': 'The name that will be used when addressing you and referring to you'})
     description = MarkdownField('Description',
         description={
             'text': '1000 characters maximum.',
             'placeholder': 'A short text (up to 1000 characters) that describes you. May contain Markdown formatting.'},
-        validators=[EmptyOrValidatorValidator(validators.Length(max=1000))])
-    gravatar = StringField('Gravatar email',
-        description={'text': 'The email associated with your gravatar account',
-            'placeholder': 'user@example.com'},
-        validators=[EmptyOrValidatorValidator(validators.Email()),
-                    validators.Length(max=2000)])
+        validators=[validators.Length(max=1000)])
     mojira = StringField('Mojira username',
         description={'text': 'Your username on the Mojira bug tracker'},
         validators=[validators.Length(max=50)])
@@ -114,7 +109,7 @@ class ProfileForm(Form):
             'placeholder': 'Enter a hex RGB color like #000000 or use the color picker on the right'},
         widget=ColorWidget())
 
-class SettingsFormFactory():
+def SettingsForm():
     options = {
         'allow_online_notifications': {
             'name': 'Allow others to receive online notifications for you',
@@ -146,18 +141,19 @@ class SettingsFormFactory():
         }
     }
 
-    def __call__(self):
-        F = type('SettingsForm', (Form, ), {})
-        for name, option in self.options.items():
-            value = False
-            if 'default' in option:
-                value = option['default']
-            field = BooleanField(option['name'],
-                default=value,
-                description={'text': option['description']})
-            setattr(F, name, field)
-        timezones = ['Etc/UTC', 'Europe/Berlin', 'Europe/Vienna'] + pytz.all_timezones
-        setattr(F, 'timezone', SelectField('Time zone', default='UTC', choices=timezones, coerce=pytz.timezone))
-        return F
+    class Form(flask_wtf.FlaskForm):
+        pass
 
-SettingsForm = SettingsFormFactory()()
+    for name, option in options.items():
+        value = False
+        if 'default' in option:
+            value = option['default']
+        field = BooleanField(option['name'],
+            default=value,
+            description={'text': option['description']})
+        setattr(Form, name, field)
+    common_timezones = ['Etc/UTC', 'Europe/Berlin', 'Europe/Vienna']
+    timezones = common_timezones + [timezone for timezone in pytz.all_timezones if timezone not in common_timezones]
+    Form.timezone = SelectField('Time zone', default='Etc/UTC', choices=[(timezone, timezone) for timezone in timezones], coerce=pytz.timezone))
+
+    return Form()
