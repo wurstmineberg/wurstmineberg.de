@@ -63,7 +63,7 @@ def setup(app):
 
     @app.before_request
     def global_user():
-        if flask_login.current_user.is_admin and 'viewAs' in app.config['web']:
+        if flask_login.current_user.is_admin and 'viewAs' in app.config.get('web', {}):
             flask.g.view_as = True
             flask.g.user = Person.from_snowflake(app.config['web']['viewAs'])
         else:
