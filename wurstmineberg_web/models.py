@@ -81,7 +81,7 @@ class Person(Base, flask_login.UserMixin):
         return people.PeopleConverter(obj).get_version(version)
 
     @classmethod
-    def sorted_people(self, people):
+    def sorted_people(cls, people):
         def sort_date(person):
             for hist in person.data.get('statusHistory', []):
                 if 'date' in hist:
@@ -106,7 +106,7 @@ class Person(Base, flask_login.UserMixin):
                 except KeyError:
                     ppl[status] = [person]
         for status, l in ppl.items():
-            ppl[status] = self.sorted_people(l)
+            ppl[status] = cls.sorted_people(l)
         return ppl
 
     def __html__(self):
