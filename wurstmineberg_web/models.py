@@ -14,6 +14,7 @@ import string
 
 from wurstmineberg_web.database import Base, db_session
 
+ADMIN_ROLE_ID = 88329417788502016
 API_KEY_LENGTH = 25
 UID_LENGTH = 16
 WMBID_REGEX = '[a-z][0-9a-z]{1,15}'
@@ -151,7 +152,7 @@ class Person(Base, flask_login.UserMixin):
 
     @property
     def is_admin(self):
-        return False #TODO
+        return self.discorddata is not None and ADMIN_ROLE_ID in self.discorddata['roles']
 
     def commit_data(self):
         flag_modified(self, 'data')

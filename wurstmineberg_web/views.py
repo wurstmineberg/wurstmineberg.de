@@ -106,7 +106,7 @@ def preferences():
     elif flask.request.method == 'POST' and 'save' in flask.request.form:
         submitted_form = flask.request.form['save']
         if submitted_form == 'save-profile' and profile_form.validate():
-            if flask.g.user.snowflake is not None:
+            if flask.g.user.snowflake is not None and not flask.g.user.is_admin: # wurstminebot does not have permission to rename admins
                 wurstmineberg_web.wurstminebot.set_display_name(flask.g.user, profile_form.name.data)
             data['name'] = profile_form.name.data
 
