@@ -10,6 +10,7 @@ import flask_wtf
 import flaskext.markdown
 import pymdownx.emoji
 import pymdownx.extra
+import pymdownx.tilde
 
 import wurstmineberg_web.util
 
