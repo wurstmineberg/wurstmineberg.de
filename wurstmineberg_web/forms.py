@@ -84,8 +84,8 @@ class MarkdownField(flask_pagedown.fields.PageDownField):
             self.data = wurstmineberg_web.wiki.tags_to_mentions(valuelist[0])
 
 class ProfileForm(flask_wtf.FlaskForm):
-    name = StringField('Name', validators=[EmptyOrValidatorValidator(validators.Length(min=2, max=20))], description={
-        'text': 'The name that will be used when addressing you and referring to you'})
+    name = StringField('Name', validators=[validators.Regexp('^([^@#:]{2,32})$')], description={ #TODO better compliance with https://discordapp.com/developers/docs/resources/user
+        'text': "The name that will be used when addressing you and referring to you. If you're in our Discord server, this will be kept in sync with your display name there."})
     description = MarkdownField('Description',
         description={
             'text': '1000 characters maximum.',

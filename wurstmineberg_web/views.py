@@ -8,8 +8,9 @@ import wtforms
 import wurstmineberg_web
 import wurstmineberg_web.auth
 import wurstmineberg_web.forms
-from wurstmineberg_web.models import Person
+import wurstmineberg_web.models
 from wurstmineberg_web.util import templated
+import wurstmineberg_web.wurstminebot
 
 @flask_view_tree.index(wurstmineberg_web.app)
 @templated()
@@ -41,7 +42,7 @@ def stats():
 @index.child('people')
 @templated()
 def people():
-    people = Person.get_people_ordered_by_status()
+    people = wurstmineberg_web.models.Person.get_people_ordered_by_status()
     for key in ['founding', 'later', 'former', 'guest', 'invited', 'vetoed']:
         people[key] = people.get(key, [])
 
@@ -49,7 +50,7 @@ def people():
     people['former'].extend(people['vetoed'])
     return {'people': people}
 
-@people.children(Person.from_snowflake_or_wmbid)
+@people.children(wurstmineberg_web.models.Person.from_snowflake_or_wmbid)
 @templated()
 def profile(person):
     return {'person': person}
@@ -85,7 +86,7 @@ def preferences():
     displayed_tab = flask.request.args.get('tab', 'profile')
 
     def set_data():
-        profile_form.name.data = data.get('name', '')
+        profile_form.name.data = flask.g.user.display_name
         profile_form.name.description['placeholder'] = flask.g.user.wmbid
         profile_form.description.data = data.get('description', '')
         profile_form.mojira.data = data.get('mojira', '')
@@ -105,10 +106,9 @@ def preferences():
     elif flask.request.method == 'POST' and 'save' in flask.request.form:
         submitted_form = flask.request.form['save']
         if submitted_form == 'save-profile' and profile_form.validate():
-            if profile_form.name.data and not profile_form.name.data.isspace():
-                data['name'] = profile_form.name.data
-            else:
-                data.pop('name', None)
+            if flask.g.user.snowflake is not None:
+                wurstmineberg_web.wurstminebot.set_display_name(flask.g.user, profile_form.name.data)
+            data['name'] = profile_form.name.data
 
             if profile_form.description.data and not profile_form.description.data.isspace():
                 data['description'] = profile_form.description.data
