@@ -88,7 +88,6 @@ def preferences():
         profile_form.name.data = data.get('name', '')
         profile_form.name.description['placeholder'] = flask.g.user.wmbid
         profile_form.description.data = data.get('description', '')
-        profile_form.gravatar.data = data.get('gravatar', '')
         profile_form.mojira.data = data.get('mojira', '')
         profile_form.twitter.data = data.get('twitter', {}).get('username', '')
         profile_form.website.data = data.get('website', None)
@@ -115,11 +114,6 @@ def preferences():
                 data['description'] = profile_form.description.data
             else:
                 data.pop('description', None)
-
-            if profile_form.gravatar.data and not profile_form.gravatar.data.isspace():
-                data['gravatar'] = profile_form.gravatar.data
-            else:
-                data.pop('gravatar', None)
 
             if profile_form.mojira.data and not profile_form.mojira.data.isspace():
                 data['mojira'] = profile_form.mojira.data

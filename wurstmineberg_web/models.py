@@ -1,7 +1,6 @@
 import datetime
 import flask
 import flask_login
-import hashlib
 import iso8601
 import jinja2
 import people
@@ -215,16 +214,13 @@ class Person(Base, flask_login.UserMixin):
         return '//api.{}/v2/player/{}/skin/render/head/{}.png'.format(flask.g.host, self.wmbid, size) #TODO update to API v3
 
     def avatar(self, size):
-        imageURLs = []
-        hiDPIURLs = []
-        # gravatar
-        if 'gravatar' in self.data:
+        # Discord avatar
+        if self.discorddata is not None and self.discorddata['avatar'] is not None:
             return {
-                'url': 'https://www.gravatar.com/avatar/{}?d=404&s={}'.format(hashlib.md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(min(size, 2048))),
-                'hiDPI': 'https://www.gravatar.com/avatar/{}?d=404&s={}'.format(hashlib.md5(self.data['gravatar'].encode('utf8')).hexdigest(), str(min(size * 2, 2048))),
+                'url': self.discorddata['avatar'],
+                'hiDPI': self.discorddata['avatar'],
                 'pixelate': False
             }
-        #TODO Discord avatar
         # player head
         if self.minecraft_name is not None:
             return {
@@ -232,12 +228,9 @@ class Person(Base, flask_login.UserMixin):
                 'hiDPI': self.playerhead_url(min(size * 2, 1024)),
                 'pixelate': True
             }
+        # placeholder
         return {
             'url': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
             'hiDPI': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
             'pixelate': True
         }
-
-    @property
-    def has_avatar(self):
-        return self.data.get('gravatar', None) is not None or self.data.get('minecraft') is not None #TODO check Discord
