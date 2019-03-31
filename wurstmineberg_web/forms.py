@@ -154,6 +154,6 @@ def SettingsForm():
         setattr(Form, name, field)
     common_timezones = ['Etc/UTC', 'Europe/Berlin', 'Europe/Vienna']
     timezones = common_timezones + [timezone for timezone in pytz.all_timezones if timezone not in common_timezones]
-    Form.timezone = SelectField('Time zone', default='Etc/UTC', choices=[(timezone, timezone) for timezone in timezones], coerce=pytz.timezone))
+    Form.timezone = SelectField('Time zone', default='Etc/UTC', choices=[(timezone, timezone) for timezone in timezones], coerce=pytz.timezone)
 
     return Form()
