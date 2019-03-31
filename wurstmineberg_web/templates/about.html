@@ -47,7 +47,7 @@
     {% else %}
         <p>Current goal: {{money_overview['text']}}</p> {#TODO time remaining #}
         {% if money_overview['goal'] is none %}
-            <p>Current progress: {{money_overview['amount']}} {{money_overview['currency']}} (no target amount)</p>
+            <p>Current progress: {% if money_overview['currency'] == 'EUR' %}{{'{:.2f}'.format(money_overview['amount'])}}€{% else %}{{money_overview['amount']}} {{money_overview['currency']}}{% endif %} (no target amount)</p>
         {% else %}
             <div class="progress">
                 {% set percent = 100 * money_overview['amount'] / money_overview['goal'] %}
