@@ -43,6 +43,7 @@ def create_app(production):
     emoji_ext.setConfig('emoji_index', pymdownx.emoji.twemoji)
     md._instance.registerExtensions([emoji_ext], {})
     md.register_extension(pymdownx.extra.ExtraExtension)
+    md.register_extension(pymdownx.tilde.DeleteSubExtension)
     md.register_extension(wurstmineberg_web.wiki.DiscordMentionExtension)
     # set up Markdown preview
     flask_pagedown.PageDown(app)
