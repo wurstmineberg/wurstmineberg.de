@@ -5,7 +5,11 @@ Wurstmineberg website
 
 import flask
 import flask_bootstrap
+import flask_pagedown
 import flask_wtf
+import flaskext.markdown
+import pymdownx.emoji
+import pymdownx.extra
 
 import wurstmineberg_web.util
 
@@ -27,9 +31,21 @@ def create_app(production):
     import wurstmineberg_web.auth
     import wurstmineberg_web.api
     import wurstmineberg_web.error
+    import wurstmineberg_web.wiki
 
+    # set up Bootstrap and WTForms
     flask_bootstrap.Bootstrap(app)
     flask_wtf.CSRFProtect(app)
+    # set up Markdown
+    md = flaskext.markdown.Markdown(app)
+    emoji_ext = pymdownx.emoji.EmojiExtension()
+    emoji_ext.setConfig('emoji_generator', pymdownx.emoji.to_alt)
+    emoji_ext.setConfig('emoji_index', pymdownx.emoji.twemoji)
+    md._instance.registerExtensions([emoji_ext], {})
+    md.register_extension(pymdownx.extra.ExtraExtension)
+    md.register_extension(wurstmineberg_web.wiki.DiscordMentionExtension)
+    # set up Markdown preview
+    flask_pagedown.PageDown(app)
 
     database.init_db()
 

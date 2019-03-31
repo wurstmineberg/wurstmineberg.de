@@ -31,11 +31,11 @@
             {%- endif %}
             <div id="user-info">
                 <p id="user-description">
-                {%- if person.description -%}
-                {{ person.description|safe }}
-                {% else %}
-                You can update your description in your {{ link(url_for('preferences'), 'preferences') }}.
-                {%- endif %}
+                    {%- if person.description -%}
+                        {{ person.description | markdown }}
+                    {% else %}
+                        You can update your description in your {{ link(url_for('preferences'), 'preferences') }}.
+                    {%- endif %}
                 </p>
                 {% if person.twitter_name or person.website or person.wiki -%}
                 <p id="social-links">

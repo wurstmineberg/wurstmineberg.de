@@ -17,6 +17,7 @@ from wurstmineberg_web.database import Base, db_session
 
 API_KEY_LENGTH = 25
 UID_LENGTH = 16
+WMBID_REGEX = '[a-z][0-9a-z]{1,15}'
 
 class Person(Base, flask_login.UserMixin):
     __tablename__ = 'people'
@@ -54,10 +55,19 @@ class Person(Base, flask_login.UserMixin):
 
     @classmethod
     def from_snowflake_or_wmbid(cls, wmbid_or_snowflake):
-        if re.fullmatch('[a-z][0-9a-z]{1,15}', wmbid_or_snowflake):
+        if re.fullmatch(WMBID_REGEX, wmbid_or_snowflake):
             return cls.from_wmbid(wmbid_or_snowflake)
         else:
             return cls.from_snowflake(int(wmbid_or_snowflake))
+
+    @classmethod
+    def from_tag(cls, username, discrim):
+        if discrim is None:
+            return cls.query.filter_by(wmbid=username).one()
+        else:
+            for person in cls.query.all():
+                if username == person.discorddata['username'] and discrim == person.discorddata['discriminator']:
+                    return person
 
     @classmethod
     def obj_dump(cls, version=3):
@@ -84,9 +94,9 @@ class Person(Base, flask_login.UserMixin):
         return sorted(people, key=sort_date)
 
     @classmethod
-    def get_people_ordered_by_status(self):
+    def get_people_ordered_by_status(cls):
         ppl = {}
-        for person in Person.query.all():
+        for person in cls.query.all():
             history = person.data.get('statusHistory', None)
             if history and len(history) >= 1:
                 lasthistory = history[-1]
@@ -150,11 +160,14 @@ class Person(Base, flask_login.UserMixin):
 
     @property
     def display_name(self):
+        if self.discorddata is not None:
+            if self.discorddata['nick'] is not None:
+                return self.discorddata['nick']
+            return self.discorddata['username']
         if 'name' in self.data:
             return self.data['name']
         if self.wmbid is not None:
             return self.wmbid
-        raise NotImplementedError() #TODO get Discord nick first
 
     @property
     def description(self):

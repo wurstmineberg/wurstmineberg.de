@@ -17,7 +17,6 @@ setuptools.setup(
         'Jinja2',
         'SQLAlchemy',
         'WTForms',
-        'bleach',
         'iso8601',
         'people',
         'pytz',

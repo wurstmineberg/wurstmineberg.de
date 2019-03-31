@@ -1,23 +1,13 @@
 from wurstmineberg_web import app
 
 from flask import Markup
+import flask_pagedown.fields
 from flask_wtf import Form
 from wtforms import StringField, TextAreaField, BooleanField, SelectField, widgets
 from wtforms import validators
 import wtforms
 
-import bleach
 import pytz
-
-def html_whitelist_filter(data):
-    tags = ['a', 'em', 's', 'span']
-    attributes = {
-        'span': lambda name, value: name == 'class' and value == 'muted',
-        'a':    lambda name, value: name == 'href'
-    }
-    styles = ['']
-
-    return bleach.clean(data, tags=tags, attributes=attributes, styles=styles, strip=True)
 
 def twitter_username_filter(username):
     if username and len(username) >= 1 and username[0] == u'@':
@@ -76,15 +66,31 @@ class ColorField(StringField):
         if value:
             self.data = '#{:02x}{:02x}{:02x}'.format(value['red'], value['green'], value['blue'])
 
+class MarkdownField(flask_pagedown.fields.PageDownField):
+    def _value(self):
+        import wurstmineberg_web.wiki
+
+        if self.raw_data:
+            return self.raw_data[0]
+        elif self.data is not None:
+            return wurstmineberg_web.wiki.mentions_to_tags(self.data)
+        else:
+            return ''
+
+    def process_formdata(self, valuelist):
+        import wurstmineberg_web.wiki
+
+        if valuelist:
+            self.data = wurstmineberg_web.wiki.tags_to_mentions(valuelist[0])
+
 class ProfileForm(Form):
     name = StringField('Name', validators=[EmptyOrValidatorValidator(validators.Length(min=2, max=20))], description={
         'text': 'The name that will be used when addressing you and referring to you'})
-    description = TextAreaField('Description',
+    description = MarkdownField('Description',
         description={
-            'text': 'Allowed HTML tags: a href, em, s, span class="muted". 1000 characters maximum.',
-            'placeholder': 'A small text (up to 1000 characters) that describes you.'},
-        validators=[EmptyOrValidatorValidator(validators.Length(max=1000))],
-        filters=[html_whitelist_filter])
+            'text': '1000 characters maximum.',
+            'placeholder': 'A short text (up to 1000 characters) that describes you. May contain Markdown formatting.'},
+        validators=[EmptyOrValidatorValidator(validators.Length(max=1000))])
     gravatar = StringField('Gravatar email',
         description={'text': 'The email associated with your gravatar account',
             'placeholder': 'user@example.com'},
