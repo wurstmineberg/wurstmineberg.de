@@ -262,5 +262,7 @@ class World:
 
     @property
     def version(self):
+        if not (self.dir / 'minecraft_server.jar').exists():
+            return None
         #TODO return None for custom/modded servers
         return (self.dir / 'minecraft_server.jar').resolve().stem[len('minecraft_server.'):]
