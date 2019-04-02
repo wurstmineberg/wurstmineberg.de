@@ -14,7 +14,7 @@ DEFAULT_DB_CONFIG = {
 def get_db_config(config_filename=wurstmineberg_web.util.BASE_PATH / 'config' / 'database.json'):
     config = DEFAULT_DB_CONFIG.copy()
     with contextlib.suppress(FileNotFoundError):
-        with open(config_filename) as cfg_file:
+        with config_filename.open() as cfg_file:
             config.update(simplejson.load(cfg_file, use_decimal=True))
     return config
 
