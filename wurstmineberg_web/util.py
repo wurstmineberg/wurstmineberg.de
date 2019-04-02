@@ -1,4 +1,4 @@
-from flask import request, render_template
+import flask
 import functools
 import pathlib
 import simplejson
@@ -30,7 +30,7 @@ def templated(template=None):
         def wrapper(*args, **kwargs):
             template_name = template
             if template_name is None:
-                template_name = request.endpoint \
+                template_name = flask.request.endpoint \
                     .replace('.', '/') + '.html'
             ctx = f(*args, **kwargs)
             if ctx is None:
@@ -38,7 +38,7 @@ def templated(template=None):
             elif not isinstance(ctx, dict):
                 return ctx
             else:
-                return render_template(template_name, **ctx)
+                return flask.render_template(template_name, **ctx)
 
         return wrapper
 
