@@ -37,8 +37,7 @@ def templated(template=None):
                 ctx = {}
             elif not isinstance(ctx, dict):
                 return ctx
-            else:
-                return flask.render_template(template_name, **ctx)
+            return flask.render_template(template_name, **ctx)
 
         return wrapper
 
