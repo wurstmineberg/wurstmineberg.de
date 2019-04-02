@@ -5,12 +5,13 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 from wurstmineberg_web import app
+import wurstmineberg_web.util
 
 DEFAULT_DB_CONFIG = {
     'connectionstring': 'postgresql:///wurstmineberg'
 }
 
-def get_db_config(config_filename='/opt/wurstmineberg/config/database.json'):
+def get_db_config(config_filename=wurstmineberg_web.util.BASE_PATH / 'config' / 'database.json'):
     config = DEFAULT_DB_CONFIG.copy()
     with contextlib.suppress(FileNotFoundError):
         with open(config_filename) as cfg_file:

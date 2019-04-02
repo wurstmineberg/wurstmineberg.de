@@ -1,9 +1,5 @@
 {% extends 'base.html' %}
 
-{% block page_scripts %}
-<script src="{{g.assetserver}}/js/home.js"></script>
-{% endblock %}
-
 {% block page_content %}
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -15,7 +11,16 @@
         <p>If you're interested in playing with us, we have some <a href="/about#joining">requirements</a>. In the meantime, you can check out the Twitter section below.</p>
     </div>
     <div class="panel-footer" id="serverinfo">
-        loading server status…
+        {#TODO show status of other worlds #}
+        {% if running %}
+            The main world is currently <strong>online</strong> and running on version <a href="{{version_url}}" style="font-weight: bold;">{{version}}</a>,
+            {#TODO show who is online #}
+            and <span id="peopleCount">(loading) of the <span id="whitelistCount">(loading)</span> whitelisted players are</span> currently active<span id="punctuation">.</span>
+            <br />
+            <span id="peopleList"></span>
+        {% else %}
+            The main world is <strong>offline</strong> right now. For more information, check <a href="https://discordapp.com/channels/88318761228054528/388412978677940226">#wurstmineberg</a> or <a href="https://twitter.com/wurstmineberg">Twitter</a>.
+        {% endif %}
     </div>
 </div>
 <div class="row">
@@ -45,7 +50,7 @@
     </div>
     <div class="col-md-4">
         <h2 id="customtools"><img src="{{g.assetserver}}/img/grid/goldpickaxe.png" class="heading-icon nearest-neighbor" alt="" /> Custom Tools</h2>
-        <p>We have a GitHub organization where we keep most of our stuff, like <a href="https://github.com/wurstmineberg/wurstminebot">the IRC bot</a>, <a href="https://github.com/wurstmineberg/systemd-minecraft">the systemd service file we use to manage our worlds</a>, and even <a href="https://github.com/wurstmineberg/wurstmineberg.de">this website</a>. We also have three single-serving sites for the current <a href="//time.{{g.host}}/">server time</a>, <a href="//isitraining.{{g.host}}/">weather conditions</a>, and <a href="//accidents.{{g.host}}/">time since the last death on the server</a> (<abbr title="Seriously. We need Javascript for nearly everything">Javascript required</abbr>). There's also the <a href="//api.{{g.host}}/">Wurstmineberg API</a>, which makes a lot of cool stuff possible, like our statistics page.</p>
+        <p>We have a GitHub organization where we keep most of our stuff, like <a href="https://github.com/wurstmineberg/wurstminebot">the IRC bot</a>, <a href="https://github.com/wurstmineberg/systemd-minecraft">the systemd service file we use to manage our worlds</a>, and even <a href="https://github.com/wurstmineberg/wurstmineberg.de">this website</a>. We also have three single-serving sites for the current <a href="//time.{{g.host}}/">server time</a>, <a href="//isitraining.{{g.host}}/">weather conditions</a>, and <a href="//accidents.{{g.host}}/">time since the last death on the server</a> (<abbr title="Seriously. We need Javascript for nearly everything. We're working on reducing that though.">Javascript required</abbr>). There's also the <a href="//api.{{g.host}}/">Wurstmineberg API</a>, which makes a lot of cool stuff possible, like our statistics page.</p>
         <a class="btn btn-default" href="https://github.com/wurstmineberg">GitHub Organization <i class="fa fa-chevron-right"></i></a>
     </div>
     <div class="col-md-4">

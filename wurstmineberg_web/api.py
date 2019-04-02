@@ -60,7 +60,7 @@ def json_child(node, name, *args, **kwargs):
 def api_index():
     return flask.redirect((flask.g.view_node / 'v3').url)
 
-@api_index.child('v3', 'version 3')
+@api_index.child('v3', 'version 3', decorators=[wurstmineberg_web.util.redirect_empty(flask.url_for('api_index'))])
 @wurstmineberg_web.util.templated('api-index.html')
 def api_v3_index():
     pass
@@ -94,7 +94,27 @@ def money_transactions():
 @json_child(api_v3_index, 'people')
 def api_people():
     db = copy.deepcopy(wurstmineberg_web.models.Person.obj_dump(version=3))
-    for person in db['people'].values():
+    for uid, person in db['people'].items():
+        #TODO copy these patches to people.py
         if 'gravatar' in person:
             del person['gravatar']
+        person['name'] = wurstmineberg_web.models.Person.from_snowflake_or_wmbid(uid).display_name
     return db
+
+@api_v3_index.child('world')
+def api_worlds_index():
+    pass
+
+@api_worlds_index.children(wurstmineberg_web.models.World)
+def api_world_index(world):
+    pass
+
+@json_child(api_world_index, 'status')
+def api_world_status(world):
+    return {
+        'main': world.is_main,
+        'running': world.is_running,
+        'version': world.version
+        #TODO list
+        #TODO whitelist
+    }

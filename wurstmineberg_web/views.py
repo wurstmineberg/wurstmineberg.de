@@ -3,6 +3,7 @@ import flask_login
 import flask_view_tree
 import requests
 import sqlalchemy.orm.exc
+import urllib.parse
 import wtforms
 
 import wurstmineberg_web
@@ -15,7 +16,20 @@ import wurstmineberg_web.wurstminebot
 @flask_view_tree.index(wurstmineberg_web.app)
 @templated()
 def index():
-    pass
+    main_world = wurstmineberg_web.models.World()
+    if main_world.is_running:
+        version = main_world.version
+        if version is None:
+            version_url = 'https://minecraft.gamepedia.com/Version_history'
+        else:
+            version_url = 'https://minecraft.gamepedia.com/{}'.format(urllib.parse.quote(version))
+        return {
+            'running': True,
+            'version': version,
+            'version_url': version_url
+        }
+    else:
+        return {'running': False}
 
 @index.child('about')
 @templated()

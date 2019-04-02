@@ -235,3 +235,30 @@ class Person(Base, flask_login.UserMixin):
             'hiDPI': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
             'pixelate': True
         }
+
+class World:
+    def __init__(self, name='wurstmineberg'): #TODO get default from config
+        self.name = name #TODO check if world exists
+
+    def __repr__(self):
+        return 'wurstmineberg_web.models.World({!r})'.format(self.name)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def dir(self):
+        return wurstmineberg_web.config.BASE_PATH / 'world' / self.name
+
+    @property
+    def is_main(self):
+        return self.name == 'wurstmineberg' #TODO get from config
+
+    @property
+    def is_running(self):
+        return subprocess.run(['systemctl', 'is-active', 'minecraft@{}.service'.format(self)]).returncode == 0
+
+    @property
+    def version(self):
+        #TODO return None for custom/modded servers
+        return (self.dir / 'minecraft_server.jar').resolve().stem[len('minecraft_server.'):]
