@@ -13,14 +13,15 @@ from sqlalchemy.orm.attributes import flag_modified
 import string
 import subprocess
 
-from wurstmineberg_web.database import Base, db_session
+import wurstmineberg_web.database
+import wurstmineberg_web.util
 
 ADMIN_ROLE_ID = 88329417788502016
 API_KEY_LENGTH = 25
 UID_LENGTH = 16
 WMBID_REGEX = '[a-z][0-9a-z]{1,15}'
 
-class Person(Base, flask_login.UserMixin):
+class Person(wurstmineberg_web.database.Base, flask_login.UserMixin):
     __tablename__ = 'people'
 
     id = Column(Integer, primary_key=True)
@@ -143,13 +144,13 @@ class Person(Base, flask_login.UserMixin):
             while new_key is None or self.__class__.from_api_key(new_key, exclude=exclude | {self}) is not None: # to avoid duplicates
                 new_key = ''.join(random.choice(string.ascii_lowercase + string.digits) for i in range(API_KEY_LENGTH))
             self.apikey = new_key
-            db_session.commit()
+            wurstmineberg_web.database.db_session.commit()
         return self.apikey
 
     @api_key.deleter
     def api_key(self):
         self.apikey = None
-        db_session.commit()
+        wurstmineberg_web.database.db_session.commit()
 
     @property
     def is_admin(self):
@@ -157,7 +158,7 @@ class Person(Base, flask_login.UserMixin):
 
     def commit_data(self):
         flag_modified(self, 'data')
-        db_session.commit()
+        wurstmineberg_web.database.db_session.commit()
 
     @property
     def display_name(self):
@@ -249,7 +250,7 @@ class World:
 
     @property
     def dir(self):
-        return wurstmineberg_web.config.BASE_PATH / 'world' / self.name
+        return wurstmineberg_web.util.BASE_PATH / 'world' / self.name
 
     @property
     def is_main(self):
