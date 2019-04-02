@@ -10,13 +10,13 @@ def load_json(path):
     with path.open() as f:
         return simplejson.load(f, use_decimal=True)
 
-def redirect_empty(url):
+def redirect_empty(url_f):
     def decorator(f):
         @functools.wraps(f)
         def wrapper(*args, **kwargs):
             result = f(*args, **kwargs)
             if result is None:
-                return flask.redirect(url)
+                return flask.redirect(url_f(flask.g.view_node))
             else:
                 return result
 

@@ -60,7 +60,7 @@ def json_child(node, name, *args, **kwargs):
 def api_index():
     return flask.redirect((flask.g.view_node / 'v3').url)
 
-@api_index.child('v3', 'version 3', decorators=[wurstmineberg_web.util.redirect_empty(flask.url_for('api_index'))])
+@api_index.child('v3', 'version 3', decorators=[wurstmineberg_web.util.redirect_empty(lambda view_node: flask.url_for('api_index'))])
 @wurstmineberg_web.util.templated('api-index.html')
 def api_v3_index():
     pass
