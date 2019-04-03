@@ -3,6 +3,7 @@ import flask
 import flask_login
 import flask_view_tree
 import functools
+import io
 import playerhead
 import requests
 import simplejson
@@ -50,7 +51,11 @@ def image_child(node, name, *args, **kwargs): #TODO caching
         @node.child(name + '.png', *args, **kwargs)
         @functools.wraps(f)
         def wrapper(*args, **kwargs):
-            return flask.send_file(f(*args, **kwargs)) #TODO MIME type
+            image = f(*args, **kwargs)
+            img_io = io.BytesIO()
+            image.save(img_io, 'PNG')
+            img_io.seek(0)
+            return flask.send_file(img_io, mimetype='image/png')
 
         wrapper.raw = f
         return wrapper
