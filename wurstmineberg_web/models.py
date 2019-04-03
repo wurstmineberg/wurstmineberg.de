@@ -153,20 +153,17 @@ class Person(wurstmineberg_web.database.Base, flask_login.UserMixin):
         if self.discorddata is not None and self.discorddata['avatar'] is not None:
             return {
                 'url': self.discorddata['avatar'],
-                'hiDPI': self.discorddata['avatar'],
                 'pixelate': False
             }
         # player head
         if self.minecraft_name is not None:
             return {
                 'url': self.playerhead_url,
-                'hiDPI': self.playerhead_url,
                 'pixelate': True
             }
         # placeholder
         return {
             'url': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
-            'hiDPI': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
             'pixelate': True
         }
 

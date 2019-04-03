@@ -125,8 +125,6 @@ def api_person(person):
 
 @json_child(api_person, 'avatar')
 def api_avatars(person):
-    if size < 1:
-        raise ValueError('Size must be at least 1')
     return person.avatar
 
 @api_person.child('skin')
