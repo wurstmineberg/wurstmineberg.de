@@ -5,7 +5,6 @@ import flask_view_tree
 import functools
 import playerhead
 import requests
-import shutil
 import simplejson
 import tempfile
 
@@ -53,8 +52,7 @@ def image_child(node, name, *args, **kwargs): #TODO caching
         @functools.wraps(f)
         def wrapper(*args, **kwargs):
             tmp = tempfile.NamedTemporaryFile(suffix='png')
-            image = f(*args, **kwargs)
-            shutil.copyfileobj(image, tmp)
+            f(*args, **kwargs).save(tmp)
             tmp.seek(0)
             return flask.send_file(tmp, mimetype='image/png')
 
