@@ -14,7 +14,7 @@ import string
 import subprocess
 import uuid
 
-import wurstmineberg_web.database
+import wurstmineberg_web
 import wurstmineberg_web.util
 
 ADMIN_ROLE_ID = 88329417788502016
@@ -22,7 +22,7 @@ API_KEY_LENGTH = 25
 UID_LENGTH = 16
 WMBID_REGEX = '[a-z][0-9a-z]{1,15}'
 
-class Person(wurstmineberg_web.database.Base, flask_login.UserMixin):
+class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
     __tablename__ = 'people'
 
     id = Column(Integer, primary_key=True)
@@ -139,13 +139,13 @@ class Person(wurstmineberg_web.database.Base, flask_login.UserMixin):
             while new_key is None or self.__class__.from_api_key(new_key, exclude=exclude | {self}) is not None: # to avoid duplicates
                 new_key = ''.join(random.choice(string.ascii_lowercase + string.digits) for i in range(API_KEY_LENGTH))
             self.apikey = new_key
-            wurstmineberg_web.database.db_session.commit()
+            wurstmineberg_web.db.session.commit()
         return self.apikey
 
     @api_key.deleter
     def api_key(self):
         self.apikey = None
-        wurstmineberg_web.database.db_session.commit()
+        wurstmineberg_web.db.session.commit()
 
     @property
     def avatar(self):
@@ -169,7 +169,7 @@ class Person(wurstmineberg_web.database.Base, flask_login.UserMixin):
 
     def commit_data(self):
         flag_modified(self, 'data')
-        wurstmineberg_web.database.db_session.commit()
+        wurstmineberg_web.db.session.commit()
 
     @property
     def description(self):

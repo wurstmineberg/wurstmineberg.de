@@ -6,6 +6,7 @@ Wurstmineberg website
 import flask
 import flask_bootstrap
 import flask_pagedown
+import flask_sqlalchemy
 import flask_wtf
 import flaskext.markdown
 import pymdownx.emoji
@@ -15,25 +16,29 @@ import pymdownx.tilde
 import wurstmineberg_web.util
 
 app = None
+db = None
 
 def create_app(production):
     global app
+    global db
     global wurstmineberg_web
 
     app = flask.Flask(__name__, template_folder='templates/')
 
     app.url_map.strict_slashes = False
     # load config
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///wurstmineberg'
     if wurstmineberg_web.util.CONFIG_PATH.exists():
         app.config.update(wurstmineberg_web.util.load_json(wurstmineberg_web.util.CONFIG_PATH))
 
-    import wurstmineberg_web.database
+    # set up database
+    db = flask_sqlalchemy.SQLAlchemy(app)
+    # load Python modules
     import wurstmineberg_web.views
     import wurstmineberg_web.auth
     import wurstmineberg_web.api
     import wurstmineberg_web.error
     import wurstmineberg_web.wiki
-
     # set up Bootstrap and WTForms
     flask_bootstrap.Bootstrap(app)
     flask_wtf.CSRFProtect(app)
