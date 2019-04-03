@@ -12,6 +12,7 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy.orm.attributes import flag_modified
 import string
 import subprocess
+import uuid
 
 import wurstmineberg_web.database
 import wurstmineberg_web.util
@@ -126,12 +127,6 @@ class Person(wurstmineberg_web.database.Base, flask_login.UserMixin):
         except Exception:
             return repr(self)
 
-    def get_id(self): # required by flask_login
-        return self.snowflake
-
-    def is_active(self):
-        return self.active
-
     @property
     def api_key(self):
         return self.api_key_inner()
@@ -153,12 +148,35 @@ class Person(wurstmineberg_web.database.Base, flask_login.UserMixin):
         wurstmineberg_web.database.db_session.commit()
 
     @property
-    def is_admin(self):
-        return self.discorddata is not None and ADMIN_ROLE_ID in self.discorddata['roles']
+    def avatar(self):
+        # Discord avatar
+        if self.discorddata is not None and self.discorddata['avatar'] is not None:
+            return {
+                'url': self.discorddata['avatar'],
+                'hiDPI': self.discorddata['avatar'],
+                'pixelate': False
+            }
+        # player head
+        if self.minecraft_name is not None:
+            return {
+                'url': self.playerhead_url,
+                'hiDPI': self.playerhead_url,
+                'pixelate': True
+            }
+        # placeholder
+        return {
+            'url': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
+            'hiDPI': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
+            'pixelate': True
+        }
 
     def commit_data(self):
         flag_modified(self, 'data')
         wurstmineberg_web.database.db_session.commit()
+
+    @property
+    def description(self):
+        return self.data.get('description', '')
 
     @property
     def display_name(self):
@@ -171,14 +189,37 @@ class Person(wurstmineberg_web.database.Base, flask_login.UserMixin):
         if self.wmbid is not None:
             return self.wmbid
 
+    def get_id(self): # required by flask_login
+        return self.snowflake
+
+    def is_active(self):
+        return self.active
+
     @property
-    def description(self):
-        return self.data.get('description', '')
+    def is_admin(self):
+        return self.discorddata is not None and ADMIN_ROLE_ID in self.discorddata['roles']
 
     @property
     def minecraft_name(self):
         if 'minecraft' in self.data and 'nicks' in self.data['minecraft']:
             return self.data['minecraft']['nicks'][-1]
+
+    @property
+    def minecraft_uuid(self):
+        if 'minecraft' in self.data:
+            return uuid.UUID(self.data['minecraft']['uuid'])
+
+    @property
+    def mojira(self):
+        return self.data.get('mojira', None)
+
+    @property
+    def playerhead_url(self):
+        return flask.url_for('api_player_head', person=str(self.snowflake_or_wmbid), _external=True)
+
+    @property
+    def profile_url(self):
+        return flask.url_for('profile', person=str(self.snowflake_or_wmbid), _external=True)
 
     @property
     def snowflake_or_wmbid(self):
@@ -188,18 +229,14 @@ class Person(wurstmineberg_web.database.Base, flask_login.UserMixin):
             return self.snowflake
 
     @property
-    def url_part(self):
-        return str(self.snowflake_or_wmbid)
-
-    @property
     def twitter_name(self):
         twitter = self.data.get('twitter', None)
         if twitter:
             return twitter.get('username', None)
 
     @property
-    def mojira(self):
-        return self.data.get('mojira', None)
+    def url_part(self):
+        return str(self.snowflake_or_wmbid)
 
     @property
     def website(self):
@@ -208,35 +245,6 @@ class Person(wurstmineberg_web.database.Base, flask_login.UserMixin):
     @property
     def wiki(self):
         return self.data.get('wiki', None)
-
-    @property
-    def profile_url(self):
-        flask.url_for('profile', person=str(self.snowflake_or_wmbid))
-
-    def playerhead_url(self, size):
-        return '//api.{}/v2/player/{}/skin/render/head/{}.png'.format(flask.g.host, self.wmbid, size) #TODO update to API v3
-
-    def avatar(self, size):
-        # Discord avatar
-        if self.discorddata is not None and self.discorddata['avatar'] is not None:
-            return {
-                'url': self.discorddata['avatar'],
-                'hiDPI': self.discorddata['avatar'],
-                'pixelate': False
-            }
-        # player head
-        if self.minecraft_name is not None:
-            return {
-                'url': self.playerhead_url(min(size, 1024)),
-                'hiDPI': self.playerhead_url(min(size * 2, 1024)),
-                'pixelate': True
-            }
-        # placeholder
-        return {
-            'url': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
-            'hiDPI': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
-            'pixelate': True
-        }
 
 class World:
     def __init__(self, name='wurstmineberg'): #TODO get default from config

@@ -1,7 +1,9 @@
 import copy
 import flask
 import flask_login
+import flask_view_tree
 import functools
+import playerhead
 import requests
 import simplejson
 
@@ -42,6 +44,13 @@ def key_or_member_required(f):
         ) #TODO template
 
     return wrapper
+
+def image_child(node, name, *args, **kwargs): #TODO caching
+    def decorator(f):
+        @node.child(name + '.png', *args, **kwargs)
+        @functools.wraps(f)
+        def wrapper(*args, **kwargs):
+            return flask.send_file(f(*args, **kwargs)) #TODO MIME type
 
 def json_child(node, name, *args, **kwargs):
     def decorator(f):
@@ -100,6 +109,28 @@ def api_people():
             del person['gravatar']
         person['name'] = wurstmineberg_web.models.Person.from_snowflake_or_wmbid(uid).display_name
     return db
+
+@api_v3_index.child('person')
+def api_people_index():
+    pass
+
+@api_people_index.children(wurstmineberg_web.models.Person.from_snowflake_or_wmbid)
+def api_person(person):
+    pass
+
+@json_child(api_person, 'avatar')
+def api_avatars(person):
+    if size < 1:
+        raise ValueError('Size must be at least 1')
+    return person.avatar
+
+@api_person.child('skin')
+def api_player_skins(person):
+    pass
+
+@image_child(api_player_skins, 'head')
+def api_player_head(person):
+    return playerhead.head(person.minecraft_uuid)
 
 @api_v3_index.child('world')
 def api_worlds_index():
