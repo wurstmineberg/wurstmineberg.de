@@ -137,7 +137,10 @@ def api_player_skins(person):
 
 @image_child(api_player_skins, 'head')
 def api_player_head(person):
-    return playerhead.head(person.minecraft_uuid)
+    #TODO fix database errors
+    import PIL.Image
+    return PIL.Image.open('/opt/git/github.com/wurstmineberg/playerhead/master/steve.png')
+    #return playerhead.head(person.minecraft_uuid)
 
 @api_v3_index.child('world')
 def api_worlds_index():
