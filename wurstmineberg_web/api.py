@@ -52,6 +52,11 @@ def image_child(node, name, *args, **kwargs): #TODO caching
         def wrapper(*args, **kwargs):
             return flask.send_file(f(*args, **kwargs)) #TODO MIME type
 
+        wrapper.raw = f
+        return wrapper
+
+    return decorator
+
 def json_child(node, name, *args, **kwargs):
     def decorator(f):
         @node.child(name + '.json', *args, **kwargs)
