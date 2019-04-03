@@ -52,7 +52,7 @@ def image_child(node, name, *args, **kwargs): #TODO caching
         @functools.wraps(f)
         def wrapper(*args, **kwargs):
             tmp = tempfile.NamedTemporaryFile(suffix='png')
-            f(*args, **kwargs).save(tmp)
+            f(*args, **kwargs).save(tmp, format='PNG')
             tmp.seek(0)
             return flask.send_file(tmp, mimetype='image/png')
 
