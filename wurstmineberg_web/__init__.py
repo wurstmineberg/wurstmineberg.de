@@ -54,8 +54,6 @@ def create_app(production):
     # set up Markdown preview
     flask_pagedown.PageDown(app)
 
-    database.init_db()
-
     if not production:
         import os
         # Because of bugs https://gist.github.com/uniphil/7777590 we need to use absolute paths
