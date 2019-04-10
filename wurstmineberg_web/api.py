@@ -113,7 +113,7 @@ def money_transactions():
 def api_people():
     db = copy.deepcopy(wurstmineberg_web.models.Person.obj_dump(version=3))
     for uid, person_data in db['people'].items():
-        person = wurstmineberg.models.Person.from_snowflake_or_wmbid(uid)
+        person = wurstmineberg_web.models.Person.from_snowflake_or_wmbid(uid)
         #TODO copy these patches to people.py
         if 'gravatar' in person_data:
             del person_data['gravatar']
