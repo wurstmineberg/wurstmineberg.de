@@ -3,6 +3,7 @@ import flask
 import flask_login
 import iso8601
 import jinja2
+import mcstatus
 import people
 import random
 import re
