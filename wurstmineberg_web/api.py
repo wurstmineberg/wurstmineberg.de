@@ -152,7 +152,6 @@ def api_world_status(world):
     return {
         'main': world.is_main,
         'running': world.is_running,
-        'version': world.version
-        #TODO list
-        #TODO whitelist
+        'version': world.version,
+        'list': [person.snowflake_or_wmbid for person in world.online_players]
     }

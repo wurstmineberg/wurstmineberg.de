@@ -49,6 +49,12 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
                 return person
 
     @classmethod
+    def from_minecraft_uuid(cls, mc_uuid):
+        for person in cls.query.all():
+            if person.minecraft_uuid == mc_uuid:
+                return person
+
+    @classmethod
     def from_snowflake(cls, snowflake):
         return cls.query.filter_by(snowflake=snowflake).one()
 
@@ -264,6 +270,19 @@ class World:
     @property
     def is_running(self):
         return subprocess.run(['systemctl', 'is-active', 'minecraft@{}.service'.format(self)]).returncode == 0
+
+    @property
+    def online_players(self):
+        server = mcstatus.MinecraftServer.lookup('wurstmineberg.de' if self.is_main else '{}.wurstmineberg.de'.format(self))
+        try:
+            status = server.status()
+        except ConnectionRefusedError:
+            return []
+        else:
+            return [
+                Person.from_minecraft_uuid(uuid.UUID(player.id))
+                for player in (status.players.sample or [])
+            ]
 
     @property
     def version(self):
