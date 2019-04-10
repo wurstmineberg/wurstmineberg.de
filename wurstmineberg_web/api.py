@@ -112,11 +112,15 @@ def money_transactions():
 @json_child(api_v3_index, 'people')
 def api_people():
     db = copy.deepcopy(wurstmineberg_web.models.Person.obj_dump(version=3))
-    for uid, person in db['people'].items():
+    for uid, person_data in db['people'].items():
+        person = wurstmineberg.models.Person.from_snowflake_or_wmbid(uid)
         #TODO copy these patches to people.py
-        if 'gravatar' in person:
-            del person['gravatar']
-        person['name'] = wurstmineberg_web.models.Person.from_snowflake_or_wmbid(uid).display_name
+        if 'gravatar' in person_data:
+            del person_data['gravatar']
+        if person.discorddata is not None:
+            person_data['discord'] = copy.deepcopy(person.discorddata)
+            person_data['discord']['snowflake'] = person.snowflake
+        person_data['name'] = person.display_name
     return db
 
 @api_v3_index.child('person')
