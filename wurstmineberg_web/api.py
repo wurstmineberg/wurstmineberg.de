@@ -280,7 +280,7 @@ def api_world_index(world):
 def api_world_dimensions(world):
     pass
 
-@api_world_dimensions.children(wurstmineberg_web.models.Dimension)
+@api_world_dimensions.children(lambda arg: wurstmineberg_web.models.Dimension[arg.upper()], iterable=wurstmineberg_web.models.Dimension)
 def api_world_dimension_index(world, dimension):
     pass
 
