@@ -3,6 +3,7 @@ import flask
 import flask_login
 import flask_view_tree
 import functools
+import mcanvil
 import nbt.nbt
 import pathlib
 import playerhead
@@ -67,6 +68,25 @@ def image_child(node, name, *args, **kwargs): #TODO caching
 def json_child(node, name, *args, **kwargs):
     def decorator(f):
         @node.child(name + '.json', *args, **kwargs)
+        @functools.wraps(f)
+        def wrapper(*args, **kwargs):
+            result = simplejson.dumps(f(*args, **kwargs), sort_keys=True, indent=4, use_decimal=True)
+            return flask.Response(result, mimetype='application/json')
+
+        wrapper.raw = f
+        return wrapper
+
+    return decorator
+
+def json_children(node, var_converter=flask_view_tree.identity, *args, **kwargs):
+    def json_var_converter(x):
+        if x.endswith('.json'):
+            return var_converter(x[:-len('.json')])
+        else:
+            raise ValueError('URL must end with .json')
+
+    def decorator(f):
+        @node.children(json_var_converter, *args, **kwargs)
         @functools.wraps(f)
         def wrapper(*args, **kwargs):
             result = simplejson.dumps(f(*args, **kwargs), sort_keys=True, indent=4, use_decimal=True)
@@ -256,6 +276,102 @@ def api_worlds_index():
 def api_world_index(world):
     pass
 
+@api_world_index.child('dim')
+def api_world_dimensions(world):
+    pass
+
+@api_world_dimensions.children(wurstmineberg_web.models.Dimension)
+def api_world_dimension_index(world, dimension):
+    pass
+
+@api_world_dimension_index.child('chunk')
+def api_chunks_index(world, dimension):
+    pass
+
+@api_chunks_index.children(int)
+def api_chunks_x(world, dimension, x):
+    pass
+
+@api_chunks_x.children(int)
+def api_chunks_y(world, dimension, x, y):
+    pass
+
+@json_children(api_chunks_y, int)
+def api_chunk(world, dimension, x, y, z):
+    def nybble(data, idx):
+        result = data[idx // 2]
+        if idx % 2 == 0:
+            return result & 15
+        else:
+            return result >> 4
+
+    region = mcanvil.Region(world.region_path(dimension) / 'r.{}.{}.mca'.format(x // 32, z // 32))
+    column = region.chunk_column(x, z).data
+    for section in column['Level']['Sections']:
+        if section['Y'] == y:
+            break
+    else:
+        section = None
+    with pathlib.Path('/opt/git/github.com/wurstmineberg/assets.wurstmineberg.de/master/json/biomes.json').open() as biomes_file:
+        biomes = simplejson.load(biomes_file, use_decimal=True)
+    with pathlib.Path('/opt/git/github.com/wurstmineberg/assets.wurstmineberg.de/master/json/items.json').open() as items_file:
+        items = simplejson.load(items_file, use_decimal=True)
+    layers = []
+    for layer in range(16):
+        block_y = y * 16 + layer
+        rows = []
+        for row in range(16):
+            block_z = z * 16 + row
+            blocks = []
+            for block in range(16):
+                block_x = x * 16 + block
+                block_info = {
+                    'x': block_x,
+                    'y': block_y,
+                    'z': block_z
+                }
+                if 'Biomes' in column['Level']:
+                    block_info['biome'] = biomes['biomes'][str(column['Level']['Biomes'][16 * row + block])]['id']
+                if section is not None:
+                    block_index = 256 * layer + 16 * row + block
+                    block_id = section['Blocks'][block_index]
+                    if 'Add' in section:
+                        block_id += nybble(section['Add'], block_index) << 8
+                    block_info['id'] = block_id
+                    for plugin, plugin_items in items.items():
+                        for item_id, item_info in plugin_items.items():
+                            if 'blockID' in item_info and item_info['blockID'] == block_id:
+                                block_info['id'] = '{}:{}'.format(plugin, item_id)
+                                break
+                    block_info['damage'] = nybble(section['Data'], block_index)
+                    block_info['blockLight'] = nybble(section['BlockLight'], block_index)
+                    block_info['skyLight'] = nybble(section['SkyLight'], block_index)
+                blocks.append(block_info)
+            rows.append(blocks)
+        layers.append(rows)
+    if 'Entities' in column['Level']:
+        for entity in column['Level']['Entities']:
+            if y * 16 <= entity['Pos'][1] < y * 16 + 16: # make sure the entity is in the right section
+                block_info = layers[int(entity['Pos'][1]) & 15][int(entity['Pos'][2]) & 15][int(entity['Pos'][0]) & 15]
+                if 'entities' not in block_info:
+                    block_info['entities'] = []
+                block_info['entities'].append(entity)
+    if 'TileEntities' in column['Level']:
+        for tile_entity in column['Level']['TileEntities']:
+            if y * 16 <= tile_entity['y'] < y * 16 + 16: # make sure the entity is in the right section
+                block_info = layers[tile_entity['y'] & 15][tile_entity['z'] & 15][tile_entity['x'] & 15]
+                del tile_entity['x']
+                del tile_entity['y']
+                del tile_entity['z']
+                if 'tileEntities' in block_info:
+                    block_info['tileEntities'].append(tile_entity)
+                elif 'tileEntity' in block_info:
+                    block_info['tileEntities'] = [block_info['tileEntity'], tile_entity]
+                    del block_info['tileEntity']
+                else:
+                    block_info['tileEntity'] = tile_entity
+    return layers
+
 @api_world_index.child('player')
 def api_world_players_index(world):
     pass
@@ -266,7 +382,7 @@ def api_world_player(world, player):
 
 @nbt_child(api_world_player, 'playerdata')
 def api_player_data(world, player):
-    return world.dir / 'world' / 'playerdata' / '{}.dat'.format(player.minecraft_uuid)
+    return world.world_path / 'playerdata' / '{}.dat'.format(player.minecraft_uuid)
 
 @json_child(api_world_index, 'status')
 def api_world_status(world):

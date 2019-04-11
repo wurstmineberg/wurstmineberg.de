@@ -1,4 +1,5 @@
 import datetime
+import enum
 import flask
 import flask_login
 import iso8601
@@ -22,6 +23,12 @@ ADMIN_ROLE_ID = 88329417788502016
 API_KEY_LENGTH = 25
 UID_LENGTH = 16
 WMBID_REGEX = '[a-z][0-9a-z]{1,15}'
+
+@enum.unique
+class Dimension(enum.Enum):
+    OVERWORLD = 0
+    NETHER = -1
+    END = 1
 
 class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
     __tablename__ = 'people'
@@ -285,9 +292,20 @@ class World:
                 for player in (status.players.sample or [])
             ]
 
+    def region_path(self, dimension):
+        return self.world_path / {
+            Dimension.OVERWORLD: 'region',
+            Dimension.NETHER: 'DIM-1/region',
+            Dimension.end: 'DIM1/region'
+        }[dimension]
+
     @property
     def version(self):
         if not (self.dir / 'minecraft_server.jar').exists():
             return None
         #TODO return None for custom/modded servers
         return (self.dir / 'minecraft_server.jar').resolve().stem[len('minecraft_server.'):]
+
+    @property
+    def world_path(self):
+        return self.dir / 'world' #TODO check server.properties
