@@ -296,7 +296,7 @@ class World:
         return self.world_path / {
             Dimension.OVERWORLD: 'region',
             Dimension.NETHER: 'DIM-1/region',
-            Dimension.end: 'DIM1/region'
+            Dimension.END: 'DIM1/region'
         }[dimension]
 
     @property
