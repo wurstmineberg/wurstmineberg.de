@@ -177,7 +177,7 @@ def nbt_child(node, name, *args, **kwargs):
         nbt_filed.dat = raw_nbt # make raw NBT available for Python code
         return nbt_filed
 
-return decorator
+    return decorator
 
 @wurstmineberg_web.views.index.child('api', 'API', decorators=[key_or_member_optional])
 def api_index():
