@@ -151,7 +151,7 @@ def nbt_child(node, name, *args, **kwargs):
             else:
                 raise NotImplementedError('Cannot convert value of type {} to JSON'.format(type(result)))
 
-        @node.child(name + '.json', *args, **kwargs)
+        @node.child(name + '.json', view_name='{}_json'.format(f.__name__), *args, **kwargs)
         @functools.wraps(f)
         def json_encoded(*args, **kwargs):
             result = simplejson.dumps(dict_encoded(*args, **kwargs), sort_keys=True, indent=4, use_decimal=True)
