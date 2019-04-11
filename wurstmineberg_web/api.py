@@ -260,7 +260,7 @@ def api_world_index(world):
 def api_world_players_index(world):
     pass
 
-@api_world.players_index.children(wurstmineberg_web.models.Person.from_snowflake_or_wmbid)
+@api_world_players_index.children(wurstmineberg_web.models.Person.from_snowflake_or_wmbid)
 def api_world_player(world, player):
     pass
 
