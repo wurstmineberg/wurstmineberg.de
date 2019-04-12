@@ -355,7 +355,7 @@ def api_chunk(world, dimension, x, y, z):
                 block_info = layers[int(entity['Pos'][1].value) & 15][int(entity['Pos'][2].value) & 15][int(entity['Pos'][0].value) & 15]
                 if 'entities' not in block_info:
                     block_info['entities'] = []
-                block_info['entities'].append(entity)
+                block_info['entities'].append(nbt_to_dict(entity))
     if 'TileEntities' in column['Level']:
         for tile_entity in column['Level']['TileEntities']:
             if y * 16 <= tile_entity['y'].value < y * 16 + 16: # make sure the entity is in the right section
@@ -364,12 +364,12 @@ def api_chunk(world, dimension, x, y, z):
                 del tile_entity['y']
                 del tile_entity['z']
                 if 'tileEntities' in block_info:
-                    block_info['tileEntities'].append(tile_entity)
+                    block_info['tileEntities'].append(nbt_to_dict(tile_entity))
                 elif 'tileEntity' in block_info:
-                    block_info['tileEntities'] = [block_info['tileEntity'], tile_entity]
+                    block_info['tileEntities'] = [block_info['tileEntity'], nbt_to_dict(tile_entity)]
                     del block_info['tileEntity']
                 else:
-                    block_info['tileEntity'] = tile_entity
+                    block_info['tileEntity'] = nbt_to_dict(tile_entity)
     return layers
 
 @api_world_index.child('player')
