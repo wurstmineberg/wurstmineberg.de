@@ -30,6 +30,14 @@ class Dimension(enum.Enum):
     NETHER = -1
     END = 1
 
+    @classmethod
+    def from_url_part(cls, url_part):
+        return cls[url_part.upper()]
+
+    @property
+    def url_part(self):
+        return self.name.lower()
+
 class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
     __tablename__ = 'people'
 
