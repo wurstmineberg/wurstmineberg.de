@@ -83,7 +83,10 @@ def json_children(node, var_converter=flask_view_tree.identity, *args, **kwargs)
     class JsonStem(wrapt.ObjectProxy):
         @property
         def url_part(self):
-            return '{}.json'.format(self.__wrapped__.url_part)
+            if hasattr(self.__wrapped__, 'url_part'):
+                return '{}.json'.format(self.__wrapped__.url_part)
+            else:
+                return '{}.json'.format(self.__wrapped__)
 
     def json_var_converter(x):
         if x.endswith('.json'):
