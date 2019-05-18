@@ -11,6 +11,7 @@ Subject: wurstmineberg.de internal server error
 
 An internal server error occurred on wurstmineberg.de.
 User: {user}
+URL: {url}
 """
 
 def notify_crash(exc=None):
@@ -20,7 +21,11 @@ def notify_crash(exc=None):
         user = str(flask.g.user)
     except Exception:
         user = None
-    mail_text = CRASH_NOTICE.format(whoami=whoami, hostname=hostname, user=user)
+    try:
+        url = str(flask.g.view_node.url)
+    except Exception:
+        url = None
+    mail_text = CRASH_NOTICE.format(whoami=whoami, hostname=hostname, user=user, url=url)
     if exc is not None:
         mail_text += '\n' + traceback.format_exc()
     return subprocess.run(['ssmtp', 'root@wurstmineberg.de'], input=mail_text.encode('utf-8'), check=True)
