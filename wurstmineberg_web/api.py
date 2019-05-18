@@ -11,6 +11,7 @@ import requests
 import simplejson
 import tempfile
 import time
+import wrapt
 
 import wurstmineberg_web
 import wurstmineberg_web.auth
@@ -79,9 +80,14 @@ def json_child(node, name, *args, **kwargs):
     return decorator
 
 def json_children(node, var_converter=flask_view_tree.identity, *args, **kwargs):
+    class JsonStem(wrapt.ObjectProxy):
+        @property
+        def url_part(self):
+            return '{}.json'.format(self.__wrapped__.url_part)
+
     def json_var_converter(x):
         if x.endswith('.json'):
-            return var_converter(x[:-len('.json')])
+            return JsonStem(var_converter(x[:-len('.json')]))
         else:
             raise ValueError('URL must end with .json')
 
