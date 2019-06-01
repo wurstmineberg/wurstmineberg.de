@@ -381,6 +381,10 @@ def api_chunk(world, dimension, x, y, z):
                     block_info['tileEntity'] = nbt_to_dict(tile_entity)
     return layers
 
+@nbt_child(api_world_index, 'level')
+def api_world_level(world):
+    return world.world_path / 'level.dat'
+
 @api_world_index.child('player')
 def api_world_players_index(world):
     pass
