@@ -15,7 +15,8 @@
         {% if running %}
             The main world is currently <strong>online</strong> and running on version <a href="{{version_url}}" style="font-weight: bold;">{{version}}</a>,
             {#TODO show who is online #}
-            and <span id="peopleCount">(loading) of the <span id="whitelistCount">(loading)</span> whitelisted players are</span> currently active<span id="punctuation">.</span>
+            {% set num_online = world.online_players | length %}
+            and <span id="peopleCount">{% if num_online == 0 %}none{% else %}{{num_online}}{% endif %} of the <span id="whitelistCount">(loading)</span> whitelisted players are</span> currently active<span id="punctuation">.</span>
             <br />
             <span id="peopleList"></span>
         {% else %}
