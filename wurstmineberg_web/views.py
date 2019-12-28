@@ -26,7 +26,8 @@ def index():
         return {
             'running': True,
             'version': version,
-            'version_url': version_url
+            'version_url': version_url,
+            'world': main_world
         }
     else:
         return {'running': False}
