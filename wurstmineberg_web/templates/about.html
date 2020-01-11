@@ -54,7 +54,7 @@
         <p>Financial status currently unavailable, please try again later.</p>
     {% else %}
         <p>Current goal: {{money_overview['text']}}</p>
-        {% if money_overview['goalInfo']['isNextMonth'] and money_overview['goalInfo'] is not none and money_overview['goalInfo']['type'] in {'reduceDowngrade', 'upgrade'} %}
+        {% if money_overview['goalInfo']['isNextMonth'] and money_overview['goalInfo'] is not none and money_overview['goalInfo']['type'] is in(['reduceDowngrade', 'upgrade']) %}
             <p>This month: {{money_overview['currentTier']['linodeType']['label']}} with {{money_overview['currentTier']['backupGB']}}GB backup space</p>
             <p>Next month with current funding: {{money_overview['nextTier']['linodeType']['label']}} with {{money_overview['nextTier']['backupGB']}}GB backup space</p>
             <p>Next month if goal is met: {{money_overview['goalInfo']['tier']['linodeType']['label']}} with {{money_overview['goalInfo']['tier']['backupGB']}}GB backup space</p>
