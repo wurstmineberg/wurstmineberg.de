@@ -19,14 +19,11 @@
         <p class="lead">Wurstmineberg is a whitelisted Minecraft server with a small number of active people. Our main world is a vanilla world running on the latest release. We sometimes also have a second modded world that is reset regularly. We do a lot of background and infrastructure work to make the most out of the vanilla Minecraft experience.</p>
     </div>
     <div class="panel-footer">
-        <p>Due to some major infrastructure changes, none of our worlds are currently running. We will start <a href="#finance">raising the money</a> to get the main world back online soon™.</p>
-        {#
-        <p>{{ wiki('Category:Wurstmineberg_world', 'Main world') }} address: <code>wurstmineberg.de</code></p>
-        <p>{{ wiki('Wurstmodberg', 'Modded world') }} address: <code>mod.wurstmineberg.de</code></p>
-        <p>{{ wiki('Creative', 'Creative world') }} address: <code>creative.wurstmineberg.de</code></p>
-        <p>{{ wiki('Minigame_night', 'Weekly minigames on Saturday') }}: <code>minigame.wurstmineberg.de</code></p>
-        <p>In case of {{ wiki('Ultra_Softcore', 'USC') }}: <code>usc.wurstmineberg.de</code></p>
-        #}
+        {% for world in worlds if world.is_running %}
+            <p>{% if world.is_main %}Main world{% else %}{{world}}{% endif %} address: <code>{% if not world.is_main %}{{world}}.{% endif %}wurstmineberg.de</code></p> {#TODO restore world wiki links #}
+        {% else %}
+            <p>None of our worlds are currently running. Check Discord for details.</p>
+        {% endfor %}
     </div>
 </div>
 <h2 id="hosting">Hosting <small>Because Minecraft doesn't run on potatoes</small></h2>

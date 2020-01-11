@@ -46,7 +46,8 @@ def about():
             raise
     return {
         'money_config': wurstmineberg_web.app.config['money'],
-        'money_overview': overview
+        'money_overview': overview,
+        'worlds': wurstmineberg_web.models.World
     }
 
 @index.child('stats')
