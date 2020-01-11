@@ -283,7 +283,7 @@ def api_server_index():
 
 @json_child(api_server_index, 'worlds')
 def api_worlds():
-    """Returns an object mapping existing world names to short status summaries (like those returned by /world/&lt;world&gt;/status.json but without the lists of online players)"""
+    """Returns an object mapping existing world names to short status summaries (like those returned by /world/<world>/status.json but without the lists of online players)"""
     return {
         world.name: {
             'main': world.is_main,

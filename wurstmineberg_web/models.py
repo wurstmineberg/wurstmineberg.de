@@ -265,6 +265,12 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
     def wiki(self):
         return self.data.get('wiki', None)
 
+class WorldMeta(type):
+    def __iter__(self):
+        for world_path in sorted((wurstmineberg_web.util.BASE_PATH / 'world').iterdir()):
+            if world_path.is_dir():
+                yield World(world_path.name)
+
 class World:
     def __init__(self, name='wurstmineberg'): #TODO get default from config
         self.name = name #TODO check if world exists
