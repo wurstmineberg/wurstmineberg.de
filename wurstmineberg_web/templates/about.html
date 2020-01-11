@@ -28,6 +28,9 @@
 </div>
 <h2 id="hosting">Hosting <small>Because Minecraft doesn't run on potatoes</small></h2>
 <p>Our hosting situation has changed many times now. We started out on a spare MacBook in a living room, tried commercial Minecraft server hosters, set everything up ourselves on a VPS, then a physical server, and are back to a VPS now.</p>
+{% if money_overview is not none %}
+    <p>Our current VPS is a <a href="https://linode.com/">Linode</a> {{money_overview['currentTier']['linodeType']['label']}} with {{money_overview['currentTier']['backupGB']}}GB of backup space.</p>
+{% endif %}
 <p>For more details and a brief history of the server, read {{ wiki('Hosting', 'the Hosting article on our wiki') }}.</p>
 <h2 id="joining">Joining <small>Want to play with us?</small></h2>
 <p>If you're thinking about joining the server or wondering how you can, read on. First, though, there are a few things we would like to let you know about what playing on the server is like.</p>
@@ -45,12 +48,17 @@
 <p>As I was saying, it's about community. As long as you're being reasonable and remember you're not alone on this server (both for your and everybody else's benefit), everything's fine.</p>
 #}
 <h2 id="finance">Financial stuff</h2>
-<p>The Wurstmineberg infrastructure runs on a VPS with monthly costs. Members may contribute to paying for these expenses on a voluntary basis. Depending on how much money is available, we will upgrade or downgrade the hardware on which the server runs.</p>
+<p>The Wurstmineberg infrastructure runs on a VPS with monthly costs. Members may contribute to paying for these expenses on a voluntary basis. Depending on how much money is available, we will upgrade or downgrade the hardware on which the server runs. We may also occasionally use this money for other purposes, such as temporarily upgrading the server for events like Renascence or USC.</p>
 <div>
     {% if money_overview is none %}
         <p>Financial status currently unavailable, please try again later.</p>
     {% else %}
         <p>Current goal: {{money_overview['text']}}</p>
+        {% if money_overview['goalInfo']['isNextMonth'] and money_overview['goalInfo'] is not none and money_overview['goalInfo']['type'] in {'reduceDowngrade', 'upgrade'} %}
+            <p>This month: {{money_overview['currentTier']['linodeType']['label']}} with {{money_overview['currentTier']['backupGB']}}GB backup space</p>
+            <p>Next month with current funding: {{money_overview['nextTier']['linodeType']['label']}} with {{money_overview['nextTier']['backupGB']}}GB backup space</p>
+            <p>Next month if goal is met: {{money_overview['goalInfo']['tier']['linodeType']['label']}} with {{money_overview['goalInfo']['tier']['backupGB']}}GB backup space</p>
+        {% endif %}
         {% if money_overview['goal'] is none %}
             <p>Current progress: {{render_money(money_overview['amount'], money_overview['currency'])}} (no target amount)</p>
         {% else %}
