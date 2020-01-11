@@ -277,6 +277,22 @@ def api_player_skins(person):
 def api_player_head(person):
     return playerhead.head(person.minecraft_uuid)
 
+@api_v3_index.child('server')
+def api_server_index():
+    pass
+
+@json_child(api_server_index, 'worlds')
+def api_worlds():
+    """Returns an object mapping existing world names to short status summaries (like those returned by /world/&lt;world&gt;/status.json but without the lists of online players)"""
+    return {
+        world.name: {
+            'main': world.is_main,
+            'running': world.is_running,
+            'version': world.version
+        }
+        for world in wurstmineberg_web.models.World
+    }
+
 @api_v3_index.child('world')
 def api_worlds_index():
     pass
