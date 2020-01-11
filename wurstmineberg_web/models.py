@@ -271,7 +271,7 @@ class WorldMeta(type):
             if world_path.is_dir():
                 yield World(world_path.name)
 
-class World:
+class World(metaclass=WorldMeta):
     def __init__(self, name='wurstmineberg'): #TODO get default from config
         self.name = name #TODO check if world exists
 
