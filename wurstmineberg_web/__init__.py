@@ -59,7 +59,7 @@ def create_app(production):
         mentions_to_tags=wurstmineberg_web.wiki.mentions_to_tags,
         tags_to_mentions=wurstmineberg_web.wiki.tags_to_mentions,
         user_class=wurstmineberg_web.models.Person,
-        user_class_constructore=wurstmineberg_web.models.Person.from_snowflake_or_wmbid,
+        user_class_constructor=wurstmineberg_web.models.Person.from_snowflake_or_wmbid,
         wiki_name='Wurstmineberg Wiki',
         wiki_root=wurstmineberg_web.util.BASE_PATH / 'wiki'
     )
