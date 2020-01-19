@@ -1,20 +1,22 @@
+import contextlib
 import datetime
 import enum
-import flask
-import flask_login
-import iso8601
-import jinja2
-import mcstatus
-import people
 import random
 import re
-from sqlalchemy import Column, BigInteger, Integer, String, Boolean, ForeignKey
-from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import relationship, backref
-from sqlalchemy.orm.attributes import flag_modified
 import string
 import subprocess
 import uuid
+
+import flask # PyPI: Flask
+import flask_login # PyPI: Flask-Login
+import iso8601 # PyPI: iso8601
+import jinja2 # PyPI: Jinja2
+import mcstatus # PyPI: mcstatus
+import sqlalchemy # PyPI: SQLAlchemy
+import sqlalchemy.dialects.postgresql # PyPI: SQLAlchemy
+import sqlalchemy.orm.attributes # PyPI: SQLAlchemy
+
+import people # https://github.com/wurstmineberg/people
 
 import wurstmineberg_web
 import wurstmineberg_web.util
@@ -41,14 +43,14 @@ class Dimension(enum.Enum):
 class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
     __tablename__ = 'people'
 
-    id = Column(Integer, primary_key=True)
-    wmbid = Column(String(UID_LENGTH))
-    snowflake = Column(BigInteger)
-    active = Column(Boolean, default=True)
-    data = Column(JSONB)
-    version = Column(Integer, default=3)
-    apikey = Column(String(API_KEY_LENGTH))
-    discorddata = Column(JSONB)
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    wmbid = sqlalchemy.Column(sqlalchemy.String(UID_LENGTH))
+    snowflake = sqlalchemy.Column(sqlalchemy.BigInteger)
+    active = sqlalchemy.Column(sqlalchemy.Boolean, default=True)
+    data = sqlalchemy.Column(sqlalchemy.dialects.postgresql.JSONB)
+    version = sqlalchemy.Column(sqlalchemy.Integer, default=3)
+    apikey = sqlalchemy.Column(sqlalchemy.String(API_KEY_LENGTH))
+    discorddata = sqlalchemy.Column(sqlalchemy.dialects.postgresql.JSONB)
 
     @classmethod
     def from_api_key(cls, key=None, *, exclude=None):
@@ -88,7 +90,8 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
     @classmethod
     def from_tag(cls, username, discrim):
         if discrim is None:
-            return cls.query.filter_by(wmbid=username).one()
+            with contextlib.suppress(sqlalchemy.orm.exc.NoResultFound):
+                return cls.query.filter_by(wmbid=username).one()
         else:
             for person in cls.query.all():
                 if person.discorddata is not None and username == person.discorddata['username'] and discrim == person.discorddata['discriminator']:
@@ -190,7 +193,7 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
         }
 
     def commit_data(self):
-        flag_modified(self, 'data')
+        sqlalchemy.orm.attributes.flag_modified(self, 'data')
         wurstmineberg_web.db.session.commit()
 
     @property
