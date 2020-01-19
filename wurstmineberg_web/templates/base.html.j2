@@ -68,9 +68,9 @@
             <ul class="navbar-personaltools navbar-userloggedin nav navbar-nav navbar-right">
                 {% if g.user and g.user.is_authenticated %}
                     <li class="navbar-personaltools-tools {{active('preferences')}}">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="You are logged in as {{ g.user.display_name }}." aria-expanded="true">{{ person_avatar(g.user, 32) }}</a>
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="You are logged in as {{g.user.name}}." aria-expanded="true">{{ person_avatar(g.user, 32) }}</a>
                         <ul class="p-personal-tools dropdown-menu dropdown-menu-right">
-                            <li id="pt-userpage"><a href="/people/{{ g.user.wmbid }}" dir="auto" title="Your user page [ctrl-alt-.]" accesskey=".">{{ g.user.display_name }}</a></li>
+                            <li id="pt-userpage"><a href="/people/{{ g.user.wmbid }}" dir="auto" title="Your user page [ctrl-alt-.]" accesskey=".">{{g.user.name}}</a></li>
                             <li id="pt-preferences"><a href="/preferences" title="Your preferences">Preferences</a></li>
                             <li id="pt-logout"><a href="/logout" title="Your preferences">Log out</a></li>
                         </ul>

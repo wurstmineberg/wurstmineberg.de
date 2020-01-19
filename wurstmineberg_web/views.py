@@ -102,7 +102,7 @@ def preferences():
     displayed_tab = flask.request.args.get('tab', 'profile')
 
     def set_data():
-        profile_form.name.data = flask.g.user.display_name
+        profile_form.name.data = flask.g.user.name
         profile_form.name.description['placeholder'] = flask.g.user.wmbid
         profile_form.description.data = data.get('description', '')
         profile_form.mojira.data = data.get('mojira', '')

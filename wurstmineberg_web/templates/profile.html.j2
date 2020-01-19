@@ -10,10 +10,10 @@
 <div class="panel panel-default profile-panel">
     <div class="panel-heading">
         {{ person_avatar(person, 32) }}
-        <h3 id="username" class="panel-title panel-loading">{{ person.display_name }}
+        <h3 id="username" class="panel-title panel-loading">{{person.name}}
             {% if person.minecraft_name is none %}
                 <span class="muted">(no Minecraft account)</span>
-            {% elif person.minecraft_name.lower() != person.display_name.lower() %}
+            {% elif person.minecraft_name.lower() != person.name.lower() %}
                 <span class="muted">(Minecraft: {{ person.minecraft_name }})</span>
             {% endif %}
         {%- if person.wmbid == g.user.wmbid -%}

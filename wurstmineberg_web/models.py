@@ -135,7 +135,7 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
         return ppl
 
     def __html__(self):
-        return jinja2.Markup('<a title="{}" href="{}">@{}</a>'.format(self, self.profile_url, jinja2.escape(self.display_name)))
+        return jinja2.Markup('<a title="{}" href="{}">@{}</a>'.format(self, self.profile_url, jinja2.escape(self.name)))
 
     def __repr__(self):
         if self.snowflake is None:
@@ -145,7 +145,7 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
 
     def __str__(self):
         try:
-            return self.display_name
+            return self.name
         except Exception:
             return repr(self)
 
@@ -197,17 +197,6 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
     def description(self):
         return self.data.get('description', '')
 
-    @property
-    def display_name(self):
-        if self.discorddata is not None:
-            if self.discorddata['nick'] is not None:
-                return self.discorddata['nick']
-            return self.discorddata['username']
-        if 'name' in self.data:
-            return self.data['name']
-        if self.wmbid is not None:
-            return self.wmbid
-
     def get_id(self): # required by flask_login
         return self.snowflake
 
@@ -231,6 +220,17 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
     @property
     def mojira(self):
         return self.data.get('mojira', None)
+
+    @property
+    def name(self):
+        if self.discorddata is not None:
+            if self.discorddata['nick'] is not None:
+                return self.discorddata['nick']
+            return self.discorddata['username']
+        if 'name' in self.data:
+            return self.data['name']
+        if self.wmbid is not None:
+            return self.wmbid
 
     @property
     def playerhead_url(self):

@@ -34,10 +34,10 @@
                                 {{ person_avatar(person, 32) }}
                             </td>
                             <td class="username">
-                                {{ link(person.profile_url, person.display_name) }}
+                                {{person}}
                                 {% if person.minecraft_name is none %}
                                     <br /><span class="muted">no Minecraft account</span>
-                                {% elif person.minecraft_name.lower() != person.display_name.lower() %}
+                                {% elif person.minecraft_name.lower() != person.name.lower() %}
                                     <br /><span class="muted">{{ person.minecraft_name }}</span>
                                 {% endif %}
                             </td>

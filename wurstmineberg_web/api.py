@@ -254,7 +254,7 @@ def api_people():
         if person.discorddata is not None:
             person_data['discord'] = copy.deepcopy(person.discorddata)
             person_data['discord']['snowflake'] = person.snowflake
-        person_data['name'] = person.display_name
+        person_data['name'] = person.name
     return db
 
 @api_v3_index.child('person')
