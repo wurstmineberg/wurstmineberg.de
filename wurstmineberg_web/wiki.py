@@ -3,7 +3,7 @@ import re
 import wurstmineberg_web.models
 
 DISCORD_MENTION_REGEX = f'<@!?({wurstmineberg_web.models.WMBID_REGEX}|[0-9]+)>'
-DISCORD_TAG_REGEX = '@([^#]{2,32})#([0-9]{4}?)'
+DISCORD_TAG_REGEX = '@([^#]{2,32})#((?:[0-9]{4})?)'
 
 def mentions_to_tags(text):
     while True:
