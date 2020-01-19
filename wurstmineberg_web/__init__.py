@@ -7,6 +7,7 @@ import flask
 import flask_bootstrap
 import flask_pagedown
 import flask_sqlalchemy
+import flask_wiki
 import flask_wtf
 import flaskext.markdown
 import pymdownx.emoji
@@ -38,11 +39,12 @@ def create_app(production):
     import wurstmineberg_web.auth
     import wurstmineberg_web.api
     import wurstmineberg_web.error
+    import wurstmineberg_web.models
     import wurstmineberg_web.wiki
     # set up Bootstrap and WTForms
     flask_bootstrap.Bootstrap(app)
     flask_wtf.CSRFProtect(app)
-    # set up Markdown
+    # set up Markdown and wiki
     md = flaskext.markdown.Markdown(app)
     emoji_ext = pymdownx.emoji.EmojiExtension()
     emoji_ext.setConfig('emoji_generator', pymdownx.emoji.to_alt)
@@ -50,7 +52,15 @@ def create_app(production):
     md._instance.registerExtensions([emoji_ext], {})
     md.register_extension(pymdownx.extra.ExtraExtension)
     md.register_extension(pymdownx.tilde.DeleteSubExtension)
-    md.register_extension(wurstmineberg_web.wiki.DiscordMentionExtension)
+    flask_wiki.child(
+        wurstmineberg_web.views.index,
+        md=md,
+        mentions_to_tags=wurstmineberg_web.wiki.mentions_to_tags,
+        tags_to_mentions=wurstmineberg_web.wiki.tags_to_mentions,
+        user_class=wurstmineberg_web.models.Person,
+        wiki_name='Wurstmineberg Wiki',
+        wiki_root=wurstmineberg_web.util.BASE_PATH / 'wiki'
+    )
     # set up Markdown preview
     flask_pagedown.PageDown(app)
 
