@@ -54,6 +54,7 @@ def create_app(production):
     md.register_extension(pymdownx.tilde.DeleteSubExtension)
     flask_wiki.child(
         wurstmineberg_web.views.index,
+        edit_decorators=[wurstmineberg_web.auth.member_required],
         md=md,
         mentions_to_tags=wurstmineberg_web.wiki.mentions_to_tags,
         tags_to_mentions=wurstmineberg_web.wiki.tags_to_mentions,
