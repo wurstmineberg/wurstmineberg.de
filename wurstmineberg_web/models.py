@@ -91,7 +91,7 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
             return cls.query.filter_by(wmbid=username).one()
         else:
             for person in cls.query.all():
-                if username == person.discorddata['username'] and discrim == person.discorddata['discriminator']:
+                if person.discorddata is not None and username == person.discorddata['username'] and discrim == person.discorddata['discriminator']:
                     return person
 
     @classmethod
