@@ -8,7 +8,7 @@ setuptools.setup(
     author='Wurstmineberg',
     author_email='mail@wurstmineberg.de',
     packages=['wurstmineberg_web'],
-    package_data={'wurstmineberg_web': ['templates/*.html']},
+    package_data={'wurstmineberg_web': ['templates/*.html.j2']},
     install_requires=[
         'Flask',
         'Flask-Bootstrap',

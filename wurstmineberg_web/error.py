@@ -4,6 +4,7 @@ import subprocess
 import traceback
 
 from wurstmineberg_web import app
+import wurstmineberg_web.util
 
 CRASH_NOTICE = """To: root@wurstmineberg.de
 From: {whoami}@{hostname}
@@ -48,4 +49,4 @@ def error_handler(error):
             pass
         else:
             reported = True
-    return flask.render_template('error.html', error=error, is_exception=lambda v: isinstance(v, Exception), report=report, reported=reported, traceback=traceback), code
+    return wurstmineberg_web.util.render_template('error', error=error, is_exception=lambda v: isinstance(v, Exception), report=report, reported=reported, traceback=traceback), code

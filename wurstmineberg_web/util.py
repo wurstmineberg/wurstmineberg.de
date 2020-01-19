@@ -1,7 +1,9 @@
-import flask
 import functools
 import pathlib
-import simplejson
+
+import flask # PyPI: Flask
+import jinja2 # PyPI: Jinja2
+import simplejson # PyPI: simplejson
 
 BASE_PATH = pathlib.Path('/opt/wurstmineberg')
 CONFIG_PATH = BASE_PATH / 'config.json'
@@ -24,20 +26,23 @@ def redirect_empty(url_f):
 
     return decorator
 
-def templated(template=None):
+def render_template(template_name=None, **kwargs):
+    if template_name is None:
+        template_path = '{}.html.j2'.format(flask.request.endpoint.replace('.', '/'))
+    else:
+        template_path = '{}.html.j2'.format(template_name.replace('.', '/'))
+    return jinja2.Markup(flask.render_template(template_path, **kwargs))
+
+def template(template_name=None):
     def decorator(f):
         @functools.wraps(f)
         def wrapper(*args, **kwargs):
-            template_name = template
-            if template_name is None:
-                template_name = flask.request.endpoint \
-                    .replace('.', '/') + '.html'
-            ctx = f(*args, **kwargs)
-            if ctx is None:
-                ctx = {}
-            elif not isinstance(ctx, dict):
-                return ctx
-            return flask.render_template(template_name, **ctx)
+            context = f(*args, **kwargs)
+            if context is None:
+                context = {}
+            elif not isinstance(context, dict):
+                return context
+            return render_template(template_name, **context)
 
         return wrapper
 

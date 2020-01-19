@@ -10,11 +10,11 @@ import wurstmineberg_web
 import wurstmineberg_web.auth
 import wurstmineberg_web.forms
 import wurstmineberg_web.models
-from wurstmineberg_web.util import templated
+import wurstmineberg_web.util
 import wurstmineberg_web.wurstminebot
 
 @flask_view_tree.index(wurstmineberg_web.app)
-@templated()
+@wurstmineberg_web.util.template()
 def index():
     main_world = wurstmineberg_web.models.World()
     if main_world.is_running:
@@ -33,7 +33,7 @@ def index():
         return {'running': False}
 
 @index.child('about')
-@templated()
+@wurstmineberg_web.util.template()
 def about():
     import wurstmineberg_web.api
 
@@ -51,12 +51,12 @@ def about():
     }
 
 @index.child('stats')
-@templated()
+@wurstmineberg_web.util.template()
 def stats():
     pass
 
 @index.child('people')
-@templated()
+@wurstmineberg_web.util.template()
 def people():
     people = wurstmineberg_web.models.Person.get_people_ordered_by_status()
     for key in ['founding', 'later', 'former', 'guest', 'invited', 'vetoed']:
@@ -67,17 +67,17 @@ def people():
     return {'people': people}
 
 @people.children(wurstmineberg_web.models.Person.from_snowflake_or_wmbid)
-@templated()
+@wurstmineberg_web.util.template()
 def profile(person):
     return {'person': person}
 
 @profile.catch_init(sqlalchemy.orm.exc.NoResultFound)
 def profile_catch_not_found(exc, value):
-    return flask.render_template('invalid-profile.html', user_id=value, well_formed=True), 404
+    return wurstmineberg_web.util.render_template('invalid-profile', user_id=value, well_formed=True), 404
 
 @profile.catch_init(ValueError)
 def profile_catch_value_error(exc, value):
-    return flask.render_template('invalid-profile.html', user_id=value, well_formed=False), 404
+    return wurstmineberg_web.util.render_template('invalid-profile', user_id=value, well_formed=False), 404
 
 @profile.child('reset-key')
 def reset_api_key(person):
@@ -93,7 +93,7 @@ def get_profile():
     return people, flask.g.user
 
 @index.child('preferences', methods=['GET', 'POST'], decorators=[wurstmineberg_web.auth.member_required])
-@templated()
+@wurstmineberg_web.util.template()
 def preferences():
     profile_form = wurstmineberg_web.forms.ProfileForm()
     settings_form = wurstmineberg_web.forms.SettingsForm()
