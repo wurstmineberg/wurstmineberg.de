@@ -1,20 +1,17 @@
-from wurstmineberg_web import app
-
-from flask import Markup
-import flask_pagedown.fields
-import flask_wtf
-from wtforms import StringField, TextAreaField, BooleanField, SelectField, widgets
-from wtforms import validators
-import wtforms
-
-import pytz
+import flask_pagedown.fields # PyPI: Flask-PageDown
+import flask_wtf # PyPI: Flask-WTF
+import jinja2 # PyPI: jinja2
+import pytz # PyPI: pytz
+import wtforms # PyPI: WTForms
+import wtforms.validators # PyPI: WTForms
+import wtforms.widgets # PyPI: WTForms
 
 def twitter_username_filter(username):
     if username and len(username) >= 1 and username[0] == u'@':
         return username[1:]
     return username
 
-_email_validator = validators.Email()
+_email_validator = wtforms.validators.Email()
 
 class EmptyOrValidatorValidator():
     def __init__(self, validator):
@@ -25,7 +22,7 @@ class EmptyOrValidatorValidator():
             return self.validator(form, field)
         return True
 
-class ColorWidget(widgets.Input):
+class ColorWidget(wtforms.widgets.Input):
     def __init__(input_type=None):
         return super().__init__(input_type=input_type)
 
@@ -34,11 +31,11 @@ class ColorWidget(widgets.Input):
         ret += super().__call__(field, **kwargs)
         ret += '<span class="input-group-addon"><i></i></span>'
         ret += '</span>'
-        return Markup(ret)
+        return jinja2.Markup(ret)
 
 
 import binascii
-class ColorField(StringField):
+class ColorField(wtforms.StringField):
 
     def __init__(self, *args, validators=[], **kwargs):
         validators.append(EmptyOrValidatorValidator(wtforms.validators.Regexp('#([0-9a-f]{6})')))
@@ -85,30 +82,31 @@ class MarkdownField(flask_pagedown.fields.PageDownField):
 
 class ProfileForm(flask_wtf.FlaskForm):
     #TODO clarify that the name field doesn't work for Discord admins
-    name = StringField('Name', validators=[validators.Regexp('^([^@#:]{2,32})$')], description={ #TODO better compliance with https://discordapp.com/developers/docs/resources/user
+    name = wtforms.StringField('Name', validators=[wtforms.validators.Regexp('^([^@#:]{2,32})$')], description={ #TODO better compliance with https://discordapp.com/developers/docs/resources/user
         'text': "The name that will be used when addressing you and referring to you. If you're in our Discord server, this will be kept in sync with your display name there."})
     description = MarkdownField('Description',
         description={
             'text': '1000 characters maximum.',
             'placeholder': 'A short text (up to 1000 characters) that describes you. May contain Markdown formatting.'},
-        validators=[validators.Length(max=1000)])
-    mojira = StringField('Mojira username',
+        validators=[wtforms.validators.Length(max=1000)])
+    mojira = wtforms.StringField('Mojira username',
         description={'text': 'Your username on the Mojira bug tracker'},
-        validators=[validators.Length(max=50)])
-    twitter = StringField('Twitter username',
+        validators=[wtforms.validators.Length(max=50)])
+    twitter = wtforms.StringField('Twitter username',
         description={'text': 'Your Twitter @username'},
         filters=[twitter_username_filter],
-        validators=[EmptyOrValidatorValidator(validators.Regexp('[A-Za-z0-9_]+')),
-                    validators.Length(max=15)])
-    website = StringField('Website',
+        validators=[EmptyOrValidatorValidator(wtforms.validators.Regexp('[A-Za-z0-9_]+')),
+                    wtforms.validators.Length(max=15)])
+    website = wtforms.StringField('Website',
         description={'text': 'The URL of your website',
             'placeholder': 'http://www.example.com'},
-        validators=[EmptyOrValidatorValidator(validators.URL()),
-                    validators.Length(max=2000)])
+        validators=[EmptyOrValidatorValidator(wtforms.validators.URL()),
+                    wtforms.validators.Length(max=2000)])
     favcolor = ColorField('Favorite Color',
         description={'text': 'Your favorite color, used for statistics',
             'placeholder': 'Enter a hex RGB color like #000000 or use the color picker on the right'},
         widget=ColorWidget())
+    submit_profile_form = wtforms.SubmitField('Save')
 
 def SettingsForm():
     options = {
@@ -149,12 +147,13 @@ def SettingsForm():
         value = False
         if 'default' in option:
             value = option['default']
-        field = BooleanField(option['name'],
+        field = wtforms.BooleanField(option['name'],
             default=value,
             description={'text': option['description']})
         setattr(Form, name, field)
     common_timezones = ['Etc/UTC', 'Europe/Berlin', 'Europe/Vienna']
     timezones = common_timezones + [timezone for timezone in pytz.all_timezones if timezone not in common_timezones]
-    Form.timezone = SelectField('Time zone', default='Etc/UTC', choices=[(timezone, timezone) for timezone in timezones], coerce=pytz.timezone)
+    Form.timezone = wtforms.SelectField('Time zone', default='Etc/UTC', choices=[(timezone, timezone) for timezone in timezones], coerce=pytz.timezone)
+    Form.submit_settings_form = wtforms.SubmitField('Save')
 
     return Form()

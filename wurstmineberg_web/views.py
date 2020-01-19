@@ -117,53 +117,50 @@ def preferences():
 
         last_data = data
 
-    if flask.request.method == 'GET':
+    if profile_form.submit_profile_form.data and profile_form.validate():
+        if flask.g.user.snowflake is not None and not flask.g.user.is_admin: # wurstminebot does not have permission to rename admins
+            wurstmineberg_web.wurstminebot.set_display_name(flask.g.user, profile_form.name.data)
+        data['name'] = profile_form.name.data
+
+        if profile_form.description.data and not profile_form.description.data.isspace():
+            data['description'] = profile_form.description.data
+        else:
+            data.pop('description', None)
+
+        if profile_form.mojira.data and not profile_form.mojira.data.isspace():
+            data['mojira'] = profile_form.mojira.data
+        else:
+            data.pop('mojira', None)
+
+        if profile_form.twitter.data and not profile_form.twitter.data.isspace():
+            data.setdefault('twitter', {})['username'] = profile_form.twitter.data
+        else:
+            data.pop('twitter', None)
+
+        if profile_form.website.data and not profile_form.website.data.isspace():
+            data['website'] = profile_form.website.data
+        else:
+            data.pop('website', None)
+
+        color_dict = profile_form.favcolor.color_dict
+        if color_dict:
+            data['favColor'] = color_dict
+        else:
+            data.pop('favColor', None)
+
+        flask.g.user.commit_data()
         set_data()
-    elif flask.request.method == 'POST' and 'save' in flask.request.form:
-        submitted_form = flask.request.form['save']
-        if submitted_form == 'save-profile' and profile_form.validate():
-            if flask.g.user.snowflake is not None and not flask.g.user.is_admin: # wurstminebot does not have permission to rename admins
-                wurstmineberg_web.wurstminebot.set_display_name(flask.g.user, profile_form.name.data)
-            data['name'] = profile_form.name.data
-
-            if profile_form.description.data and not profile_form.description.data.isspace():
-                data['description'] = profile_form.description.data
-            else:
-                data.pop('description', None)
-
-            if profile_form.mojira.data and not profile_form.mojira.data.isspace():
-                data['mojira'] = profile_form.mojira.data
-            else:
-                data.pop('mojira', None)
-
-            if profile_form.twitter.data and not profile_form.twitter.data.isspace():
-                data.setdefault('twitter', {})['username'] = profile_form.twitter.data
-            else:
-                data.pop('twitter', None)
-
-            if profile_form.website.data and not profile_form.website.data.isspace():
-                data['website'] = profile_form.website.data
-            else:
-                data.pop('website', None)
-
-            color_dict = profile_form.favcolor.color_dict
-            if color_dict:
-                data['favColor'] = color_dict
-            else:
-                data.pop('favColor', None)
-
-            flask.g.user.commit_data()
-            set_data()
-            flask.flash('Successfully saved profile')
-
-        if submitted_form == 'save-settings' and settings_form.validate():
-            options = data.setdefault('options', {})
-            for field in settings_form:
-                if not isinstance(field, wtforms.HiddenField):
-                    options[field.id] = field.data
-            data['options'] = options
-            flask.g.user.commit_data()
-            set_data()
-            flask.flash('Successfully saved settings')
+        flask.flash('Successfully saved profile')
+    elif settings_form.submit_settings_form.data and settings_form.validate():
+        options = data.setdefault('options', {})
+        for field in settings_form:
+            if not isinstance(field, wtforms.HiddenField):
+                options[field.id] = field.data
+        data['options'] = options
+        flask.g.user.commit_data()
+        set_data()
+        flask.flash('Successfully saved settings')
+    else:
+        set_data()
 
     return {'profile_form': profile_form, 'settings_form': settings_form, 'displayed_tab': displayed_tab}
