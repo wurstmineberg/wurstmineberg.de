@@ -23,4 +23,8 @@ def tags_to_mentions(text):
         if not match:
             return text
         person = wurstmineberg_web.models.Person.from_tag(match.group(1), None if match.group(2) == '' else int(match.group(2)))
-        text = f'{text[:match.start()]}<@{person.snowflake_or_wmbid}>{text[match.end():]}'
+        if person is None:
+            # skip this tag but convert the remaining text recursively
+            return f'{tags_to_mentions(text[:match.start()])}{match.group(0)}{tags_to_mentions(text[match.end():])}'
+        else:
+            text = f'{text[:match.start()]}<@{person.snowflake_or_wmbid}>{text[match.end():]}'
