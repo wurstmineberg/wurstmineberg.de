@@ -27,6 +27,10 @@ def create_app(production):
     app = flask.Flask(__name__, template_folder='templates/')
 
     app.url_map.strict_slashes = False
+    app.jinja_env.autoescape = jinja2.select_autoescape(
+        default_for_string=True,
+        enabled_extensions=('html', 'xml', 'j2')
+    )
     # load config
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///wurstmineberg'
     if wurstmineberg_web.util.CONFIG_PATH.exists():
