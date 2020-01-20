@@ -3,16 +3,17 @@
 Wurstmineberg website
 """
 
-import flask
-import flask_bootstrap
-import flask_pagedown
-import flask_sqlalchemy
-import flask_wiki
-import flask_wtf
-import flaskext.markdown
-import pymdownx.emoji
-import pymdownx.extra
-import pymdownx.tilde
+import flask # PyPI: Flask
+import flask_bootstrap # PyPI: Flask-Bootstrap
+import flask_pagedown # PyPI: Flask-PageDown
+import flask_sqlalchemy # Flask-SQLAlchemy
+import flaskext.markdown # PyPI: Flask-Markdown
+import jinja2 # PyPI: jinja2
+import pymdownx.emoji # PyPI: pymdown-extensions
+import pymdownx.extra # PyPI: pymdown-extensions
+import pymdownx.tilde # PyPI: pymdown-extensions
+
+import flask_wiki # https://github.com/fenhl/flask-wiki
 
 import wurstmineberg_web.util
 
@@ -45,9 +46,8 @@ def create_app(production):
     import wurstmineberg_web.error
     import wurstmineberg_web.models
     import wurstmineberg_web.wiki
-    # set up Bootstrap and WTForms
+    # set up Bootstrap
     flask_bootstrap.Bootstrap(app)
-    flask_wtf.CSRFProtect(app)
     # set up Markdown and wiki
     md = flaskext.markdown.Markdown(app)
     emoji_ext = pymdownx.emoji.EmojiExtension()
