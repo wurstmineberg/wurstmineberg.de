@@ -51,7 +51,7 @@
                     {% if person.twitch %}
                     {{ link('https://twitch.tv/{}'.format(person.twitch['login']), 'Twitch', class='btn btn-link') }}
                     {%-elif person == g.user %}
-                    {{ link(url_for('twitch.login'), 'Connect Twitch Account' class='btn btn-success') }}
+                    {{ link(url_for('twitch.login'), 'Connect Twitch Account', class='btn btn-success') }}
                     {%-endif %}
                     {% if person.twitter_name -%}
                     {{ link(twitter_user_url(person.twitter_name), 'Twitter', class='btn btn-link') }}
