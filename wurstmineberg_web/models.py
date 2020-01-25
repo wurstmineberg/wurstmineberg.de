@@ -251,6 +251,16 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
             return self.snowflake
 
     @property
+    def twitch(self):
+        return self.data.get('twitch', None)
+
+    @twitch.setter
+    def twitch(self, value):
+        """The value should be structured as in https://dev.twitch.tv/docs/api/reference#get-users"""
+        self.data['twitch'] = value
+        self.commit_data()
+
+    @property
     def twitter_name(self):
         twitter = self.data.get('twitter', None)
         if twitter:

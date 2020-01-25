@@ -39,18 +39,23 @@
                 </p>
                 {% if person.twitter_name or person.website or person.wiki -%}
                 <p id="social-links">
-                    {% if person.twitter_name -%}
-                    {{ link(twitter_user_url(person.twitter_name), 'Twitter', class="social-link") }}
+                    {% if person.wiki -%}
+                    {{ link(wiki_url(person.wiki), 'Wiki', classs='btn btn-link') }}
                     {%-endif %}
                     {% if person.website -%}
-                    {{ link(person.website, 'Website', class="social-link") }}
-                    {%-endif %}
-                    {% if person.wiki -%}
-                    {{ link(wiki_url(person.wiki), 'Wiki', class="social-link") }}
+                    {{ link(person.website, 'Website', class='btn btn-link') }}
                     {%-endif %}
                     {% if person.mojira -%}
-                    {{ link(mojira_user_url(person.mojira), 'Mojira', class="social-link") }}
-                    {% endif %}
+                    {{ link(mojira_user_url(person.mojira), 'Mojira', class='btn btn-link') }}
+                    {%-endif %}
+                    {% if person.twitch %}
+                    {{ link('https://twitch.tv/{}'.format(person.twitch['login']), 'Twitch', class='btn btn-link') }}
+                    {%-elif person == g.user %}
+                    {{ link(url_for('twitch.login'), 'Connect Twitch Account' class='btn btn-success') }}
+                    {%-endif %}
+                    {% if person.twitter_name -%}
+                    {{ link(twitter_user_url(person.twitter_name), 'Twitter', class='btn btn-link') }}
+                    {%-endif %}
                 </p>
                 {%- endif %}
                 <div class="inventory-container">

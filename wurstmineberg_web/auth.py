@@ -1,10 +1,12 @@
-import flask
-import flask_dance.contrib.discord
-import flask_login
 import functools
-import jinja2
-import sqlalchemy.orm.exc
 import urllib.parse
+
+import flask # PyPI: Flask
+import flask_dance.consumer # PyPI: Flask-Dance
+import flask_dance.contrib.discord # PyPI: Flask-Dance
+import flask_login # PyPI: Flask-Login
+import jinja2 # PyPI: Jinja2
+import sqlalchemy.orm.exc # PyPI: SQLAlchemy
 
 from wurstmineberg_web import app
 from wurstmineberg_web.models import Person
@@ -47,6 +49,17 @@ def setup(app):
         redirect_to='auth_callback'
     ), url_prefix='/login')
 
+    twitch_blueprint = flask_dance.consumer.OAuth2ConsumerBlueprint(
+        'twitch', __name__,
+        client_id=app.config['twitch']['clientID'],
+        client_secret=app.config['twitch']['clientSecret'],
+        base_url='https://api.twitch.tv/helix/',
+        token_url='https://id.twitch.tv/oauth2/token',
+        authorization_url='https://id.twitch.tv/oauth2/authorize',
+        redirect_to='twitch_auth_callback'
+    )
+    app.register_blueprint(twitch_blueprint, url_prefix='/login')
+
     login_manager = flask_login.LoginManager()
     login_manager.login_view = 'discord.login'
     login_manager.login_message = None # Because discord.login does not show flashes, any login message would be shown after a successful login. This would be confusing.
@@ -80,7 +93,7 @@ def setup(app):
     @app.route('/auth')
     def auth_callback():
         if not flask_dance.contrib.discord.discord.authorized:
-            flask.flash('Login failed.', 'error')
+            flask.flash('Discord login failed.', 'error')
             return flask.redirect(flask.url_for('index'))
         response = flask_dance.contrib.discord.discord.get('/api/v6/users/@me')
         if not response.ok:
@@ -95,6 +108,27 @@ def setup(app):
             return flask.redirect(flask.url_for('index'))
         flask_login.login_user(person, remember=True)
         flask.flash(jinja2.Markup('Hello {}.'.format(person.__html__())))
+        next_url = flask.session.get('next')
+        if next_url is None:
+            return flask.redirect(flask.url_for('index'))
+        elif is_safe_url(next_url):
+            return flask.redirect(next_url)
+        else:
+            return flask.abort(400)
+
+    @app.route('/auth/twitch')
+    def twitch_auth_callback():
+        if not twitch_blueprint.session.authorized:
+            flask.flash('Twitch login failed.', 'error')
+            return flask.redirect(flask.url_for('index'))
+        response = twitch_blueprint.session.get('users')
+        if not response.ok:
+            return flask.make_response(('Discord returned error {} at {}: {}'.format(response.status_code, jinja2.escape(response.url), jinja2.escape(response.text)), response.status_code, []))
+        if flask.g.user.is_active:
+            flask.g.user.twitch = response.json()['data'][0]
+        else:
+            flask.flash('Please sign in via Discord before linking your Twitch account.', 'error')
+            return flask.redirect(flask.url_for('index'))
         next_url = flask.session.get('next')
         if next_url is None:
             return flask.redirect(flask.url_for('index'))
