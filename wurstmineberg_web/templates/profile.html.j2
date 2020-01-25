@@ -40,7 +40,7 @@
                 {% if person.twitter_name or person.website or person.wiki -%}
                 <p id="social-links">
                     {% if person.wiki -%}
-                    {{ link(wiki_url(person.wiki), 'Wiki', classs='btn btn-link') }}
+                    {{ link(wiki_url(person.wiki), 'Wiki', class='btn btn-link') }}
                     {%-endif %}
                     {% if person.website -%}
                     {{ link(person.website, 'Website', class='btn btn-link') }}
