@@ -56,7 +56,7 @@ def setup(app):
         base_url='https://api.twitch.tv/helix/',
         token_url='https://id.twitch.tv/oauth2/token',
         authorization_url='https://id.twitch.tv/oauth2/authorize',
-        scope=('user:read:broadcast'),
+        scope=('chat:read', 'user:read:broadcast'),
         redirect_to='twitch_auth_callback'
     )
     app.register_blueprint(twitch_blueprint, url_prefix='/login')

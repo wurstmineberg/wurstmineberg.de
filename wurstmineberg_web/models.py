@@ -174,23 +174,26 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
 
     @property
     def avatar(self):
+        available = []
         # Discord avatar
         if self.discorddata is not None and self.discorddata['avatar'] is not None:
-            return {
+            available.append({
                 'url': self.discorddata['avatar'],
                 'pixelate': False
-            }
+            })
         # player head
         if self.minecraft_name is not None:
-            return {
+            available.append({
                 'url': self.playerhead_url,
                 'pixelate': True
-            }
+            })
         # placeholder
-        return {
+        available.append({
             'url': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
             'pixelate': True
-        }
+        })
+        # API v3 format
+        return {**available[0], 'fallbacks': available[1:]}
 
     def commit_data(self):
         sqlalchemy.orm.attributes.flag_modified(self, 'data')

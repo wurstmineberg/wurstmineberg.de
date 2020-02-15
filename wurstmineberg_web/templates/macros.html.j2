@@ -85,7 +85,7 @@ https://bugs.mojang.com/secure/ViewProfile.jspa?name={{username}}
 
 {% macro person_avatar(person, size, class=None) -%}
 {%- set ava_info = person.avatar -%}
-<img class="avatar avatar-{{person.wmbid}}{% if ava_info['pixelate'] %} nearest-neighbor{% endif %}{% if class %} {{class}}{% endif %}" src="{{ ava_info['url'] }}" srcset="{{ ava_info['url'] }} 1x, {{ ava_info['hiDPI'] }} 2x" alt="avatar" style="width: {{size}}px; height: {{size}}px;" />
+<img class="avatar{% if ava_info['pixelate'] %} nearest-neighbor{% endif %}{% if class %} {{class}}{% endif %}" src="{{ava_info['url']}}"{% if 'hiDPI' in ava_info %} srcset="{{ ava_info['url'] }} 1x, {{ ava_info['hiDPI'] }} 2x"{% endif %} alt="avatar" style="width: {{size}}px; height: {{size}}px;" />
 {%- endmacro %}
 
 {% macro render_flashes() -%}
