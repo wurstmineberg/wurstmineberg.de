@@ -316,11 +316,16 @@ class World(metaclass=WorldMeta):
             status = server.status()
         except ConnectionRefusedError:
             return []
-        else:
-            return [
-                Person.from_minecraft_uuid(uuid.UUID(player.id))
-                for player in (status.players.sample or [])
-            ]
+        except BrokenPipeError:
+            # try again
+            try:
+                status = server.status()
+            except ConnectionRefusedError:
+                return []
+        return [
+            Person.from_minecraft_uuid(uuid.UUID(player.id))
+            for player in (status.players.sample or [])
+        ]
 
     def region_path(self, dimension):
         return self.world_path / {
