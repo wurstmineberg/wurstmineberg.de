@@ -342,7 +342,7 @@ def api_chunk(world, dimension, x, y, z):
             # wrap to next long
             bitfield128|=states[containing_index+1]
         index = (bitfield128 >> (128-end_index)) & (2**bits_per_index-1)
-        print(len(palette), index)
+        #print(len(palette), index)
         return palette[index]
 
     region = mcanvil.Region(world.region_path(dimension) / 'r.{}.{}.mca'.format(x // 32, z // 32))
@@ -372,7 +372,7 @@ def api_chunk(world, dimension, x, y, z):
                 }
                 if 'Biomes' in column['Level']:
                     block_info['biome'] = biomes['biomes'][str(column['Level']['Biomes'][16 * row + block])]['id']
-                if section is not None:
+                if False and section is not None:
                     block_index = 256 * layer + 16 * row + block
                     palette = section.get('Palette')
                     block_states = section.get('BlockStates')
