@@ -336,7 +336,7 @@ def api_chunk(world, dimension, x, y, z):
         bit_index = block_index*bits_per_index
         containing_index = bit_index//64
         offset = bit_index % 64
-        end_index = offset+bit_index
+        end_index = offset+bits_per_index
         bitfield128 = states[containing_index] << 64
         if end_index > 64:
             # wrap to next long
