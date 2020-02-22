@@ -377,7 +377,8 @@ def api_chunk(world, dimension, x, y, z):
                     block_states = section.get('BlockStates')
                     if palette and block_states:
                         block = block_from_states_and_palette(block_states, palette, block_index)
-                        block_info['id'] = block["Name"].value
+                        block_id = block["Name"].value
+                        block_info['id'] = block_id
                         if 'Add' in section:
                             block_id += nybble(section['Add'], block_index) << 8
                         for plugin, plugin_items in items.items():
