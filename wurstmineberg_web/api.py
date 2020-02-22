@@ -358,7 +358,7 @@ def api_chunk(world, dimension, x, y, z):
             ## wrap to next long
             #bitfield128|=states[containing_index+1]
         #index = (bitfield128 >> (128-end_index)) & (2**bits_per_index-1)
-        #print(len(palette), index)
+        print(len(palette), index)
         return palette[index]
 
     region = mcanvil.Region(world.region_path(dimension) / 'r.{}.{}.mca'.format(x // 32, z // 32))
