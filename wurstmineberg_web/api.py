@@ -386,9 +386,12 @@ def api_chunk(world, dimension, x, y, z):
                                 if 'blockID' in item_info and item_info['blockID'] == block_id:
                                     block_info['id'] = '{}:{}'.format(plugin, item_id)
                                     break
-                    block_info['damage'] = nybble(section['Data'], block_index)
-                    block_info['blockLight'] = nybble(section['BlockLight'], block_index)
-                    block_info['skyLight'] = nybble(section['SkyLight'], block_index)
+                    if "Data" in section:
+                        block_info['damage'] = nybble(section['Data'], block_index)
+                    if "BlockLight" in section:
+                        block_info['blockLight'] = nybble(section['BlockLight'], block_index)
+                    if "SkyLight" in section:
+                        block_info['skyLight'] = nybble(section['SkyLight'], block_index)
                 blocks.append(block_info)
             rows.append(blocks)
         layers.append(rows)
