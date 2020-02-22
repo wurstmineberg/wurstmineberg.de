@@ -1,3 +1,5 @@
+from math import log2, ceil
+
 import copy
 import flask
 import flask_login
@@ -329,6 +331,18 @@ def api_chunk(world, dimension, x, y, z):
             return result & 15
         else:
             return result >> 4
+    def block_from_states_and_palette(states, palette, block_index):
+        bits_per_index = ceil(log2(len(palette)))
+        bit_index = block_index*bits_per_index
+        containing_index = bit_index//64
+        offset = bit_index % 64
+        end_index = offset+bit_index
+        bitfield128 = states[containing_index] << 64
+        if end_index > 64:
+            # wrap to next long
+            bitfield128|=states[containing_index+1]
+        index = (bitfield >> (128-end_index)) & (2**bits_per_index-1)
+        return palette[index]
 
     region = mcanvil.Region(world.region_path(dimension) / 'r.{}.{}.mca'.format(x // 32, z // 32))
     column = region.chunk_column(x, z).data
@@ -359,10 +373,13 @@ def api_chunk(world, dimension, x, y, z):
                     block_info['biome'] = biomes['biomes'][str(column['Level']['Biomes'][16 * row + block])]['id']
                 if section is not None:
                     block_index = 256 * layer + 16 * row + block
-                    block_id = section['Blocks'][block_index]
+                    palette = section.get('Palette')
+                    block_states = section.get('BlockStates')
+                    if palette and block_states:
+                        block = block_from_states_and_palette(block_states, palette, block_index)
+                        block_info['id'] = block["Name"].value
                     if 'Add' in section:
                         block_id += nybble(section['Add'], block_index) << 8
-                    block_info['id'] = block_id
                     for plugin, plugin_items in items.items():
                         for item_id, item_info in plugin_items.items():
                             if 'blockID' in item_info and item_info['blockID'] == block_id:
