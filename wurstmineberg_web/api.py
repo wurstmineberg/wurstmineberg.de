@@ -333,7 +333,7 @@ def api_chunk(world, dimension, x, y, z):
     region = mcanvil.Region(world.region_path(dimension) / 'r.{}.{}.mca'.format(x // 32, z // 32))
     column = region.chunk_column(x, z).data
     for section in column['Level']['Sections']:
-        if section['Y'] == y:
+        if section['Y'].value == y:
             break
     else:
         section = None
