@@ -349,6 +349,8 @@ def api_chunk(world, dimension, x, y, z):
         index = 0
         while ii >= 0:
             index |= states[containing_end_index-ii] << (64*ii)
+            ii -= 1
+        index >>= 64-end_offset
         index &= mask
 
         #bitfield128 = states[containing_index] << 64
