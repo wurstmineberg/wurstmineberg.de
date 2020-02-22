@@ -333,15 +333,29 @@ def api_chunk(world, dimension, x, y, z):
             return result >> 4
     def block_from_states_and_palette(states, palette, block_index):
         bits_per_index = ceil(log2(len(palette)))
-        bit_index = block_index*bits_per_index
-        containing_index = bit_index//64
+
+        bit_index = block_index * bits_per_index
+        containing_index = bit_index // 64
         offset = bit_index % 64
-        end_index = offset+bits_per_index
-        bitfield128 = states[containing_index] << 64
-        if end_index > 64:
-            # wrap to next long
-            bitfield128|=states[containing_index+1]
-        index = (bitfield128 >> (128-end_index)) & (2**bits_per_index-1)
+
+        bit_end_index = bit_index + bits_per_index
+        containing_end_index = bit_end_index // 64
+        end_offset = bit_end_index % 64
+
+        source_fields = containing_end_index - containing_index
+        mask = (2**bits_per_index-1)
+
+        ii = source_fields
+        index = 0
+        while ii >= 0:
+            index |= states[containing_end_index-ii] << (64*ii)
+        index &= mask
+
+        #bitfield128 = states[containing_index] << 64
+        #if end_index > 64:
+            ## wrap to next long
+            #bitfield128|=states[containing_index+1]
+        #index = (bitfield128 >> (128-end_index)) & (2**bits_per_index-1)
         #print(len(palette), index)
         return palette[index]
 
