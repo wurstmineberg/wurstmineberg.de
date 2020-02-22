@@ -378,13 +378,13 @@ def api_chunk(world, dimension, x, y, z):
                     if palette and block_states:
                         block = block_from_states_and_palette(block_states, palette, block_index)
                         block_info['id'] = block["Name"].value
-                    if 'Add' in section:
-                        block_id += nybble(section['Add'], block_index) << 8
-                    for plugin, plugin_items in items.items():
-                        for item_id, item_info in plugin_items.items():
-                            if 'blockID' in item_info and item_info['blockID'] == block_id:
-                                block_info['id'] = '{}:{}'.format(plugin, item_id)
-                                break
+                        if 'Add' in section:
+                            block_id += nybble(section['Add'], block_index) << 8
+                        for plugin, plugin_items in items.items():
+                            for item_id, item_info in plugin_items.items():
+                                if 'blockID' in item_info and item_info['blockID'] == block_id:
+                                    block_info['id'] = '{}:{}'.format(plugin, item_id)
+                                    break
                     block_info['damage'] = nybble(section['Data'], block_index)
                     block_info['blockLight'] = nybble(section['BlockLight'], block_index)
                     block_info['skyLight'] = nybble(section['SkyLight'], block_index)
