@@ -402,7 +402,7 @@ def api_chunk(world, dimension, x, y, z):
                         plugin, name = block_id.split(":", 1)
                         info = items.get(plugin, {}).get(name, None)
                         if not info is None:
-                            block_info['info'] = item_info
+                            block_info['info'] = info
                         #for plugin, plugin_items in items.items():
                             #for item_id, item_info in plugin_items.items():
                                 #if 'blockID' in item_info and item_info['blockID'] == block_id:
