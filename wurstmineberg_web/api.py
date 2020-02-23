@@ -332,7 +332,7 @@ def api_chunk(world, dimension, x, y, z):
         else:
             return result >> 4
     def block_from_states_and_palette(states, palette, block_index):
-        bits_per_index = max(ceil(log2(len(palette))), 4)
+        bits_per_index = max((len(palette)-1).bit_length(), 4)
 
         bit_index = block_index * bits_per_index
         containing_index = bit_index // 64
@@ -402,7 +402,7 @@ def api_chunk(world, dimension, x, y, z):
                         for plugin, plugin_items in items.items():
                             for item_id, item_info in plugin_items.items():
                                 if 'blockID' in item_info and item_info['blockID'] == block_id:
-                                    block_info['id'] = '{}:{}'.format(plugin, item_id)
+                                    block_info['info'] = item_info
                                     break
                     if "Data" in section:
                         block_info['damage'] = nybble(section['Data'], block_index)
