@@ -399,11 +399,14 @@ def api_chunk(world, dimension, x, y, z):
                         block_info['id'] = block_id
                         if 'Add' in section:
                             block_id += nybble(section['Add'], block_index) << 8
-                        for plugin, plugin_items in items.items():
-                            for item_id, item_info in plugin_items.items():
-                                if 'blockID' in item_info and item_info['blockID'] == block_id:
-                                    block_info['info'] = item_info
-                                    break
+                        info = items.get(plugin, {}).get(block_id, None)
+                        if not info is None:
+                            block_info['info'] = item_info
+                        #for plugin, plugin_items in items.items():
+                            #for item_id, item_info in plugin_items.items():
+                                #if 'blockID' in item_info and item_info['blockID'] == block_id:
+                                    #block_info['info'] = item_info
+                                    #break
                     if "Data" in section:
                         block_info['damage'] = nybble(section['Data'], block_index)
                     if "BlockLight" in section:
