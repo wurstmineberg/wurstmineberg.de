@@ -332,7 +332,7 @@ def api_chunk(world, dimension, x, y, z):
         else:
             return result >> 4
     def block_from_states_and_palette(states, palette, block_index):
-        bits_per_index = ceil(log2(len(palette)))
+        bits_per_index = max(ceil(log2(len(palette))), 4)
 
         bit_index = block_index * bits_per_index
         containing_index = bit_index // 64
@@ -345,20 +345,21 @@ def api_chunk(world, dimension, x, y, z):
         source_fields = containing_end_index - containing_index
         mask = (2**bits_per_index-1)
 
-        ii = source_fields
+        ii = 0
         index = 0
-        while ii >= 0:
-            index |= states[containing_end_index-ii] << (64*ii)
-            ii -= 1
-        index >>= 64-end_offset
+        while ii <= source_fields:
+            state_index = containing_index+ii
+            try:
+                field = states[state_index]
+            except IndexError:
+                field = 0
+            field %= 2**64
+            part = field << (64*ii)
+            index |= part
+            ii += 1
+        index >>= offset
         index &= mask
 
-        #bitfield128 = states[containing_index] << 64
-        #if end_index > 64:
-            ## wrap to next long
-            #bitfield128|=states[containing_index+1]
-        #index = (bitfield128 >> (128-end_index)) & (2**bits_per_index-1)
-        print(len(palette), index)
         return palette[index]
 
     region = mcanvil.Region(world.region_path(dimension) / 'r.{}.{}.mca'.format(x // 32, z // 32))
