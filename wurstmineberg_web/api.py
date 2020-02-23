@@ -399,7 +399,8 @@ def api_chunk(world, dimension, x, y, z):
                         block_info['id'] = block_id
                         if 'Add' in section:
                             block_id += nybble(section['Add'], block_index) << 8
-                        info = items.get(plugin, {}).get(block_id, None)
+                        plugin, name = block_id.split(":", 1)
+                        info = items.get(plugin, {}).get(name, None)
                         if not info is None:
                             block_info['info'] = item_info
                         #for plugin, plugin_items in items.items():
