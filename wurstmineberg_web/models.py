@@ -316,7 +316,7 @@ class World(metaclass=WorldMeta):
             status = server.status()
         except ConnectionRefusedError:
             return []
-        except BrokenPipeError:
+        except (BrokenPipeError, ConnectionResetError):
             # try again
             try:
                 status = server.status()
