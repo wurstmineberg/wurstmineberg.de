@@ -58,14 +58,14 @@ def create_app(production):
     md.register_extension(pymdownx.tilde.DeleteSubExtension)
     flask_wiki.child(
         wurstmineberg_web.views.index,
+        db=db,
         edit_decorators=[wurstmineberg_web.auth.member_required],
         md=md,
         mentions_to_tags=wurstmineberg_web.wiki.mentions_to_tags,
         tags_to_mentions=wurstmineberg_web.wiki.tags_to_mentions,
         user_class=wurstmineberg_web.models.Person,
         user_class_constructor=wurstmineberg_web.models.Person.from_snowflake_or_wmbid,
-        wiki_name='Wurstmineberg Wiki',
-        wiki_root=wurstmineberg_web.util.BASE_PATH / 'wiki'
+        wiki_name='Wurstmineberg Wiki'
     )
     # set up Markdown preview
     flask_pagedown.PageDown(app)
