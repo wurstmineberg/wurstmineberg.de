@@ -21,6 +21,10 @@ import wurstmineberg_web.models
 import wurstmineberg_web.util
 import wurstmineberg_web.views
 
+class FileExtError(ValueError):
+    def __init__(self):
+        super().__init__('URL must end with .json')
+
 def key_or_member_optional(f):
     @functools.wraps(f)
     def wrapper(*args, **kwargs):
@@ -94,7 +98,7 @@ def json_children(node, var_converter=flask_view_tree.identity, *args, **kwargs)
         if x.endswith('.json'):
             return JsonStem(var_converter(x[:-len('.json')]))
         else:
-            raise ValueError('URL must end with .json')
+            raise FileExtError()
 
     def decorator(f):
         @node.children(json_var_converter, *args, **kwargs)
@@ -102,6 +106,10 @@ def json_children(node, var_converter=flask_view_tree.identity, *args, **kwargs)
         def wrapper(*args, **kwargs):
             result = simplejson.dumps(f(*args, **kwargs), sort_keys=True, indent=4, use_decimal=True)
             return flask.Response(result, mimetype='application/json')
+
+        @wrapper.catch_init(FileExtError)
+        def json_catch_init(exc, value):
+            return wurstmineberg_web.util.render_template('api-ext-404'), 404
 
         wrapper.raw = f
         return wrapper
