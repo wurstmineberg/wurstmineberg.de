@@ -77,7 +77,7 @@ def json_child(node, name, *args, **kwargs):
         @node.child(name + '.json', *args, **kwargs)
         @functools.wraps(f)
         def wrapper(*args, **kwargs):
-            result = simplejson.dumps(f(*args, **kwargs), sort_keys=True, indent=4, use_decimal=True)
+            result = simplejson.dumps(f(*args, **kwargs), sort_keys=True, indent=4)
             return flask.Response(result, mimetype='application/json')
 
         wrapper.raw = f
@@ -104,7 +104,7 @@ def json_children(node, var_converter=flask_view_tree.identity, *args, **kwargs)
         @node.children(json_var_converter, *args, **kwargs)
         @functools.wraps(f)
         def wrapper(*args, **kwargs):
-            result = simplejson.dumps(f(*args, **kwargs), sort_keys=True, indent=4, use_decimal=True)
+            result = simplejson.dumps(f(*args, **kwargs), sort_keys=True, indent=4)
             return flask.Response(result, mimetype='application/json')
 
         @wrapper.catch_init(FileExtError)
@@ -193,7 +193,7 @@ def nbt_child(node, name, *args, **kwargs):
         @node.child(name + '.json', view_name='{}_json'.format(f.__name__), *args, **kwargs)
         @functools.wraps(f)
         def json_encoded(*args, **kwargs):
-            result = simplejson.dumps(dict_encoded(*args, **kwargs), sort_keys=True, indent=4, use_decimal=True)
+            result = simplejson.dumps(dict_encoded(*args, **kwargs), sort_keys=True, indent=4)
             return flask.Response(result, mimetype='application/json')
 
         @node.child(name + '.dat', *args, **kwargs)
@@ -462,7 +462,32 @@ def api_world_player(world, player):
 
 @nbt_child(api_world_player, 'playerdata')
 def api_player_data(world, player):
-    return world.world_path / 'playerdata' / '{}.dat'.format(player.minecraft_uuid)
+    return world.world_path / 'playerdata' / f'{player.minecraft_uuid}.dat'
+
+@json_child(api_world_player, 'stats')
+def api_player_stats(world, player):
+    """Returns the player's stats formatted as JSON with stats grouped into objects by category"""
+    with (world.world_path / 'stats' / f'{player.minecraft_uuid}.json').open() as stats_file:
+        stats = simplejson.load(stats_file, use_decimal=True)
+    result = {}
+    for stat_name, value in stats.items():
+        parent = result
+        key_path = stat_name.split('.')
+        for key in key_path[:-1]:
+            if key not in parent:
+                parent[key] = {}
+            elif not isinstance(parent[key], dict):
+                parent[key] = {'summary': parent[key]}
+            parent = parent[key]
+        if key_path[-1] in parent:
+            parent[key_path[-1]]['summary'] = value
+        else:
+            parent[key_path[-1]] = value
+        if key_path[:2] == ['stat', 'pickup'] and len(key_path) > 2:
+            if 'summary' not in result['stat']['pickup']:
+                result['stat']['pickup']['summary'] = 0
+            result['stat']['pickup']['summary'] += value
+    return result
 
 @json_child(api_world_index, 'status')
 def api_world_status(world):
