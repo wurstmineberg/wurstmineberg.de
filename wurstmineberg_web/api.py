@@ -483,10 +483,6 @@ def api_player_stats(world, player):
             parent[key_path[-1]]['summary'] = value
         else:
             parent[key_path[-1]] = value
-        if key_path[:2] == ['stat', 'pickup'] and len(key_path) > 2:
-            if 'summary' not in result['stat']['pickup']:
-                result['stat']['pickup']['summary'] = 0
-            result['stat']['pickup']['summary'] += value
     return result
 
 @json_child(api_world_index, 'status')
