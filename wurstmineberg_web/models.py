@@ -82,7 +82,7 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
 
     @classmethod
     def from_snowflake_or_wmbid(cls, wmbid_or_snowflake):
-        if isinstanct(wmbid_or_snowflake, int):
+        if isinstance(wmbid_or_snowflake, int):
             return cls.from_snowflake(wmbid_or_snowflake)
         elif re.fullmatch(WMBID_REGEX, wmbid_or_snowflake):
             return cls.from_wmbid(wmbid_or_snowflake)
