@@ -1,0 +1,22 @@
+upstream _dev_wurstmineberg {
+    server unix:/run/uwsgi/app/dev-wurstmineberg/socket;
+}
+
+server {
+    server_name dev.wurstmineberg.de;
+
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    ssl_certificate /etc/letsencrypt/live/inwx/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/inwx/privkey.pem;
+
+    add_header Strict-Transport-Security "max-age=2592000; includeSubDomains" always;
+
+    location / {
+        add_header Access-Control-Allow-Origin *;
+        add_header Strict-Transport-Security "max-age=2592000; includeSubDomains" always;
+        include uwsgi_params;
+        uwsgi_pass _dev_wurstmineberg;
+    }
+}
