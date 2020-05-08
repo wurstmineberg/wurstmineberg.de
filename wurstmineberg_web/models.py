@@ -24,7 +24,7 @@ import wurstmineberg_web.util
 ADMIN_ROLE_ID = 88329417788502016
 API_KEY_LENGTH = 25
 UID_LENGTH = 16
-WMBID_REGEX = '[a-z][0-9a-z]{1,15}'
+WMBID_REGEX = re.compile('[a-z][0-9a-z]{1,15}')
 
 @enum.unique
 class Dimension(enum.Enum):
@@ -84,7 +84,7 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
     def from_snowflake_or_wmbid(cls, wmbid_or_snowflake):
         if isinstance(wmbid_or_snowflake, int):
             return cls.from_snowflake(wmbid_or_snowflake)
-        elif re.fullmatch(WMBID_REGEX, wmbid_or_snowflake):
+        elif WMBID_REGEX.fullmatch(wmbid_or_snowflake):
             return cls.from_wmbid(wmbid_or_snowflake)
         else:
             return cls.from_snowflake(int(wmbid_or_snowflake))
