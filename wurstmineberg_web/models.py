@@ -12,6 +12,7 @@ import flask_login # PyPI: Flask-Login
 import iso8601 # PyPI: iso8601
 import jinja2 # PyPI: Jinja2
 import mcstatus # PyPI: mcstatus
+import pytz # PyPI: pytz
 import sqlalchemy # PyPI: SQLAlchemy
 import sqlalchemy.dialects.postgresql # PyPI: SQLAlchemy
 import sqlalchemy.orm.attributes # PyPI: SQLAlchemy
@@ -254,6 +255,11 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
             return self.wmbid
         else:
             return self.snowflake
+
+    @property
+    def timezone(self):
+        if 'timezone' in self.data:
+            return pytz.timezone(self.userdata['timezone'])
 
     @property
     def twitch(self):
