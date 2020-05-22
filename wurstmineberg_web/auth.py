@@ -22,6 +22,10 @@ class AnonymousUser(flask_login.AnonymousUserMixin):
     def is_admin(self):
         return False
 
+    @property
+    def timezone(self):
+        return None
+
 def is_safe_url(target):
     ref_url = urllib.parse.urlparse(flask.request.host_url)
     test_url = urllib.parse.urlparse(urllib.parse.urljoin(flask.request.host_url, target))

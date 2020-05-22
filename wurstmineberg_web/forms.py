@@ -82,7 +82,7 @@ class MarkdownField(flask_pagedown.fields.PageDownField):
 
 class ProfileForm(flask_wtf.FlaskForm):
     #TODO clarify that the name field doesn't work for Discord admins
-    name = wtforms.StringField('Name', validators=[wtforms.validators.Regexp('^([^@#:]{2,32})$')], description={ #TODO better compliance with https://discordapp.com/developers/docs/resources/user
+    name = wtforms.StringField('Name', validators=[wtforms.validators.Regexp('^([^@#:]{2,32})$')], description={ #TODO better compliance with https://discord.com/developers/docs/resources/user
         'text': "The name that will be used when addressing you and referring to you. If you're in our Discord server, this will be kept in sync with your display name there."})
     description = MarkdownField('Description',
         description={
