@@ -406,7 +406,7 @@ def api_chunk(world, dimension, x, y, z):
                 }
                 if 'Biomes' in column['Level']:
                     if len(column['Level']['Biomes']) == 1024: # starting in 19w36a, biomes are stored per 4x4x4 cube
-                        block_info['biome'] = biomes['biomes'][str(column['Level']['Biomes'][16 * (block_y // 4) + 4 * (row // 4) + (block // 4)])]]['id']
+                        block_info['biome'] = biomes['biomes'][str(column['Level']['Biomes'][16 * (block_y // 4) + 4 * (row // 4) + (block // 4)])]['id']
                     else: # before 19w36a, biomes were stored per block column
                         block_info['biome'] = biomes['biomes'][str(column['Level']['Biomes'][16 * row + block])]['id']
                 if section is not None:
