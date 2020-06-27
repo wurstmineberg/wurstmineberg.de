@@ -339,36 +339,45 @@ def api_chunk(world, dimension, x, y, z):
             return result & 15
         else:
             return result >> 4
-    def block_from_states_and_palette(states, palette, block_index):
-        bits_per_index = max((len(palette)-1).bit_length(), 4)
+    def block_from_states_and_palette(data_version, states, palette, block_index):
+        if data_version >= 2529: # starting in 20w17a, indices are no longer split across multiple longs
+            bits_per_index = max((len(palette) - 1).bit_length(), 4)
+            indexes_per_long = 64 // bits_per_index
+            containing_long, index_offset = divmod(block_index, indexes_per_long)
+            bit_offset = index_offset * bits_per_index
+            mask = 2 ** bits_per_index - 1
+            index = (states[containing_long] >> bit_offset) & mask
+            return palette[index]
+        else:
+            bits_per_index = max((len(palette)-1).bit_length(), 4)
 
-        bit_index = block_index * bits_per_index
-        containing_index = bit_index // 64
-        offset = bit_index % 64
+            bit_index = block_index * bits_per_index
+            containing_index = bit_index // 64
+            offset = bit_index % 64
 
-        bit_end_index = bit_index + bits_per_index
-        containing_end_index = bit_end_index // 64
-        end_offset = bit_end_index % 64
+            bit_end_index = bit_index + bits_per_index
+            containing_end_index = bit_end_index // 64
+            end_offset = bit_end_index % 64
 
-        source_fields = containing_end_index - containing_index
-        mask = (2**bits_per_index-1)
+            source_fields = containing_end_index - containing_index
+            mask = (2**bits_per_index-1)
 
-        ii = 0
-        index = 0
-        while ii <= source_fields:
-            state_index = containing_index+ii
-            try:
-                field = states[state_index]
-            except IndexError:
-                field = 0
-            field %= 2**64
-            part = field << (64*ii)
-            index |= part
-            ii += 1
-        index >>= offset
-        index &= mask
+            ii = 0
+            index = 0
+            while ii <= source_fields:
+                state_index = containing_index+ii
+                try:
+                    field = states[state_index]
+                except IndexError:
+                    field = 0
+                field %= 2**64
+                part = field << (64*ii)
+                index |= part
+                ii += 1
+            index >>= offset
+            index &= mask
 
-        return palette[index]
+            return palette[index]
 
     region = mcanvil.Region(world.region_path(dimension) / 'r.{}.{}.mca'.format(x // 32, z // 32))
     column = region.chunk_column(x, z).data
@@ -396,13 +405,16 @@ def api_chunk(world, dimension, x, y, z):
                     'z': block_z
                 }
                 if 'Biomes' in column['Level']:
-                    block_info['biome'] = biomes['biomes'][str(column['Level']['Biomes'][16 * row + block])]['id']
+                    if len(column['Level']['Biomes']) == 1024: # starting in 19w36a, biomes are stored per 4x4x4 cube
+                        block_info['biome'] = biomes['biomes'][str(column['Level']['Biomes'][16 * (block_y // 4) + 4 * (row // 4) + (block // 4)])]]['id']
+                    else: # before 19w36a, biomes were stored per block column
+                        block_info['biome'] = biomes['biomes'][str(column['Level']['Biomes'][16 * row + block])]['id']
                 if section is not None:
                     block_index = 256 * layer + 16 * row + block
                     palette = section.get('Palette')
                     block_states = section.get('BlockStates')
                     if palette and block_states:
-                        block = block_from_states_and_palette(block_states, palette, block_index)
+                        block = block_from_states_and_palette(column['DataVersion'].value, block_states, palette, block_index)
                         block_id = block["Name"].value
                         block_info['id'] = block_id
                         if 'Add' in section:
