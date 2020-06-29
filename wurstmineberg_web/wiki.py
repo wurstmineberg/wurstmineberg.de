@@ -3,7 +3,7 @@ import re
 import wurstmineberg_web.models
 
 DISCORD_MENTION_REGEX = re.compile(f'<@!?({wurstmineberg_web.models.WMBID_REGEX.pattern}|[0-9]+)>')
-DISCORD_TAG_REGEX = re.compile('@([^#\n]{2,32})#((?:[0-9]{4})?)')
+DISCORD_TAG_REGEX = re.compile('@([^@#:\n]{2,32})#((?:[0-9]{4})?)') # see  # see https://discord.com/developers/docs/resources/user
 
 def mentions_to_tags(text):
     while True:
