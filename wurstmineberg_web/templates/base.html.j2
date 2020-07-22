@@ -3,31 +3,34 @@
 
 {% block title %}Wurstmineberg{% endblock %}
 {% block metas %}
-{{ super() }}
-<meta name="description" content="Info site for a minecraft server" />
-<meta name="author" content="Wurstmineberg" />
-<meta charset="utf-8" />
+    {{ super() }}
+    <meta name="description" content="Info site for a minecraft server" />
+    <meta name="author" content="Wurstmineberg" />
 {% endblock %} {# metas #}
 
 {% block styles %}
-{{ super() }}
-<link rel="shortcut icon" href="{{g.assetserver}}/img/favicon.ico" />
-<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext" type="text/css" />
+    {{ super() }}
+    <link rel="icon" type="image/png" href="{{g.assetserver}}/img/logo/wurstpick_16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="{{g.assetserver}}/img/logo/wurstpick_32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{g.assetserver}}/img/logo/wurstpick_64.png" sizes="64x64" />
+    <link rel="icon" type="image/png" href="{{g.assetserver}}/img/logo/wurstpick_128.png" sizes="128x128" />
+    <link rel="icon" type="image/png" href="{{g.assetserver}}/img/logo/wurstpick_256.png" sizes="256x256" />
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext" type="text/css" />
 
-<link rel="stylesheet" href="{{g.assetserver}}/css/common.css" />
-<link rel="stylesheet" href="{{g.assetserver}}/css/responsive.css" />
-<link rel="stylesheet" href="{{g.assetserver}}/css/dark.css" />
+    <link rel="stylesheet" href="{{g.assetserver}}/css/common.css" />
+    <link rel="stylesheet" href="{{g.assetserver}}/css/responsive.css" />
+    <link rel="stylesheet" href="{{g.assetserver}}/css/dark.css" />
 
-<!-- page specific styles -->
-{% block page_styles -%}
-{%- endblock %}
+    <!-- page specific styles -->
+    {% block page_styles -%}
+    {%- endblock %}
 {% endblock %} {# styles #}
 
 {% block head %}
-{{ super() }}
-{% block page_head -%}
-{%- endblock %} {# page_head #}
+    {{ super() }}
+    {% block page_head -%}
+    {%- endblock %} {# page_head #}
 {% endblock %} {# head #}
 
 {% macro active(page) -%}
@@ -37,105 +40,102 @@
 {%- endmacro %}
 
 {% block navbar -%}
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">Wurstmineberg</a>
-    </div>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wurstmineberg</a>
+        </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse navbar-ex1-collapse">
-        <ul id="navbar-list" class="nav navbar-nav">
-            <li {% if g.view_node is defined and g.view_node.is_index %}class="active"{% endif %}><a href="/"><span class="fa fa-home"></span>Home</a></li>
-            <li class="{{active('about')}}"><a href="/about"><span class="fa fa-info-circle"></span>About</a></li>
-            <li class="{{active('people')}}"><a href="/people"><span class="fa fa-users"></span>People</a></li>
-            <li class="{{active('stats')}}"><a href="/stats"><span class="fa fa-table"></span>Statistics</a></li>
-            <li class="{{active('wiki')}}"><a href="/wiki"><span class="fa fa-table"></span>Wiki</a></li>
-            <li class="dropdown {{active('api')}}">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><span class="fa fa-ellipsis-h"></span>More<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li><a href="{{url_for('api_index')}}">API</a></li>
-                    <li><a href="//alltheitems.{{g.host}}/">All The Items</a></li>
-                </ul>
-            </li>
-        </ul>
-        {% block navbar_right %}
-            <ul class="navbar-personaltools navbar-userloggedin nav navbar-nav navbar-right">
-                {% if g.user and g.user.is_authenticated %}
-                    <li class="navbar-personaltools-tools {{active('preferences')}}">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="You are logged in as {{g.user.name}}." aria-expanded="true">{{ person_avatar(g.user, 32) }}</a>
-                        <ul class="p-personal-tools dropdown-menu dropdown-menu-right">
-                            <li id="pt-userpage"><a href="/people/{{ g.user.wmbid }}" dir="auto" title="Your user page [ctrl-alt-.]" accesskey=".">{{g.user.name}}</a></li>
-                            <li id="pt-preferences"><a href="/preferences" title="Your preferences">Preferences</a></li>
-                            <li id="pt-logout"><a href="/logout" title="Your preferences">Log out</a></li>
-                        </ul>
-                    </li>
-                {% else %}
-                    <li>
-                        <li class="navbar-user-notloggedin"><a href="{{url_for('discord.login')}}" title="You are not logged in."><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>Log in</a>
-                    </li>
-                {% endif %}
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul id="navbar-list" class="nav navbar-nav">
+                <li {% if g.view_node is defined and g.view_node.is_index %}class="active"{% endif %}><a href="/"><span class="fa fa-home"></span>Home</a></li>
+                <li class="{{active('about')}}"><a href="/about"><span class="fa fa-info-circle"></span>About</a></li>
+                <li class="{{active('people')}}"><a href="/people"><span class="fa fa-users"></span>People</a></li>
+                <li class="{{active('stats')}}"><a href="/stats"><span class="fa fa-table"></span>Statistics</a></li>
+                <li class="{{active('wiki')}}"><a href="/wiki"><span class="fa fa-table"></span>Wiki</a></li>
+                <li class="dropdown {{active('api')}}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><span class="fa fa-ellipsis-h"></span>More<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{url_for('api_index')}}">API</a></li>
+                        <li><a href="//alltheitems.{{g.host}}/">All The Items</a></li>
+                    </ul>
+                </li>
             </ul>
-        {% endblock navbar_right %}
-    </div><!-- /.navbar-collapse -->
-</nav>
+            {% block navbar_right %}
+                <ul class="navbar-personaltools navbar-userloggedin nav navbar-nav navbar-right">
+                    {% if g.user and g.user.is_authenticated %}
+                        <li class="navbar-personaltools-tools {{active('preferences')}}">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="You are logged in as {{g.user.name}}." aria-expanded="true">{{ person_avatar(g.user, 32) }}</a>
+                            <ul class="p-personal-tools dropdown-menu dropdown-menu-right">
+                                <li id="pt-userpage"><a href="/people/{{ g.user.wmbid }}" dir="auto" title="Your user page [ctrl-alt-.]" accesskey=".">{{g.user.name}}</a></li>
+                                <li id="pt-preferences"><a href="/preferences" title="Your preferences">Preferences</a></li>
+                                <li id="pt-logout"><a href="/logout" title="Your preferences">Log out</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li>
+                            <li class="navbar-user-notloggedin"><a href="{{url_for('discord.login')}}" title="You are not logged in."><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>Log in</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endblock navbar_right %}
+        </div><!-- /.navbar-collapse -->
+    </nav>
 {%- endblock %} {# navbar #}
 
 {% block content %}
-<!-- Google+ validation -->
-<a href="https://plus.google.com/104509175267723597392" rel="publisher" style="display: none;">Google+</a>
-<div class="container">
-    {% block flashes %}
-    {{ render_flashes() }}
-    {% endblock %} {# flashes #}
+    <div class="container">
+        {% block flashes %}
+        {{ render_flashes() }}
+        {% endblock %} {# flashes #}
 
-    {% block page_content %}
-    {% endblock %}
-</div>
-
-{% block footer %}
-<hr />
-<p class="muted text-center">The People of wurstmineberg.de 2012–2020</p>
-<p class="muted text-center">Wurstmineberg is not created by, affiliated with, or supported by Discord Inc or Twitch Interactive.</p>
-{% endblock %} {# footer #}
+        {% block page_content %}
+        {% endblock %}
+    </div>
+    {% block footer %}
+        <hr />
+        <p class="muted text-center">The People of wurstmineberg.de 2012–2020</p>
+        <p class="muted text-center">Wurstmineberg is not created by, affiliated with, or supported by Discord Inc or Twitch Interactive.</p>
+    {% endblock %} {# footer #}
 {% endblock %} {# content #}
 
 {% block scripts %}
-{{ super() }}
-<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<script src="https://raw.githubusercontent.com/alexei/sprintf.js/master/dist/sprintf.min.js"></script>
-<script src="{{g.assetserver}}/js/common.js"></script>
-<script type="text/javascript">
-    // expose current user to js, if logged in
-    {% if g.user and g.user.is_authenticated %}
-    var currentUser = '{{g.user.wmbid}}';
-    {% else %}
-    var currentUser = null;
-    {% endif %}
-    // run by default
-    linkifyHeaders();
-    configureNavigation();
-    setAnchorHeight();
-    displayFundingData();
-    initializeTooltips();
-    // mark as dev.wurstmineberg.de
-    if (isDev) {
-        $('.navbar-brand').after($('<span>').css({
-            color: 'red',
-            left: 100,
-            position: 'absolute',
-            top: 30,
-            transform: 'rotate(-10deg) scale(2)',
-            'z-index': 10
-        }).text('[DEV]'));
-    }
-</script>
-{% block page_scripts %}
-{% endblock %}
+    {{ super() }}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://raw.githubusercontent.com/alexei/sprintf.js/master/dist/sprintf.min.js"></script>
+    <script src="{{g.assetserver}}/js/common.js"></script>
+    <script type="text/javascript">
+        // expose current user to js, if logged in
+        {% if g.user and g.user.is_authenticated %}
+        var currentUser = '{{g.user.wmbid}}';
+        {% else %}
+        var currentUser = null;
+        {% endif %}
+        // run by default
+        linkifyHeaders();
+        configureNavigation();
+        setAnchorHeight();
+        displayFundingData();
+        initializeTooltips();
+        // mark as dev.wurstmineberg.de
+        if (isDev) {
+            $('.navbar-brand').after($('<span>').css({
+                color: 'red',
+                left: 100,
+                position: 'absolute',
+                top: 30,
+                transform: 'rotate(-10deg) scale(2)',
+                'z-index': 10
+            }).text('[DEV]'));
+        }
+    </script>
+    {% block page_scripts %}
+    {% endblock %}
 {% endblock %} {# scripts #}
