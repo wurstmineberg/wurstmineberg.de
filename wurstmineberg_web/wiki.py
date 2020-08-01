@@ -1,13 +1,30 @@
 import re
 
+import markdown # PyPI: Markdown
+import markdown.inlinepatterns # PyPI: Markdown
+import markdown.util # PyPI: Markdown
+
 import wurstmineberg_web.models
 
-DISCORD_MENTION_REGEX = re.compile(f'<@!?({wurstmineberg_web.models.WMBID_REGEX.pattern}|[0-9]+)>')
-DISCORD_TAG_REGEX = re.compile('@([^@#:\n]{2,32})#((?:[0-9]{4})?)') # see  # see https://discord.com/developers/docs/resources/user
+DISCORD_OR_WMBID_MENTION_REGEX = re.compile(f'<@!?({wurstmineberg_web.models.WMBID_REGEX.pattern}|[0-9]+)>')
+DISCORD_OR_WMBID_TAG_REGEX = re.compile('@([^@#:\n]{2,32})#((?:[0-9]{4})?)') # see https://discord.com/developers/docs/resources/user
+WMBID_MENTION_REGEX = re.compile(f'<@!?({wurstmineberg_web.models.WMBID_REGEX.pattern})>')
+
+class WmbidMentionPattern(markdown.inlinepatterns.LinkInlineProcessor):
+    def handleMatch(self, m, data):
+        user = wurstmineberg_web.models.Person.from_wmbid(m.group(1))
+        el = markdown.util.etree.Element('a')
+        el.text = f'@{user.name}'
+        el.set('href', user.profile_url)
+        return el, m.start(0), m.end(0)
+
+class WmbidMentionExtension(markdown.Extension):
+    def extendMarkdown(self, md, md_globals):
+        md.inlinePatterns.add('wmbid-mention', WmbidMentionPattern(WMBID_MENTION_REGEX, md), '<reference')
 
 def mentions_to_tags(text):
     while True:
-        match = DISCORD_MENTION_REGEX.search(text)
+        match = DISCORD_OR_WMBID_MENTION_REGEX.search(text)
         if not match:
             return text
         person = wurstmineberg_web.models.Person.from_snowflake_or_wmbid(match.group(1))
@@ -19,7 +36,7 @@ def mentions_to_tags(text):
 
 def tags_to_mentions(text):
     while True:
-        match = DISCORD_TAG_REGEX.search(text)
+        match = DISCORD_OR_WMBID_TAG_REGEX.search(text)
         if not match:
             return text
         person = wurstmineberg_web.models.Person.from_tag(match.group(1), None if match.group(2) == '' else int(match.group(2)))

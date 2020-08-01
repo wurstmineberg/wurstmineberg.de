@@ -50,6 +50,7 @@ def create_app(production):
     flask_bootstrap.Bootstrap(app)
     # set up Markdown and wiki
     md = flaskext.markdown.Markdown(app)
+    md.register_extension(wurstmineberg_web.wiki.WmbidMentionExtension)
     emoji_ext = pymdownx.emoji.EmojiExtension()
     emoji_ext.setConfig('emoji_generator', pymdownx.emoji.to_alt)
     emoji_ext.setConfig('emoji_index', pymdownx.emoji.twemoji)
