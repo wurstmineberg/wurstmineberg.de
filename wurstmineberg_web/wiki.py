@@ -8,7 +8,7 @@ import wurstmineberg_web.models
 
 DISCORD_OR_WMBID_MENTION_REGEX = re.compile(f'<@!?({wurstmineberg_web.models.WMBID_REGEX.pattern}|[0-9]+)>')
 DISCORD_OR_WMBID_TAG_REGEX = re.compile('@([^@#:\n]{2,32})#((?:[0-9]{4})?)') # see https://discord.com/developers/docs/resources/user
-WMBID_MENTION_REGEX = re.compile(f'<@!?({wurstmineberg_web.models.WMBID_REGEX.pattern})>')
+WMBID_MENTION_REGEX = f'<@!?({wurstmineberg_web.models.WMBID_REGEX.pattern})>'
 
 class WmbidMentionPattern(markdown.inlinepatterns.LinkInlineProcessor):
     def handleMatch(self, m, data):
