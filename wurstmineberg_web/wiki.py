@@ -5,7 +5,9 @@ import markdown.inlinepatterns # PyPI: Markdown
 import markdown.util # PyPI: Markdown
 
 import wurstmineberg_web.models
+import wurstmineberg_web.wurstminebot
 
+CHANNEL_ID = 681458815543148547
 DISCORD_OR_WMBID_MENTION_REGEX = re.compile(f'<@!?({wurstmineberg_web.models.WMBID_REGEX.pattern}|[0-9]+)>')
 DISCORD_OR_WMBID_TAG_REGEX = re.compile('@([^@#:\n]{2,32})#((?:[0-9]{4})?)') # see https://discord.com/developers/docs/resources/user
 WMBID_MENTION_REGEX = f'<@!?({wurstmineberg_web.models.WMBID_REGEX.pattern})>'
@@ -33,6 +35,9 @@ def mentions_to_tags(text):
         else:
             tag = f'@{person.discorddata["username"]}#{person.discorddata["discriminator"]:04}'
         text = f'{text[:match.start()]}{tag}{text[match.end():]}'
+
+def save_hook(namespace, title, text, author, summary):
+    wurstmineberg_web.wurstminebot.channel_msg(CHANNEL_ID, f'wiki page {wurstmineberg_web.wurstminebot.escape(namespace)}/{wurstmineberg_web.wurstminebot.escape(title)} has been edited by {author.mention}:\n> {wurstmineberg_web.wurstminebot.escape(summary)}')
 
 def tags_to_mentions(text):
     while True:

@@ -21,6 +21,7 @@ import people # https://github.com/wurstmineberg/people
 
 import wurstmineberg_web
 import wurstmineberg_web.util
+import wurstmineberg_web.wurstminebot
 
 ADMIN_ROLE_ID = 88329417788502016
 API_KEY_LENGTH = 25
@@ -217,6 +218,13 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
         return self.discorddata is not None and ADMIN_ROLE_ID in self.discorddata['roles']
 
     @property
+    def mention(self):
+        if self.snowflake is None:
+            return wurstmineberg_web.wurstminebot.escape(self.wmbid)
+        else:
+            return f'<@{self.snowflake}>'
+
+    @property
     def minecraft_name(self):
         if 'minecraft' in self.data and 'nicks' in self.data['minecraft']:
             return self.data['minecraft']['nicks'][-1]
@@ -240,6 +248,10 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
             return self.data['name']
         if self.wmbid is not None:
             return self.wmbid
+
+    def option(self, option_name):
+        default_true_options = {'activity_tweets', 'chatsync_highlight', 'inactivity_tweets'} # These options are on by default. All other options are off by default.
+        return self.data.get('options', {}).get(option_name, option_name in default_true_options)
 
     @property
     def playerhead_url(self):
@@ -334,6 +346,11 @@ class World(metaclass=WorldMeta):
             Person.from_minecraft_uuid(uuid.UUID(player.id))
             for player in (status.players.sample or [])
         ]
+
+    def player_data(self, player):
+        import wurstmineberg_web.api
+
+        return wurstmineberg_web.api.api_player_data(self, player)
 
     def region_path(self, dimension):
         return self.world_path / {
