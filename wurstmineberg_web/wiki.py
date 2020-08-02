@@ -39,13 +39,11 @@ def mentions_to_tags(text):
 def save_hook(namespace, title, text, author, summary):
     if namespace == 'wiki':
         url = f'https://wurstmineberg.de/wiki/{title}'
-        link_text = f'{wurstmineberg_web.wurstminebot.escape(title)}'
     else:
         url = f'https://wurstmineberg.de/wiki/{title}/{namespace}'
-        link_text = f'{wurstmineberg_web.wurstminebot.escape(namespace)}/{wurstmineberg_web.wurstminebot.escape(title)}'
-    msg = f'wiki page [{link_text}]({url}) has been edited by {author.mention}'
+    msg = f'{url} has been edited by {author.mention}'
     if summary:
-        msg += ':\n> {wurstmineberg_web.wurstminebot.escape(summary)}'
+        msg += f':\n> {wurstmineberg_web.wurstminebot.escape(summary)}'
     wurstmineberg_web.wurstminebot.channel_msg(CHANNEL_ID, msg)
 
 def tags_to_mentions(text):
