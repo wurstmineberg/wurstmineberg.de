@@ -67,6 +67,7 @@ def create_app(production):
         edit_decorators=[wurstmineberg_web.auth.member_required],
         md=md,
         mentions_to_tags=wurstmineberg_web.wiki.mentions_to_tags,
+        save_hook=wurstmineberg_web.wiki.save_hook,
         tags_to_mentions=wurstmineberg_web.wiki.tags_to_mentions,
         user_class=wurstmineberg_web.models.Person,
         user_class_constructor=wurstmineberg_web.models.Person.from_snowflake_or_wmbid,
