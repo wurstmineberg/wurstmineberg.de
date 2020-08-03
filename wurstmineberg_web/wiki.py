@@ -41,7 +41,7 @@ def save_hook(namespace, title, text, author, summary):
         url = f'https://wurstmineberg.de/wiki/{title}'
     else:
         url = f'https://wurstmineberg.de/wiki/{title}/{namespace}'
-    msg = f'{url} has been edited by {author.mention}'
+    msg = f'<{url}> has been edited by {author.mention}'
     if summary:
         msg += f':\n> {wurstmineberg_web.wurstminebot.escape(summary)}'
     wurstmineberg_web.wurstminebot.channel_msg(CHANNEL_ID, msg)
