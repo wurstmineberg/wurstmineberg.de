@@ -1,6 +1,7 @@
+# My Website
 This repository contains the website **[wurstmineberg.de](https://wurstmineberg.de/)**.
 
-wurstmineberg.de is meant to be updated via pulls from here, with as little changes to the deployed website directly as possible.
+The wurstmineberg.de is meant to be updated via pulls from here, with as little changes to the deployed website directly as possible.
 
 # Installing
 
@@ -9,7 +10,7 @@ wurstmineberg.de is meant to be updated via pulls from here, with as little chan
 3. The website also needs a [PostgreSQL](https://postgresql.org/) database named `wurstmineberg`, as well as a running [wurstminebot](https://github.com/wurstmineberg/wurstminebot-discord) to keep user data from Discord up to date.
 4. For the Python dependencies, each import is annotated with where you can find the package so `ImportError`s can be fixed directly. We also have a `setup.py` which may or may not work, sorry.
 
-# General management
+# General management(commits)
 
 ~~Like most of our repositories, this is also connected to [our autodeploy setup](https://github.com/fenhl/gitdir-autodeploy), so pushed commits should go live on the website very soon.~~ This is currently broken, so changes must be deployed using `gitdir deploy github.com wurstmineberg/wurstmineberg.de && sudo systemctl reload uwsgi`.
 
