@@ -1,3 +1,4 @@
+# An Amazing Project 
 This repository contains the website **[wurstmineberg.de](http://wurstmineberg.de/)**.
 
 wurstmineberg.de is meant to be updated via pulls from here, with as little changes to the deployed website directly as possible.
