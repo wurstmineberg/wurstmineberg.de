@@ -1,0 +1,22 @@
+server {
+    server_name www.wurstmineberg.de;
+
+    listen 80;
+    listen [::]:80;
+
+    return 301 https://wurstmineberg.de$request_uri;
+}
+
+server {
+    server_name www.wurstmineberg.de;
+
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    ssl_certificate /etc/letsencrypt/live/inwx/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/inwx/privkey.pem;
+
+    add_header Strict-Transport-Security "max-age=2592000; includeSubDomains" always;
+
+    return 301 https://wurstmineberg.de$request_uri;
+}
