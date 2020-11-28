@@ -6,12 +6,13 @@ import sqlalchemy.orm.exc
 import urllib.parse
 import wtforms
 
+import wurstminebot # https://github.com/wurstmineberg/wurstminebot-discord
+
 import wurstmineberg_web
 import wurstmineberg_web.auth
 import wurstmineberg_web.forms
 import wurstmineberg_web.models
 import wurstmineberg_web.util
-import wurstmineberg_web.wurstminebot
 
 @flask_view_tree.index(wurstmineberg_web.app)
 @wurstmineberg_web.util.template()
@@ -119,7 +120,7 @@ def preferences():
 
     if profile_form.submit_profile_form.data and profile_form.validate():
         if flask.g.user.snowflake is not None and not flask.g.user.is_admin: # wurstminebot does not have permission to rename admins
-            wurstmineberg_web.wurstminebot.set_display_name(flask.g.user, profile_form.name.data)
+            wurstminebot.set_display_name(flask.g.user, profile_form.name.data)
         data['name'] = profile_form.name.data
 
         if profile_form.description.data and not profile_form.description.data.isspace():

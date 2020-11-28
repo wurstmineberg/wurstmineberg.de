@@ -18,10 +18,10 @@ import sqlalchemy.dialects.postgresql # PyPI: SQLAlchemy
 import sqlalchemy.orm.attributes # PyPI: SQLAlchemy
 
 import people # https://github.com/wurstmineberg/people
+import wurstminebot # https://github.com/wurstmineberg/wurstminebot-discord
 
 import wurstmineberg_web
 import wurstmineberg_web.util
-import wurstmineberg_web.wurstminebot
 
 ADMIN_ROLE_ID = 88329417788502016
 API_KEY_LENGTH = 25
@@ -220,7 +220,7 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
     @property
     def mention(self):
         if self.snowflake is None:
-            return wurstmineberg_web.wurstminebot.escape(self.wmbid)
+            return wurstminebot.escape(self.wmbid)
         else:
             return f'<@{self.snowflake}>'
 

@@ -4,8 +4,9 @@ import markdown # PyPI: Markdown
 import markdown.inlinepatterns # PyPI: Markdown
 import markdown.util # PyPI: Markdown
 
+import wurstminebot # https://github.com/wurstmineberg/wurstminebot-discord
+
 import wurstmineberg_web.models
-import wurstmineberg_web.wurstminebot
 
 CHANNEL_ID = 681458815543148547
 DISCORD_OR_WMBID_MENTION_REGEX = re.compile(f'<@!?({wurstmineberg_web.models.WMBID_REGEX.pattern}|[0-9]+)>')
@@ -43,8 +44,8 @@ def save_hook(namespace, title, text, author, summary):
         url = f'https://wurstmineberg.de/wiki/{title}/{namespace}'
     msg = f'<{url}> has been edited by {author.mention}'
     if summary:
-        msg += f':\n> {wurstmineberg_web.wurstminebot.escape(summary)}'
-    wurstmineberg_web.wurstminebot.channel_msg(CHANNEL_ID, msg)
+        msg += f':\n> {wurstminebot.escape(summary)}'
+    wurstminebot.channel_msg(CHANNEL_ID, msg)
 
 def tags_to_mentions(text):
     while True:
