@@ -248,6 +248,7 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
             return self.data['name']
         if self.wmbid is not None:
             return self.wmbid
+        raise ValueError(f'{self!r} has no name')
 
     def option(self, option_name):
         default_true_options = {'activity_tweets', 'chatsync_highlight', 'inactivity_tweets'} # These options are on by default. All other options are off by default.
