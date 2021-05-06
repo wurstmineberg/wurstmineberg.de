@@ -2,8 +2,8 @@ import functools
 import urllib.parse
 
 import flask # PyPI: Flask
-import flask_dance.consumer # PyPI: Flask-Dance
 import flask_dance.contrib.discord # PyPI: Flask-Dance
+import flask_dance.contrib.twitch # PyPI: Flask-Dance
 import flask_login # PyPI: Flask-Login
 import jinja2 # PyPI: Jinja2
 import sqlalchemy.orm.exc # PyPI: SQLAlchemy
@@ -53,17 +53,11 @@ def setup(app):
         redirect_to='auth_callback'
     ), url_prefix='/login')
 
-    twitch_blueprint = flask_dance.consumer.OAuth2ConsumerBlueprint(
-        'twitch', __name__,
+    app.register_blueprint(flask_dance.contrib.twitch.make_twitch_blueprint(
         client_id=app.config['twitch']['clientID'],
         client_secret=app.config['twitch']['clientSecret'],
-        base_url='https://api.twitch.tv/helix/',
-        token_url='https://id.twitch.tv/oauth2/token',
-        authorization_url='https://id.twitch.tv/oauth2/authorize',
-        scope=('chat:read', 'user:read:broadcast'),
         redirect_to='twitch_auth_callback'
-    )
-    app.register_blueprint(twitch_blueprint, url_prefix='/login')
+    ), url_prefix='/login')
 
     login_manager = flask_login.LoginManager()
     login_manager.login_view = 'discord.login'
@@ -123,17 +117,17 @@ def setup(app):
 
     @app.route('/auth/twitch')
     def twitch_auth_callback():
-        if not twitch_blueprint.session.authorized:
-            flask.flash('Twitch login failed.', 'error')
-            return flask.redirect(flask.url_for('index'))
-        response = twitch_blueprint.session.get('users')
-        if not response.ok:
-            return flask.make_response(('Discord returned error {} at {}: {}'.format(response.status_code, jinja2.escape(response.url), jinja2.escape(response.text)), response.status_code, []))
-        if flask.g.user.is_active:
-            flask.g.user.twitch = response.json()['data'][0]
-        else:
+        if not flask.g.user.is_active:
             flask.flash('Please sign in via Discord before linking your Twitch account.', 'error')
             return flask.redirect(flask.url_for('index'))
+        if not flask_dance.contrib.twitch.twitch.authorized:
+            flask.flash('Twitch login failed.', 'error')
+            return flask.redirect(flask.url_for('index'))
+        response = flask_dance.contrib.twitch.twitch.get('users')
+        if not response.ok:
+            return flask.make_response(('Twitch returned error {} at {}: {}'.format(response.status_code, jinja2.escape(response.url), jinja2.escape(response.text)), response.status_code, []))
+        flask.g.user.twitch = response.json()['data'][0]
+        flask.flash('Successfully linked Twitch account.')
         next_url = flask.session.get('next')
         if next_url is None:
             return flask.redirect(flask.url_for('index'))
