@@ -248,6 +248,9 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
             return self.data['name']
         if self.wmbid is not None:
             return self.wmbid
+        if len(self.data.get('minecraft', {}).get('nicks', [])) > 0:
+            return self.data['minecraft']['nicks'][0]
+        #TODO get from Minecraft UUID
         raise ValueError(f'{self!r} has no name')
 
     def option(self, option_name):
