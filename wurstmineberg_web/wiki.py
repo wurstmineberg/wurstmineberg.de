@@ -37,12 +37,12 @@ def mentions_to_tags(text):
             tag = f'@{person.discorddata["username"]}#{person.discorddata["discriminator"]:04}'
         text = f'{text[:match.start()]}{tag}{text[match.end():]}'
 
-def save_hook(namespace, title, text, author, summary):
+def save_hook(namespace, title, text, author, summary, created):
     if namespace == 'wiki':
         url = f'https://wurstmineberg.de/wiki/{title}'
     else:
         url = f'https://wurstmineberg.de/wiki/{title}/{namespace}'
-    msg = f'<{url}> has been edited by {author.mention}'
+    msg = f'<{url}> has been {"created" if created else "edited"} by {author.mention}'
     if summary:
         msg += f':\n> {wurstminebot.escape(summary)}'
     wurstminebot.channel_msg(CHANNEL_ID, msg)
