@@ -1,6 +1,6 @@
 {% extends 'base.html.j2' %}
 
-{% block title %}Profile — Wurstmineberg{% endblock %}
+{% block title %}{{person.name}} on Wurstmineberg{% endblock %}
 
 {% block page_scripts %}
 <script src="{{g.assetserver}}/js/profile.js"></script>
@@ -16,17 +16,17 @@
             {% elif person.minecraft_name.lower() != person.name.lower() %}
                 <span class="muted">(Minecraft: {{ person.minecraft_name }})</span>
             {% endif %}
-        {%- if person.wmbid == g.user.wmbid -%}
-        <span style="float: right;">{{link(url_for('preferences'), 'Edit')}}</span>
-        {%- endif %}
+            {%- if person == g.user -%}
+                <span style="float: right;">{{link(url_for('preferences'), 'Edit')}}</span>
+            {%- endif %}
         </h3>
     </div>
     <div class="panel-body">
         <div class="lead">
             {% if person.minecraft_name -%}
             <div id="profile-skin">
-                <img class="nearest-neighbor drop-shadow" {% if person.wmbid == 'dinnerbone' %}style="transform: rotate(180deg);"{% endif %} title="{{ person.minecraft_name }}" alt="{{ person.minecraft_name }}" src="//api.{{g.host}}/v2/player/{{person.wmbid}}/skin/render/front/180.png" srcset="//api.{{g.host}}/v2/player/{{person.wmbid}}/skin/render/front/180.png 1x, //api.{{g.host}}/v2/player/{{person.wmbid}}/skin/render/front/360.png 2x" />
-                <img class="nearest-neighbor foreground-image" {% if person.wmbid == 'dinnerbone' %}style="transform: rotate(180deg);"{% endif %} title="{{ person.minecraft_name }}" alt="{{ person.minecraft_name }}" src="//api.{{g.host}}/v2/player/{{person.wmbid}}/skin/render/front/180.png" srcset="//api.{{g.host}}/v2/player/{{person.wmbid}}/skin/render/front/180.png 1x, //api.{{g.host}}/v2/player/{{person.wmbid}}/skin/render/front/360.png 2x" />
+                <img class="nearest-neighbor drop-shadow" {% if person.wmbid == 'dinnerbone' %}style="transform: rotate(180deg);"{% endif %} title="{{ person.minecraft_name }}" alt="{{ person.minecraft_name }}" src="/api/v3/person/{{person.snowflake_or_wmbid}}/skin/front.png" />
+                <img class="nearest-neighbor foreground-image" {% if person.wmbid == 'dinnerbone' %}style="transform: rotate(180deg);"{% endif %} title="{{ person.minecraft_name }}" alt="{{ person.minecraft_name }}" src="/api/v3/person/{{person.snowflake_or_wmbid}}/skin/front.png" />
             </div>
             {%- endif %}
             <div id="user-info">

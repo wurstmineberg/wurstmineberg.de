@@ -283,6 +283,10 @@ def api_avatars(person):
 def api_player_skins(person):
     pass
 
+@image_child(api_player_skins, 'front')
+def api_player_skin_front(person):
+    return playerhead.body(person.minecraft_uuid)
+
 @image_child(api_player_skins, 'head')
 def api_player_head(person):
     return playerhead.head(person.minecraft_uuid)
