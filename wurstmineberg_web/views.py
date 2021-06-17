@@ -1,11 +1,10 @@
 import flask
-import flask_login
-import flask_view_tree
 import requests
 import sqlalchemy.orm.exc
 import urllib.parse
 import wtforms
 
+import flask_view_tree # https://github.com/fenhl/flask-view-tree
 import wurstminebot # https://github.com/wurstmineberg/wurstminebot-discord
 
 import wurstmineberg_web
@@ -21,9 +20,9 @@ def index():
     if main_world.is_running:
         version = main_world.version
         if version is None:
-            version_url = 'https://minecraft.gamepedia.com/Version_history'
+            version_url = 'https://minecraft.fandom.com/wiki/Version_history'
         else:
-            version_url = 'https://minecraft.gamepedia.com/{}'.format(urllib.parse.quote(version))
+            version_url = f'https://minecraft.fandom.com/wiki/Java_Edition_{urllib.parse.quote(version)}'
         return {
             'running': True,
             'version': version,
