@@ -49,6 +49,6 @@ def template(template_name=None):
     return decorator
 
 def setup(app):
-    @app.tempalte_filter()
+    @app.template_filter()
     def ymd(value):
         return f'{value:%Y-%m-%d}'
