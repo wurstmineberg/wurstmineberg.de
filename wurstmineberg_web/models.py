@@ -218,6 +218,15 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
         return self.discorddata is not None and ADMIN_ROLE_ID in self.discorddata['roles']
 
     @property
+    def join_date(self):
+        for hist in self.data.get('statusHistory', []):
+            if hist['status'] == 'later' and 'date' in hist:
+                date = iso8601.parse_date(hist['date'])
+                if not date.tzinfo:
+                    date = date.replace(tzinfo=datetime.timezone.utc)
+                return date
+
+    @property
     def mention(self):
         if self.snowflake is None:
             return wurstminebot.escape(self.wmbid)

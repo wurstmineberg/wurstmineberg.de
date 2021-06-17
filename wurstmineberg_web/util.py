@@ -47,3 +47,8 @@ def template(template_name=None):
         return wrapper
 
     return decorator
+
+def setup(app):
+    @app.tempalte_filter()
+    def ymd(value):
+        return f'{value:%Y-%m-%d}'

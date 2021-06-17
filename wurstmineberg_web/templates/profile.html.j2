@@ -124,13 +124,22 @@
             </tr>
         </thead>
         <tbody>
+            <tr class="profile-stat-row">
+                <td>Date of Whitelisting</td>
+                <td>
+                    {% if person.join_date is none %}
+                        <span class="muted">not yet</span>
+                    {% else %}
+                        {{person.join_date | ymd}}
+                    {% endif %}
+                </td>
+            </tr>
             {% macro profile_stat_row(id, title) -%}
             <tr class="profile-stat-row" id="profile-stat-row-{{ id }}">
                 <td>{{ title }}</td>
                 <td class="value">(loading)</td>
             </tr>
             {%- endmacro %}
-            {{ profile_stat_row('dow', 'Date of Whitelisting') }}
             {{ profile_stat_row('fav-color', 'Favorite Color') }}
             {{ profile_stat_row('fav-item', 'Favorite Item') }}
             {{ profile_stat_row('invited-by', 'Invited By') }}
