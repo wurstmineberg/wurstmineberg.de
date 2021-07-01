@@ -1,19 +1,19 @@
-from math import log2, ceil
-
 import copy
-import flask
-import flask_login
-import flask_view_tree
 import functools
-import mcanvil
-import nbt.nbt
 import pathlib
-import playerhead
-import requests
-import simplejson
 import tempfile
 import time
-import wrapt
+
+import flask # PyPI: Flask
+import flask_login # PyPI: Flask-Login
+import nbt.nbt # PyPI: NBT
+import requests # PyPI: requests
+import simplejson # PyPI: simplejson
+import wrapt # PyPI: wrapt
+
+import flask_view_tree # https://github.com/fenhl/flask-view-tree
+import mcanvil # https://github.com/wurstmineberg/python-anvil
+import playerhead # https://github.com/wurstmineberg/playerhead
 
 import wurstmineberg_web
 import wurstmineberg_web.auth
@@ -298,14 +298,16 @@ def api_server_index():
 @json_child(api_server_index, 'worlds')
 def api_worlds():
     """Returns an object mapping existing world names to short status summaries (like those returned by /world/<world>/status.json but without the lists of online players)"""
-    return {
-        world.name: {
+    result = {}
+    for world in wurstmineberg_web.models.World:
+        result[world.name] = {
             'main': world.is_main,
             'running': world.is_running,
             'version': world.version
         }
-        for world in wurstmineberg_web.models.World
-    }
+        if 'list' in flask.request.args:
+            result[world.name]['list'] = [person.snowflake_or_wmbid for person in world.online_players]
+    return result
 
 @api_v3_index.child('world')
 def api_worlds_index():
