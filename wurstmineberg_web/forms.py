@@ -11,8 +11,6 @@ def twitter_username_filter(username):
         return username[1:]
     return username
 
-_email_validator = wtforms.validators.Email()
-
 class EmptyOrValidatorValidator():
     def __init__(self, validator):
         self.validator = validator
