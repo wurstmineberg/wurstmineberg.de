@@ -227,6 +227,11 @@ def api_index():
 def api_v3_index():
     pass
 
+@api_v3_index.child('calendar.ics')
+def api_calendar():
+    """Our special events calendar you can subscribe to."""
+    raise NotImplementedError('This endpoint should be directed to wurstminebot by nginx')
+
 @api_v3_index.child('discord')
 def api_discord_index():
     pass
