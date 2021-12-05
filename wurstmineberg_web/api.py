@@ -421,10 +421,14 @@ def api_chunk(world, dimension, x, y, z):
 
             return palette[index]
 
-    region = mcanvil.Region(world.region_path(dimension) / 'r.{}.{}.mca'.format(x // 32, z // 32))
+    region = mcanvil.Region(world.region_path(dimension) / f'r.{x // 32}.{z // 32}.mca')
     column = region.chunk_column(x, z).data
-    for section in column['Level']['Sections']:
-        if section['Y'].value == y:
+    if 'Level' in column:
+        sections = column['Level']['Sections'].value
+    else:
+        sections = column['sections'].value
+    for section in sections:
+        if section['Y'] == y:
             break
     else:
         section = None
@@ -451,6 +455,8 @@ def api_chunk(world, dimension, x, y, z):
                         block_info['biome'] = biomes['biomes'][str(column['Level']['Biomes'][16 * (block_y // 4) + 4 * (row // 4) + (block // 4)])]['id']
                     else: # before 19w36a, biomes were stored per block column
                         block_info['biome'] = biomes['biomes'][str(column['Level']['Biomes'][16 * row + block])]['id']
+                else:
+                    pass #TODO also support Minecraft 1.18 biomes (section['biomes'])
                 if section is not None:
                     block_index = 256 * layer + 16 * row + block
                     palette = section.get('Palette')
@@ -479,27 +485,37 @@ def api_chunk(world, dimension, x, y, z):
                 blocks.append(block_info)
             rows.append(blocks)
         layers.append(rows)
-    if 'Entities' in column['Level']:
-        for entity in column['Level']['Entities']:
-            if y * 16 <= entity['Pos'][1].value < y * 16 + 16: # make sure the entity is in the right section
-                block_info = layers[int(entity['Pos'][1].value) & 15][int(entity['Pos'][2].value) & 15][int(entity['Pos'][0].value) & 15]
-                if 'entities' not in block_info:
-                    block_info['entities'] = []
-                block_info['entities'].append(nbt_to_dict(entity))
-    if 'TileEntities' in column['Level']:
-        for tile_entity in column['Level']['TileEntities']:
-            if y * 16 <= tile_entity['y'].value < y * 16 + 16: # make sure the entity is in the right section
-                block_info = layers[tile_entity['y'].value & 15][tile_entity['z'].value & 15][tile_entity['x'].value & 15]
-                del tile_entity['x']
-                del tile_entity['y']
-                del tile_entity['z']
-                if 'tileEntities' in block_info:
-                    block_info['tileEntities'].append(nbt_to_dict(tile_entity))
-                elif 'tileEntity' in block_info:
-                    block_info['tileEntities'] = [block_info['tileEntity'], nbt_to_dict(tile_entity)]
-                    del block_info['tileEntity']
-                else:
-                    block_info['tileEntity'] = nbt_to_dict(tile_entity)
+    if 'entities' in column:
+        entities = column['entities'].value
+    elif 'Entities' in column.get('Level', {}):
+        entities = column['Level']['Entities'].value
+    else:
+        entities = []
+    for entity in entities:
+        if y * 16 <= entity['Pos'][1] < y * 16 + 16: # make sure the entity is in the right section
+            block_info = layers[int(entity['Pos'][1]) & 15][int(entity['Pos'][2]) & 15][int(entity['Pos'][0]) & 15]
+            if 'entities' not in block_info:
+                block_info['entities'] = []
+            block_info['entities'].append(nbt_to_dict(entity))
+    if 'block_entities' in column:
+        block_entities = column['block_entities'].value
+    elif 'TileEntities' in column.get('Level', {}):
+        block_entities = column['Level']['TileEntities'].value
+    else:
+        block_entities = []
+    for block_entity in block_entities:
+        if y * 16 <= block_entity['y'] < y * 16 + 16: # make sure the entity is in the right section
+            block_info = layers[block_entity['y'] & 15][block_entity['z'] & 15][block_entity['x'] & 15]
+            del block_entity['x']
+            del block_entity['y']
+            del block_entity['z']
+            if 'tileEntities' in block_info:
+                block_info['tileEntities'].append(nbt_to_dict(block_entity))
+            elif 'tileEntity' in block_info:
+                block_info['tileEntities'] = [block_info['tileEntity'], nbt_to_dict(block_entity)]
+                del block_info['tileEntity']
+            else:
+                block_info['tileEntity'] = nbt_to_dict(block_entity)
     return layers
 
 @api_world_dimension_index.child('region')
