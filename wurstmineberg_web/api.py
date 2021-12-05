@@ -22,8 +22,9 @@ import wurstmineberg_web.util
 import wurstmineberg_web.views
 
 class FileExtError(ValueError):
-    def __init__(self):
-        super().__init__('URL must end with .json')
+    def __init__(self, ext):
+        super().__init__(f'URL must end with .{ext}')
+        self.ext = ext
 
 def key_or_member_optional(f):
     @functools.wraps(f)
@@ -98,7 +99,7 @@ def json_children(node, var_converter=flask_view_tree.identity, *args, **kwargs)
         if x.endswith('.json'):
             return JsonStem(var_converter(x[:-len('.json')]))
         else:
-            raise FileExtError()
+            raise FileExtError('json')
 
     def decorator(f):
         @node.children(json_var_converter, *args, **kwargs)
@@ -109,9 +110,38 @@ def json_children(node, var_converter=flask_view_tree.identity, *args, **kwargs)
 
         @wrapper.catch_init(FileExtError)
         def json_catch_init(exc, value):
-            return wurstmineberg_web.util.render_template('api-ext-404'), 404
+            return wurstmineberg_web.util.render_template('api-ext-404', error=exc), 404
 
         wrapper.raw = f
+        return wrapper
+
+    return decorator
+
+def mca_children(node, var_converter=flask_view_tree.identity, *args, **kwargs):
+    class McaStem(wrapt.ObjectProxy):
+        @property
+        def url_part(self):
+            if hasattr(self.__wrapped__, 'url_part'):
+                return f'{self.__wrapped__.url_part}.mca'
+            else:
+                return f'{self.__wrapped__}.mca'
+
+    def mca_var_converter(x):
+        if x.endswith('.mca'):
+            return McaStem(var_converter(x[:-len('.mca')]))
+        else:
+            raise FileExtError('mca')
+
+    def decorator(f):
+        @node.children(mca_var_converter, *args, **kwargs)
+        @functools.wraps(f)
+        def wrapper(*args, **kwargs):
+            return flask.send_file(f(*args, **kwargs), as_attachment=True) #TODO MIME type?
+
+        @wrapper.catch_init(FileExtError)
+        def mca_catch_init(exc, value):
+            return wurstmineberg_web.util.render_template('api-ext-404', error=exc), 404
+
         return wrapper
 
     return decorator
@@ -471,6 +501,18 @@ def api_chunk(world, dimension, x, y, z):
                 else:
                     block_info['tileEntity'] = nbt_to_dict(tile_entity)
     return layers
+
+@api_world_dimension_index.child('region')
+def api_regions_index(world, dimension):
+    pass
+
+@api_regions_index.children(int)
+def api_regions_x(world, dimension, x):
+    pass
+
+@mca_children(api_regions_x, int)
+def api_region(world, dimension, x, z):
+    return world.region_path(dimension) / f'r.{x}.{z}.mca'
 
 @nbt_child(api_world_index, 'level')
 def api_world_level(world):
