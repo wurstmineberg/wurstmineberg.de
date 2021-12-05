@@ -518,6 +518,19 @@ def api_chunk(world, dimension, x, y, z):
                 block_info['tileEntity'] = nbt_to_dict(block_entity)
     return layers
 
+@api_world_dimension_index.child('chunk-column')
+def api_chunk_columns_index(world, dimension):
+    pass
+
+@api_chunk_columns_index.children(int)
+def api_chunk_columns_x(world, dimension, x):
+    pass
+
+@json_children(api_chunk_columns_x, int) #TODO allow .dat for raw NBT
+def api_chunk_column(world, dimension, x, z):
+    region = mcanvil.Region(world.region_path(dimension) / f'r.{x // 32}.{z // 32}.mca')
+    return nbt_to_dict(region.chunk_column(x, z).data)
+
 @api_world_dimension_index.child('region')
 def api_regions_index(world, dimension):
     pass
