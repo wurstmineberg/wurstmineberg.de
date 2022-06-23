@@ -215,7 +215,7 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
 
     @property
     def is_admin(self):
-        return self.discorddata is not None and ADMIN_ROLE_ID in self.discorddata['roles']
+        return self.discorddata is not None and str(ADMIN_ROLE_ID) in self.discorddata['roles']
 
     @property
     def join_date(self):
