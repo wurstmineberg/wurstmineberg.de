@@ -20,9 +20,9 @@ def index():
     if main_world.is_running:
         version = main_world.version
         if version is None:
-            version_url = 'https://minecraft.fandom.com/wiki/Version_history'
+            version_url = 'https://minecraft.wiki/w/Version_history'
         else:
-            version_url = f'https://minecraft.fandom.com/wiki/Java_Edition_{urllib.parse.quote(version)}'
+            version_url = f'https://minecraft.wiki/w/Java_Edition_{urllib.parse.quote(version)}'
         return {
             'running': True,
             'version': version,
