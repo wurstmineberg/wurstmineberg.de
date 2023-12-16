@@ -23,7 +23,7 @@ class WmbidMentionPattern(markdown.inlinepatterns.LinkInlineProcessor):
 
 class WmbidMentionExtension(markdown.Extension):
     def extendMarkdown(self, md, md_globals=None):
-        md.inlinePatterns.add('wmbid-mention', WmbidMentionPattern(WMBID_MENTION_REGEX, md), '<reference')
+        md.inlinePatterns.register(WmbidMentionPattern(WMBID_MENTION_REGEX, md), 'wmbid-mention', 169)
 
 def mentions_to_tags(text):
     while True:
