@@ -142,13 +142,13 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
         return ppl
 
     def __html__(self):
-        return jinja2.Markup('<a title="{}" href="{}">@{}</a>'.format(self, self.profile_url, jinja2.escape(self.name)))
+        return jinja2.Markup(f'<a title="{self}" href="{self.profile_url}">@{jinja2.escape(self.name)}</a>')
 
     def __repr__(self):
         if self.snowflake is None:
-            return 'wurstmineberg_web.models.Person.from_wmbid({!r})'.format(self.wmbid)
+            return f'wurstmineberg_web.models.Person.from_wmbid({self.wmbid!r})'
         else:
-            return 'wurstmineberg_web.models.Person.from_snowflake({!r})'.format(self.snowflake)
+            return f'wurstmineberg_web.models.Person.from_snowflake({self.snowflake!r})'
 
     def __str__(self):
         try:
@@ -193,7 +193,7 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
             })
         # placeholder
         available.append({
-            'url': '{}/img/grid-unknown.png'.format(flask.g.assetserver),
+            'url': f'{flask.g.assetserver}/img/grid-unknown.png',
             'pixelate': True
         })
         # API v3 format
@@ -325,7 +325,7 @@ class World(metaclass=WorldMeta):
         self.name = name #TODO check if world exists
 
     def __repr__(self):
-        return 'wurstmineberg_web.models.World({!r})'.format(self.name)
+        return f'wurstmineberg_web.models.World({self.name!r})'
 
     def __str__(self):
         return self.name
@@ -340,11 +340,11 @@ class World(metaclass=WorldMeta):
 
     @property
     def is_running(self):
-        return subprocess.run(['systemctl', 'is-active', 'minecraft@{}.service'.format(self)]).returncode == 0
+        return subprocess.run(['systemctl', 'is-active', f'minecraft@{self}.service']).returncode == 0
 
     @property
     def online_players(self):
-        server = mcstatus.MinecraftServer.lookup('wurstmineberg.de' if self.is_main else '{}.wurstmineberg.de'.format(self))
+        server = mcstatus.JavaServer.lookup('wurstmineberg.de' if self.is_main else f'{self}.wurstmineberg.de')
         try:
             status = server.status()
         except ConnectionRefusedError:
