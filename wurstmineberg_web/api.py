@@ -343,7 +343,10 @@ def api_worlds():
             'version': world.version
         }
         if 'list' in flask.request.args:
-            result[world.name]['list'] = [person.snowflake_or_wmbid for person in world.online_players]
+            result[world.name]['list'] = [
+                None if person is None else person.snowflake_or_wmbid
+                for person in world.online_players
+            ]
     return result
 
 @api_v3_index.child('world')
