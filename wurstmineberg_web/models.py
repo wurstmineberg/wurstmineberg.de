@@ -96,6 +96,9 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
         if discrim is None:
             with contextlib.suppress(sqlalchemy.orm.exc.NoResultFound):
                 return cls.query.filter_by(wmbid=username).one()
+            for person in cls.query.all():
+                if person.discorddata is not None and username == person.discorddata['username'] and discrim is None:
+                    return person
         else:
             for person in cls.query.all():
                 if person.discorddata is not None and username == person.discorddata['username'] and discrim == person.discorddata['discriminator']:

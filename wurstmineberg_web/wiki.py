@@ -33,6 +33,8 @@ def mentions_to_tags(text):
         person = wurstmineberg_web.models.Person.from_snowflake_or_wmbid(match.group(1))
         if person.discorddata is None:
             tag = f'@{person.wmbid}#'
+        elif person.discorddata['discriminator'] is None:
+            tag = f'@{person.discorddata["username"]}#'
         else:
             tag = f'@{person.discorddata["username"]}#{person.discorddata["discriminator"]:04}'
         text = f'{text[:match.start()]}{tag}{text[match.end():]}'
