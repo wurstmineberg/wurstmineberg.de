@@ -1,8 +1,8 @@
 import re
+import xml.etree.ElementTree
 
 import markdown # PyPI: Markdown
 import markdown.inlinepatterns # PyPI: Markdown
-import markdown.util # PyPI: Markdown
 
 import wurstminebot # https://github.com/wurstmineberg/wurstminebot-discord
 
@@ -16,7 +16,7 @@ WMBID_MENTION_REGEX = f'<@!?({wurstmineberg_web.models.WMBID_REGEX.pattern})>'
 class WmbidMentionPattern(markdown.inlinepatterns.LinkInlineProcessor):
     def handleMatch(self, m, data):
         user = wurstmineberg_web.models.Person.from_wmbid(m.group(1))
-        el = markdown.util.etree.Element('a')
+        el = xml.etree.ElementTree.Element('a')
         el.text = f'@{user.name}'
         el.set('href', user.profile_url)
         return el, m.start(0), m.end(0)
