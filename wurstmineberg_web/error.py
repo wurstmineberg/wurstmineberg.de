@@ -44,7 +44,7 @@ def error_handler(error):
         try:
             notify_crash()
         except Exception:
-            pass
+            traceback.print_exc()
         else:
             reported = True
     return wurstmineberg_web.util.render_template('error', error=error, is_exception=lambda v: isinstance(v, Exception), report=report, reported=reported, traceback=traceback), code
