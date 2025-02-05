@@ -1,7 +1,6 @@
-import flask
-import io
-import subprocess
 import traceback
+
+import flask
 
 import wurstmineberg_web
 import wurstmineberg_web.util
@@ -21,13 +20,14 @@ def notify_crash():
     except Exception:
         url = None
     exc_text = CRASH_NOTICE.format(user=user, url=url, tb=traceback.format_exc())
-    try:
-        # notify night
-        response = requests.post('https://nightd.fenhl.net/wurstmineberg/crash', json={'text': exc_text}, auth=('wurstmineberg', wurstmineberg_web.app.config['night']['password']))
-        response.raise_for_status()
-        return
-    except Exception:
-        subprocess.run(['mail', '-s', 'wurstmineberg.de internal server error', 'root@wurstmineberg.de'], input=exc_text.encode('utf-8'), check=True)
+    # notify night
+    response = requests.post(
+        'https://night.fenhl.net/dev/gharch/report',
+        headers={'Authorization': f'Bearer {wurstmineberg_web.app.config["night"]["password"]}'},
+        data={'path': '/dev/gharch/webError', 'extra': exc_text},
+    )
+    response.raise_for_status()
+    return
 
 @wurstmineberg_web.app.errorhandler(403)
 @wurstmineberg_web.app.errorhandler(404)
