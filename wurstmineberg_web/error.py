@@ -1,6 +1,7 @@
 import traceback
 
 import flask
+import requests
 
 import wurstmineberg_web
 import wurstmineberg_web.util

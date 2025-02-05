@@ -30,7 +30,7 @@
                     {{ error.__class__.__name__ }}: {{ error }}
                 </div>
                 {% if report and not reported %}
-                    <pre>{{ traceback.format_exception(error) }}</pre>
+                    <pre>{{ traceback.format_exc() }}</pre>
                 {% endif %}
             {% else %}
                 <div class="alert alert-danger" role="alert">
