@@ -23,7 +23,7 @@ if (-not $?)
     throw 'Native Failure'
 }
 
-ssh wurstmineberg.de env -C /opt/git/github.com/wurstmineberg/wurstmineberg.de/main git pull
+ssh wurstmineberg@wurstmineberg.de env -C /opt/git/github.com/wurstmineberg/wurstmineberg.de/main git pull
 if (-not $?)
 {
     throw 'Native Failure'
@@ -41,7 +41,19 @@ if (-not $?)
     throw 'Native Failure'
 }
 
-ssh wurstmineberg@wurstmineberg.de /opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets/deploy.sh
+ssh wurstmineberg.de sudo systemctl daemon-reload
+if (-not $?)
+{
+    throw 'Native Failure'
+}
+
+ssh wurstmineberg.de sudo systemctl reload nginx
+if (-not $?)
+{
+    throw 'Native Failure'
+}
+
+ssh wurstmineberg.de sudo systemctl reload uwsgi
 if (-not $?)
 {
     throw 'Native Failure'

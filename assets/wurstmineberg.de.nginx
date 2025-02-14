@@ -23,7 +23,7 @@ server {
     location / {
         add_header Access-Control-Allow-Origin *;
         add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-        proxy_pass http://localhost:24817;
+        proxy_pass http://localhost:24822;
     }
 
     location /static/ {
