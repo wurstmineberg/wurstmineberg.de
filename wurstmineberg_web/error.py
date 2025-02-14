@@ -14,26 +14,17 @@ URL: {url}
 def notify_crash():
     try:
         user = str(flask.g.user)
-    except Exception:
-        user = None
+    except Exception as e:
+        user = f'({e})'
     try:
         url = str(flask.g.view_node.url)
-    except Exception:
-        url = None
+    except Exception as e:
+        url = f'({e})'
     exc_text = CRASH_NOTICE.format(user=user, url=url, tb=traceback.format_exc())
-    # notify night
-    response = requests.post(
-        'https://night.fenhl.net/dev/gharch/report',
-        headers={'Authorization': f'Bearer {wurstmineberg_web.app.config["night"]["password"]}'},
-        data={'path': '/dev/gharch/webErrorPython', 'extra': exc_text},
-    )
-    response.raise_for_status()
-    return
 
 @wurstmineberg_web.app.errorhandler(403)
 @wurstmineberg_web.app.errorhandler(404)
 @wurstmineberg_web.app.errorhandler(410)
-@wurstmineberg_web.app.errorhandler(500)
 def error_handler(error):
     try:
         code = error.code
@@ -49,3 +40,15 @@ def error_handler(error):
         else:
             reported = True
     return wurstmineberg_web.util.render_template('error', error=error, is_exception=lambda v: isinstance(v, Exception), report=report, reported=reported, traceback=traceback), code
+
+@wurstmineberg_web.app.errorhandler(500)
+def internal_server_error(error):
+    try:
+        user = str(flask.g.user)
+    except Exception as e:
+        user = f'({e})'
+    try:
+        url = str(flask.g.view_node.url)
+    except Exception as e:
+        url = f'({e})'
+    return flask.Response(CRASH_NOTICE.format(user=user, url=url, tb=traceback.format_exc()), mimetype='text/plain'), 500

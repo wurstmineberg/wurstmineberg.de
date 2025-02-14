@@ -472,7 +472,7 @@ async fn index(me: Option<User>) -> Result<RawHtml<String>, IndexError> {
 #[rocket::get("/map")]
 fn map(me: Option<User>) -> RawHtml<String> {
     page(&me, "Map — Wurstmineberg", Tab::More, html! {
-        div(id = "map", style = "height: 100%;");
+        div(id = "map", style = "height: calc(100vh - 91px);");
         link(rel = "stylesheet", href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css", integrity = "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=", crossorigin = "");
         script(src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js", integrity = "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=", crossorigin = "");
         script(src = static_url!("map.js").to_string());
@@ -588,7 +588,7 @@ async fn internal_server_error(request: &Request<'_>) -> RawHtml<String> {
     let config = request.guard::<&State<Config>>().await.expect("missing config");
     let http_client = request.guard::<&State<reqwest::Client>>().await.expect("missing HTTP client");
     let me = request.guard::<User>().await.succeeded();
-    let is_reported = night_report(config, http_client, "/dev/gharch/webErrorRust", Some("internal server error")).await.is_ok();
+    let is_reported = night_report(config, http_client, "/dev/gharch/webError", Some("internal server error")).await.is_ok();
     page(&me, "Internal Server Error — Wurstmineberg", Tab::None, html! {
         h1 : "Error 500: Internal Server Error";
         p : "This is a sad time. An error occured.";
@@ -605,7 +605,7 @@ async fn fallback_catcher(status: Status, request: &Request<'_>) -> RawHtml<Stri
     let config = request.guard::<&State<Config>>().await.expect("missing config");
     let http_client = request.guard::<&State<reqwest::Client>>().await.expect("missing HTTP client");
     let me = request.guard::<User>().await.succeeded();
-    let is_reported = night_report(config, http_client, "/dev/gharch/webErrorRust", Some("responding with unexpected HTTP status code")).await.is_ok();
+    let is_reported = night_report(config, http_client, "/dev/gharch/webError", Some("responding with unexpected HTTP status code")).await.is_ok();
     page(&me, &format!("{} — Wurstmineberg", status.reason_lossy()), Tab::None, html! {
         h1 {
             : "Error ";
@@ -638,7 +638,7 @@ async fn main() -> Result<(), Error> {
     let panic_config = config.clone();
     let default_panic_hook = std::panic::take_hook();
     std::panic::set_hook(Box::new(move |info| {
-        let _ = night_report_sync(&panic_config, &format!("/dev/gharch/webErrorRust"), Some("thread panic"));
+        let _ = night_report_sync(&panic_config, &format!("/dev/gharch/webError"), Some("thread panic"));
         default_panic_hook(info)
     }));
     let http_client = reqwest::Client::builder()
