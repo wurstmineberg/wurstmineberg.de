@@ -35,13 +35,13 @@ if (-not $?)
     throw 'Native Failure'
 }
 
-scp .\target\wsl\release\wurstmineberg-web wurstmineberg.de:/opt/wurstmineberg/bin/wurstmineberg-web
+scp .\target\wsl\release\wurstmineberg-web wurstmineberg@wurstmineberg.de:/opt/wurstmineberg/bin/wurstmineberg-web
 if (-not $?)
 {
     throw 'Native Failure'
 }
 
-ssh wurstmineberg.de /opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets/deploy.sh
+ssh wurstmineberg@wurstmineberg.de /opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets/deploy.sh
 if (-not $?)
 {
     throw 'Native Failure'

@@ -670,7 +670,7 @@ async fn main() -> Result<(), Error> {
         auth::discord_login,
         auth::logout,
     ])
-    .mount("/static", FileServer::new(rocket::fs::relative!("assets/static"), rocket::fs::Options::None))
+    .mount("/static", FileServer::new("/opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets/static", rocket::fs::Options::None))
     .register("/", rocket::catchers![
         bad_request,
         not_found,
