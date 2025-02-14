@@ -1,0 +1,16 @@
+[Unit]
+Description=Web server for wurstmineberg.de
+Documentation=https://github.com/wurstmineberg/wurstmineberg.de
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Restart=always
+ExecStart=/opt/wurstmineberg/bin/wurstmineberg-web
+User=wurstmineberg
+Group=www-data
+WorkingDirectory=/opt/git/github.com/wurstmineberg/wurstmineberg.de/main
+Environment="RUST_BACKTRACE=1"
+
+[Install]
+WantedBy=multi-user.target

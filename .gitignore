@@ -7,3 +7,6 @@
 /wurstmineberg_web/assets
 __pycache__
 .env
+
+/.cargo/config.toml
+/target

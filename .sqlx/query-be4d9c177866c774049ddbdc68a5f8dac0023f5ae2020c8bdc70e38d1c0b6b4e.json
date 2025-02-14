@@ -1,0 +1,22 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT view_as AS \"view_as: PgSnowflake<UserId>\" FROM view_as WHERE viewer = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "view_as: PgSnowflake<UserId>",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "be4d9c177866c774049ddbdc68a5f8dac0023f5ae2020c8bdc70e38d1c0b6b4e"
+}

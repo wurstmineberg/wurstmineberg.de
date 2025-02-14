@@ -25,7 +25,7 @@ def notify_crash():
     response = requests.post(
         'https://night.fenhl.net/dev/gharch/report',
         headers={'Authorization': f'Bearer {wurstmineberg_web.app.config["night"]["password"]}'},
-        data={'path': '/dev/gharch/webError', 'extra': exc_text},
+        data={'path': '/dev/gharch/webErrorPython', 'extra': exc_text},
     )
     response.raise_for_status()
     return

@@ -1,7 +1,3 @@
-upstream _wurstmineberg {
-    server unix:/run/uwsgi/app/wurstmineberg/socket;
-}
-
 server {
     server_name wurstmineberg.de;
     server_name gharch.wurstmineberg.de;
@@ -27,8 +23,11 @@ server {
     location / {
         add_header Access-Control-Allow-Origin *;
         add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-        include uwsgi_params;
-        uwsgi_pass _wurstmineberg;
+        proxy_pass http://localhost:24817;
+    }
+
+    location /static/ {
+        root /opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets;
     }
 
     location /api/v3/calendar.ics {

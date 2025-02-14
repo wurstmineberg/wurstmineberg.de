@@ -436,9 +436,9 @@ def api_chunk(world, dimension, x, y, z):
             break
     else:
         section = None
-    with pathlib.Path('/opt/git/github.com/wurstmineberg/assets.wurstmineberg.de/master/json/biomes.json').open() as biomes_file:
+    with pathlib.Path('/opt/git/github.com/wurstmineberg/assets.wurstmineberg.de/main/json/biomes.json').open() as biomes_file:
         biomes = simplejson.load(biomes_file, use_decimal=True)
-    with pathlib.Path('/opt/git/github.com/wurstmineberg/assets.wurstmineberg.de/master/json/items.json').open() as items_file:
+    with pathlib.Path('/opt/git/github.com/wurstmineberg/assets.wurstmineberg.de/main/json/items.json').open() as items_file:
         items = simplejson.load(items_file, use_decimal=True)
     layers = []
     for layer in range(16):
