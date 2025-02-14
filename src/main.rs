@@ -271,7 +271,7 @@ fn page(me: &Option<User>, title: &str, tab: Tab, content: impl ToHtml) -> RawHt
 #[derive(Debug, thiserror::Error, rocket_util::Error)]
 enum IndexError {
     #[error(transparent)] Minecraft(#[from] systemd_minecraft::Error),
-    #[error(transparent)] Ping(#[from] mcping::Error),
+    #[error(transparent)] Ping(#[from] craftping::Error),
 }
 
 #[rocket::get("/")]
@@ -310,7 +310,7 @@ async fn index(me: Option<User>) -> Result<RawHtml<String>, IndexError> {
                             a(href = format!("https://minecraft.wiki/w/Java_Edition_{}", version), style = "font-weight: bold;") : version;
                         }
                         : ", and ";
-                        @let num_online = main_world.status()?.players.online;
+                        @let num_online = main_world.ping().await?.online_players;
                         span(id = "peopleCount") {
                             @if num_online == 0 {
                                 : "none";
@@ -670,7 +670,10 @@ async fn main() -> Result<(), Error> {
         auth::discord_login,
         auth::logout,
     ])
-    .mount("/static", FileServer::new("/opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets/static", rocket::fs::Options::None))
+    .mount("/static", FileServer::new({
+        #[cfg(windows)] { rocket::fs::relative!("assets/static") }
+        #[cfg(not(windows))] { "/opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets/static" }
+    }, rocket::fs::Options::None))
     .register("/", rocket::catchers![
         bad_request,
         not_found,
