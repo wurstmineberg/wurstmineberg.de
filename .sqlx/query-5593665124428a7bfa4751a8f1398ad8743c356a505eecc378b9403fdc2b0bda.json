@@ -1,0 +1,34 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT snowflake AS \"snowflake: PgSnowflake<UserId>\", data AS \"data: Json<Data>\", discorddata AS \"discorddata: Json<DiscordData>\" FROM people WHERE wmbid = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "snowflake: PgSnowflake<UserId>",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "data: Json<Data>",
+        "type_info": "Jsonb"
+      },
+      {
+        "ordinal": 2,
+        "name": "discorddata: Json<DiscordData>",
+        "type_info": "Jsonb"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "5593665124428a7bfa4751a8f1398ad8743c356a505eecc378b9403fdc2b0bda"
+}

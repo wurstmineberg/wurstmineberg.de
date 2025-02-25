@@ -66,6 +66,7 @@ mod config;
 mod discord;
 #[cfg(not(target_os = "linux"))] mod systemd_minecraft;
 mod user;
+mod wiki;
 
 include!(concat!(env!("OUT_DIR"), "/build_output.rs"));
 
@@ -89,6 +90,12 @@ fn night_report_sync(config: &Config, path: &str, extra: Option<&str>) -> Result
         .send()?
         .error_for_status()?;
     Ok(())
+}
+
+#[derive(Responder)]
+enum StatusOrError<E> {
+    Status(Status),
+    Err(E),
 }
 
 fn base_uri() -> rocket::http::uri::Absolute<'static> {
@@ -197,6 +204,9 @@ fn page(me: &Option<User>, title: &str, tab: Tab, content: impl ToHtml) -> RawHt
                                     }
                                     li {
                                         a(href = format!("https://alltheitems.{HOST}/")) : "All The Items";
+                                    }
+                                    li {
+                                        a(href = uri!(map).to_string()) : "Map";
                                     }
                                 }
                             }
@@ -669,6 +679,10 @@ async fn main() -> Result<(), Error> {
         auth::discord_callback,
         auth::discord_login,
         auth::logout,
+        wiki::index,
+        wiki::main_article,
+        wiki::namespaced_article,
+        wiki::revision,
     ])
     .mount("/static", FileServer::new({
         #[cfg(windows)] { rocket::fs::relative!("assets/static") }

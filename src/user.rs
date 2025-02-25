@@ -45,6 +45,21 @@ impl User {
         )
     }
 
+    pub(crate) async fn from_wmbid(pool: impl PgExecutor<'_>, wmbid: String) -> sqlx::Result<Option<Self>> {
+        Ok(
+            sqlx::query!(r#"SELECT snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE wmbid = $1"#, &wmbid).fetch_optional(pool).await?
+            .map(|row| Self {
+                id: if let Some(PgSnowflake(discord_id)) = row.snowflake {
+                    Id::Both { wmbid, discord_id }
+                } else {
+                    Id::Wmbid(wmbid)
+                },
+                data: row.data.map(|Json(data)| data).unwrap_or_default(),
+                discorddata: row.discorddata.map(|Json(discorddata)| discorddata),
+            })
+        )
+    }
+
     pub(crate) async fn from_discord(pool: impl PgExecutor<'_>, discord_id: UserId) -> sqlx::Result<Option<Self>> {
         Ok(
             sqlx::query!(r#"SELECT wmbid, data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE snowflake = $1"#, PgSnowflake(discord_id) as _).fetch_optional(pool).await?
@@ -112,7 +127,7 @@ impl ToHtml for User {
         html! {
             a(title = self.to_string(), href = self.profile_url().to_string()) {
                 : "@";
-                : self;
+                : self.to_string();
             }
         }
     }

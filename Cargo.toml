@@ -26,6 +26,7 @@ futures = "0.3.31"
 if_chain = "1.0.2"
 itertools = "0.14.0"
 mimalloc = "0.1.43"
+pulldown-cmark = { git = "https://github.com/fenhl/pulldown-cmark", branch = "rocket-wiki", default-features = false, features = ["simd", "html"] }
 reqwest = { version = "0.12", default-features = false, features = ["blocking", "charset", "hickory-dns", "http2", "macos-system-configuration", "rustls-tls"] }
 rocket = { version = "0.5.1", features = ["secrets"] }
 rocket-basicauth = { git = "https://github.com/fenhl/rocket-basicauth", branch = "master" }
