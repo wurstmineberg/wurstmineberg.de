@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT text FROM wiki WHERE namespace = 'wiki' AND title = $1 ORDER BY timestamp DESC LIMIT 1",
+  "query": "SELECT text FROM wiki WHERE title = $1 AND namespace = 'wiki' ORDER BY timestamp DESC LIMIT 1",
   "describe": {
     "columns": [
       {
@@ -18,5 +18,5 @@
       false
     ]
   },
-  "hash": "e36dc332b30d6f013099c5dfa569bca52d04a296c809948eb6650c1a6a480cdb"
+  "hash": "36b0d42ddd160d29675bc10709014a54d02b39450b8436b30b1ab8cd70c1cb51"
 }

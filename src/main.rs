@@ -106,13 +106,6 @@ fn asset(path: &str) -> String {
     format!("https://assets.{HOST}{path}") //TODO allow testing with local assetserver, like flask.g.assetserver
 }
 
-fn wiki(article: &str, content: impl ToHtml) -> RawHtml<String> {
-    html! {
-        //TODO redlink formatting for articles that don't exist
-        a(href = format!("/wiki/{article}")) : content;
-    }
-}
-
 #[allow(unused)] //TODO port more pages to Rust
 enum Tab {
     None,
@@ -282,10 +275,11 @@ fn page(me: &Option<User>, title: &str, tab: Tab, content: impl ToHtml) -> RawHt
 enum IndexError {
     #[error(transparent)] Minecraft(#[from] systemd_minecraft::Error),
     #[error(transparent)] Ping(#[from] craftping::Error),
+    #[error(transparent)] Sql(#[from] sqlx::Error),
 }
 
 #[rocket::get("/")]
-async fn index(me: Option<User>) -> Result<RawHtml<String>, IndexError> {
+async fn index(db_pool: &State<PgPool>, me: Option<User>) -> Result<RawHtml<String>, IndexError> {
     Ok(page(&me, "Wurstmineberg", Tab::Home, html! {
         div(class = "panel panel-default") {
             div(class = "panel-heading") {
@@ -299,7 +293,7 @@ async fn index(me: Option<User>) -> Result<RawHtml<String>, IndexError> {
                 }
                 p {
                     : "The main world usually runs the latest stable version of Minecraft. We don't run any serverside mods due to the work that would require. But we do have some awesome selfmade tools that really replace lots of that functionality. Sometimes a member also runs a ";
-                    : wiki("modded-world", "modded world");
+                    : wiki::link(db_pool, "modded-world", "wiki", "modded world").await?;
                     : ".";
                 }
                 p {

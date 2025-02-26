@@ -1,4 +1,5 @@
 use {
+    lazy_regex::regex_captures,
     rocket::{
         State,
         http::Status,
@@ -30,6 +31,19 @@ impl<E: Into<Error>> From<E> for StatusOrError<Error> {
     fn from(e: E) -> Self {
         Self::Err(e.into())
     }
+}
+
+async fn link_open_tag(db_pool: &PgPool, article: &str, namespace: &str) -> sqlx::Result<RawHtml<String>> {
+    let exists = sqlx::query_scalar!(r#"SELECT EXISTS (SELECT 1 FROM wiki WHERE title = $1 AND namespace = $2) AS "exists!""#, article, namespace).fetch_one(db_pool).await?;
+    Ok(RawHtml(format!("<a{} href=\"{}\">", if exists { "" } else { " class=\"redlink\"" }, if namespace == "wiki" { uri!(main_article(article)) } else { uri!(namespaced_article(article, namespace)) })))
+}
+
+pub(crate) async fn link(db_pool: &PgPool, article: &str, namespace: &str, content: impl ToHtml) -> sqlx::Result<RawHtml<String>> {
+    Ok(html! {
+        : link_open_tag(db_pool, article, namespace).await?;
+        : content;
+        : RawHtml("</a>");
+    })
 }
 
 #[rocket::get("/wiki")]
@@ -101,7 +115,17 @@ async fn render_wiki_page<'a>(db_pool: &PgPool, source: &'a str) -> Result<Markd
             }
             pulldown_cmark::Event::Start(pulldown_cmark::Tag::Link { link_type, dest_url, title, id }) => {
                 let dest_url = Url::options().base_url(Some(&"https://wurstmineberg.de/wiki/".parse()?)).parse(&dest_url)?;
-                pulldown_cmark::Event::Start(pulldown_cmark::Tag::Link { link_type, dest_url: dest_url.to_string().into(), title, id })
+                if let Some(relative) = Url::parse("https://wurstmineberg.de/wiki/")?.make_relative(&dest_url) {
+                    if let Some((_, title)) = regex_captures!("^([0-9a-z_-]+)$", &relative) {
+                        pulldown_cmark::Event::Html(link_open_tag(db_pool, title, "wiki").await?.0.into())
+                    } else if let Some((_, title, namespace)) = regex_captures!("^([0-9a-z_-]+)/([0-9a-z_-]+)$", &relative) {
+                        pulldown_cmark::Event::Html(link_open_tag(db_pool, title, namespace).await?.0.into())
+                    } else {
+                        pulldown_cmark::Event::Start(pulldown_cmark::Tag::Link { link_type, dest_url: dest_url.to_string().into(), title, id })
+                    }
+                } else {
+                    pulldown_cmark::Event::Start(pulldown_cmark::Tag::Link { link_type, dest_url: dest_url.to_string().into(), title, id })
+                }
             }
             _ => event,
         });
@@ -111,7 +135,7 @@ async fn render_wiki_page<'a>(db_pool: &PgPool, source: &'a str) -> Result<Markd
 
 #[rocket::get("/wiki/<title>")]
 pub(crate) async fn main_article(db_pool: &State<PgPool>, me: Option<User>, title: &str) -> Result<RawHtml<String>, StatusOrError<Error>> {
-    let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE namespace = 'wiki' AND title = $1 ORDER BY timestamp DESC LIMIT 1", title).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
+    let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = 'wiki' ORDER BY timestamp DESC LIMIT 1", title).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
     Ok(page(&me, &format!("{title} — Wurstmineberg Wiki"), Tab::Wiki, html! {
         h1 {
             : title;
@@ -125,7 +149,7 @@ pub(crate) async fn main_article(db_pool: &State<PgPool>, me: Option<User>, titl
 
 #[rocket::get("/wiki/<title>/<namespace>")]
 pub(crate) async fn namespaced_article(db_pool: &State<PgPool>, me: Option<User>, title: &str, namespace: &str) -> Result<RawHtml<String>, StatusOrError<Error>> {
-    let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE namespace = $1 AND title = $2 ORDER BY timestamp DESC LIMIT 1", namespace, title).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
+    let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 ORDER BY timestamp DESC LIMIT 1", title, namespace).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
     Ok(page(&me, &format!("{title} ({namespace}) — Wurstmineberg Wiki"), Tab::Wiki, html! {
         h1 {
             : title;
@@ -140,8 +164,9 @@ pub(crate) async fn namespaced_article(db_pool: &State<PgPool>, me: Option<User>
 }
 
 #[rocket::get("/wiki/<title>/<namespace>/history/<rev>")]
-pub(crate) async fn revision(db_pool: &State<PgPool>, me: Option<User>, title: &str, namespace: &str, rev: i32) -> Result<RawHtml<String>, StatusOrError<Error>> {
-    let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE namespace = $1 AND title = $2 AND id = $3", namespace, title, rev).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
+pub(crate) async fn revision(db_pool: &State<PgPool>, me: Option<User>, title: &str, namespace: &str, rev: Option<i32>) -> Result<RawHtml<String>, StatusOrError<Error>> {
+    let Some(rev) = rev else { return Err(StatusOrError::Status(Status::NotFound)) }; // don't forward to Flask on wrong revision format, prevents an internal server error
+    let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 AND id = $3", namespace, title, rev).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
     Ok(page(&me, &format!("revision of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
         h1 {
             : "revision of ";
