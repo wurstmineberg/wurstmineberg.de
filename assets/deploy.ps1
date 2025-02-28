@@ -17,6 +17,12 @@ if (-not $?)
     throw 'Native Failure'
 }
 
+wsl mkdir -p /mnt/c/Users/fenhl/git/github.com/wurstmineberg/wurstmineberg.de/stage/target/wsl/release
+if (-not $?)
+{
+    throw 'Native Failure'
+}
+
 wsl cp /home/fenhl/wslgit/github.com/wurstmineberg/wurstmineberg.de/target/x86_64-unknown-linux-musl/release/wurstmineberg-web /mnt/c/Users/fenhl/git/github.com/wurstmineberg/wurstmineberg.de/stage/target/wsl/release/wurstmineberg-web
 if (-not $?)
 {
