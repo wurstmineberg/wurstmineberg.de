@@ -247,7 +247,7 @@ fn page(me: &Option<User>, title: &str, tab: Tab, content: impl ToHtml) -> RawHt
                 script(src = asset("/js/common.js"));
                 script(type = "text/javascript") : RawHtml(format!("
                     // expose current user to js, if logged in
-                    var currentUser = '{}';
+                    var currentUser = {};
                     // run by default
                     linkifyHeaders();
                     configureNavigation();
