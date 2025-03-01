@@ -5,7 +5,7 @@ var map = L.map('map', {
 L.tileLayer('https://map.wurstmineberg.de/r.{x}.{y}.png', {
     tileSize: 512,
     detectRetina: true,
-    minZoom: -18,
+    minZoom: -4, // should not be decreased without also decreasing min native zoom
     maxZoom: 4,
     minNativeZoom: 0,
     maxNativeZoom: 0,
