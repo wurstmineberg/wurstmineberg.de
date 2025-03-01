@@ -106,6 +106,11 @@ fn asset(path: &str) -> String {
     format!("https://assets.{HOST}{path}") //TODO allow testing with local assetserver, like flask.g.assetserver
 }
 
+#[derive(Default)]
+struct PageStyle {
+    full_width: bool,
+}
+
 #[allow(unused)] //TODO port more pages to Rust
 enum Tab {
     None,
@@ -118,7 +123,8 @@ enum Tab {
     Login,
 }
 
-fn page(me: &Option<User>, title: &str, tab: Tab, content: impl ToHtml) -> RawHtml<String> {
+fn page(me: &Option<User>, style: PageStyle, title: &str, tab: Tab, content: impl ToHtml) -> RawHtml<String> {
+    let PageStyle { full_width } = style;
     html! {
         : Doctype;
         html {
@@ -233,7 +239,7 @@ fn page(me: &Option<User>, title: &str, tab: Tab, content: impl ToHtml) -> RawHt
                         }
                     }
                 }
-                div(class = "container") : content;
+                div(class = if full_width { "container fullwidth" } else { "container" }) : content;
                 hr;
                 p(class = "muted text-center") {
                     : "The People of wurstmineberg.de 2012–";
@@ -280,7 +286,7 @@ enum IndexError {
 
 #[rocket::get("/")]
 async fn index(db_pool: &State<PgPool>, me: Option<User>) -> Result<RawHtml<String>, IndexError> {
-    Ok(page(&me, "Wurstmineberg", Tab::Home, html! {
+    Ok(page(&me, PageStyle::default(), "Wurstmineberg", Tab::Home, html! {
         div(class = "panel panel-default") {
             div(class = "panel-heading") {
                 h3(class = "panel-title") : "The Wurstmineberg Minecraft Server";
@@ -475,7 +481,7 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>) -> Result<RawHtml<Stri
 
 #[rocket::get("/map")]
 fn map(me: Option<User>) -> RawHtml<String> {
-    page(&me, "Map — Wurstmineberg", Tab::More, html! {
+    page(&me, PageStyle { full_width: true, ..PageStyle::default() }, "Map — Wurstmineberg", Tab::More, html! {
         div(id = "map", style = "height: calc(100vh - 91px);");
         link(rel = "stylesheet", href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css", integrity = "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=", crossorigin = "");
         script(src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js", integrity = "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=", crossorigin = "");
@@ -572,7 +578,7 @@ async fn flask_proxy_post(proxy_http_client: &State<ProxyHttpClient>, me: Option
 #[rocket::catch(400)]
 async fn bad_request(request: &Request<'_>) -> RawHtml<String> {
     let me = request.guard::<User>().await.succeeded();
-    page(&me, "Bad Request — Wurstmineberg", Tab::None, html! {
+    page(&me, PageStyle::default(), "Bad Request — Wurstmineberg", Tab::None, html! {
         h1 : "Error 400: Bad Request";
         p : "Login failed. If you need help, please ask in #dev on Discord.";
     })
@@ -581,7 +587,7 @@ async fn bad_request(request: &Request<'_>) -> RawHtml<String> {
 #[rocket::catch(404)]
 async fn not_found(request: &Request<'_>) -> RawHtml<String> {
     let me = request.guard::<User>().await.succeeded();
-    page(&me, "Not Found — Wurstmineberg", Tab::None, html! {
+    page(&me, PageStyle::default(), "Not Found — Wurstmineberg", Tab::None, html! {
         h1 : "Error 404: Not Found";
         p : "This page does not exist.";
     })
@@ -593,7 +599,7 @@ async fn internal_server_error(request: &Request<'_>) -> RawHtml<String> {
     let http_client = request.guard::<&State<reqwest::Client>>().await.expect("missing HTTP client");
     let me = request.guard::<User>().await.succeeded();
     let is_reported = night_report(config, http_client, "/dev/gharch/webError", Some("internal server error")).await.is_ok();
-    page(&me, "Internal Server Error — Wurstmineberg", Tab::None, html! {
+    page(&me, PageStyle::default(), "Internal Server Error — Wurstmineberg", Tab::None, html! {
         h1 : "Error 500: Internal Server Error";
         p : "This is a sad time. An error occured.";
         @if is_reported {
@@ -610,7 +616,7 @@ async fn fallback_catcher(status: Status, request: &Request<'_>) -> RawHtml<Stri
     let http_client = request.guard::<&State<reqwest::Client>>().await.expect("missing HTTP client");
     let me = request.guard::<User>().await.succeeded();
     let is_reported = night_report(config, http_client, "/dev/gharch/webError", Some("responding with unexpected HTTP status code")).await.is_ok();
-    page(&me, &format!("{} — Wurstmineberg", status.reason_lossy()), Tab::None, html! {
+    page(&me, PageStyle::default(), &format!("{} — Wurstmineberg", status.reason_lossy()), Tab::None, html! {
         h1 {
             : "Error ";
             : status.code;
