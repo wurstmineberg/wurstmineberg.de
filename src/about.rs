@@ -76,11 +76,11 @@ impl<'de, C: StaticCurrency> DeserializeAs<'de, Money<C>> for DeserializeMoney<C
         struct DeserializedMoney {
             #[serde(with = "rust_decimal::serde::str")]
             amount: Decimal,
-            code: String,
+            currency: String,
         }
 
-        let DeserializedMoney { amount, code } = DeserializedMoney::deserialize(deserializer)?;
-        if code != C::INSTANCE.code() { return Err(D::Error::invalid_value(Unexpected::Str(&code), &C::INSTANCE.code())) }
+        let DeserializedMoney { amount, currency } = DeserializedMoney::deserialize(deserializer)?;
+        if currency != C::INSTANCE.code() { return Err(D::Error::invalid_value(Unexpected::Str(&currency), &C::INSTANCE.code())) }
         Ok(Money::new(amount, C::INSTANCE))
     }
 }
