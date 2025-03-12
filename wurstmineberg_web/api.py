@@ -279,14 +279,14 @@ def api_money_index():
 
 @json_child(api_money_index, 'overview')
 def money_overview():
-    response = requests.get('https://nightd.fenhl.net/wurstmineberg/money/overview.json', auth=('wurstmineberg', wurstmineberg_web.app.config['night']['password']))
+    response = requests.get('https://night.fenhl.net/wurstmineberg/money/overview.json', headers={'Authorization': f'Bearer {wurstmineberg_web.app.config["night"]["password"]}'})
     response.raise_for_status()
     return response.json()
 
 @json_child(api_money_index, 'transactions')
 def money_transactions():
     #TODO show which transactions are mine
-    response = requests.get('https://nightd.fenhl.net/wurstmineberg/money/transactions.json', auth=('wurstmineberg', wurstmineberg_web.app.config['night']['password']))
+    response = requests.get('https://night.fenhl.net/wurstmineberg/money/transactions.json', headers={'Authorization': f'Bearer {wurstmineberg_web.app.config["night"]["password"]}'})
     response.raise_for_status()
     return response.json()
 
