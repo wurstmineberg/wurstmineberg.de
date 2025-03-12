@@ -253,7 +253,7 @@ pub(crate) async fn get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
                 : wiki::link(db_pool, "ender-ender", "wiki", "an XP farm").await?;
                 : ". The lunchbox which will be part of your ";
                 : wiki::link(db_pool, "tour", "wiki", "server tour").await?;
-                : "has things like an Ender chest in it. We also have beacons pretty much everywhere. If you want to start from scratch, either expect to be playing singleplayer style for a while, or consider joining when we start our next ";
+                : " has things like an Ender chest in it. We also have beacons pretty much everywhere. If you want to start from scratch, either expect to be playing singleplayer style for a while, or consider joining when we start our next ";
                 : wiki::link(db_pool, "renascence", "wiki", "Renascence").await?;
                 : ".";
             }
@@ -297,6 +297,10 @@ pub(crate) async fn get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
         p : "As I was saying, it's about community. As long as you're being reasonable and remember you're not alone on this server (both for your and everybody else's benefit), everything's fine.";
         h2(id = "finance") : "Financial stuff";
         p : "The Wurstmineberg infrastructure runs on a VPS with monthly costs. Members may contribute to paying for these expenses on a voluntary basis. Depending on how much money is available, we will upgrade or downgrade the hardware on which the server runs. We may also occasionally use this money for other purposes, such as temporarily upgrading the server for events like Renascence or USC.";
+        p {
+            strong : "Note:";
+            : "The server is billed in US dollars but contributions are typically in euros. Therefore, the status below is only an approximation and may change based on conversion rates at billing time.";
+        }
         div {
             p {
                 : "Current goal: ";
