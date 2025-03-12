@@ -299,7 +299,7 @@ pub(crate) async fn get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
         p : "The Wurstmineberg infrastructure runs on a VPS with monthly costs. Members may contribute to paying for these expenses on a voluntary basis. Depending on how much money is available, we will upgrade or downgrade the hardware on which the server runs. We may also occasionally use this money for other purposes, such as temporarily upgrading the server for events like Renascence or USC.";
         p {
             strong : "Note:";
-            : "The server is billed in US dollars but contributions are typically in euros. Therefore, the status below is only an approximation and may change based on conversion rates at billing time.";
+            : " The server is billed in US dollars but contributions are typically in euros. Therefore, the status below is only an approximation and may change based on conversion rates at billing time.";
         }
         div {
             p {
