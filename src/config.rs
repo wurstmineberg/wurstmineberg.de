@@ -16,6 +16,7 @@ pub(crate) enum Error {
 
 #[derive(Clone, Deserialize)]
 pub(crate) struct Config {
+    pub(crate) money: Money,
     pub(crate) night: Night,
     pub(crate) web: Web,
     pub(crate) wurstminebot: Wurstminebot,
@@ -28,6 +29,15 @@ impl Config {
             Ok(serde_json::from_slice(&Command::new("ssh").arg("wurstmineberg.de").arg("cat").arg("/opt/wurstmineberg/config.json").output().await.at_command("ssh")?.stdout)?)
         }
     }
+}
+
+#[derive(Clone, Deserialize)]
+pub(crate) struct Money {
+    pub(crate) bic: String,
+    pub(crate) iban: String,
+    pub(crate) name: String,
+    #[serde(rename = "payPal")]
+    pub(crate) paypal: String,
 }
 
 #[derive(Clone, Deserialize)]

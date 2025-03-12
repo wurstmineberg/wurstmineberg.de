@@ -7,6 +7,7 @@ use {
         uri,
     },
     rocket_util::{
+        Origin,
         ToHtml,
         html,
     },
@@ -48,8 +49,8 @@ pub(crate) async fn link(db_pool: &PgPool, article: &str, namespace: &str, conte
 }
 
 #[rocket::get("/wiki")]
-pub(crate) async fn index(db_pool: &State<PgPool>, me: Option<User>) -> Result<RawHtml<String>, Error> {
-    Ok(page(&me, PageStyle::default(), "Wurstmineberg Wiki", Tab::Wiki, html! {
+pub(crate) async fn index(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>) -> Result<RawHtml<String>, Error> {
+    Ok(page(&me, &uri, PageStyle::default(), "Wurstmineberg Wiki", Tab::Wiki, html! {
         h1 : "Wurstmineberg Wiki";
         @let namespaces = sqlx::query_scalar!("SELECT name FROM wiki_namespaces ORDER BY name ASC").fetch_all(&**db_pool).await?;
         @if namespaces.is_empty() {
@@ -64,7 +65,7 @@ pub(crate) async fn index(db_pool: &State<PgPool>, me: Option<User>) -> Result<R
                     } else {
                         @for article in articles {
                             li {
-                                a(href = if namespace == "wiki" { uri!(main_article(&article)).to_string() } else { format!("/wiki/{article}/{namespace}") }) : article;
+                                a(href = if namespace == "wiki" { uri!(main_article(&article)) } else { uri!(namespaced_article(&article, &namespace)) }.to_string()) : article;
                             }
                         }
                     }
@@ -135,9 +136,9 @@ async fn render_wiki_page<'a>(db_pool: &PgPool, source: &'a str) -> Result<Markd
 }
 
 #[rocket::get("/wiki/<title>")]
-pub(crate) async fn main_article(db_pool: &State<PgPool>, me: Option<User>, title: &str) -> Result<RawHtml<String>, StatusOrError<Error>> {
+pub(crate) async fn main_article(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str) -> Result<RawHtml<String>, StatusOrError<Error>> {
     let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = 'wiki' ORDER BY timestamp DESC LIMIT 1", title).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
-    Ok(page(&me, PageStyle::default(), &format!("{title} — Wurstmineberg Wiki"), Tab::Wiki, html! {
+    Ok(page(&me, &uri, PageStyle::default(), &format!("{title} — Wurstmineberg Wiki"), Tab::Wiki, html! {
         h1 {
             : title;
             : " — Wurstmineberg Wiki ";
@@ -149,9 +150,9 @@ pub(crate) async fn main_article(db_pool: &State<PgPool>, me: Option<User>, titl
 }
 
 #[rocket::get("/wiki/<title>/<namespace>")]
-pub(crate) async fn namespaced_article(db_pool: &State<PgPool>, me: Option<User>, title: &str, namespace: &str) -> Result<RawHtml<String>, StatusOrError<Error>> {
+pub(crate) async fn namespaced_article(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str) -> Result<RawHtml<String>, StatusOrError<Error>> {
     let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 ORDER BY timestamp DESC LIMIT 1", title, namespace).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
-    Ok(page(&me, PageStyle::default(), &format!("{title} ({namespace}) — Wurstmineberg Wiki"), Tab::Wiki, html! {
+    Ok(page(&me, &uri, PageStyle::default(), &format!("{title} ({namespace}) — Wurstmineberg Wiki"), Tab::Wiki, html! {
         h1 {
             : title;
             : " (";
@@ -165,10 +166,10 @@ pub(crate) async fn namespaced_article(db_pool: &State<PgPool>, me: Option<User>
 }
 
 #[rocket::get("/wiki/<title>/<namespace>/history/<rev>")]
-pub(crate) async fn revision(db_pool: &State<PgPool>, me: Option<User>, title: &str, namespace: &str, rev: Option<i32>) -> Result<RawHtml<String>, StatusOrError<Error>> {
+pub(crate) async fn revision(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str, rev: Option<i32>) -> Result<RawHtml<String>, StatusOrError<Error>> {
     let Some(rev) = rev else { return Err(StatusOrError::Status(Status::NotFound)) }; // don't forward to Flask on wrong revision format, prevents an internal server error
     let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 AND id = $3", title, namespace, rev).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
-    Ok(page(&me, PageStyle::default(), &format!("revision of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
+    Ok(page(&me, &uri, PageStyle::default(), &format!("revision of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
         h1 {
             : "revision of ";
             : title;

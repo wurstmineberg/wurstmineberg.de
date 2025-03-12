@@ -14,6 +14,20 @@ pub(crate) enum Error {
 pub(crate) struct World(#[allow(unused)] String);
 
 impl World {
+    pub async fn all() -> Result<Vec<Self>, Error> {
+        Ok(vec![Self::default()])
+    }
+
+    pub async fn all_running() -> Result<Vec<Self>, Error> {
+        let mut running = Vec::default();
+        for world in Self::all().await? {
+            if world.is_running().await? {
+                running.push(world);
+            }
+        }
+        Ok(running)
+    }
+
     pub(crate) async fn is_running(&self) -> Result<bool, Error> {
         Ok(true)
     }

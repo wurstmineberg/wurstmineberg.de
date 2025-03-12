@@ -32,24 +32,6 @@ def index():
     else:
         return {'running': False}
 
-@index.child('about')
-@wurstmineberg_web.util.template()
-def about():
-    import wurstmineberg_web.api
-
-    try:
-        overview = wurstmineberg_web.api.money_overview.raw()
-    except requests.HTTPError as e:
-        if e.response.status_code == 502:
-            overview = None
-        else:
-            raise
-    return {
-        'money_config': wurstmineberg_web.app.config['money'],
-        'money_overview': overview,
-        'worlds': wurstmineberg_web.models.World
-    }
-
 @index.child('stats')
 @wurstmineberg_web.util.template()
 def stats():

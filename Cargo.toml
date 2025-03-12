@@ -21,11 +21,14 @@ warnings = "deny"
 
 [dependencies]
 base64 = "0.22.1"
+chrono = { version = "0.4.40", features = ["serde"] }
 craftping = { version = "0.5.0", default-features = false, features = ["async-tokio"] }
+doubloon = "0.2.0"
 futures = "0.3.31"
 if_chain = "1.0.2"
 itertools = "0.14.0"
 lazy-regex = "3.4.1"
+linode-rs = { git = "https://gitlab.com/fenhl/linode.git/", branch = "dev-fenhl", default-features = false }
 mimalloc = "0.1.43"
 pulldown-cmark = { git = "https://github.com/fenhl/pulldown-cmark", branch = "rocket-wiki", default-features = false, features = ["simd", "html"] }
 reqwest = { version = "0.12", default-features = false, features = ["blocking", "charset", "hickory-dns", "http2", "macos-system-configuration", "rustls-tls"] }
@@ -33,7 +36,9 @@ rocket = { version = "0.5.1", features = ["secrets"] }
 rocket-basicauth = { git = "https://github.com/fenhl/rocket-basicauth", branch = "master" }
 rocket-util = { git = "https://github.com/fenhl/rocket-util", branch = "main", features = ["reqwest"] }
 rocket_oauth2 = "0.5.0"
+rust_decimal = { version = "1.36.0", features = ["serde-with-str"] }
 serde = { version = "1.0.217", features = ["derive"] }
+serde_with = "3.12.0"
 serenity = { version = "0.12.4", default-features = false, features = ["model", "rustls_backend"] }
 sqlx = { version = "0.8.3", features = ["json", "macros", "postgres", "runtime-tokio-rustls"] }
 thiserror = "2.0.11"

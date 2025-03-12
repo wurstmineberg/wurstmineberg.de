@@ -61,6 +61,7 @@ use {
     },
 };
 
+mod about;
 mod auth;
 mod config;
 mod discord;
@@ -123,7 +124,7 @@ enum Tab {
     Login,
 }
 
-fn page(me: &Option<User>, style: PageStyle, title: &str, tab: Tab, content: impl ToHtml) -> RawHtml<String> {
+fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title: &str, tab: Tab, content: impl ToHtml) -> RawHtml<String> {
     let PageStyle { full_width } = style;
     html! {
         : Doctype;
@@ -168,7 +169,7 @@ fn page(me: &Option<User>, style: PageStyle, title: &str, tab: Tab, content: imp
                                 }
                             }
                             li(class? = matches!(tab, Tab::About).then_some("active")) {
-                                a(href = "/about") {
+                                a(href = uri!(about::get).to_string()) {
                                     span(class = "fa fa-info-circle");
                                     : "About";
                                 }
@@ -186,7 +187,7 @@ fn page(me: &Option<User>, style: PageStyle, title: &str, tab: Tab, content: imp
                                 }
                             }
                             li(class? = matches!(tab, Tab::Wiki).then_some("active")) {
-                                a(href = "/wiki") {
+                                a(href = uri!(wiki::index).to_string()) {
                                     span(class = "fa fa-book");
                                     : "Wiki";
                                 }
@@ -229,7 +230,7 @@ fn page(me: &Option<User>, style: PageStyle, title: &str, tab: Tab, content: imp
                             } else {
                                 li {
                                     li(class = "navbar-user-notloggedin") {
-                                        a(href = "/login/discord", title = "You are not logged in.") {
+                                        a(href = uri!(auth::discord_login(Some(uri))), title = "You are not logged in.") {
                                             span(class = "glyphicon glyphicon-log-in", aria_hidden = "true");
                                             : "Log in";
                                         }
@@ -285,8 +286,8 @@ enum IndexError {
 }
 
 #[rocket::get("/")]
-async fn index(db_pool: &State<PgPool>, me: Option<User>) -> Result<RawHtml<String>, IndexError> {
-    Ok(page(&me, PageStyle::default(), "Wurstmineberg", Tab::Home, html! {
+async fn index(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>) -> Result<RawHtml<String>, IndexError> {
+    Ok(page(&me, &uri, PageStyle::default(), "Wurstmineberg", Tab::Home, html! {
         div(class = "panel panel-default") {
             div(class = "panel-heading") {
                 h3(class = "panel-title") : "The Wurstmineberg Minecraft Server";
@@ -304,7 +305,7 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>) -> Result<RawHtml<Stri
                 }
                 p {
                     : "If you're interested in playing with us, we have some ";
-                    a(href = "/about#joining") : "requirements";
+                    a(href = uri!(_, about::get, "#joining").to_string()) : "requirements";
                     : ". In the meantime, you can check out the Discord section below.";
                 }
             }
@@ -422,7 +423,7 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>) -> Result<RawHtml<Stri
                 }
                 p : "Since we're running on an actual server that requires actual monies to run, we decided to try a “donate if you will, or don't but it would be pretty dandy if you would” model.";
                 //TODO explain auto resizing, display summary of current status
-                a(class = "btn btn-default", href = "/about#finance") {
+                a(class = "btn btn-default", href = uri!(_, about::get, "#finance").to_string()) {
                     : "More info ";
                     i(class = "fa fa-chevron-right");
                 }
@@ -470,7 +471,7 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>) -> Result<RawHtml<Stri
                     abbr(title = "like redlinks, templates, revision diffs, and a working Markdown preview") : "some important features";
                     : " so it might take a while for things to be back to normal.";
                 }
-                a(class = "btn btn-default", href = "/wiki") {
+                a(class = "btn btn-default", href = uri!(wiki::index).to_string()) {
                     : "Visit Wiki ";
                     i(class = "fa fa-chevron-right");
                 }
@@ -480,8 +481,8 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>) -> Result<RawHtml<Stri
 }
 
 #[rocket::get("/map")]
-fn map(me: Option<User>) -> RawHtml<String> {
-    page(&me, PageStyle { full_width: true, ..PageStyle::default() }, "Map — Wurstmineberg", Tab::More, html! {
+fn map(me: Option<User>, uri: Origin<'_>) -> RawHtml<String> {
+    page(&me, &uri, PageStyle { full_width: true, ..PageStyle::default() }, "Map — Wurstmineberg", Tab::More, html! {
         div(id = "map", style = "height: calc(100vh - 91px);");
         link(rel = "stylesheet", href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css", integrity = "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=", crossorigin = "");
         script(src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js", integrity = "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=", crossorigin = "");
@@ -545,7 +546,7 @@ enum FlaskProxyResponse {
 
 #[rocket::get("/<path..>")]
 async fn flask_proxy_get(proxy_http_client: &State<ProxyHttpClient>, me: Option<DiscordUser>, origin: Origin<'_>, headers: Headers, path: Segments<'_, Path>) -> Result<FlaskProxyResponse, FlaskProxyError> {
-    if Segments::<Path>::get(&path, 0).map_or(true, |prefix| !matches!(prefix, "about" | "api" | "people" | "preferences" | "profile" | "stats" | "wiki")) {
+    if Segments::<Path>::get(&path, 0).map_or(true, |prefix| !matches!(prefix, "api" | "people" | "preferences" | "profile" | "stats" | "wiki")) {
         // only forward the directories that are actually served by the proxy to prevent internal server errors on malformed requests from spambots
         return Ok(FlaskProxyResponse::Status(Status::NotFound))
     }
@@ -561,7 +562,7 @@ async fn flask_proxy_get(proxy_http_client: &State<ProxyHttpClient>, me: Option<
 
 #[rocket::post("/<path..>", data = "<data>")]
 async fn flask_proxy_post(proxy_http_client: &State<ProxyHttpClient>, me: Option<DiscordUser>, origin: Origin<'_>, headers: Headers, path: Segments<'_, Path>, data: Vec<u8>) -> Result<FlaskProxyResponse, FlaskProxyError> {
-    if Segments::<Path>::get(&path, 0).map_or(true, |prefix| !matches!(prefix, "about" | "api" | "people" | "preferences" | "profile" | "stats" | "wiki")) {
+    if Segments::<Path>::get(&path, 0).map_or(true, |prefix| !matches!(prefix, "api" | "people" | "preferences" | "profile" | "stats" | "wiki")) {
         // only forward the directories that are actually served by the proxy to prevent internal server errors on malformed requests from spambots
         return Ok(FlaskProxyResponse::Status(Status::NotFound))
     }
@@ -578,7 +579,8 @@ async fn flask_proxy_post(proxy_http_client: &State<ProxyHttpClient>, me: Option
 #[rocket::catch(400)]
 async fn bad_request(request: &Request<'_>) -> RawHtml<String> {
     let me = request.guard::<User>().await.succeeded();
-    page(&me, PageStyle::default(), "Bad Request — Wurstmineberg", Tab::None, html! {
+    let uri = request.guard::<Origin<'_>>().await.succeeded().unwrap_or_else(|| Origin(uri!(index)));
+    page(&me, &uri, PageStyle::default(), "Bad Request — Wurstmineberg", Tab::None, html! {
         h1 : "Error 400: Bad Request";
         p : "Login failed. If you need help, please ask in #dev on Discord.";
     })
@@ -587,7 +589,8 @@ async fn bad_request(request: &Request<'_>) -> RawHtml<String> {
 #[rocket::catch(404)]
 async fn not_found(request: &Request<'_>) -> RawHtml<String> {
     let me = request.guard::<User>().await.succeeded();
-    page(&me, PageStyle::default(), "Not Found — Wurstmineberg", Tab::None, html! {
+    let uri = request.guard::<Origin<'_>>().await.succeeded().unwrap_or_else(|| Origin(uri!(index)));
+    page(&me, &uri, PageStyle::default(), "Not Found — Wurstmineberg", Tab::None, html! {
         h1 : "Error 404: Not Found";
         p : "This page does not exist.";
     })
@@ -598,8 +601,9 @@ async fn internal_server_error(request: &Request<'_>) -> RawHtml<String> {
     let config = request.guard::<&State<Config>>().await.expect("missing config");
     let http_client = request.guard::<&State<reqwest::Client>>().await.expect("missing HTTP client");
     let me = request.guard::<User>().await.succeeded();
+    let uri = request.guard::<Origin<'_>>().await.succeeded().unwrap_or_else(|| Origin(uri!(index)));
     let is_reported = night_report(config, http_client, "/dev/gharch/webError", Some("internal server error")).await.is_ok();
-    page(&me, PageStyle::default(), "Internal Server Error — Wurstmineberg", Tab::None, html! {
+    page(&me, &uri, PageStyle::default(), "Internal Server Error — Wurstmineberg", Tab::None, html! {
         h1 : "Error 500: Internal Server Error";
         p : "This is a sad time. An error occured.";
         @if is_reported {
@@ -615,8 +619,9 @@ async fn fallback_catcher(status: Status, request: &Request<'_>) -> RawHtml<Stri
     let config = request.guard::<&State<Config>>().await.expect("missing config");
     let http_client = request.guard::<&State<reqwest::Client>>().await.expect("missing HTTP client");
     let me = request.guard::<User>().await.succeeded();
+    let uri = request.guard::<Origin<'_>>().await.succeeded().unwrap_or_else(|| Origin(uri!(index)));
     let is_reported = night_report(config, http_client, "/dev/gharch/webError", Some("responding with unexpected HTTP status code")).await.is_ok();
-    page(&me, PageStyle::default(), &format!("{} — Wurstmineberg", status.reason_lossy()), Tab::None, html! {
+    page(&me, &uri, PageStyle::default(), &format!("{} — Wurstmineberg", status.reason_lossy()), Tab::None, html! {
         h1 {
             : "Error ";
             : status.code;
@@ -676,6 +681,7 @@ async fn main() -> Result<(), Error> {
         map,
         flask_proxy_get,
         flask_proxy_post,
+        about::get,
         auth::discord_callback,
         auth::discord_login,
         auth::logout,
