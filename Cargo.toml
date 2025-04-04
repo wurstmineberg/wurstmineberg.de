@@ -53,6 +53,6 @@ tokio = { version = "1.43.0", features = ["net", "process"] }
 systemd_minecraft = { git = "https://github.com/wurstmineberg/systemd-minecraft", branch = "riir", package = "minecraft" }
 
 [build-dependencies]
-gix = "0.70.0"
+gix = "0.71.0"
 itertools = "0.14.0"
 thiserror = "2.0.11"
