@@ -22,7 +22,7 @@ warnings = "deny"
 [dependencies]
 base64 = "0.22.1"
 chrono = { version = "0.4.40", features = ["serde"] }
-craftping = { version = "0.5.0", default-features = false, features = ["async-tokio"] }
+craftping = { version = "0.7", default-features = false, features = ["async-tokio"] }
 doubloon = "0.2.0"
 futures = "0.3.31"
 if_chain = "1.0.2"
@@ -43,7 +43,7 @@ serenity = { version = "0.12.4", default-features = false, features = ["model", 
 sqlx = { version = "0.8.3", features = ["json", "macros", "postgres", "runtime-tokio-rustls"] }
 thiserror = "2.0.11"
 url = "2.5.4"
-wheel = { git = "https://github.com/fenhl/wheel", branch = "main", features = ["reqwest", "rocket", "serde", "serde_json", "serde_json_path_to_error"] }
+wheel = { git = "https://github.com/fenhl/wheel", branch = "main", features = ["reqwest", "rocket", "serde_json"] }
 
 [target.'cfg(windows)'.dependencies]
 serde_json = { package = "serde_json_path_to_error", version = "0.1" }
@@ -53,6 +53,6 @@ tokio = { version = "1.43.0", features = ["net", "process"] }
 systemd_minecraft = { git = "https://github.com/wurstmineberg/systemd-minecraft", branch = "riir", package = "minecraft" }
 
 [build-dependencies]
-gix = "0.70.0"
+gix = "0.71"
 itertools = "0.14.0"
 thiserror = "2.0.11"
