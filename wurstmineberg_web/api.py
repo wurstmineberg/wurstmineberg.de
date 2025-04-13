@@ -270,8 +270,7 @@ def api_discord_index():
 @api_discord_index.child('voice-state.json', decorators=[key_or_member_required])
 def discord_voice_state():
     """Info about who is currently in which voice channels. API key required."""
-    with (wurstmineberg_web.util.BASE_PATH / 'discord' / 'voice-state.json').open() as f:
-        return flask.Response(f.read(), mimetype='application/json')
+    raise NotImplementedError('This endpoint has been ported to Rust')
 
 @api_v3_index.child('money')
 def api_money_index():

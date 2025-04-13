@@ -62,6 +62,7 @@ use {
 };
 
 mod about;
+mod api;
 mod auth;
 mod config;
 mod discord;
@@ -682,6 +683,7 @@ async fn main() -> Result<(), Error> {
         flask_proxy_get,
         flask_proxy_post,
         about::get,
+        api::discord_voice_state,
         auth::discord_callback,
         auth::discord_login,
         auth::logout,
