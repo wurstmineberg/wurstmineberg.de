@@ -587,6 +587,20 @@ async fn bad_request(request: &Request<'_>) -> RawHtml<String> {
     })
 }
 
+#[rocket::catch(401)]
+async fn unauthorized(request: &Request<'_>) -> RawHtml<String> {
+    let me = request.guard::<User>().await.succeeded();
+    let uri = request.guard::<Origin<'_>>().await.succeeded().unwrap_or_else(|| Origin(uri!(index)));
+    page(&me, &uri, PageStyle::default(), "Unauthorized — Wurstmineberg", Tab::None, html! {
+        h1 : "Error 401: Unauthorized";
+        @if me.is_some() {
+            p : "You don't have access to this page. If you think this is a bug, please report it in #dev on Discord.";
+        } else {
+            p : "You don't have access to this page. Try logging in first!";
+        }
+    })
+}
+
 #[rocket::catch(404)]
 async fn not_found(request: &Request<'_>) -> RawHtml<String> {
     let me = request.guard::<User>().await.succeeded();
@@ -698,6 +712,7 @@ async fn main() -> Result<(), Error> {
     }, rocket::fs::Options::None))
     .register("/", rocket::catchers![
         bad_request,
+        unauthorized,
         not_found,
         internal_server_error,
         fallback_catcher,
