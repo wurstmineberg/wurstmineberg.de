@@ -272,6 +272,11 @@ def discord_voice_state():
     """Info about who is currently in which voice channels. API key required."""
     raise NotImplementedError('This endpoint has been ported to Rust')
 
+@api_v3_index.child('websocket')
+def websocket_api():
+    """See https://docs.rs/async-proto and https://github.com/wurstmineberg/wurstmineberg.de/blob/main/src/websocket.rs for the protocol."""
+    raise NotImplementedError('This endpoint is implemented in Rust')
+
 @api_v3_index.child('money')
 def api_money_index():
     pass

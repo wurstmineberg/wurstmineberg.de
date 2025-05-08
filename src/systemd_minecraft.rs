@@ -1,9 +1,17 @@
 //! A stub of the [systemd-minecraft](https://github.com/wurstmineberg/systemd-minecraft/tree/riir) crate, for testing wurstmineberg-web on non-Linux systems.
 
 use {
-    std::fmt,
+    std::{
+        fmt,
+        path::{
+            Path,
+            PathBuf,
+        },
+    },
     tokio::net::TcpStream,
 };
+
+const WORLDS_DIR: &str = "/opt/wurstmineberg/world";
 
 #[derive(Debug, thiserror::Error)]
 pub(crate) enum Error {
@@ -26,6 +34,10 @@ impl World {
             }
         }
         Ok(running)
+    }
+
+    pub(crate) fn dir(&self) -> PathBuf {
+        Path::new(WORLDS_DIR).join(&self.0)
     }
 
     pub(crate) async fn is_running(&self) -> Result<bool, Error> {

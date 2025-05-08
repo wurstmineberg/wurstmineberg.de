@@ -30,6 +30,15 @@ server {
         root /opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets;
     }
 
+    location /api/v3/websocket {
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_pass http://localhost:24822;
+        proxy_read_timeout 300;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+    }
+
     location /api/v3/calendar.ics {
         add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
         proxy_pass http://localhost:24810;
