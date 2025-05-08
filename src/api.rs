@@ -59,16 +59,16 @@ pub(crate) fn websocket(ws: WebSocket, shutdown: rocket::Shutdown) -> rocket_ws:
     }
 
     async fn client_session(mut rocket_shutdown: rocket::Shutdown, mut stream: WsStream, sink: WsSink) -> Result<(), Error> {
-        fn chunk_owned(world: &systemd_minecraft::World, dimension: Dimension, cx: i32, cy: i8, cz: i32) -> Result<Option<[[[BlockState; 16]; 16]; 16]>, Error> {
+        fn chunk_owned(world: &systemd_minecraft::World, dimension: Dimension, cx: i32, cy: i8, cz: i32) -> Result<Option<[Box<[[BlockState; 16]; 16]>; 16]>, Error> {
             let rx = cx.div_euclid(32);
             let rz = cz.div_euclid(32);
             Ok(if let Some(region) = Region::find(world.dir(), dimension, [rx, rz])? {
                 region.chunk_column([cx, cz])?.and_then(|col| col.into_section_at(cy)).map(|chunk| array::from_fn(|y|
-                    array::from_fn(|z|
+                    Box::new(array::from_fn(|z|
                         array::from_fn(|x|
                             chunk.block_relative([x as u8, y as u8, z as u8]).into_owned()
                         )
-                    )
+                    ))
                 ))
             } else {
                 None

@@ -21,7 +21,7 @@ pub enum ServerMessage {
         cx: i32,
         cy: i8,
         cz: i32,
-        data: Option<[[[BlockState; 16]; 16]; 16]>,
+        data: Option<[Box<[[BlockState; 16]; 16]>; 16]>,
     }
 }
 
