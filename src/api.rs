@@ -62,7 +62,7 @@ pub(crate) fn websocket(ws: WebSocket, shutdown: rocket::Shutdown) -> rocket_ws:
         fn chunk_owned(world: &systemd_minecraft::World, dimension: Dimension, cx: i32, cy: i8, cz: i32) -> Result<Option<[Box<[[BlockState; 16]; 16]>; 16]>, Error> {
             let rx = cx.div_euclid(32);
             let rz = cz.div_euclid(32);
-            Ok(if let Some(region) = Region::find(world.dir(), dimension, [rx, rz])? {
+            Ok(if let Some(region) = Region::find(world.dir().join("world"), dimension, [rx, rz])? { //TODO Region::find_async
                 region.chunk_column([cx, cz])?.and_then(|col| col.into_section_at(cy)).map(|chunk| array::from_fn(|y|
                     Box::new(array::from_fn(|z|
                         array::from_fn(|x|
