@@ -57,6 +57,6 @@ serde_json = { package = "serde_json_path_to_error", version = "0.1" }
 systemd_minecraft = { git = "https://github.com/wurstmineberg/systemd-minecraft", branch = "riir", package = "minecraft" }
 
 [build-dependencies]
-gix = "0.71"
+gix = "0.72"
 itertools = "0.14.0"
 thiserror = "2.0.11"
