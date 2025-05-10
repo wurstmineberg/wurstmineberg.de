@@ -3082,16 +3082,18 @@ dependencies = [
 
 [[package]]
 name = "mcanvil"
-version = "0.2.0"
-source = "git+https://github.com/wurstmineberg/rust-anvil?branch=main#5e0ad2d7ca51e909f3c2c62b59a6e3cd4c37d6d8"
+version = "0.3.0"
+source = "git+https://github.com/wurstmineberg/rust-anvil?branch=main#32af4f5bfc9cf0c9993737afc7bea3d01b8ed5ef"
 dependencies = [
  "async-proto",
+ "futures",
  "hematite-nbt",
  "itertools",
  "lazy-regex",
  "serde",
  "serde_with",
  "thiserror 2.0.12",
+ "tokio",
 ]
 
 [[package]]
