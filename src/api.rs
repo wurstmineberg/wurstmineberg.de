@@ -10,6 +10,7 @@ use {
         time::Duration,
     },
     async_proto::Protocol as _,
+    chrono::prelude::*,
     futures::stream::{
         SplitSink,
         SplitStream,
@@ -59,19 +60,21 @@ pub(crate) fn websocket(ws: WebSocket, shutdown: rocket::Shutdown) -> rocket_ws:
     }
 
     async fn client_session(mut rocket_shutdown: rocket::Shutdown, mut stream: WsStream, sink: WsSink) -> Result<(), Error> {
-        async fn chunk_owned(world: &systemd_minecraft::World, dimension: Dimension, cx: i32, cy: i8, cz: i32) -> Result<Option<[Box<[[BlockState; 16]; 16]>; 16]>, Error> {
+        async fn chunk_owned(world: &systemd_minecraft::World, dimension: Dimension, cx: i32, cy: i8, cz: i32) -> Result<(Option<DateTime<Utc>>, Option<[Box<[[BlockState; 16]; 16]>; 16]>), Error> {
             let rx = cx.div_euclid(32);
             let rz = cz.div_euclid(32);
+            let cx = cx.rem_euclid(32) as u8;
+            let cz = cz.rem_euclid(32) as u8;
             Ok(if let Some(mut region) = Region::find(world.dir().join("world"), dimension, [rx, rz]).await? { //TODO Region::find_async
-                region.chunk_column([cx, cz]).await?.and_then(|col| col.into_section_at(cy)).map(|chunk| array::from_fn(|y|
+                (Some(region.timestamps[32 * cz as usize + cx as usize]), region.chunk_column_relative([cx, cz]).await?.and_then(|col| col.into_section_at(cy)).map(|chunk| array::from_fn(|y|
                     Box::new(array::from_fn(|z|
                         array::from_fn(|x|
                             chunk.block_relative([x as u8, y as u8, z as u8]).into_owned()
                         )
                     ))
-                ))
+                )))
             } else {
-                None
+                (None, None)
             })
         }
 
@@ -86,16 +89,16 @@ pub(crate) fn websocket(ws: WebSocket, shutdown: rocket::Shutdown) -> rocket_ws:
                 res = ClientMessage::read_ws021(&mut stream) => match res? {
                     ClientMessage::Pong => {}
                     ClientMessage::SubscribeToChunk { dimension, cx, cy, cz } => {
-                        let new_chunk = chunk_owned(&main_world, dimension, cx, cy, cz).await?;
+                        let (new_timestamp, new_chunk) = chunk_owned(&main_world, dimension, cx, cy, cz).await?;
                         match chunk_cache.entry((dimension, cx, cy, cz)) {
                             hash_map::Entry::Occupied(mut entry) => {
-                                let old_chunk = entry.get_mut();
-                                if new_chunk != *old_chunk {
+                                let old_timestamp = entry.get_mut();
+                                if new_timestamp != *old_timestamp {
                                     lock!(sink = sink; ServerMessage::ChunkData {
                                         data: new_chunk.clone(),
                                         dimension, cx, cy, cz,
                                     }.write_ws021(&mut *sink).await)?;
-                                    *old_chunk = new_chunk;
+                                    *old_timestamp = new_timestamp;
                                 }
                             }
                             hash_map::Entry::Vacant(entry) => {
@@ -103,19 +106,19 @@ pub(crate) fn websocket(ws: WebSocket, shutdown: rocket::Shutdown) -> rocket_ws:
                                     data: new_chunk.clone(),
                                     dimension, cx, cy, cz,
                                 }.write_ws021(&mut *sink).await)?;
-                                entry.insert(new_chunk);
+                                entry.insert(new_timestamp);
                             }
                         }
                     }
                 },
-                _ = save_data_interval.tick() => for (&(dimension, cx, cy, cz), old_chunk) in &mut chunk_cache {
-                    let new_chunk = chunk_owned(&main_world, dimension, cx, cy, cz).await?;
-                    if new_chunk != *old_chunk {
+                _ = save_data_interval.tick() => for (&(dimension, cx, cy, cz), old_timestamp) in &mut chunk_cache {
+                    let (new_timestamp, new_chunk) = chunk_owned(&main_world, dimension, cx, cy, cz).await?;
+                    if new_timestamp != *old_timestamp {
                         lock!(sink = sink; ServerMessage::ChunkData {
                             data: new_chunk.clone(),
                             dimension, cx, cy, cz,
                         }.write_ws021(&mut *sink).await)?;
-                        *old_chunk = new_chunk;
+                        *old_timestamp = new_timestamp;
                     }
                 },
             }

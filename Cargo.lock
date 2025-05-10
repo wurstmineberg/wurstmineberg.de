@@ -3083,9 +3083,10 @@ dependencies = [
 [[package]]
 name = "mcanvil"
 version = "0.3.0"
-source = "git+https://github.com/wurstmineberg/rust-anvil?branch=main#32af4f5bfc9cf0c9993737afc7bea3d01b8ed5ef"
+source = "git+https://github.com/wurstmineberg/rust-anvil?branch=main#fb3002c514dda738f54d49c2e1d9d6e92969bbda"
 dependencies = [
  "async-proto",
+ "chrono",
  "futures",
  "hematite-nbt",
  "itertools",
