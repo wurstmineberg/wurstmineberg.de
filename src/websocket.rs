@@ -41,4 +41,5 @@ pub enum ClientMessage {
         /// The chunk z coordinate, equivalent to the block z coordinates of the blocks in the chunk divided by 16
         cz: i32,
     },
+    SubscribeToChunks(Vec<(Dimension, i32, i8, i32)>),
 }
