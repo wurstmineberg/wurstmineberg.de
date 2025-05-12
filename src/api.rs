@@ -29,6 +29,7 @@ use {
         State,
         fs::NamedFile,
         http::ContentType,
+        serde::json::Json,
     },
     rocket_ws::WebSocket,
     sqlx::PgPool,
@@ -84,7 +85,7 @@ pub(crate) async fn player_data(db_pool: &State<PgPool>, world: systemd_minecraf
 }
 
 #[rocket::get("/api/v3/world/<world>/player/<player>/playerdata.json")]
-pub(crate) async fn player_data_json(db_pool: &State<PgPool>, world: systemd_minecraft::World, player: UserParam<'_>) -> Result<Option<serde_json::Value>, Error> {
+pub(crate) async fn player_data_json(db_pool: &State<PgPool>, world: systemd_minecraft::World, player: UserParam<'_>) -> Result<Option<Json<nbt::Blob>>, Error> {
     let Some(player) = player.parse(&**db_pool).await? else { return Ok(None) };
     let Some(uuid) = player.minecraft_uuid() else { return Ok(None) };
     let path = world.dir().join("world").join("playerdata").join(format!("{uuid}.dat"));
@@ -95,17 +96,15 @@ pub(crate) async fn player_data_json(db_pool: &State<PgPool>, world: systemd_min
     };
     let mut buf = Vec::default();
     file.read_to_end(&mut buf).await.at(&path)?;
-    let mut data = nbt::from_gzip_reader::<_, serde_json::Value>(&*buf)?;
-    if let serde_json::Value::Object(data) = &mut data {
+    let mut data = nbt::from_gzip_reader::<_, nbt::Blob>(&*buf)?;
+    if data.get("apiTimeLastModified").is_none() {
         let metadata = file.metadata().await?;
-        if let serde_json::map::Entry::Vacant(entry) = data.entry("apiTimeLastModified") {
-            entry.insert(metadata.modified().at(path)?.duration_since(SystemTime::UNIX_EPOCH)?.as_secs_f64().into());
-        }
-        if let serde_json::map::Entry::Vacant(entry) = data.entry("apiTimeResultFetched") {
-            entry.insert(SystemTime::now().duration_since(SystemTime::UNIX_EPOCH)?.as_secs_f64().into());
-        }
+        data.insert("apiTimeLastModified", metadata.modified().at(path)?.duration_since(SystemTime::UNIX_EPOCH)?.as_secs_f64())?;
     }
-    Ok(Some(data))
+    if data.get("apiTimeResultFetched").is_none() {
+        data.insert("apiTimeResultFetched", SystemTime::now().duration_since(SystemTime::UNIX_EPOCH)?.as_secs_f64())?;
+    }
+    Ok(Some(Json(data)))
 }
 
 type WsStream = SplitStream<rocket_ws::stream::DuplexStream>;
