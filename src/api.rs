@@ -5,10 +5,12 @@ use {
             self,
             HashMap,
         },
-        io,
         iter,
         sync::Arc,
-        time::Duration,
+        time::{
+            Duration,
+            SystemTime,
+        },
     },
     async_proto::Protocol as _,
     chrono::prelude::*,
@@ -23,9 +25,18 @@ use {
         Dimension,
         Region,
     },
-    rocket::fs::NamedFile,
+    rocket::{
+        State,
+        fs::NamedFile,
+        http::ContentType,
+    },
     rocket_ws::WebSocket,
+    sqlx::PgPool,
     tokio::{
+        io::{
+            self,
+            AsyncReadExt as _,
+        },
         select,
         time::{
             MissedTickBehavior,
@@ -33,11 +44,18 @@ use {
             sleep,
         },
     },
+    wheel::{
+        fs::File,
+        traits::IoResultExt as _,
+    },
     wurstmineberg_web::websocket::{
         ClientMessage,
         ServerMessage,
     },
-    crate::user::User,
+    crate::user::{
+        User,
+        UserParam,
+    },
 };
 #[cfg(not(target_os = "linux"))] use crate::systemd_minecraft;
 
@@ -45,6 +63,49 @@ use {
 pub(crate) async fn discord_voice_state(me: User) -> io::Result<NamedFile> {
     let _ = me; // only required for authorization
     NamedFile::open("/opt/wurstmineberg/discord/voice-state.json").await
+}
+
+#[derive(Debug, thiserror::Error, rocket_util::Error)]
+pub(crate) enum Error {
+    #[error(transparent)] Nbt(#[from] nbt::Error),
+    #[error(transparent)] Sql(#[from] sqlx::Error),
+    #[error(transparent)] SystemTime(#[from] std::time::SystemTimeError),
+    #[error(transparent)] Wheel(#[from] wheel::Error),
+}
+
+#[rocket::get("/api/v3/world/<world>/player/<player>/playerdata.dat")]
+pub(crate) async fn player_data(db_pool: &State<PgPool>, world: systemd_minecraft::World, player: UserParam<'_>) -> Result<Option<(ContentType, File)>, Error> {
+    let Some(player) = player.parse(&**db_pool).await? else { return Ok(None) };
+    let Some(uuid) = player.minecraft_uuid() else { return Ok(None) };
+    Ok(Some((
+        ContentType::new("application", "prs.nbt"), // as suggested at https://old.reddit.com/r/AskProgramming/comments/1eldcjt/mime_type_of_minecraft_nbt/lgrs5p4/
+        File::open(world.dir().join("world").join("playerdata").join(format!("{uuid}.dat"))).await?,
+    )))
+}
+
+#[rocket::get("/api/v3/world/<world>/player/<player>/playerdata.json")]
+pub(crate) async fn player_data_json(db_pool: &State<PgPool>, world: systemd_minecraft::World, player: UserParam<'_>) -> Result<Option<serde_json::Value>, Error> {
+    let Some(player) = player.parse(&**db_pool).await? else { return Ok(None) };
+    let Some(uuid) = player.minecraft_uuid() else { return Ok(None) };
+    let path = world.dir().join("world").join("playerdata").join(format!("{uuid}.dat"));
+    let mut file = match File::open(&path).await {
+        Ok(file) => file,
+        Err(wheel::Error::Io { inner, .. }) if inner.kind() == io::ErrorKind::NotFound => return Ok(None),
+        Err(e) => return Err(e.into()),
+    };
+    let mut buf = Vec::default();
+    file.read_to_end(&mut buf).await.at(&path)?;
+    let mut data = nbt::from_gzip_reader::<_, serde_json::Value>(&*buf)?;
+    if let serde_json::Value::Object(data) = &mut data {
+        let metadata = file.metadata().await?;
+        if let serde_json::map::Entry::Vacant(entry) = data.entry("apiTimeLastModified") {
+            entry.insert(metadata.modified().at(path)?.duration_since(SystemTime::UNIX_EPOCH)?.as_secs_f64().into());
+        }
+        if let serde_json::map::Entry::Vacant(entry) = data.entry("apiTimeResultFetched") {
+            entry.insert(SystemTime::now().duration_since(SystemTime::UNIX_EPOCH)?.as_secs_f64().into());
+        }
+    }
+    Ok(Some(data))
 }
 
 type WsStream = SplitStream<rocket_ws::stream::DuplexStream>;

@@ -698,6 +698,8 @@ async fn main() -> Result<(), Error> {
         flask_proxy_post,
         about::get,
         api::discord_voice_state,
+        api::player_data,
+        api::player_data_json,
         api::websocket,
         auth::discord_callback,
         auth::discord_login,

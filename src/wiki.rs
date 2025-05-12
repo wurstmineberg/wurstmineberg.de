@@ -97,18 +97,11 @@ async fn render_wiki_page<'a>(db_pool: &PgPool, source: &'a str) -> Result<Markd
     ).peekable();
     while let Some(event) = parser.next() {
         events.push(match event {
-            pulldown_cmark::Event::UserMention(mention) => {
-                let user = if let Ok(discord_id) = mention.parse() {
-                    User::from_discord(&*db_pool, discord_id).await?
-                } else {
-                    User::from_wmbid(&*db_pool, mention.to_string()).await?
-                };
-                if let Some(user) = user {
-                    pulldown_cmark::Event::Html(user.to_html().0.into())
-                } else {
-                    pulldown_cmark::Event::Text(format!("<@{mention}>").into())
-                }
-            }
+            pulldown_cmark::Event::UserMention(mention) => if let Some(user) = User::from_discord_or_wmbid(&*db_pool, &*mention).await? {
+                pulldown_cmark::Event::Html(user.to_html().0.into())
+            } else {
+                pulldown_cmark::Event::Text(format!("<@{mention}>").into())
+            },
             pulldown_cmark::Event::Start(pulldown_cmark::Tag::Heading { level, mut id, classes, attrs }) => {
                 if let Some(pulldown_cmark::Event::Text(text)) = parser.peek() {
                     id.get_or_insert(pulldown_cmark::CowStr::Boxed(text.chars().filter_map(|c| if c == ' ' { Some('-') } else if c.is_ascii_alphanumeric() { Some(c.to_ascii_lowercase()) } else { None }).collect::<Box<str>>()));

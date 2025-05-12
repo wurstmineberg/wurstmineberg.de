@@ -8,6 +8,8 @@ use {
             PathBuf,
         },
     },
+    lazy_regex::regex_is_match,
+    rocket::request::FromParam,
     tokio::net::TcpStream,
 };
 
@@ -34,6 +36,10 @@ impl World {
             }
         }
         Ok(running)
+    }
+
+    fn new(name: impl ToString) -> Self {
+        Self(name.to_string())
     }
 
     pub(crate) fn dir(&self) -> PathBuf {
@@ -70,5 +76,24 @@ impl Default for World {
 impl fmt::Display for World {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.0.fmt(f)
+    }
+}
+
+#[derive(Debug, thiserror::Error)]
+pub(crate) enum WorldFromParamError {
+    #[error(transparent)] Wheel(#[from] wheel::Error),
+    #[error("world name must only consist of ASCII letters/numbers/underscores")]
+    Name,
+}
+
+impl<'r> FromParam<'r> for World {
+    type Error = WorldFromParamError;
+
+    fn from_param(param: &'r str) -> Result<Self, Self::Error> {
+        if regex_is_match!("^[0-9A-Za-z_]+$", param) {
+            Ok(Self::new(param))
+        } else {
+            Err(WorldFromParamError::Name)
+        }
     }
 }

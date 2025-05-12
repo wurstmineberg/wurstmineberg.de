@@ -3,7 +3,11 @@ use {
         borrow::Cow,
         fmt,
     },
-    rocket::response::content::RawHtml,
+    lazy_regex::regex_is_match,
+    rocket::{
+        request::FromParam,
+        response::content::RawHtml,
+    },
     rocket_util::{
         ToHtml,
         html,
@@ -15,6 +19,7 @@ use {
         types::Json,
     },
     url::Url,
+    uuid::Uuid,
     crate::{
         asset,
         discord::PgSnowflake,
@@ -45,14 +50,15 @@ impl User {
         )
     }
 
-    pub(crate) async fn from_wmbid(pool: impl PgExecutor<'_>, wmbid: String) -> sqlx::Result<Option<Self>> {
+    pub(crate) async fn from_wmbid(pool: impl PgExecutor<'_>, wmbid: impl Into<Cow<'_, str>>) -> sqlx::Result<Option<Self>> {
+        let wmbid = wmbid.into();
         Ok(
             sqlx::query!(r#"SELECT snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE wmbid = $1"#, &wmbid).fetch_optional(pool).await?
             .map(|row| Self {
                 id: if let Some(PgSnowflake(discord_id)) = row.snowflake {
-                    Id::Both { wmbid, discord_id }
+                    Id::Both { wmbid: wmbid.into_owned(), discord_id }
                 } else {
-                    Id::Wmbid(wmbid)
+                    Id::Wmbid(wmbid.into_owned())
                 },
                 data: row.data.map(|Json(data)| data).unwrap_or_default(),
                 discorddata: row.discorddata.map(|Json(discorddata)| discorddata),
@@ -73,6 +79,15 @@ impl User {
                 discorddata: row.discorddata.map(|Json(discorddata)| discorddata),
             })
         )
+    }
+
+    pub(crate) async fn from_discord_or_wmbid(pool: impl PgExecutor<'_>, id: impl Into<Cow<'_, str>>) -> sqlx::Result<Option<Self>> {
+        let id = id.into();
+        if let Ok(discord_id) = id.parse() {
+            Self::from_discord(pool, discord_id).await
+        } else {
+            Self::from_wmbid(pool, id).await
+        }
     }
 
     pub(crate) fn wmbid(&self) -> Option<&str> {
@@ -97,6 +112,35 @@ impl User {
         };
         html! {
             img(class = if pixelate { "avatar nearest-neighbor" } else { "avatar" }, src = url, alt = "avatar", style = format!("width: {size}px; height: {size}px;"));
+        }
+    }
+
+    pub(crate) fn minecraft_uuid(&self) -> Option<Uuid> {
+        self.data.minecraft.uuid
+    }
+}
+
+/// Workaround for `FromParam` not being `async`.
+pub(crate) struct UserParam<'r>(&'r str);
+
+impl<'r> UserParam<'r> {
+    pub(crate) async fn parse(self, pool: impl PgExecutor<'_>) -> sqlx::Result<Option<User>> {
+        User::from_discord_or_wmbid(pool, self.0).await
+    }
+}
+
+#[derive(Debug, thiserror::Error)]
+#[error("user parameter is neither a valid Discord snowflake nor a valid Wurstmineberg ID")]
+pub(crate) struct UserParamError;
+
+impl<'r> FromParam<'r> for UserParam<'r> {
+    type Error = UserParamError;
+
+    fn from_param(param: &'r str) -> Result<Self, Self::Error> {
+        if param.parse::<UserId>().is_ok() || regex_is_match!("[a-z][0-9a-z]{1,15}", param) {
+            Ok(Self(param))
+        } else {
+            Err(UserParamError)
         }
     }
 }
@@ -177,6 +221,7 @@ struct Data {
 struct DataMinecraft {
     #[serde(default)]
     nicks: Vec<String>,
+    uuid: Option<Uuid>,
 }
 
 #[derive(Debug, Deserialize)]

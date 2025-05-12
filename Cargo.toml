@@ -26,6 +26,7 @@ chrono = { version = "0.4.40", features = ["serde"] }
 craftping = { version = "0.7", default-features = false, features = ["async-tokio"] }
 doubloon = "0.2.0"
 futures = "0.3.31"
+hematite-nbt = "0.5.2" #TODO switch to simdnbt for performance improvements once it supports stable Rust (https://github.com/azalea-rs/simdnbt/issues/16)
 if_chain = "1.0.2"
 itertools = "0.14.0"
 lazy-regex = "3.4.1"
@@ -35,26 +36,25 @@ mcanvil = { git = "https://github.com/wurstmineberg/rust-anvil", branch = "main"
 mimalloc = "0.1.43"
 pulldown-cmark = { git = "https://github.com/fenhl/pulldown-cmark", branch = "rocket-wiki", default-features = false, features = ["simd", "html"] }
 reqwest = { version = "0.12", default-features = false, features = ["blocking", "charset", "hickory-dns", "http2", "macos-system-configuration", "rustls-tls"] }
-rocket = { version = "0.5.1", features = ["secrets"] }
+rocket = { version = "0.5.1", features = ["json", "secrets"] }
 rocket-basicauth = { git = "https://github.com/fenhl/rocket-basicauth", branch = "master" }
 rocket-util = { git = "https://github.com/fenhl/rocket-util", branch = "main", features = ["reqwest"] }
 rocket_oauth2 = "0.5.0"
 rocket_ws = "0.1.1"
 rust_decimal = { version = "1.36.0", features = ["serde-with-str"] }
 serde = { version = "1.0.217", features = ["derive"] }
+serde_json = { package = "serde_json_path_to_error", version = "0.1" }
 serde_with = "3.12.0"
 serenity = { version = "0.12.4", default-features = false, features = ["model", "rustls_backend"] }
 sqlx = { version = "0.8.3", features = ["json", "macros", "postgres", "runtime-tokio-rustls"] }
 thiserror = "2.0.11"
 tokio = { version = "1.43.0", features = ["net", "process", "time"] }
 url = "2.5.4"
+uuid = { version = "1.16.0", features = ["serde"] }
 wheel = { git = "https://github.com/fenhl/wheel", branch = "main", features = ["reqwest", "rocket", "serde_json"] }
 
-[target.'cfg(windows)'.dependencies]
-serde_json = { package = "serde_json_path_to_error", version = "0.1" }
-
 [target.'cfg(target_os = "linux")'.dependencies]
-systemd_minecraft = { git = "https://github.com/wurstmineberg/systemd-minecraft", branch = "riir", package = "minecraft" }
+systemd_minecraft = { git = "https://github.com/wurstmineberg/systemd-minecraft", branch = "riir", package = "minecraft", features = ["rocket"] }
 
 [build-dependencies]
 gix = "0.72"

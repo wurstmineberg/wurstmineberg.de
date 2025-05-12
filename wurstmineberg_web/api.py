@@ -565,7 +565,7 @@ def api_world_player(world, player):
 
 @nbt_child(api_world_player, 'playerdata')
 def api_player_data(world, player):
-    return world.world_path / 'playerdata' / f'{player.minecraft_uuid}.dat'
+    raise NotImplementedError('This endpoint has been ported to Rust')
 
 @json_child(api_world_player, 'stats')
 def api_player_stats(world, player):
