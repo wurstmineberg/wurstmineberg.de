@@ -10,3 +10,22 @@ L.tileLayer('https://map.wurstmineberg.de/r.{x}.{y}.png', {
     minNativeZoom: 0,
     maxNativeZoom: 0,
 }).addTo(map);
+var coordsClass = L.Control.extend({
+    options: {
+        position: 'bottomleft',
+    },
+    initialize: function() {
+        this.coord_box = L.DomUtil.create('div', 'coordbox');
+    },
+    render: function(latLng) {
+        this.coord_box.textContent = `X ${Math.floor(latLng.lng)} Z ${Math.floor(-latLng.lat)}`;
+    },
+    onAdd: function() {
+        return this.coord_box;
+    },
+});
+var coords = new coordsClass();
+coords.addTo(map);
+map.on('mousemove', function(event) {
+     coords.render(event.latlng);
+});
