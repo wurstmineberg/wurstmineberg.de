@@ -486,7 +486,9 @@ fn map(me: Option<User>, uri: Origin<'_>) -> RawHtml<String> {
     page(&me, &uri, PageStyle { full_width: true, ..PageStyle::default() }, "Map — Wurstmineberg", Tab::More, html! {
         div(id = "map", style = "height: calc(100vh - 91px);");
         link(rel = "stylesheet", href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css", integrity = "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=", crossorigin = "");
+        link(rel = "stylesheet", href = "https://unpkg.com/leaflet.coordinates@0.1.5/dist/Leaflet.Coordinates-0.1.5.css", integrity = "sha256-nzhp5j7BxZkO+IvQtYRCPsG8ebxsg51Qgz1glmRzr34=", crossorigin = "");
         script(src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js", integrity = "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=", crossorigin = "");
+        script(src = "https://unpkg.com/leaflet.coordinates@0.1.5/dist/Leaflet.Coordinates-0.1.5.min.js", integrity = "sha256-Jaj2z55V+5gSK7xYQC11oBfo4rM3SZcGKbTl9AItl9A=", crossorigin = "");
         script(src = static_url!("map.js").to_string());
     })
 }

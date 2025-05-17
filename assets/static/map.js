@@ -10,3 +10,9 @@ L.tileLayer('https://map.wurstmineberg.de/r.{x}.{y}.png', {
     minNativeZoom: 0,
     maxNativeZoom: 0,
 }).addTo(map);
+L.control.coordinates({
+    position: "bottomleft",
+    decimals: 0,
+    labelTemplateLat: "Z {y}",
+    labelTemplateLng: "X {x}",
+}).addTo(map);
