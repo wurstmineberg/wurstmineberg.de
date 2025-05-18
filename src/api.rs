@@ -5,6 +5,7 @@ use {
             self,
             HashMap,
         },
+        convert::Infallible as Never,
         iter,
         sync::Arc,
         time::{
@@ -26,9 +27,15 @@ use {
         Region,
     },
     rocket::{
+        Either,
         State,
         fs::NamedFile,
-        http::ContentType,
+        http::{
+            ContentType,
+            Status,
+        },
+        outcome::Outcome,
+        request,
         serde::json::Json,
     },
     rocket_ws::WebSocket,
@@ -111,7 +118,7 @@ type WsStream = SplitStream<rocket_ws::stream::DuplexStream>;
 type WsSink = Arc<Mutex<SplitSink<rocket_ws::stream::DuplexStream, rocket_ws::Message>>>;
 
 #[rocket::get("/api/v3/websocket")]
-pub(crate) fn websocket(ws: WebSocket, shutdown: rocket::Shutdown) -> rocket_ws::Channel<'static> {
+pub(crate) fn websocket(ws: request::Outcome<WebSocket, Never>, shutdown: rocket::Shutdown) -> Either<rocket_ws::Channel<'static>, Status> {
     #[derive(Debug, thiserror::Error)]
     enum Error {
         #[error(transparent)] ChunkColumnDecode(#[from] mcanvil::ChunkColumnDecodeError),
@@ -208,23 +215,27 @@ pub(crate) fn websocket(ws: WebSocket, shutdown: rocket::Shutdown) -> rocket_ws:
         }
     }
 
-    ws.channel(|stream| Box::pin(async move {
-        let (ws_sink, ws_stream) = stream.split();
-        let ws_sink = WsSink::new(Mutex::new(ws_sink));
-        let ping_sink = ws_sink.clone();
-        let ping_loop = tokio::spawn(async move {
-            loop {
-                sleep(Duration::from_secs(30)).await;
-                if lock!(ping_sink = ping_sink; ServerMessage::Ping.write_ws021(&mut *ping_sink).await).is_err() { break } //TODO better error handling
+    match ws {
+        Outcome::Success(ws) => Either::Left(ws.channel(|stream| Box::pin(async move {
+            let (ws_sink, ws_stream) = stream.split();
+            let ws_sink = WsSink::new(Mutex::new(ws_sink));
+            let ping_sink = ws_sink.clone();
+            let ping_loop = tokio::spawn(async move {
+                loop {
+                    sleep(Duration::from_secs(30)).await;
+                    if lock!(ping_sink = ping_sink; ServerMessage::Ping.write_ws021(&mut *ping_sink).await).is_err() { break } //TODO better error handling
+                }
+            });
+            if let Err(e) = client_session(shutdown, ws_stream, ws_sink.clone()).await {
+                let _ = lock!(ws_sink = ws_sink; ServerMessage::Error {
+                    debug: format!("{e:?}"),
+                    display: String::default(),
+                }.write_ws021(&mut *ws_sink).await);
             }
-        });
-        if let Err(e) = client_session(shutdown, ws_stream, ws_sink.clone()).await {
-            let _ = lock!(ws_sink = ws_sink; ServerMessage::Error {
-                debug: format!("{e:?}"),
-                display: String::default(),
-            }.write_ws021(&mut *ws_sink).await);
-        }
-        ping_loop.abort();
-        Ok(())
-    }))
+            ping_loop.abort();
+            Ok(())
+        }))),
+        Outcome::Error(never) => match never {},
+        Outcome::Forward(status) => Either::Right(status),
+    }
 }
