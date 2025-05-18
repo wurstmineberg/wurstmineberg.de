@@ -36,7 +36,12 @@ use {
         },
         outcome::Outcome,
         request,
+        response::content::RawHtml,
         serde::json::Json,
+    },
+    rocket_util::{
+        Origin,
+        html,
     },
     rocket_ws::WebSocket,
     sqlx::PgPool,
@@ -60,9 +65,14 @@ use {
         ClientMessage,
         ServerMessage,
     },
-    crate::user::{
-        User,
-        UserParam,
+    crate::{
+        PageStyle,
+        Tab,
+        page,
+        user::{
+            User,
+            UserParam,
+        },
     },
 };
 #[cfg(not(target_os = "linux"))] use crate::systemd_minecraft;
@@ -118,7 +128,7 @@ type WsStream = SplitStream<rocket_ws::stream::DuplexStream>;
 type WsSink = Arc<Mutex<SplitSink<rocket_ws::stream::DuplexStream, rocket_ws::Message>>>;
 
 #[rocket::get("/api/v3/websocket")]
-pub(crate) fn websocket(ws: request::Outcome<WebSocket, Never>, shutdown: rocket::Shutdown) -> Either<rocket_ws::Channel<'static>, Status> {
+pub(crate) fn websocket(me: Option<User>, uri: Origin<'_>, ws: request::Outcome<WebSocket, Never>, shutdown: rocket::Shutdown) -> Either<rocket_ws::Channel<'static>, (Status, RawHtml<String>)> {
     #[derive(Debug, thiserror::Error)]
     enum Error {
         #[error(transparent)] ChunkColumnDecode(#[from] mcanvil::ChunkColumnDecodeError),
@@ -236,6 +246,17 @@ pub(crate) fn websocket(ws: request::Outcome<WebSocket, Never>, shutdown: rocket
             Ok(())
         }))),
         Outcome::Error(never) => match never {},
-        Outcome::Forward(status) => Either::Right(status),
+        Outcome::Forward(status) => Either::Right((status, page(&me, &uri, PageStyle::default(), "Bad Request — Wurstmineberg", Tab::More, html! {
+            h1 : "Error 400: Bad Request";
+            p {
+                : "This API endpoint requires a ";
+                a(href = "https://en.wikipedia.org/wiki/WebSocket") : "WebSocket";
+                : " client. See ";
+                a(href = "https://docs.rs/async-proto") : "https://docs.rs/async-proto";
+                : " and ";
+                a(href = "https://github.com/wurstmineberg/wurstmineberg.de/blob/main/src/websocket.rs") : "https://github.com/wurstmineberg/wurstmineberg.de/blob/main/src/websocket.rs";
+                : " for the protocol.";
+            }
+        }))),
     }
 }
