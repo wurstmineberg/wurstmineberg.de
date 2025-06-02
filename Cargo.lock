@@ -168,6 +168,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "69f7f8c3906b62b754cd5326047894316021dcfe5a194c8ea52bdd94934a3457"
 
 [[package]]
+name = "arrayref"
+version = "0.3.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "76a2e8124351fda1ef8aaaa3bbd7ebbcb486bbcd4225aca0aa0d84bb2db8fecb"
+
+[[package]]
 name = "arrayvec"
 version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3092,8 +3098,9 @@ dependencies = [
 [[package]]
 name = "mcanvil"
 version = "0.3.1"
-source = "git+https://github.com/wurstmineberg/rust-anvil?branch=main#b21c8a9dc6adc98c4c6ecba6f39d693eefae9f1e"
+source = "git+https://github.com/wurstmineberg/rust-anvil?branch=main#8e39f3f979c2eecd8ba11ea957fe2d530967f2a7"
 dependencies = [
+ "arrayref",
  "async-proto",
  "chrono",
  "futures",
