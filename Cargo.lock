@@ -488,9 +488,9 @@ checksum = "a3c8f83209414aacf0eeae3cf730b18d6981697fba62f200fcfb92b9f082acba"
 
 [[package]]
 name = "cc"
-version = "1.2.24"
+version = "1.2.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "16595d3be041c03b09d08d0858631facccee9221e579704070e6e9e4915d3bc7"
+checksum = "d0fc897dc1e865cc67c0e05a836d9d3f1df3cbe442aa4a9473b18e12624a4951"
 dependencies = [
  "shlex",
 ]
@@ -2295,12 +2295,6 @@ dependencies = [
 
 [[package]]
 name = "hermit-abi"
-version = "0.3.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d231dfb89cfffdbc30e7fc41579ed6066ad03abda9e567ccafae602b97ec5024"
-
-[[package]]
-name = "hermit-abi"
 version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f154ce46856750ed433c8649605bf7ed2de3bc35fd9d2a9f30cddd873c80cb08"
@@ -2813,7 +2807,7 @@ version = "0.4.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e04d7f318608d35d4b61ddd75cbdaee86b023ebe2bd5a66ee0915f0bf93095a9"
 dependencies = [
- "hermit-abi 0.5.1",
+ "hermit-abi",
  "libc",
  "windows-sys 0.59.0",
 ]
@@ -3098,7 +3092,7 @@ dependencies = [
 [[package]]
 name = "mcanvil"
 version = "0.3.1"
-source = "git+https://github.com/wurstmineberg/rust-anvil?branch=main#d6a4c7bf651336b369b16c63baa1130c2bbd3956"
+source = "git+https://github.com/wurstmineberg/rust-anvil?branch=main#b21c8a9dc6adc98c4c6ecba6f39d693eefae9f1e"
 dependencies = [
  "async-proto",
  "chrono",
@@ -3308,11 +3302,11 @@ dependencies = [
 
 [[package]]
 name = "num_cpus"
-version = "1.16.0"
+version = "1.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4161fcb6d602d4d2081af7c3a45852d875a03dd337a6bfdd6e06407b61342a43"
+checksum = "91df4bbde75afed763b708b7eee1e8e7651e02d97f6d5dd763e89367e957b23b"
 dependencies = [
- "hermit-abi 0.3.9",
+ "hermit-abi",
  "libc",
 ]
 
@@ -4087,7 +4081,7 @@ dependencies = [
 [[package]]
 name = "rocket-util"
 version = "0.2.15"
-source = "git+https://github.com/fenhl/rocket-util?branch=main#37d3347d372e10e8bf06335fe4fdf19c3f5f0613"
+source = "git+https://github.com/fenhl/rocket-util?branch=main#d55bef2dd45d775f9da4892f38e731e11476d91a"
 dependencies = [
  "futures",
  "reqwest 0.12.18",
@@ -4100,7 +4094,7 @@ dependencies = [
 [[package]]
 name = "rocket-util-derive"
 version = "0.2.15"
-source = "git+https://github.com/fenhl/rocket-util?branch=main#37d3347d372e10e8bf06335fe4fdf19c3f5f0613"
+source = "git+https://github.com/fenhl/rocket-util?branch=main#d55bef2dd45d775f9da4892f38e731e11476d91a"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5388,9 +5382,9 @@ dependencies = [
 
 [[package]]
 name = "tower-http"
-version = "0.6.4"
+version = "0.6.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0fdb0c213ca27a9f57ab69ddb290fd80d970922355b83ae380b395d3986b8a2e"
+checksum = "5cc2d9e086a412a451384326f521c8123a99a466b329941a9403696bff9b0da2"
 dependencies = [
  "bitflags 2.9.1",
  "bytes",
@@ -5831,7 +5825,7 @@ dependencies = [
 [[package]]
 name = "wheel"
 version = "0.15.0"
-source = "git+https://github.com/fenhl/wheel?branch=main#12e272c266ee5564f0dea3e4f371409c7f34a87b"
+source = "git+https://github.com/fenhl/wheel?branch=main#4d1c17f62fe064dcea8f8c2f447f56af59ac8293"
 dependencies = [
  "async-trait",
  "clap",
@@ -5852,7 +5846,7 @@ dependencies = [
 [[package]]
 name = "wheel-derive"
 version = "0.15.0"
-source = "git+https://github.com/fenhl/wheel?branch=main#12e272c266ee5564f0dea3e4f371409c7f34a87b"
+source = "git+https://github.com/fenhl/wheel?branch=main#4d1c17f62fe064dcea8f8c2f447f56af59ac8293"
 dependencies = [
  "itertools",
  "proc-macro2",

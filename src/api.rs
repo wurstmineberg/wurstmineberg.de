@@ -16,9 +16,11 @@ use {
     async_proto::Protocol as _,
     chrono::prelude::*,
     futures::stream::{
+        self,
         SplitSink,
         SplitStream,
         StreamExt as _,
+        TryStreamExt as _,
     },
     itertools::Itertools as _,
     log_lock::*,
@@ -138,72 +140,88 @@ pub(crate) fn websocket(me: Option<User>, uri: Origin<'_>, ws: request::Outcome<
     }
 
     async fn client_session(mut rocket_shutdown: rocket::Shutdown, stream: WsStream, sink: WsSink) -> Result<(), Error> {
-        async fn update_chunks(world: &systemd_minecraft::World, chunk_cache: &mut HashMap<(Dimension, i32, i8, i32), Option<DateTime<Utc>>>, sink: &WsSink, chunks: impl IntoIterator<Item = (Dimension, i32, i8, i32)>) -> Result<(), Error> {
+        async fn update_chunks(world: &systemd_minecraft::World, chunk_cache: &Mutex<HashMap<(Dimension, i32, i8, i32), Option<DateTime<Utc>>>>, sink: &WsSink, chunks: impl IntoIterator<Item = (Dimension, i32, i8, i32)>) -> Result<(), Error> {
             let chunks = chunks.into_iter().into_group_map_by(|(dimension, cx, _, cz)| (*dimension, cx.div_euclid(32), cz.div_euclid(32)));
-            for ((dimension, rx, rz), chunks) in chunks {
-                if let Some(mut region) = Region::find(world.dir().join("world"), dimension, [rx, rz]).await? {
-                    for (_, cx, cy, cz) in chunks {
-                        let cx_relative = cx.rem_euclid(32) as u8;
-                        let cz_relative = cz.rem_euclid(32) as u8;
-                        let new_timestamp = region.timestamps[32 * cz_relative as usize + cx_relative as usize];
-                        let new_chunk = region.chunk_column_relative([cx_relative, cz_relative]).await?.and_then(|col| col.into_section_at(cy)).map(|chunk| array::from_fn(|y|
-                            Box::new(array::from_fn(|z|
-                                array::from_fn(|x|
-                                    chunk.block_relative([x as u8, y as u8, z as u8]).into_owned()
-                                )
-                            ))
-                        ));
-                        match chunk_cache.entry((dimension, cx, cy, cz)) {
-                            hash_map::Entry::Occupied(mut entry) => {
-                                let old_timestamp = entry.get_mut();
-                                if old_timestamp.is_none_or(|old_timestamp| new_timestamp != old_timestamp) {
-                                    lock!(sink = sink; ServerMessage::ChunkData {
-                                        data: new_chunk.clone(),
-                                        dimension, cx, cy, cz,
-                                    }.write_ws021(&mut *sink).await)?;
-                                    *old_timestamp = Some(new_timestamp);
-                                }
+            stream::iter(chunks)
+                .map(Ok)
+                .try_for_each_concurrent(None, move |((dimension, rx, rz), chunks)| async move {
+                    if let Some(mut region) = Region::find(world.dir().join("world"), dimension, [rx, rz]).await? {
+                        for (_, cx, cy, cz) in chunks {
+                            let cx_relative = cx.rem_euclid(32) as u8;
+                            let cz_relative = cz.rem_euclid(32) as u8;
+                            let new_timestamp = region.timestamps[32 * cz_relative as usize + cx_relative as usize];
+                            let new_chunk = region.chunk_column_relative([cx_relative, cz_relative]).await?.and_then(|col| col.into_section_at(cy)).map(|chunk| array::from_fn(|y|
+                                Box::new(array::from_fn(|z|
+                                    array::from_fn(|x|
+                                        chunk.block_relative([x as u8, y as u8, z as u8]).into_owned()
+                                    )
+                                ))
+                            ));
+                            'chunk_cache_lock: {
+                                lock!(chunk_cache = chunk_cache; match chunk_cache.entry((dimension, cx, cy, cz)) {
+                                    hash_map::Entry::Occupied(mut entry) => {
+                                        let old_timestamp = entry.get_mut();
+                                        if old_timestamp.is_none_or(|old_timestamp| new_timestamp != old_timestamp) {
+                                            *old_timestamp = Some(new_timestamp);
+                                            unlock!();
+                                            lock!(sink = sink; ServerMessage::ChunkData {
+                                                data: new_chunk.clone(),
+                                                dimension, cx, cy, cz,
+                                            }.write_ws021(&mut *sink).await)?;
+                                            break 'chunk_cache_lock
+                                        }
+                                    }
+                                    hash_map::Entry::Vacant(entry) => {
+                                        entry.insert(Some(new_timestamp));
+                                        unlock!();
+                                        lock!(sink = sink; ServerMessage::ChunkData {
+                                            data: new_chunk.clone(),
+                                            dimension, cx, cy, cz,
+                                        }.write_ws021(&mut *sink).await)?;
+                                        break 'chunk_cache_lock
+                                    }
+                                });
                             }
-                            hash_map::Entry::Vacant(entry) => {
-                                lock!(sink = sink; ServerMessage::ChunkData {
-                                    data: new_chunk.clone(),
-                                    dimension, cx, cy, cz,
-                                }.write_ws021(&mut *sink).await)?;
-                                entry.insert(Some(new_timestamp));
+                        }
+                    } else {
+                        for (_, cx, cy, cz) in chunks {
+                            'chunk_cache_lock: {
+                                lock!(chunk_cache = chunk_cache; match chunk_cache.entry((dimension, cx, cy, cz)) {
+                                    hash_map::Entry::Occupied(mut entry) => {
+                                        let old_timestamp = entry.get_mut();
+                                        if old_timestamp.is_some() {
+                                            *old_timestamp = None;
+                                            unlock!();
+                                            lock!(sink = sink; ServerMessage::ChunkData {
+                                                data: None,
+                                                dimension, cx, cy, cz,
+                                            }.write_ws021(&mut *sink).await)?;
+                                            break 'chunk_cache_lock
+                                        }
+                                    }
+                                    hash_map::Entry::Vacant(entry) => {
+                                        entry.insert(None);
+                                        unlock!();
+                                        lock!(sink = sink; ServerMessage::ChunkData {
+                                            data: None,
+                                            dimension, cx, cy, cz,
+                                        }.write_ws021(&mut *sink).await)?;
+                                        break 'chunk_cache_lock
+                                    }
+                                });
                             }
                         }
                     }
-                } else {
-                    for (_, cx, cy, cz) in chunks {
-                        match chunk_cache.entry((dimension, cx, cy, cz)) {
-                            hash_map::Entry::Occupied(mut entry) => {
-                                let old_timestamp = entry.get_mut();
-                                if old_timestamp.is_some() {
-                                    lock!(sink = sink; ServerMessage::ChunkData {
-                                        data: None,
-                                        dimension, cx, cy, cz,
-                                    }.write_ws021(&mut *sink).await)?;
-                                    *old_timestamp = None;
-                                }
-                            }
-                            hash_map::Entry::Vacant(entry) => {
-                                lock!(sink = sink; ServerMessage::ChunkData {
-                                    data: None,
-                                    dimension, cx, cy, cz,
-                                }.write_ws021(&mut *sink).await)?;
-                                entry.insert(None);
-                            }
-                        }
-                    }
-                }
-            }
+                    Ok::<_, Error>(())
+                })
+                .await?;
             Ok(())
         }
 
         let main_world = systemd_minecraft::World::default();
         let mut save_data_interval = interval(Duration::from_secs(10 * 45));
         save_data_interval.set_missed_tick_behavior(MissedTickBehavior::Delay);
-        let mut chunk_cache = HashMap::new();
+        let chunk_cache = Mutex::default();
         let mut read = ClientMessage::read_ws_owned021(stream); //TODO timeout after 60 seconds?
         loop {
             select! {
@@ -213,13 +231,13 @@ pub(crate) fn websocket(me: Option<User>, uri: Origin<'_>, ws: request::Outcome<
                     read = ClientMessage::read_ws_owned021(stream); //TODO timeout after 60 seconds?
                     match msg {
                         ClientMessage::Pong => {}
-                        ClientMessage::SubscribeToChunk { dimension, cx, cy, cz } => update_chunks(&main_world, &mut chunk_cache, &sink, iter::once((dimension, cx, cy, cz))).await?,
-                        ClientMessage::SubscribeToChunks(chunks) => update_chunks(&main_world, &mut chunk_cache, &sink, chunks).await?,
+                        ClientMessage::SubscribeToChunk { dimension, cx, cy, cz } => update_chunks(&main_world, &chunk_cache, &sink, iter::once((dimension, cx, cy, cz))).await?,
+                        ClientMessage::SubscribeToChunks(chunks) => update_chunks(&main_world, &chunk_cache, &sink, chunks).await?,
                     }
                 }
                 _ = save_data_interval.tick() => {
-                    let chunks = chunk_cache.keys().copied().collect_vec();
-                    update_chunks(&main_world, &mut chunk_cache, &sink, chunks).await?;
+                    let chunks = lock!(chunk_cache = chunk_cache; chunk_cache.keys().copied().collect_vec());
+                    update_chunks(&main_world, &chunk_cache, &sink, chunks).await?;
                 }
             }
         }
