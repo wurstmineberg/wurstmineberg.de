@@ -210,7 +210,7 @@ pub(crate) enum DiscordCallbackError {
 #[rocket::get("/login/discord/authorized")]
 pub(crate) async fn discord_callback(http_client: &State<reqwest::Client>, token: TokenResponse<Discord>, cookies: &CookieJar<'_>) -> Result<Redirect, DiscordCallbackError> {
     handle_discord_token_response(http_client, cookies, &token).await?;
-    let redirect_uri = cookies.get("redirect_to").and_then(|cookie| rocket::http::uri::Origin::try_from(cookie.value()).ok()).map_or_else(|| uri!(crate::index), |uri| uri.into_owned());
+    let redirect_uri = cookies.get("redirect_to").and_then(|cookie| rocket::http::uri::Origin::try_from(cookie.value()).ok()).map_or_else(|| uri!(crate::http::index), |uri| uri.into_owned());
     Ok(Redirect::to(redirect_uri))
 }
 
@@ -218,5 +218,5 @@ pub(crate) async fn discord_callback(http_client: &State<reqwest::Client>, token
 pub(crate) fn logout(cookies: &CookieJar<'_>) -> Redirect {
     cookies.remove_private(Cookie::from("discord_token"));
     cookies.remove_private(Cookie::from("discord_refresh_token"));
-    Redirect::to(uri!(crate::index))
+    Redirect::to(uri!(crate::http::index))
 }

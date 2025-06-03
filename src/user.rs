@@ -21,8 +21,8 @@ use {
     url::Url,
     uuid::Uuid,
     crate::{
-        asset,
         discord::PgSnowflake,
+        http::asset,
     },
 };
 

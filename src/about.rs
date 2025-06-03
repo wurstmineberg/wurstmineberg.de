@@ -35,10 +35,12 @@ use {
     sqlx::PgPool,
     wheel::traits::ReqwestResponseExt as _,
     crate::{
-        PageStyle,
-        Tab,
         auth,
-        page,
+        http::{
+            PageStyle,
+            Tab,
+            page,
+        },
         config::Config,
         user::User,
         wiki,
@@ -270,7 +272,7 @@ pub(crate) async fn get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
         }
         p {
             : "Now for the actual invitation process, just ask one of our members to invite you. See ";
-            a(href = uri!(crate::index).to_string()) : "the main page";
+            a(href = uri!(crate::http::index).to_string()) : "the main page";
             : " for ways to contact us.";
         }
         h2(id = "starter") : "Getting started";

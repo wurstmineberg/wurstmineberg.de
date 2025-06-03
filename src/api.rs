@@ -68,9 +68,11 @@ use {
         ServerMessage,
     },
     crate::{
-        PageStyle,
-        Tab,
-        page,
+        http::{
+            PageStyle,
+            Tab,
+            page,
+        },
         user::{
             User,
             UserParam,

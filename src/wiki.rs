@@ -14,10 +14,12 @@ use {
     sqlx::PgPool,
     url::Url,
     crate::{
-        PageStyle,
-        StatusOrError,
-        Tab,
-        page,
+        http::{
+            PageStyle,
+            StatusOrError,
+            Tab,
+            page,
+        },
         user::User,
     },
 };

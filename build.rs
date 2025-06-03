@@ -76,7 +76,7 @@ fn main() -> Result<(), Error> {
         }
     }
     let mut out_f = File::create(Path::new(&env::var_os("OUT_DIR").unwrap()).join("build_output.rs"))?;
-    writeln!(&mut out_f, "macro_rules! static_url {{")?;
+    writeln!(&mut out_f, "#[macro_export] macro_rules! _static_url {{")?;
     for (path, commit_id) in cache {
         let unix_path = path.to_str().expect("non-UTF-8 static file path").replace('\\', "/");
         let uri = format!("/static/{unix_path}?v={commit_id}");
@@ -85,6 +85,7 @@ fn main() -> Result<(), Error> {
         writeln!(&mut out_f, "    }};")?;
     }
     writeln!(&mut out_f, "}}")?;
+    writeln!(&mut out_f, "use _static_url as static_url;")?; // workaround for macro_rules scoping weirdness, see https://github.com/rust-lang/rust/pull/52234#issuecomment-976702997
     writeln!(&mut out_f, "const YEAR_OF_LAST_COMMIT: i32 = {};", repo.head_commit()?.time()?.format(gix::diff::object::date::time::CustomFormat::new("%Y")))?;
     Ok(())
 }
