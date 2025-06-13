@@ -577,7 +577,7 @@ pub(crate) struct ProfileForm {
     favcolor: String,
 }
 
-#[rocket::post("/preferences?tab=profile", data = "<form>")]
+#[rocket::post("/preferences?tab=profile", data = "<form>", rank = 0)]
 pub(crate) async fn profile_post(db_pool: &State<PgPool>, discord_ctx: &State<RwFuture<DiscordCtx>>, mut me: User, uri: Origin<'_>, csrf: Option<CsrfToken>, form: Form<Contextual<'_, ProfileForm>>) -> Result<RawHtml<String>, Error> {
     let mut form = form.into_inner();
     form.verify(&csrf);
@@ -654,7 +654,7 @@ pub(crate) struct SettingsForm {
     timezone: String,
 }
 
-#[rocket::post("/preferences?tab=settings", data = "<form>")]
+#[rocket::post("/preferences?tab=settings", data = "<form>", rank = 1)]
 pub(crate) async fn settings_post(db_pool: &State<PgPool>, mut me: User, uri: Origin<'_>, csrf: Option<CsrfToken>, form: Form<Contextual<'_, SettingsForm>>) -> Result<RawHtml<String>, rocket_util::Error<sqlx::Error>> {
     let mut form = form.into_inner();
     form.verify(&csrf);
