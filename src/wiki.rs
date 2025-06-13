@@ -50,6 +50,7 @@ use {
             RedirectOrContent,
             StatusOrError,
             Tab,
+            base_uri,
             page,
         },
         user::User,
@@ -315,7 +316,7 @@ pub(crate) async fn edit_post(discord_ctx: &State<RwFuture<DiscordCtx>>, db_pool
             let exists = sqlx::query_scalar!(r#"SELECT EXISTS (SELECT 1 FROM wiki WHERE title = $1 AND namespace = $2) AS "exists!""#, title, namespace).fetch_one(&mut *transaction).await?;
             sqlx::query!("INSERT INTO wiki (title, namespace, text, author, timestamp, summary) VALUES ($1, $2, $3, $4, NOW(), $5)", title, namespace, tags_to_mentions(db_pool, value.source.clone()).await?, me.discord_id().map(PgSnowflake) as _, value.summary).execute(&mut *transaction).await?;
             transaction.commit().await?;
-            let url = if namespace == "wiki" { uri!(main_article(title)) } else { uri!(namespaced_article(title, namespace)) };
+            let url = if namespace == "wiki" { uri!(base_uri(), main_article(title)) } else { uri!(base_uri(), namespaced_article(title, namespace)) };
             let mut content = MessageBuilder::default();
             content.push('<');
             content.push(url.to_string());

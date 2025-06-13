@@ -73,7 +73,7 @@ pub(crate) enum StatusOrError<E> {
     Err(E),
 }
 
-fn base_uri() -> rocket::http::uri::Absolute<'static> {
+pub(crate) fn base_uri() -> rocket::http::uri::Absolute<'static> {
     uri!("https://wurstmineberg.de")
 }
 
