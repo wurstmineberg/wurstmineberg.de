@@ -516,7 +516,7 @@ enum FlaskProxyResponse {
     Status(Status),
 }
 
-#[rocket::get("/<path..>")]
+#[rocket::get("/<path..>", rank = 100 /* prefer endpoints implemented in Rust */)]
 async fn flask_proxy_get(proxy_http_client: &State<ProxyHttpClient>, me: Option<DiscordUser>, origin: Origin<'_>, headers: Headers, path: Segments<'_, Path>) -> Result<FlaskProxyResponse, FlaskProxyError> {
     if Segments::<Path>::get(&path, 0).map_or(true, |prefix| !matches!(prefix, "api" | "people" | "preferences" | "profile" | "stats" | "wiki")) {
         // only forward the directories that are actually served by the proxy to prevent internal server errors on malformed requests from spambots
@@ -532,7 +532,7 @@ async fn flask_proxy_get(proxy_http_client: &State<ProxyHttpClient>, me: Option<
     Ok(FlaskProxyResponse::Proxied(Response(response)))
 }
 
-#[rocket::post("/<path..>", data = "<data>")]
+#[rocket::post("/<path..>", data = "<data>", rank = 100 /* prefer endpoints implemented in Rust */)]
 async fn flask_proxy_post(proxy_http_client: &State<ProxyHttpClient>, me: Option<DiscordUser>, origin: Origin<'_>, headers: Headers, path: Segments<'_, Path>, data: Vec<u8>) -> Result<FlaskProxyResponse, FlaskProxyError> {
     if Segments::<Path>::get(&path, 0).map_or(true, |prefix| !matches!(prefix, "api" | "people" | "preferences" | "profile" | "stats" | "wiki")) {
         // only forward the directories that are actually served by the proxy to prevent internal server errors on malformed requests from spambots
