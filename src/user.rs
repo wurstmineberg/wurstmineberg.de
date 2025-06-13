@@ -635,7 +635,7 @@ pub(crate) async fn profile_post(db_pool: &State<PgPool>, discord_ctx: &State<Rw
                 Id::Both { discord_id, .. } | Id::Discord(discord_id) => sqlx::query!("UPDATE people SET data = $1 WHERE snowflake = $2", Json(&me.data) as _, PgSnowflake(discord_id) as _),
                 Id::Wmbid(ref wmbid) => sqlx::query!("UPDATE people SET data = $1 WHERE wmbid = $2", Json(&me.data) as _, wmbid),
             }.execute(&**db_pool).await?;
-            preferences_form(me, uri, csrf.as_ref(), true, "profile", PreferencesFormDefaults::Context(form.context))
+            preferences_form(me.clone(), uri, csrf.as_ref(), true, "profile", PreferencesFormDefaults::Values(me))
         }
     } else {
         preferences_form(me, uri, csrf.as_ref(), false, "profile", PreferencesFormDefaults::Context(form.context))
@@ -675,7 +675,7 @@ pub(crate) async fn settings_post(db_pool: &State<PgPool>, mut me: User, uri: Or
                 Id::Both { discord_id, .. } | Id::Discord(discord_id) => sqlx::query!("UPDATE people SET data = $1 WHERE snowflake = $2", Json(&me.data) as _, PgSnowflake(discord_id) as _),
                 Id::Wmbid(ref wmbid) => sqlx::query!("UPDATE people SET data = $1 WHERE wmbid = $2", Json(&me.data) as _, wmbid),
             }.execute(&**db_pool).await?;
-            preferences_form(me, uri, csrf.as_ref(), true, "settings", PreferencesFormDefaults::Context(form.context))
+            preferences_form(me.clone(), uri, csrf.as_ref(), true, "settings", PreferencesFormDefaults::Values(me))
         }
     } else {
         preferences_form(me, uri, csrf.as_ref(), false, "settings", PreferencesFormDefaults::Context(form.context))
