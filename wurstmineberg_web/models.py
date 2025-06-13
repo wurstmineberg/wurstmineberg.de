@@ -230,13 +230,6 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
                 return date
 
     @property
-    def mention(self):
-        if self.snowflake is None:
-            return wurstminebot.escape(self.wmbid)
-        else:
-            return f'<@{self.snowflake}>'
-
-    @property
     def minecraft_name(self):
         if 'minecraft' in self.data and 'nicks' in self.data['minecraft']:
             return self.data['minecraft']['nicks'][-1]

@@ -40,14 +40,7 @@ def mentions_to_tags(text):
         text = f'{text[:match.start()]}{tag}{text[match.end():]}'
 
 def save_hook(namespace, title, text, author, summary, created):
-    if namespace == 'wiki':
-        url = f'https://wurstmineberg.de/wiki/{title}'
-    else:
-        url = f'https://wurstmineberg.de/wiki/{title}/{namespace}'
-    msg = f'<{url}> has been {"created" if created else "edited"} by {author.mention}'
-    if summary:
-        msg += f':\n> {wurstminebot.escape(summary)}'
-    wurstminebot.channel_msg(CHANNEL_ID, msg)
+    raise NotImplementedError('This code should be unreachable since the endpoint calling it has been ported to Rust')
 
 def tags_to_mentions(text):
     while True:

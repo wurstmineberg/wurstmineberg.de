@@ -38,9 +38,4 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
     }
-
-    location /api/v3/calendar.ics {
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-        proxy_pass http://localhost:24810;
-    }
 }

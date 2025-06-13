@@ -14,23 +14,8 @@ import wurstmineberg_web.models
 import wurstmineberg_web.util
 
 @flask_view_tree.index(wurstmineberg_web.app)
-@wurstmineberg_web.util.template()
 def index():
-    main_world = wurstmineberg_web.models.World()
-    if main_world.is_running:
-        version = main_world.version
-        if version is None:
-            version_url = 'https://minecraft.wiki/w/Version_history'
-        else:
-            version_url = f'https://minecraft.wiki/w/Java_Edition_{urllib.parse.quote(version)}'
-        return {
-            'running': True,
-            'version': version,
-            'version_url': version_url,
-            'world': main_world
-        }
-    else:
-        return {'running': False}
+    raise NotImplementedError('This endpoint has been ported to Rust')
 
 @index.child('stats')
 @wurstmineberg_web.util.template()
@@ -75,74 +60,5 @@ def get_profile():
     return people, flask.g.user
 
 @index.child('preferences', methods=['GET', 'POST'], decorators=[wurstmineberg_web.auth.member_required])
-@wurstmineberg_web.util.template()
 def preferences():
-    profile_form = wurstmineberg_web.forms.ProfileForm()
-    settings_form = wurstmineberg_web.forms.SettingsForm()
-    data = flask.g.user.data
-    last_data = None
-    displayed_tab = flask.request.args.get('tab', 'profile')
-
-    def set_data():
-        profile_form.name.data = flask.g.user.name
-        profile_form.name.description['placeholder'] = flask.g.user.wmbid
-        profile_form.description.data = data.get('description', '')
-        profile_form.mojira.data = data.get('mojira', '')
-        profile_form.twitter.data = data.get('twitter', {}).get('username', '')
-        profile_form.website.data = data.get('website', None)
-        profile_form.favcolor.color_dict = data.get('favColor', None)
-
-        for field in settings_form:
-            option = field.id
-            if option in data.get('options', {}):
-                settings_form[option].data = data['options'][option]
-
-        last_data = data
-
-    if profile_form.submit_profile_form.data and profile_form.validate():
-        if flask.g.user.snowflake is not None and not flask.g.user.is_admin: # wurstminebot does not have permission to rename admins
-            wurstminebot.set_display_name(flask.g.user, profile_form.name.data)
-        data['name'] = profile_form.name.data
-
-        if profile_form.description.data and not profile_form.description.data.isspace():
-            data['description'] = profile_form.description.data
-        else:
-            data.pop('description', None)
-
-        if profile_form.mojira.data and not profile_form.mojira.data.isspace():
-            data['mojira'] = profile_form.mojira.data
-        else:
-            data.pop('mojira', None)
-
-        if profile_form.twitter.data and not profile_form.twitter.data.isspace():
-            data.setdefault('twitter', {})['username'] = profile_form.twitter.data
-        else:
-            data.pop('twitter', None)
-
-        if profile_form.website.data and not profile_form.website.data.isspace():
-            data['website'] = profile_form.website.data
-        else:
-            data.pop('website', None)
-
-        color_dict = profile_form.favcolor.color_dict
-        if color_dict:
-            data['favColor'] = color_dict
-        else:
-            data.pop('favColor', None)
-
-        flask.g.user.commit_data()
-        set_data()
-        flask.flash('Successfully saved profile')
-    elif settings_form.submit_settings_form.data and settings_form.validate():
-        options = data.setdefault('options', {})
-        for field in settings_form:
-            if not isinstance(field, wtforms.HiddenField):
-                options[field.id] = field.data
-        data['options'] = options
-        flask.g.user.commit_data()
-        set_data()
-        flask.flash('Successfully saved settings')
-    else:
-        set_data()
-
-    return {'profile_form': profile_form, 'settings_form': settings_form, 'displayed_tab': displayed_tab}
+    raise NotImplementedError('This endpoint has been ported to Rust')

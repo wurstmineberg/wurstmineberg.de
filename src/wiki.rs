@@ -1,21 +1,53 @@
 use {
     lazy_regex::regex_captures,
     rocket::{
+        FromForm,
         State,
+        form::{
+            self,
+            Context,
+            Contextual,
+            Form,
+        },
         http::Status,
-        response::content::RawHtml,
+        response::{
+            Redirect,
+            content::RawHtml,
+        },
         uri,
     },
+    rocket_csrf::CsrfToken,
     rocket_util::{
+        ContextualExt as _,
+        CsrfForm,
         Origin,
         ToHtml,
         html,
     },
+    serenity::{
+        all::{
+            Context as DiscordCtx,
+            CreateAllowedMentions,
+            CreateMessage,
+            MessageBuilder,
+        },
+        model::prelude::*,
+    },
+    serenity_utils::RwFuture,
     sqlx::PgPool,
     url::Url,
     crate::{
+        discord::{
+            MessageBuilderExt as _,
+            PgSnowflake,
+        },
+        form::{
+            form_field,
+            full_form,
+        },
         http::{
             PageStyle,
+            RedirectOrContent,
             StatusOrError,
             Tab,
             page,
@@ -24,9 +56,12 @@ use {
     },
 };
 
+const CHANNEL: ChannelId = ChannelId::new(681458815543148547);
+
 #[derive(Debug, thiserror::Error, rocket_util::Error)]
 pub(crate) enum Error {
     #[error(transparent)] Io(#[from] std::io::Error),
+    #[error(transparent)] Serenity(#[from] serenity::Error),
     #[error(transparent)] Sql(#[from] sqlx::Error),
     #[error(transparent)] Url(#[from] url::ParseError),
 }
@@ -35,6 +70,39 @@ impl<E: Into<Error>> From<E> for StatusOrError<Error> {
     fn from(e: E) -> Self {
         Self::Err(e.into())
     }
+}
+
+async fn mentions_to_tags(db_pool: &PgPool, mut text: String) -> sqlx::Result<String> {
+    while let Some((_, prefix, bang, id, suffix)) = regex_captures!("^(.*?)<@(!?)([a-z][0-9a-z]{1,15}|[0-9]+)>(.*)$", &text) {
+        if let Some(user) = User::from_discord_or_wmbid(db_pool, id).await? {
+            let tag = if let Some(discord) = user.discorddata {
+                if let Some(discriminator) = discord.discriminator {
+                    format!("@{}#{discriminator:04}", discord.username)
+                } else {
+                    format!("@{}#", discord.username)
+                }
+            } else {
+                format!("@{}#", user.wmbid().expect("user with no Discord data and no Wurstmineberg ID"))
+            };
+            text = format!("{prefix}{tag}{suffix}");
+        } else {
+            // skip this mention but convert the remaining text recursively
+            return Ok(format!("{prefix}<@{bang}{id}>{}", Box::pin(mentions_to_tags(db_pool, suffix.to_owned())).await?))
+        }
+    }
+    Ok(text)
+}
+
+async fn tags_to_mentions(db_pool: &PgPool, mut text: String) -> sqlx::Result<String> {
+    while let Some((_, prefix, username, discriminator, suffix)) = regex_captures!("^(.*?)@([^@#:\n]{2,32})#((?:[0-9]{4})?)(.*)$", &text) { // see https://discord.com/developers/docs/resources/user
+        if let Some(user) = User::from_tag(db_pool, username, discriminator.parse().ok()).await? {
+            text = format!("{prefix}<@{}>{suffix}", user.id.url_part());
+        } else {
+            // skip this tag but convert the remaining text recursively
+            return Ok(format!("{prefix}@{username}#{discriminator}{}", Box::pin(tags_to_mentions(db_pool, suffix.to_owned())).await?))
+        }
+    }
+    Ok(text)
 }
 
 async fn link_open_tag(db_pool: &PgPool, article: &str, namespace: &str) -> sqlx::Result<RawHtml<String>> {
@@ -137,7 +205,7 @@ pub(crate) async fn main_article(db_pool: &State<PgPool>, me: Option<User>, uri:
         h1 {
             : title;
             : " — Wurstmineberg Wiki ";
-            a(href = format!("/wiki/{title}/wiki/edit"), class = "btn btn-primary") : "Edit";
+            a(href = uri!(edit_get(title, "wiki")), class = "btn btn-primary") : "Edit";
             a(href = format!("/wiki/{title}/wiki/history"), class = "btn btn-link") : "History";
         }
         : render_wiki_page(db_pool, &source).await?;
@@ -153,11 +221,118 @@ pub(crate) async fn namespaced_article(db_pool: &State<PgPool>, me: Option<User>
             : " (";
             : namespace;
             : ") — Wurstmineberg Wiki ";
-            a(href = format!("/wiki/{title}/{namespace}/edit"), class = "btn btn-primary") : "Edit";
+            a(href = uri!(edit_get(title, namespace)), class = "btn btn-primary") : "Edit";
             a(href = format!("/wiki/{title}/{namespace}/history"), class = "btn btn-link") : "History";
         }
         : render_wiki_page(db_pool, &source).await?;
     }))
+}
+
+enum EditFormDefaults<'v> {
+    Context(Context<'v>),
+    Values {
+        source: Option<String>,
+    },
+}
+
+impl<'v> EditFormDefaults<'v> {
+    fn errors(&self) -> Vec<&form::Error<'v>> {
+        match self {
+            Self::Context(ctx) => ctx.errors().collect(),
+            Self::Values { .. } => Vec::default(),
+        }
+    }
+
+    fn field_value(&self, field_name: &str) -> Option<&str> {
+        match self {
+            Self::Context(ctx) => ctx.field_value(field_name),
+            Self::Values { .. } => None,
+        }
+    }
+
+    fn source(&self) -> Option<&str> {
+        match self {
+            Self::Context(ctx) => ctx.field_value("source"),
+            Self::Values { source } => source.as_deref(),
+        }
+    }
+}
+
+fn edit_form(me: Option<User>, uri: Origin<'_>, csrf: Option<&CsrfToken>, title: &str, namespace: &str, defaults: EditFormDefaults<'_>) -> RawHtml<String> {
+    let mut errors = defaults.errors();
+    page(&me, &uri, PageStyle::default() /*TODO enable full_width and use column layout for edit/preview on wide screens?*/, &format!("edit — {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
+        h1 {
+            @if defaults.source().is_some() {
+                : "Edit ";
+            } else {
+                : "Create ";
+            }
+            : title;
+            : " (";
+            : namespace;
+            : ") — Wurstmineberg Wiki ";
+            a(href = if namespace == "wiki" { uri!(main_article(title)) } else { uri!(namespaced_article(title, namespace)) }.to_string(), class = "btn btn-danger") : "Cancel";
+        }
+        : full_form(uri!(edit_post(title, namespace)), csrf, html! {
+            : form_field("source", &mut errors, "Text", html! {
+                textarea(class = "form-control", name = "source") : defaults.source().unwrap_or_default();
+            }, None);
+            //TODO live preview
+            : form_field("summary", &mut errors, "Edit Summary", html! {
+                input(class = "form-control", type = "text", name = "summary", placeholder = "optional", value = defaults.field_value("summary"));
+            }, None);
+        }, errors, "Save");
+    })
+}
+
+#[rocket::get("/wiki/<title>/<namespace>/edit")]
+pub(crate) async fn edit_get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, csrf: Option<CsrfToken>, title: &str, namespace: &str) -> Result<RawHtml<String>, Error> {
+    let source = if let Some(source) = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 ORDER BY timestamp DESC LIMIT 1", title, namespace).fetch_optional(&**db_pool).await? {
+        Some(mentions_to_tags(db_pool, source).await?)
+    } else {
+        None
+    };
+    Ok(edit_form(me, uri, csrf.as_ref(), title, namespace, EditFormDefaults::Values { source }))
+}
+
+#[derive(FromForm, CsrfForm)]
+pub(crate) struct EditForm {
+    #[field(default = String::new())]
+    csrf: String,
+    source: String,
+    summary: String,
+}
+
+#[rocket::post("/wiki/<title>/<namespace>/edit", data = "<form>")]
+pub(crate) async fn edit_post(discord_ctx: &State<RwFuture<DiscordCtx>>, db_pool: &State<PgPool>, me: User, uri: Origin<'_>, csrf: Option<CsrfToken>, title: &str, namespace: &str, form: Form<Contextual<'_, EditForm>>) -> Result<RedirectOrContent, Error> {
+    let mut form = form.into_inner();
+    form.verify(&csrf);
+    Ok(if let Some(ref value) = form.value {
+        if form.context.errors().next().is_some() {
+            RedirectOrContent::Content(edit_form(Some(me), uri, csrf.as_ref(), title, namespace, EditFormDefaults::Context(form.context)))
+        } else {
+            let mut transaction = db_pool.begin().await?;
+            let exists = sqlx::query_scalar!(r#"SELECT EXISTS (SELECT 1 FROM wiki WHERE title = $1 AND namespace = $2) AS "exists!""#, title, namespace).fetch_one(&mut *transaction).await?;
+            sqlx::query!("INSERT INTO wiki (title, namespace, text, author, timestamp, summary) VALUES ($1, $2, $3, $4, NOW(), $5)", title, namespace, tags_to_mentions(db_pool, value.source.clone()).await?, me.discord_id().map(PgSnowflake) as _, value.summary).execute(&mut *transaction).await?;
+            transaction.commit().await?;
+            let url = if namespace == "wiki" { uri!(main_article(title)) } else { uri!(namespaced_article(title, namespace)) };
+            let mut content = MessageBuilder::default();
+            content.push('<');
+            content.push(url.to_string());
+            content.push("> has been ");
+            content.push(if exists { "edited" } else { "created" });
+            content.push(" by ");
+            content.mention_user(&me);
+            if !value.summary.is_empty() {
+                content.push_line(':');
+                content.push_quote_safe(&value.summary);
+            }
+            CHANNEL.send_message(&*discord_ctx.read().await, CreateMessage::default().content(content.build()).allowed_mentions(CreateAllowedMentions::default())).await?;
+            RedirectOrContent::Redirect(Redirect::to(if namespace == "wiki" { uri!(main_article(title)) } else { uri!(namespaced_article(title, namespace)) }))
+        }
+    } else {
+        RedirectOrContent::Content(edit_form(Some(me), uri, csrf.as_ref(), title, namespace, EditFormDefaults::Context(form.context)))
+    })
 }
 
 #[rocket::get("/wiki/<title>/<namespace>/history/<rev>")]

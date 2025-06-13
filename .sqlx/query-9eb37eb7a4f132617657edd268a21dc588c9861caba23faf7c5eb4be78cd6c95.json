@@ -1,0 +1,18 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO wiki (title, namespace, text, author, timestamp, summary) VALUES ($1, $2, $3, $4, NOW(), $5)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Int8",
+        "Varchar"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "9eb37eb7a4f132617657edd268a21dc588c9861caba23faf7c5eb4be78cd6c95"
+}

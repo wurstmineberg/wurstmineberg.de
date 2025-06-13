@@ -261,7 +261,7 @@ def api_v3_index():
 @api_v3_index.child('calendar.ics')
 def api_calendar():
     """Our special events calendar you can subscribe to."""
-    raise NotImplementedError('This endpoint should be directed to wurstminebot by nginx')
+    raise NotImplementedError('This endpoint is implemented in Rust')
 
 @api_v3_index.child('discord')
 def api_discord_index():

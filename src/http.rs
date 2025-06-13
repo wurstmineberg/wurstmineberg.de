@@ -25,7 +25,10 @@ use {
             FromRequest,
             Request,
         },
-        response::content::RawHtml,
+        response::{
+            Redirect,
+            content::RawHtml,
+        },
         uri,
     },
     rocket_oauth2::{
@@ -39,6 +42,8 @@ use {
         ToHtml,
         html,
     },
+    serenity::all::Context as DiscordCtx,
+    serenity_utils::RwFuture,
     sqlx::{
         PgPool,
         postgres::PgConnectOptions,
@@ -55,6 +60,12 @@ use {
 #[cfg(not(target_os = "linux"))] use crate::systemd_minecraft;
 
 const HOST: &str = "wurstmineberg.de";
+
+#[derive(Responder)]
+pub(crate) enum RedirectOrContent {
+    Redirect(Redirect),
+    Content(RawHtml<String>),
+}
 
 #[derive(Responder)]
 pub(crate) enum StatusOrError<E> {
@@ -398,11 +409,9 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>) -> Re
                 }
                 p {
                     : "We have a GitHub organization where we keep most of our stuff, like ";
-                    a(href = "https://github.com/wurstmineberg/wurstminebot-discord") : "the Discord bot";
-                    : ", ";
                     a(href = "https://github.com/wurstmineberg/systemd-minecraft") : "the systemd service we use to manage our worlds";
-                    : ", and even ";
-                    a(href = "https://github.com/wurstmineberg/wurstmineberg.de") : "this website";
+                    : " and even ";
+                    a(href = "https://github.com/wurstmineberg/wurstmineberg.de") : "this website and the Discord bot";
                     : ". We also have three single-serving sites for the current ";
                     a(href = format!("https://time.{HOST}/")) : "server time";
                     : ", ";
@@ -491,12 +500,12 @@ enum FlaskProxyError {
 
 fn proxy_headers(headers: Headers, discord_user: Option<DiscordUser>) -> Result<reqwest::header::HeaderMap, FlaskProxyError> {
     let mut headers = headers.0;
-    headers.insert(reqwest::header::HOST, reqwest::header::HeaderValue::from_static("gefolge.org"));
+    headers.insert(reqwest::header::HOST, reqwest::header::HeaderValue::from_static("wurstmineberg.de"));
     headers.insert(reqwest::header::HeaderName::from_static("x-forwarded-proto"), reqwest::header::HeaderValue::from_static("https"));
     if let Some(discord_user) = discord_user {
-        headers.insert(reqwest::header::HeaderName::from_static("x-gefolge-authorized-discord-id"), discord_user.id.to_string().parse()?);
+        headers.insert(reqwest::header::HeaderName::from_static("x-wurstmineberg-authorized-discord-id"), discord_user.id.to_string().parse()?);
     } else {
-        headers.remove(reqwest::header::HeaderName::from_static("x-gefolge-authorized-discord-id"));
+        headers.remove(reqwest::header::HeaderName::from_static("x-wurstmineberg-authorized-discord-id"));
     }
     Ok(headers)
 }
@@ -614,7 +623,7 @@ async fn fallback_catcher(status: Status, request: &Request<'_>) -> RawHtml<Stri
     })
 }
 
-pub(crate) async fn rocket(config: Config, http_client: reqwest::Client, proxy_http_client: reqwest::Client) -> Result<Rocket<rocket::Build>, crate::Error> {
+pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, http_client: reqwest::Client, proxy_http_client: reqwest::Client) -> Result<Rocket<rocket::Ignite>, crate::Error> {
     Ok(
         rocket::custom(rocket::Config {
             secret_key: SecretKey::from(&BASE64.decode(&config.web.secret_key)?),
@@ -630,6 +639,7 @@ pub(crate) async fn rocket(config: Config, http_client: reqwest::Client, proxy_h
             flask_proxy_get,
             flask_proxy_post,
             crate::about::get,
+            crate::api::calendar,
             crate::api::discord_voice_state,
             crate::api::player_data,
             crate::api::player_data_json,
@@ -637,9 +647,14 @@ pub(crate) async fn rocket(config: Config, http_client: reqwest::Client, proxy_h
             crate::auth::discord_callback,
             crate::auth::discord_login,
             crate::auth::logout,
+            crate::user::preferences_get,
+            crate::user::profile_post,
+            crate::user::settings_post,
             crate::wiki::index,
             crate::wiki::main_article,
             crate::wiki::namespaced_article,
+            crate::wiki::edit_get,
+            crate::wiki::edit_post,
             crate::wiki::revision,
         ])
         .mount("/static", FileServer::new({
@@ -661,7 +676,9 @@ pub(crate) async fn rocket(config: Config, http_client: reqwest::Client, proxy_h
         )))
         .manage(config)
         .manage(PgPool::connect_with(PgConnectOptions::default().username("wurstmineberg").database("wurstmineberg").application_name("wurstmineberg-web")).await?)
+        .manage(discord_ctx)
         .manage(http_client)
         .manage(ProxyHttpClient(proxy_http_client))
+        .ignite().await?
     )
 }

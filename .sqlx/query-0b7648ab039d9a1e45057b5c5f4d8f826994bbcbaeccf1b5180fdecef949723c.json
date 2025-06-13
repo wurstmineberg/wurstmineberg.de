@@ -1,0 +1,26 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT data->'minecraft'->'nicks'->-1 as \"minecraft_nick!: Json<String>\", data->'twitch'->'login' as \"twitch_nick!: Json<String>\" FROM people WHERE data->'minecraft'->'nicks'->-1 IS NOT NULL AND data->'twitch'->'login' IS NOT NULL",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "minecraft_nick!: Json<String>",
+        "type_info": "Jsonb"
+      },
+      {
+        "ordinal": 1,
+        "name": "twitch_nick!: Json<String>",
+        "type_info": "Jsonb"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      null,
+      null
+    ]
+  },
+  "hash": "0b7648ab039d9a1e45057b5c5f4d8f826994bbcbaeccf1b5180fdecef949723c"
+}

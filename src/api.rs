@@ -7,6 +7,7 @@ use {
         },
         convert::Infallible as Never,
         iter,
+        path::Path,
         sync::Arc,
         time::{
             Duration,
@@ -22,6 +23,7 @@ use {
         StreamExt as _,
         TryStreamExt as _,
     },
+    ics::ICalendar,
     itertools::Itertools as _,
     log_lock::*,
     mcanvil::{
@@ -43,10 +45,14 @@ use {
     },
     rocket_util::{
         Origin,
+        Response,
         html,
     },
     rocket_ws::WebSocket,
-    sqlx::PgPool,
+    sqlx::{
+        PgPool,
+        types::Json as PgJson,
+    },
     tokio::{
         io::{
             self,
@@ -68,6 +74,11 @@ use {
         ServerMessage,
     },
     crate::{
+        BASE_PATH,
+        cal::{
+            Event,
+            EventKind,
+        },
         http::{
             PageStyle,
             Tab,
@@ -81,10 +92,37 @@ use {
 };
 #[cfg(not(target_os = "linux"))] use crate::systemd_minecraft;
 
+#[derive(Debug, thiserror::Error, rocket_util::Error)]
+pub(crate) enum CalendarError {
+    #[error(transparent)] Io(#[from] io::Error),
+    #[error(transparent)] Sql(#[from] sqlx::Error),
+}
+
+fn ics_datetime<Tz: TimeZone>(datetime: DateTime<Tz>) -> String {
+    format!("{}", datetime.with_timezone(&Utc).format("%Y%m%dT%H%M%SZ"))
+}
+
+#[rocket::get("/api/v3/calendar.ics")]
+pub(crate) async fn calendar(db_pool: &State<PgPool>) -> Result<Response<ICalendar<'_>>, CalendarError> {
+    let mut cal = ICalendar::new("2.0", concat!("wurstmineberg.de/", env!("CARGO_PKG_VERSION")));
+    let mut events = sqlx::query_as!(Event, r#"SELECT id, start_time AS "start_time: DateTime<Utc>", end_time AS "end_time: DateTime<Utc>", kind as "kind: PgJson<EventKind>" FROM calendar"#).fetch(&**db_pool);
+    while let Some(event) = events.try_next().await? {
+        let mut cal_event = ics::Event::new(format!("event{}@wurstmineberg.de", event.id), ics_datetime(Utc::now()));
+        cal_event.push(ics::properties::Summary::new(ics::escape_text(event.title(db_pool).await?)));
+        if let Some(loc) = event.ics_location() {
+            cal_event.push(ics::properties::Location::new(ics::escape_text(loc)));
+        }
+        cal_event.push(ics::properties::DtStart::new(ics_datetime(event.start_time)));
+        cal_event.push(ics::properties::DtEnd::new(ics_datetime(event.end_time)));
+        cal.add_event(cal_event);
+    }
+    Ok(Response(cal))
+}
+
 #[rocket::get("/api/v3/discord/voice-state.json")]
 pub(crate) async fn discord_voice_state(me: User) -> io::Result<NamedFile> {
     let _ = me; // only required for authorization
-    NamedFile::open("/opt/wurstmineberg/discord/voice-state.json").await
+    NamedFile::open(Path::new(BASE_PATH).join("discord").join("voice-state.json")).await
 }
 
 #[derive(Debug, thiserror::Error, rocket_util::Error)]

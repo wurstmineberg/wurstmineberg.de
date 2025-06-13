@@ -41,17 +41,10 @@ def member_required(f):
     return flask_login.login_required(wrapper)
 
 def setup(app):
-    if 'clientID' not in app.config.get('wurstminebot', {}) or 'clientSecret' not in app.config.get('wurstminebot', {}):
+    if 'clientSecret' not in app.config.get('wurstminebot', {}):
         return #TODO mount error messages at /login and /auth
     app.config['SECRET_KEY'] = app.config['wurstminebot']['clientSecret']
     app.config['USE_SESSION_FOR_NEXT'] = True
-
-    app.register_blueprint(flask_dance.contrib.discord.make_discord_blueprint(
-        client_id=app.config['wurstminebot']['clientID'],
-        client_secret=app.config['wurstminebot']['clientSecret'],
-        scope='identify',
-        redirect_to='auth_callback'
-    ), url_prefix='/login')
 
     app.register_blueprint(flask_dance.contrib.twitch.make_twitch_blueprint(
         client_id=app.config['twitch']['clientID'],
@@ -75,12 +68,10 @@ def setup(app):
 
     @app.before_request
     def global_user():
-        if flask_login.current_user.is_admin and 'viewAs' in app.config.get('web', {}):
-            flask.g.view_as = True
-            flask.g.user = Person.from_snowflake(app.config['web']['viewAs'])
+        if 'x-wurstmineberg-authorized-discord-id' in flask.request.headers:
+            flask.g.user = Person.from_snowflake(flask.request.headers['x-wurstmineberg-authorized-discord-id'])
         else:
-            flask.g.view_as = False
-            flask.g.user = flask_login.current_user
+            flask.g.user = AnonymousUser()
 
     @app.context_processor
     def inject_user():

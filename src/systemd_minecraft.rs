@@ -9,7 +9,9 @@ use {
         },
     },
     lazy_regex::regex_is_match,
+    minecraft::chat::Chat,
     rocket::request::FromParam,
+    serde::Deserialize,
     tokio::net::TcpStream,
 };
 
@@ -17,10 +19,16 @@ const WORLDS_DIR: &str = "/opt/wurstmineberg/world";
 
 #[derive(Debug, thiserror::Error)]
 pub(crate) enum Error {
+    #[error(transparent)] Rcon(#[from] rcon::Error),
     #[error(transparent)] Wheel(#[from] wheel::Error),
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) enum VersionSpec {
+    Exact(#[allow(unused)] String),
+    LatestRelease,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Deserialize)]
 pub(crate) struct World(#[allow(unused)] String);
 
 impl World {
@@ -42,6 +50,10 @@ impl World {
         Self(name.to_string())
     }
 
+    pub async fn command(&self, _: &str) -> Result<String, Error> {
+        Ok(String::default())
+    }
+
     pub(crate) fn dir(&self) -> PathBuf {
         Path::new(WORLDS_DIR).join(&self.0)
     }
@@ -60,6 +72,14 @@ impl World {
         };
         let mut stream = TcpStream::connect((&*hostname, port)).await?;
         craftping::tokio::ping(&mut stream, &hostname, port).await
+    }
+
+    pub(crate) async fn tellraw(&self, rcpt: &str, msg: &Chat) -> Result<String, Error> {
+        Ok(self.command(&format!("tellraw {} {}", rcpt, msg)).await?)
+    }
+
+    pub(crate) async fn update(&self, _: VersionSpec) -> Result<(), Error> {
+        Ok(())
     }
 
     pub(crate) async fn version(&self) -> Result<Option<String>, Error> {

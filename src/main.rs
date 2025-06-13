@@ -6,6 +6,7 @@ use {
         iter,
         time::Duration,
     },
+    futures::future::FutureExt as _,
     itertools::Itertools as _,
     rocket::Rocket,
     wheel::traits::ReqwestResponseExt as _,
@@ -16,14 +17,21 @@ use {
 mod about;
 mod api;
 mod auth;
+mod cal;
 mod config;
 mod discord;
+mod form;
 mod http;
+mod lang;
+mod log;
 #[cfg(not(target_os = "linux"))] mod systemd_minecraft;
+mod twitch;
 mod user;
 mod wiki;
 
 include!(concat!(env!("OUT_DIR"), "/build_output.rs"));
+
+const BASE_PATH: &str = "/opt/wurstmineberg";
 
 async fn night_report(config: &Config, http_client: &reqwest::Client, path: &str, extra: Option<&str>) -> Result<(), Error> {
     http_client
@@ -52,7 +60,9 @@ enum Error {
     #[error(transparent)] Config(#[from] config::Error),
     #[error(transparent)] Reqwest(#[from] reqwest::Error),
     #[error(transparent)] Rocket(#[from] rocket::Error),
+    #[error(transparent)] Serenity(#[from] serenity::Error),
     #[error(transparent)] Sql(#[from] sqlx::Error),
+    #[error(transparent)] Task(#[from] tokio::task::JoinError),
     #[error(transparent)] Wheel(#[from] wheel::Error),
 }
 
@@ -77,6 +87,19 @@ async fn main() -> Result<(), Error> {
         .user_agent(concat!("WurstminebergWeb/", env!("CARGO_PKG_VERSION")))
         .timeout(Duration::from_secs(90))
         .build()?;
-    let Rocket { .. } = http::rocket(config, http_client, proxy_http_client).await?.launch().await?;
+    let discord_builder = serenity_utils::builder(config.wurstminebot.bot_token.clone()).await?;
+    let rocket = http::rocket(config.clone(), discord_builder.ctx_fut.clone(), http_client, proxy_http_client).await?;
+    let discord_builder = discord::configure_builder(discord_builder, config, rocket.shutdown()).await?;
+    let discord_task = tokio::spawn(discord_builder.run()).map(|res| match res {
+        Ok(Ok(())) => Ok(()),
+        Ok(Err(e)) => Err(Error::from(e)),
+        Err(e) => Err(Error::from(e)),
+    });
+    let rocket_task = tokio::spawn(rocket.launch()).map(|res| match res {
+        Ok(Ok(Rocket { .. })) => Ok(()),
+        Ok(Err(e)) => Err(Error::from(e)),
+        Err(e) => Err(Error::from(e)),
+    });
+    let ((), ()) = tokio::try_join!(discord_task, rocket_task)?;
     Ok(())
 }

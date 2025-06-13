@@ -19,9 +19,4 @@ server {
         include uwsgi_params;
         uwsgi_pass _dev_wurstmineberg;
     }
-
-    location /api/v3/calendar.ics {
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-        proxy_pass http://localhost:24810;
-    }
 }

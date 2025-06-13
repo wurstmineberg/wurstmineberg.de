@@ -1,12 +1,10 @@
-This repository contains the website **[wurstmineberg.de](https://wurstmineberg.de/)**.
-
-wurstmineberg.de is meant to be updated via pulls from here, with as little changes to the deployed website directly as possible.
+This repository contains the website **[wurstmineberg.de](https://wurstmineberg.de/)**, as well as the Discord bot `wurstminebot`.
 
 # Installing
 
 1. We use the [gitdir](https://github.com/fenhl/gitdir) directory structure. That means the website should be deployed to `/opt/git/github.com/wurstmineberg/wurstmineberg.de/main` and [the assets](https://github.com/wurstmineberg/assets.wurstmineberg.de) to `/opt/git/github.com/wurstmineberg/assets.wurstmineberg.de/main`.
-2. The website is designed to run on [uWSGI](https://uwsgi-docs.readthedocs.io/en/latest/) behind [NGINX](https://nginx.com/). Create symlinks to the `.nginx` files in `/etc/nginx/sites-available` and to the `.ini` files in `/etc/uwsgi/apps-available`, then create symlinks to *those* in the respective `-enabled` directories.
-3. The website also needs a [PostgreSQL](https://postgresql.org/) database named `wurstmineberg`, as well as a running [wurstminebot](https://github.com/wurstmineberg/wurstminebot-discord) to keep user data from Discord up to date. wurstminebot's `wurstminebot-python` crate must be compiled and put into the website's module search path.
+2. The website consists of a portion written in Rust, which should be run using the systemd service file provided in `assets/wurstmineberg-web.service`, and a portion written in Python, which should be run in [uWSGI](https://uwsgi-docs.readthedocs.io/en/latest/). Both may be run behind [NGINX](https://nginx.com/) by creating symlinks to the `.nginx` files in `/etc/nginx/sites-available` and to the `.ini` files in `/etc/uwsgi/apps-available`, then creating symlinks to *those* in the respective `-enabled` directories.
+3. The website also needs a [PostgreSQL](https://postgresql.org/) database named `wurstmineberg`.
 4. For the remaining Python dependencies, each import is annotated with where you can find the package so `ImportError`s can be fixed directly. We also have a `setup.py` which may or may not work, sorry.
 
 # General management

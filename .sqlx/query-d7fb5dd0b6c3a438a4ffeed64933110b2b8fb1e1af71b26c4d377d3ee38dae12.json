@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE people SET discorddata = NULL WHERE snowflake = $1",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "d7fb5dd0b6c3a438a4ffeed64933110b2b8fb1e1af71b26c4d377d3ee38dae12"
+}
