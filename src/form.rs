@@ -55,7 +55,7 @@ pub(crate) fn form_checkbox(name: &str, errors: &mut Vec<&form::Error<'_>>, labe
             div(class = "col-sm-offset-2 col-sm-10") {
                 div(class = "checkbox") {
                     label {
-                        input(checked? = checked, name = name, type = "checkbox", value = "y");
+                        input(checked? = checked, name = name, type = "checkbox");
                         label(for = name) : label;
                     }
                 }
