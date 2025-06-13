@@ -668,6 +668,7 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             internal_server_error,
             fallback_catcher,
         ])
+        .attach(rocket_csrf::Fairing::default())
         .attach(OAuth2::<crate::auth::Discord>::custom(rocket_oauth2::HyperRustlsAdapter::default(), OAuthConfig::new(
             rocket_oauth2::StaticProvider::Discord,
             config.wurstminebot.client_id.to_string(),
