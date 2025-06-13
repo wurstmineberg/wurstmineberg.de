@@ -258,9 +258,9 @@ impl<'v> EditFormDefaults<'v> {
     }
 }
 
-fn edit_form(me: Option<User>, uri: Origin<'_>, csrf: Option<&CsrfToken>, title: &str, namespace: &str, defaults: EditFormDefaults<'_>) -> RawHtml<String> {
+fn edit_form(me: User, uri: Origin<'_>, csrf: Option<&CsrfToken>, title: &str, namespace: &str, defaults: EditFormDefaults<'_>) -> RawHtml<String> {
     let mut errors = defaults.errors();
-    page(&me, &uri, PageStyle::default() /*TODO enable full_width and use column layout for edit/preview on wide screens?*/, &format!("edit — {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
+    page(&Some(me), &uri, PageStyle::default() /*TODO enable full_width and use column layout for edit/preview on wide screens?*/, &format!("edit — {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
         h1 {
             @if defaults.source().is_some() {
                 : "Edit ";
@@ -286,7 +286,7 @@ fn edit_form(me: Option<User>, uri: Origin<'_>, csrf: Option<&CsrfToken>, title:
 }
 
 #[rocket::get("/wiki/<title>/<namespace>/edit")]
-pub(crate) async fn edit_get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, csrf: Option<CsrfToken>, title: &str, namespace: &str) -> Result<RawHtml<String>, Error> {
+pub(crate) async fn edit_get(db_pool: &State<PgPool>, me: User, uri: Origin<'_>, csrf: Option<CsrfToken>, title: &str, namespace: &str) -> Result<RawHtml<String>, Error> {
     let source = if let Some(source) = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 ORDER BY timestamp DESC LIMIT 1", title, namespace).fetch_optional(&**db_pool).await? {
         Some(mentions_to_tags(db_pool, source).await?)
     } else {
@@ -309,7 +309,7 @@ pub(crate) async fn edit_post(discord_ctx: &State<RwFuture<DiscordCtx>>, db_pool
     form.verify(&csrf);
     Ok(if let Some(ref value) = form.value {
         if form.context.errors().next().is_some() {
-            RedirectOrContent::Content(edit_form(Some(me), uri, csrf.as_ref(), title, namespace, EditFormDefaults::Context(form.context)))
+            RedirectOrContent::Content(edit_form(me, uri, csrf.as_ref(), title, namespace, EditFormDefaults::Context(form.context)))
         } else {
             let mut transaction = db_pool.begin().await?;
             let exists = sqlx::query_scalar!(r#"SELECT EXISTS (SELECT 1 FROM wiki WHERE title = $1 AND namespace = $2) AS "exists!""#, title, namespace).fetch_one(&mut *transaction).await?;
@@ -331,7 +331,7 @@ pub(crate) async fn edit_post(discord_ctx: &State<RwFuture<DiscordCtx>>, db_pool
             RedirectOrContent::Redirect(Redirect::to(if namespace == "wiki" { uri!(main_article(title)) } else { uri!(namespaced_article(title, namespace)) }))
         }
     } else {
-        RedirectOrContent::Content(edit_form(Some(me), uri, csrf.as_ref(), title, namespace, EditFormDefaults::Context(form.context)))
+        RedirectOrContent::Content(edit_form(me, uri, csrf.as_ref(), title, namespace, EditFormDefaults::Context(form.context)))
     })
 }
 
