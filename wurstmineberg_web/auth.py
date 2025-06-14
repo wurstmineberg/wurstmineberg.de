@@ -54,13 +54,6 @@ def setup(app):
         redirect_to='twitch_auth_callback'
     ), url_prefix='/login')
 
-    @login_manager.user_loader
-    def load_user(user_id):
-        try:
-            return Person.from_snowflake(user_id)
-        except (TypeError, ValueError):
-            return None
-
     @app.before_request
     def global_user():
         if 'x-wurstmineberg-authorized-discord-id' in flask.request.headers:
