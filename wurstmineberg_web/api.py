@@ -6,7 +6,6 @@ import tempfile
 import time
 
 import flask # PyPI: Flask
-import flask_login # PyPI: Flask-Login
 import nbt.nbt # PyPI: NBT
 import requests # PyPI: requests
 import simplejson # PyPI: simplejson
@@ -26,38 +25,6 @@ class FileExtError(ValueError):
     def __init__(self, ext):
         super().__init__(f'URL must end with .{ext}')
         self.ext = ext
-
-def key_or_member_optional(f):
-    @functools.wraps(f)
-    def wrapper(*args, **kwargs):
-        if flask_login.current_user.is_active:
-            flask.g.user = flask_login.current_user
-        elif wurstmineberg_web.models.Person.from_api_key() is not None:
-            flask.g.user = wurstmineberg_web.models.Person.from_api_key()
-        else:
-            flask.g.user = wurstmineberg_web.auth.AnonymousUser()
-        return f(*args, **kwargs)
-
-    return wrapper
-
-def key_or_member_required(f):
-    @functools.wraps(f)
-    def wrapper(*args, **kwargs):
-        if flask_login.current_user.is_active:
-            flask.g.user = flask_login.current_user
-        elif wurstmineberg_web.models.Person.from_api_key() is not None:
-            flask.g.user = wurstmineberg_web.models.Person.from_api_key()
-        else:
-            flask.g.user = wurstmineberg_web.auth.AnonymousUser()
-        if flask.g.user is not None and flask.g.user.is_active:
-            return f(*args, **kwargs)
-        return flask.Response(
-            "You don't have permission to access this endpoint, either because you're not a server member or because you haven't entered your API key.",
-            401,
-            {'WWW-Authenticate': 'Basic realm="wurstmineberg.de API key required"'}
-        ) #TODO template
-
-    return wrapper
 
 def image_child(node, name, *args, **kwargs): #TODO caching
     def decorator(f):
@@ -249,7 +216,7 @@ def nbt_child(node, name, *args, **kwargs):
 
     return decorator
 
-@wurstmineberg_web.views.index.child('api', 'API', decorators=[key_or_member_optional])
+@wurstmineberg_web.views.index.child('api', 'API')
 def api_index():
     return flask.redirect((flask.g.view_node / 'v3').url)
 
@@ -267,7 +234,7 @@ def api_calendar():
 def api_discord_index():
     pass
 
-@api_discord_index.child('voice-state.json', decorators=[key_or_member_required])
+@api_discord_index.child('voice-state.json', decorators=[wurstmineberg_web.auth.member_required])
 def discord_voice_state():
     """Info about who is currently in which voice channels. API key required."""
     raise NotImplementedError('This endpoint has been ported to Rust')

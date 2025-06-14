@@ -194,10 +194,10 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                                             a(href = me.profile_url(), dir = "auto", title = "Your user page [ctrl-alt-.]", accesskey = ".") : me.to_string();
                                         }
                                         li(id = "pt-preferences") {
-                                            a(href = "/preferences", title = "Your preferences") : "Preferences";
+                                            a(href = uri!(crate::user::preferences_get(None::<&str>)), title = "Your preferences") : "Preferences";
                                         }
                                         li(id = "pt-logout") {
-                                            a(href = "/logout", title = "Your preferences") : "Log out";
+                                            a(href = uri!(crate::auth::logout), title = "Your preferences") : "Log out";
                                         }
                                     }
                                 }

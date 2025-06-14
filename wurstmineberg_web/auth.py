@@ -34,11 +34,13 @@ def is_safe_url(target):
 def member_required(f):
     @functools.wraps(f)
     def wrapper(*args, **kwargs):
+        if not flask.g.user.is_authenticated:
+            return flask.redirect('/login/discord') #TODO redirect_to parameter
         if not flask.g.user.is_active:
             return flask.make_response(("You don't have permission to access this page because you're not a server member.", 403, [])) #TODO template
         return f(*args, **kwargs)
 
-    return flask_login.login_required(wrapper)
+    return wrapper
 
 def setup(app):
     if 'clientSecret' not in app.config.get('wurstminebot', {}):
@@ -52,19 +54,12 @@ def setup(app):
         redirect_to='twitch_auth_callback'
     ), url_prefix='/login')
 
-    login_manager = flask_login.LoginManager()
-    login_manager.login_view = 'discord.login'
-    login_manager.login_message = None # Because discord.login does not show flashes, any login message would be shown after a successful login. This would be confusing.
-    login_manager.anonymous_user = AnonymousUser
-
     @login_manager.user_loader
     def load_user(user_id):
         try:
             return Person.from_snowflake(user_id)
         except (TypeError, ValueError):
             return None
-
-    login_manager.init_app(app)
 
     @app.before_request
     def global_user():
@@ -80,8 +75,8 @@ def setup(app):
         except AttributeError:
             return {'user': None}
 
-    @app.route('/auth')
     def auth_callback():
+        #TODO similar error handling in Rust
         if not flask_dance.contrib.discord.discord.authorized:
             flask.flash('Discord login failed.', 'error')
             return flask.redirect(flask.url_for('index'))
@@ -96,7 +91,6 @@ def setup(app):
         if not person.is_active:
             flask.flash('Your account has not yet been whitelisted. Please schedule a server tour in #general.', 'error')
             return flask.redirect(flask.url_for('index'))
-        flask_login.login_user(person, remember=True)
         flask.flash(jinja2.Markup('Hello {}.'.format(person.__html__())))
         next_url = flask.session.get('next')
         if next_url is None:
@@ -126,8 +120,3 @@ def setup(app):
             return flask.redirect(next_url)
         else:
             return flask.abort(400)
-
-    @app.route('/logout')
-    def logout():
-        flask_login.logout_user()
-        return flask.redirect(flask.url_for('index'))
