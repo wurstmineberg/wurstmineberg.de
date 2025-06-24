@@ -171,6 +171,22 @@ impl User {
         })
     }
 
+    pub(crate) async fn from_minecraft_uuid(pool: impl PgExecutor<'_>, uuid: Uuid) -> sqlx::Result<Option<Self>> {
+        Ok(
+            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data!: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE data -> 'minecraft' -> 'uuid' = $1"#, Json(uuid) as _).fetch_optional(pool).await?
+            .map(|row| Self {
+                id: match (row.wmbid, row.snowflake) {
+                    (None, None) => unreachable!("person in database with no Wurstmineberg ID and no Discord snowflake"),
+                    (None, Some(PgSnowflake(discord_id))) => Id::Discord(discord_id),
+                    (Some(wmbid), None) => Id::Wmbid(wmbid),
+                    (Some(wmbid), Some(PgSnowflake(discord_id))) => Id::Both { wmbid, discord_id },
+                },
+                data: row.data.0,
+                discorddata: row.discorddata.map(|Json(discorddata)| discorddata),
+            })
+        )
+    }
+
     pub(crate) fn wmbid(&self) -> Option<&str> {
         self.id.wmbid()
     }
@@ -258,8 +274,24 @@ impl ToHtml for User {
     }
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Serialize)]
 #[serde(untagged)]
+enum SerializeId {
+    Wmbid(String),
+    Discord(UserId),
+}
+
+impl From<Id> for SerializeId {
+    fn from(value: Id) -> Self {
+        match value {
+            Id::Wmbid(wmbid) => Self::Wmbid(wmbid),
+            Id::Discord(discord_id) | Id::Both { discord_id, .. } => Self::Discord(discord_id),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(untagged, into = "SerializeId")]
 pub(crate) enum Id {
     Wmbid(String),
     Discord(UserId),

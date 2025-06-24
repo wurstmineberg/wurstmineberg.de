@@ -1,9 +1,12 @@
 use {
     std::{
         array,
-        collections::hash_map::{
-            self,
-            HashMap,
+        collections::{
+            BTreeMap,
+            hash_map::{
+                self,
+                HashMap,
+            },
         },
         convert::Infallible as Never,
         iter,
@@ -49,6 +52,7 @@ use {
         html,
     },
     rocket_ws::WebSocket,
+    serde::Serialize,
     sqlx::{
         PgPool,
         types::Json as PgJson,
@@ -65,6 +69,7 @@ use {
             sleep,
         },
     },
+    uuid::Uuid,
     wheel::{
         fs::File,
         traits::IoResultExt as _,
@@ -85,6 +90,7 @@ use {
             page,
         },
         user::{
+            self,
             User,
             UserParam,
         },
@@ -127,10 +133,52 @@ pub(crate) async fn discord_voice_state(me: User) -> io::Result<NamedFile> {
 
 #[derive(Debug, thiserror::Error, rocket_util::Error)]
 pub(crate) enum Error {
+    #[error(transparent)] Minecraft(#[from] systemd_minecraft::Error),
     #[error(transparent)] Nbt(#[from] nbt::Error),
+    #[error(transparent)] Ping(#[from] craftping::Error),
     #[error(transparent)] Sql(#[from] sqlx::Error),
     #[error(transparent)] SystemTime(#[from] std::time::SystemTimeError),
+    #[error(transparent)] Uuid(#[from] uuid::Error),
     #[error(transparent)] Wheel(#[from] wheel::Error),
+    #[error("unknown Minecraft UUID: {0}")]
+    UnknownMinecraftUuid(Uuid),
+}
+
+#[derive(Serialize)]
+pub(crate) struct WorldInfo {
+    main: bool,
+    running: bool,
+    version: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    list: Option<Vec<user::Id>>,
+}
+
+#[rocket::get("/api/v3/server/worlds.json?<list>")]
+pub(crate) async fn worlds(db_pool: &State<PgPool>, list: bool) -> Result<Json<BTreeMap<String, WorldInfo>>, Error> {
+    stream::iter(systemd_minecraft::World::all().await?)
+        .map(Ok)
+        .and_then(async |world| Ok((world.to_string(), WorldInfo {
+            main: world == systemd_minecraft::World::default(),
+            running: world.is_running().await?,
+            version: world.version().await?,
+            list: if list {
+                let sample = world.ping().await?.sample.unwrap_or_default();
+                let mut list = Vec::with_capacity(sample.len());
+                for player in sample {
+                    let uuid = player.id.parse()?;
+                    list.push(
+                        User::from_minecraft_uuid(&**db_pool, uuid).await?
+                            .ok_or_else(|| Error::UnknownMinecraftUuid(uuid))?
+                            .id
+                    );
+                }
+                Some(list)
+            } else {
+                None
+            },
+        })))
+        .try_collect().await
+        .map(Json)
 }
 
 #[rocket::get("/api/v3/world/<world>/player/<player>/playerdata.dat")]
@@ -164,6 +212,28 @@ pub(crate) async fn player_data_json(db_pool: &State<PgPool>, world: systemd_min
         data.insert("apiTimeResultFetched", SystemTime::now().duration_since(SystemTime::UNIX_EPOCH)?.as_secs_f64())?;
     }
     Ok(Some(Json(data)))
+}
+
+#[rocket::get("/api/v3/world/<world>/status.json")]
+pub(crate) async fn world_status(db_pool: &State<PgPool>, world: systemd_minecraft::World) -> Result<Json<WorldInfo>, Error> {
+    Ok(Json(WorldInfo {
+        main: world == systemd_minecraft::World::default(),
+        running: world.is_running().await?,
+        version: world.version().await?,
+        list: {
+            let sample = world.ping().await?.sample.unwrap_or_default();
+            let mut list = Vec::with_capacity(sample.len());
+            for player in sample {
+                let uuid = player.id.parse()?;
+                list.push(
+                    User::from_minecraft_uuid(&**db_pool, uuid).await?
+                        .ok_or_else(|| Error::UnknownMinecraftUuid(uuid))?
+                        .id
+                );
+            }
+            Some(list)
+        },
+    }))
 }
 
 type WsStream = SplitStream<rocket_ws::stream::DuplexStream>;

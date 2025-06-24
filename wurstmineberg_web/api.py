@@ -305,20 +305,8 @@ def api_server_index():
 
 @json_child(api_server_index, 'worlds')
 def api_worlds():
-    """Returns an object mapping existing world names to short status summaries (like those returned by /world/<world>/status.json but without the lists of online players)"""
-    result = {}
-    for world in wurstmineberg_web.models.World:
-        result[world.name] = {
-            'main': world.is_main,
-            'running': world.is_running,
-            'version': world.version
-        }
-        if 'list' in flask.request.args:
-            result[world.name]['list'] = [
-                None if person is None else person.snowflake_or_wmbid
-                for person in world.online_players
-            ]
-    return result
+    """Returns an object mapping existing world names to short status summaries (like those returned by /world/<world>/status.json but the lists of online players are omitted unless specified using ?list=1)"""
+    raise NotImplementedError('This endpoint has been ported to Rust')
 
 @api_v3_index.child('world')
 def api_worlds_index():
@@ -557,9 +545,5 @@ def api_player_stats(world, player):
 
 @json_child(api_world_index, 'status')
 def api_world_status(world):
-    return {
-        'main': world.is_main,
-        'running': world.is_running,
-        'version': world.version,
-        'list': [person.snowflake_or_wmbid for person in world.online_players]
-    }
+    """Returns a short status summary for this world"""
+    raise NotImplementedError('This endpoint has been ported to Rust')
