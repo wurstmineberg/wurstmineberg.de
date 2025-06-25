@@ -153,15 +153,29 @@ pub(crate) struct WorldInfo {
     list: Option<Vec<user::Id>>,
 }
 
-#[rocket::get("/api/v3/server/worlds.json?<list>")]
-pub(crate) async fn worlds(db_pool: &State<PgPool>, list: bool) -> Result<Json<BTreeMap<String, WorldInfo>>, Error> {
+#[rocket::get("/api/v3/server/worlds.json")]
+pub(crate) async fn worlds() -> Result<Json<BTreeMap<String, WorldInfo>>, Error> {
     stream::iter(systemd_minecraft::World::all().await?)
         .map(Ok)
         .and_then(async |world| Ok((world.to_string(), WorldInfo {
             main: world == systemd_minecraft::World::default(),
             running: world.is_running().await?,
             version: world.version().await?,
-            list: if list {
+            list: None,
+        })))
+        .try_collect().await
+        .map(Json)
+}
+
+#[rocket::get("/api/v3/server/worlds.json?list")]
+pub(crate) async fn worlds_with_players(db_pool: &State<PgPool>) -> Result<Json<BTreeMap<String, WorldInfo>>, Error> {
+    stream::iter(systemd_minecraft::World::all().await?)
+        .map(Ok)
+        .and_then(async |world| Ok((world.to_string(), WorldInfo {
+            main: world == systemd_minecraft::World::default(),
+            running: world.is_running().await?,
+            version: world.version().await?,
+            list: {
                 let sample = world.ping().await?.sample.unwrap_or_default();
                 let mut list = Vec::with_capacity(sample.len());
                 for player in sample {
@@ -173,9 +187,7 @@ pub(crate) async fn worlds(db_pool: &State<PgPool>, list: bool) -> Result<Json<B
                     );
                 }
                 Some(list)
-            } else {
-                None
-            },
+            }
         })))
         .try_collect().await
         .map(Json)
