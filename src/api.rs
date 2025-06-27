@@ -175,19 +175,23 @@ pub(crate) async fn worlds_with_players(db_pool: &State<PgPool>) -> Result<Json<
             main: world == systemd_minecraft::World::default(),
             running: world.is_running().await?,
             version: world.version().await?,
-            list: {
-                let sample = world.ping().await?.sample.unwrap_or_default();
-                let mut list = Vec::with_capacity(sample.len());
-                for player in sample {
-                    let uuid = player.id.parse()?;
-                    list.push(
-                        User::from_minecraft_uuid(&**db_pool, uuid).await?
-                            .ok_or_else(|| Error::UnknownMinecraftUuid(uuid))?
-                            .id
-                    );
+            list: Some(match world.ping().await {
+                Ok(ping) => {
+                    let sample = ping.sample.unwrap_or_default();
+                    let mut list = Vec::with_capacity(sample.len());
+                    for player in sample {
+                        let uuid = player.id.parse()?;
+                        list.push(
+                            User::from_minecraft_uuid(&**db_pool, uuid).await?
+                                .ok_or_else(|| Error::UnknownMinecraftUuid(uuid))?
+                                .id
+                        );
+                    }
+                    list
                 }
-                Some(list)
-            }
+                Err(craftping::Error::Io(e)) if e.kind() == io::ErrorKind::ConnectionRefused => Vec::default(),
+                Err(e) => return Err(e.into()),
+            }),
         })))
         .try_collect().await
         .map(Json)
@@ -232,19 +236,23 @@ pub(crate) async fn world_status(db_pool: &State<PgPool>, world: systemd_minecra
         main: world == systemd_minecraft::World::default(),
         running: world.is_running().await?,
         version: world.version().await?,
-        list: {
-            let sample = world.ping().await?.sample.unwrap_or_default();
-            let mut list = Vec::with_capacity(sample.len());
-            for player in sample {
-                let uuid = player.id.parse()?;
-                list.push(
-                    User::from_minecraft_uuid(&**db_pool, uuid).await?
-                        .ok_or_else(|| Error::UnknownMinecraftUuid(uuid))?
-                        .id
-                );
+        list: Some(match world.ping().await {
+            Ok(ping) => {
+                let sample = ping.sample.unwrap_or_default();
+                let mut list = Vec::with_capacity(sample.len());
+                for player in sample {
+                    let uuid = player.id.parse()?;
+                    list.push(
+                        User::from_minecraft_uuid(&**db_pool, uuid).await?
+                            .ok_or_else(|| Error::UnknownMinecraftUuid(uuid))?
+                            .id
+                    );
+                }
+                list
             }
-            Some(list)
-        },
+            Err(craftping::Error::Io(e)) if e.kind() == io::ErrorKind::ConnectionRefused => Vec::default(),
+            Err(e) => return Err(e.into()),
+        }),
     }))
 }
 
