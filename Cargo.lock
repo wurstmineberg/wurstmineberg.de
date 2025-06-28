@@ -3054,12 +3054,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "if_chain"
-version = "1.0.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cb56e1aa765b4b4f3aadfab769793b7087bb03a4ea4920644a6d238e2df5b9ed"
-
-[[package]]
 name = "imara-diff"
 version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6947,7 +6941,6 @@ dependencies = [
  "gix",
  "hematite-nbt",
  "ics",
- "if_chain",
  "itertools 0.14.0",
  "lazy-regex",
  "linode-rs",

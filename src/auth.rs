@@ -1,7 +1,6 @@
 use {
     std::time::Duration,
     futures::future::TryFutureExt as _,
-    if_chain::if_chain,
     rocket::{
         State,
         http::{
@@ -170,18 +169,16 @@ impl<'r> FromRequest<'r> for User {
                     Outcome::Error(e) => found_user = found_user.or(Err(e)),
                 }
                 match found_user {
-                    Ok(user) => if_chain! {
-                        if let Some(discord_id) = user.discord_id();
-                        if let Some(PgSnowflake(discord_id)) = guard_try!(sqlx::query_scalar!(r#"SELECT view_as AS "view_as: PgSnowflake<UserId>" FROM view_as WHERE viewer = $1"#, PgSnowflake(discord_id) as _).fetch_optional(&**pool).await);
-                        then {
-                            if let Some(user) = guard_try!(User::from_discord(&**pool, discord_id).await) {
-                                Outcome::Success(user)
-                            } else {
-                                Outcome::Error((Status::InternalServerError, UserFromRequestError::ViewAsNoSuchUser))
-                            }
-                        } else {
+                    Ok(user) => if let Some(discord_id) = user.discord_id()
+                        && let Some(PgSnowflake(discord_id)) = guard_try!(sqlx::query_scalar!(r#"SELECT view_as AS "view_as: PgSnowflake<UserId>" FROM view_as WHERE viewer = $1"#, PgSnowflake(discord_id) as _).fetch_optional(&**pool).await)
+                    {
+                        if let Some(user) = guard_try!(User::from_discord(&**pool, discord_id).await) {
                             Outcome::Success(user)
+                        } else {
+                            Outcome::Error((Status::InternalServerError, UserFromRequestError::ViewAsNoSuchUser))
                         }
+                    } else {
+                        Outcome::Success(user)
                     },
                     Err(e) => Outcome::Error(e),
                 }

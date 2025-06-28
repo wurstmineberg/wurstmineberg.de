@@ -33,7 +33,6 @@ doubloon = "0.2.0"
 futures = "0.3.31"
 hematite-nbt = "0.5.2" #TODO switch to simdnbt for performance improvements once it supports stable Rust (https://github.com/azalea-rs/simdnbt/issues/16)
 ics = "0.5.8"
-if_chain = "1.0.2"
 itertools = "0.14.0"
 lazy-regex = "3.4.1"
 linode-rs = { git = "https://gitlab.com/fenhl/linode.git/", branch = "dev-fenhl", default-features = false }

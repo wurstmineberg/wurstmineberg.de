@@ -11,6 +11,12 @@ if (-not $?)
     throw 'Native Failure'
 }
 
+wsl rustup update stable
+if (-not $?)
+{
+    throw 'Native Failure'
+}
+
 wsl env -C /home/fenhl/wslgit/github.com/wurstmineberg/wurstmineberg.de cargo build --release --target=x86_64-unknown-linux-musl
 if (-not $?)
 {
