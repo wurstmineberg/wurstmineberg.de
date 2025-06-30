@@ -11,6 +11,7 @@ use {
         convert::Infallible as Never,
         iter,
         path::Path,
+        pin::pin,
         sync::Arc,
         time::{
             Duration,
@@ -67,6 +68,7 @@ use {
             MissedTickBehavior,
             interval,
             sleep,
+            timeout,
         },
     },
     uuid::Uuid,
@@ -264,6 +266,7 @@ pub(crate) fn websocket(me: Option<User>, uri: Origin<'_>, ws: request::Outcome<
     #[derive(Debug, thiserror::Error)]
     enum Error {
         #[error(transparent)] ChunkColumnDecode(#[from] mcanvil::ChunkColumnDecodeError),
+        #[error(transparent)] Elapsed(#[from] tokio::time::error::Elapsed),
         #[error(transparent)] Read(#[from] async_proto::ReadError),
         #[error(transparent)] RegionDecode(#[from] mcanvil::RegionDecodeError),
         #[error(transparent)] Write(#[from] async_proto::WriteError),
@@ -352,13 +355,13 @@ pub(crate) fn websocket(me: Option<User>, uri: Origin<'_>, ws: request::Outcome<
         let mut save_data_interval = interval(Duration::from_secs(10 * 45));
         save_data_interval.set_missed_tick_behavior(MissedTickBehavior::Delay);
         let chunk_cache = Mutex::default();
-        let mut read = ClientMessage::read_ws_owned021(stream); //TODO timeout after 60 seconds?
+        let mut read = pin!(timeout(Duration::from_secs(60), ClientMessage::read_ws_owned021(stream)));
         loop {
             select! {
                 () = &mut rocket_shutdown => break Ok(()),
                 res = &mut read => {
-                    let (stream, msg) = res?;
-                    read = ClientMessage::read_ws_owned021(stream); //TODO timeout after 60 seconds?
+                    let (stream, msg) = res??;
+                    read.set(timeout(Duration::from_secs(60), ClientMessage::read_ws_owned021(stream)));
                     match msg {
                         ClientMessage::Pong => {}
                         ClientMessage::SubscribeToChunk { dimension, cx, cy, cz } => update_chunks(&main_world, &chunk_cache, &sink, iter::once((dimension, cx, cy, cz))).await?,
