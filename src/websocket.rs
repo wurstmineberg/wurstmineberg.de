@@ -1,5 +1,6 @@
 use {
     async_proto::Protocol,
+    bitvec::prelude::*,
     mcanvil::{
         BlockState,
         Dimension,
@@ -7,7 +8,7 @@ use {
 };
 
 #[derive(Protocol)]
-pub enum ServerMessage {
+pub enum ServerMessageV3 {
     /// Will be sent by the server once every 30 seconds.
     /// The client should reply with [`ClientMessage::Pong`].
     /// A client that does not receive any messages for 60 seconds may want to consider the connection to have failed.
@@ -26,6 +27,28 @@ pub enum ServerMessage {
 }
 
 #[derive(Protocol)]
+pub enum ServerMessageV4 {
+    /// Will be sent by the server once every 30 seconds.
+    /// The client should reply with [`ClientMessage::Pong`].
+    /// A client that does not receive any messages for 60 seconds may want to consider the connection to have failed.
+    Ping,
+    Error {
+        debug: String,
+        display: String,
+    },
+    ChunkData {
+        dimension: Dimension,
+        cx: i32,
+        cy: i8,
+        cz: i32,
+        palette: Vec<BlockState>,
+        /// A bit vector of indices into the palette.
+        /// Each index is `palette.len().next_power_of_two().ilog2()` bits long.
+        data: BitVec<u8, Lsb0>,
+    }
+}
+
+#[derive(Debug, Protocol)]
 pub enum ClientMessage {
     /// Should be sent by the client when the server sends [`ServerMessage::Ping`].
     /// If the client fails to do so within 30 seconds, the server may close the connection.
