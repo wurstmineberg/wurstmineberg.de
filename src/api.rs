@@ -310,8 +310,10 @@ impl WsApiVersion {
                 }
                 let bits_per_entry = palette.len().checked_next_power_of_two().expect("16 * 16 * 16 > usize::MAX").ilog2().try_into().expect("(16 * 16 * 16).ilog2() > usize::MAX");
                 let mut data = bitvec![u8, Lsb0; 0; 16 * 16 * 16 * bits_per_entry];
-                for (entry, slice) in entries.into_iter().zip(data.chunks_mut(bits_per_entry)) {
-                    slice.store_be(entry);
+                if bits_per_entry > 0 {
+                    for (entry, slice) in entries.into_iter().zip(data.chunks_mut(bits_per_entry)) {
+                        slice.store_be(entry);
+                    }
                 }
                 lock!(sink = sink; ServerMessageV4::ChunkData {
                     dimension, cx, cy, cz, palette, data,
