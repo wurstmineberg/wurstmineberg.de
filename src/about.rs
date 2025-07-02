@@ -227,7 +227,7 @@ pub(crate) async fn get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
         }
         p : "Our hosting situation has changed many times now. We started out on a spare MacBook in a living room, tried commercial Minecraft server hosters, set everything up ourselves on a VPS, then a physical server, and are back to a VPS now.";
         p {
-            : "Our current VPS is an ";
+            : "Our current VPS is a ";
             a(href = "https://linode.com/") : "Linode";
             : " ";
             : money_overview.current_tier.linode_type.label;
@@ -333,7 +333,11 @@ pub(crate) async fn get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
             }
             @if let Some(goal) = money_overview.goal {
                 div(class = "progress") {
-                    @let percent = Decimal::from(100) * (money_overview.amount.amount() / goal.amount()); //TODO contribute typesafe `div` to `doubloon`
+                    @let percent = if goal.is_zero() {
+                        Decimal::from(if money_overview.amount.is_zero() { 100 } else { 0 })
+                    } else {
+                        Decimal::from(100) * (money_overview.amount.amount() / goal.amount()) //TODO contribute typesafe `div` to `doubloon`
+                    };
                     div(class = "progress-bar progress-bar-success", style = format!("min-width: 5em; max-width: calc(100% - 5em); width: {percent}%; text-align: right; padding-right: 0.5em;")) : format_usd(money_overview.amount);
                     div(class = "progress-right") : format_usd(goal);
                 }
