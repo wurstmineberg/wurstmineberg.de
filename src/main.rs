@@ -66,7 +66,7 @@ enum Error {
     #[error(transparent)] Wheel(#[from] wheel::Error),
 }
 
-#[wheel::main(rocket)]
+#[wheel::main(rocket, max_blocking_threads = 0)]
 async fn main() -> Result<(), Error> {
     let config = Config::load().await?;
     let panic_config = config.clone();
