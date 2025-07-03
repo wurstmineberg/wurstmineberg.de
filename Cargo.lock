@@ -203,9 +203,9 @@ dependencies = [
 
 [[package]]
 name = "async-proto"
-version = "0.25.3"
+version = "0.25.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e22e8013220a0e1f868b42c88772a3e52345c5ecb24f079d3d4f3a2f34dff8f2"
+checksum = "bd0e0543cea0feaefb6abd6cfac9bd9df181bd790f55d29314586b4551fc7b79"
 dependencies = [
  "async-proto-derive",
  "bitvec",
@@ -219,9 +219,9 @@ dependencies = [
 
 [[package]]
 name = "async-proto-derive"
-version = "0.25.3"
+version = "0.25.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3cf27b65231c71e1af5aa45f27e4bb25e8e9b0b1be142330a1d2c1d9a98f6294"
+checksum = "4c371e515f05cfa59859ff2440dbe15266d864a5619eaa5863ea5cd4cd16c03f"
 dependencies = [
  "itertools 0.14.0",
  "proc-macro2",
@@ -3149,6 +3149,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "io-uring"
+version = "0.7.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b86e202f00093dcba4275d4636b93ef9dd75d025ae560d2521b45ea28ab49013"
+dependencies = [
+ "bitflags 2.9.1",
+ "cfg-if",
+ "libc",
+]
+
+[[package]]
 name = "ipconfig"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3432,7 +3443,7 @@ checksum = "0717cef1bc8b636c6e1c1bbdefc09e6322da8a9321966e8928ef80d20f7f770f"
 [[package]]
 name = "linode-rs"
 version = "0.1.3"
-source = "git+https://gitlab.com/fenhl/linode.git/?branch=dev-fenhl#e3fe2b04ecc8ad0168068e048590f3e35942d277"
+source = "git+https://gitlab.com/fenhl/linode.git/?branch=dev-fenhl#c6cdc8dc442221831a64400de599df05b5c270e5"
 dependencies = [
  "doubloon",
  "reqwest 0.11.27",
@@ -3686,9 +3697,9 @@ dependencies = [
 
 [[package]]
 name = "nonempty-collections"
-version = "0.3.1"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e216d0e8cf9d54fa66e5780f6e1d5dc96d1c1b3c25aeba3b6758548bcbbd8b9d"
+checksum = "3761f83543b22e36b7ea1145309acf9c251ef67dd8b186047f85d8cc985272d4"
 
 [[package]]
 name = "notify"
@@ -4483,9 +4494,9 @@ dependencies = [
 
 [[package]]
 name = "reqwest"
-version = "0.12.21"
+version = "0.12.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4c8cea6b35bcceb099f30173754403d2eba0a5dc18cea3630fccd88251909288"
+checksum = "cbc931937e6ca3a06e3b6c0aa7841849b160a90351d6ab467a8b9b9959767531"
 dependencies = [
  "base64 0.22.1",
  "bytes",
@@ -4633,7 +4644,7 @@ source = "git+https://github.com/fenhl/rocket-util?branch=main#54753ef89fdaf95e2
 dependencies = [
  "futures",
  "ics",
- "reqwest 0.12.21",
+ "reqwest 0.12.22",
  "rocket",
  "rocket-util-derive",
  "rocket_csrf",
@@ -5721,7 +5732,7 @@ dependencies = [
  "lazy-regex",
  "minecraft",
  "rcon",
- "reqwest 0.12.21",
+ "reqwest 0.12.22",
  "rocket",
  "serde",
  "serde_json",
@@ -5866,17 +5877,19 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.45.1"
+version = "1.46.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "75ef51a33ef1da925cea3e4eb122833cb377c61439ca401b770f54902b806779"
+checksum = "1140bb80481756a8cbe10541f37433b459c5aa1e727b4c020fbfebdc25bf3ec4"
 dependencies = [
  "backtrace",
  "bytes",
+ "io-uring",
  "libc",
  "mio",
  "parking_lot",
  "pin-project-lite",
  "signal-hook-registry",
+ "slab",
  "socket2",
  "tokio-macros",
  "tracing",
@@ -6602,7 +6615,7 @@ dependencies = [
  "console-subscriber",
  "futures",
  "itertools 0.14.0",
- "reqwest 0.12.21",
+ "reqwest 0.12.22",
  "rocket",
  "rocket-util",
  "serde",
@@ -7067,7 +7080,7 @@ dependencies = [
  "rand 0.9.1",
  "rcon",
  "regex",
- "reqwest 0.12.21",
+ "reqwest 0.12.22",
  "rocket",
  "rocket-basicauth",
  "rocket-util",

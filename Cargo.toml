@@ -41,7 +41,7 @@ log-lock = { git = "https://github.com/fenhl/log-lock", branch = "main" }
 mcanvil = { git = "https://github.com/wurstmineberg/rust-anvil", branch = "main", features = ["async-proto"] }
 mimalloc = "0.1.43"
 minecraft = { git = "https://github.com/wurstmineberg/rust-minecraft-types", branch = "main" }
-nonempty-collections = "0.3.0"
+nonempty-collections = "1"
 notify = "8.0.0"
 notify-debouncer-full = "0.5"
 pulldown-cmark = { git = "https://github.com/fenhl/pulldown-cmark", branch = "rocket-wiki", default-features = false, features = ["simd", "html"] }
