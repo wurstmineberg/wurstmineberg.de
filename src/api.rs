@@ -11,9 +11,11 @@ use {
         },
         convert::Infallible as Never,
         iter,
+        num::NonZero,
         path::Path,
         pin::pin,
         sync::Arc,
+        thread::available_parallelism,
         time::{
             Duration,
             SystemTime,
@@ -356,7 +358,7 @@ async fn client_session(mut rocket_shutdown: rocket::Shutdown, version: WsApiVer
         let chunks = chunks.into_iter().into_group_map_by(|(dimension, cx, _, cz)| (*dimension, cx.div_euclid(32), cz.div_euclid(32)));
         stream::iter(chunks)
             .map(Ok)
-            .try_for_each_concurrent(None, move |((dimension, rx, rz), chunks)| async move {
+            .try_for_each_concurrent(available_parallelism().ok().map(NonZero::get), move |((dimension, rx, rz), chunks)| async move {
                 lock!(region_cache = region_cache; {
                     let chunk_cache = match region_cache.entry((dimension, rx, rz)) {
                         hash_map::Entry::Occupied(entry) => entry.into_mut(),
