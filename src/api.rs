@@ -11,11 +11,9 @@ use {
         },
         convert::Infallible as Never,
         iter,
-        num::NonZero,
         path::Path,
         pin::pin,
         sync::Arc,
-        thread::available_parallelism,
         time::{
             Duration,
             SystemTime,
@@ -356,66 +354,60 @@ async fn client_session(mut rocket_shutdown: rocket::Shutdown, version: WsApiVer
 
     async fn update_chunks(version: WsApiVersion, world: &systemd_minecraft::World, region_cache: &Mutex<HashMap<(Dimension, i32, i32), HashMap<(u8, i8, u8), Option<DateTime<Utc>>>>>, watcher: &Mutex<notify_debouncer_full::Debouncer<notify::RecommendedWatcher, notify_debouncer_full::RecommendedCache>>, sink: &WsSink, chunks: impl IntoIterator<Item = (Dimension, i32, i8, i32)>, reason: UpdateChunksReason) -> Result<(), WsError> {
         let chunks = chunks.into_iter().into_group_map_by(|(dimension, cx, _, cz)| (*dimension, cx.div_euclid(32), cz.div_euclid(32)));
-        stream::iter(chunks)
-            .map(Ok)
-            .try_for_each_concurrent(available_parallelism().ok().map(NonZero::get), move |((dimension, rx, rz), chunks)| async move {
-                lock!(region_cache = region_cache; {
-                    let chunk_cache = match region_cache.entry((dimension, rx, rz)) {
-                        hash_map::Entry::Occupied(entry) => entry.into_mut(),
-                        hash_map::Entry::Vacant(entry) => {
-                            lock!(watcher = watcher; watcher.watch(&Region::path(world.dir().join("world"), dimension, [rx, rz]), notify::RecursiveMode::NonRecursive))?;
-                            entry.insert(HashMap::default())
-                        }
-                    };
-                    let should_check = match reason {
-                        UpdateChunksReason::Subscribe => !chunks.iter().all(|(_, cx, cy, cz)| chunk_cache.contains_key(&(cx.rem_euclid(32) as u8, *cy, cz.rem_euclid(32) as u8))),
-                        UpdateChunksReason::Notify => true, // already filtered
-                    };
-                    if should_check {
-                        if let Some(mut region) = Region::find(world.dir().join("world"), dimension, [rx, rz]).await? {
-                            for (_, cx, cy, cz) in chunks {
-                                let cx_relative = cx.rem_euclid(32) as u8;
-                                let cz_relative = cz.rem_euclid(32) as u8;
-                                let new_timestamp = region.timestamps[32 * cz_relative as usize + cx_relative as usize];
-                                let new_chunk = region.chunk_column_relative([cx_relative, cz_relative]).await?.and_then(|col| col.into_section_at(cy));
-                                match chunk_cache.entry((cx_relative, cy, cz_relative)) {
-                                    hash_map::Entry::Occupied(mut entry) => {
-                                        let old_timestamp = entry.get_mut();
-                                        if old_timestamp.is_none_or(|old_timestamp| new_timestamp != old_timestamp) {
-                                            *old_timestamp = Some(new_timestamp);
-                                            version.write_chunk(sink, dimension, cx, cy, cz, new_chunk).await?;
-                                        }
-                                    }
-                                    hash_map::Entry::Vacant(entry) => {
-                                        entry.insert(Some(new_timestamp));
-                                        version.write_chunk(sink, dimension, cx, cy, cz, new_chunk).await?;
-                                    }
+        lock!(region_cache = region_cache; for ((dimension, rx, rz), chunks) in chunks {
+            let chunk_cache = match region_cache.entry((dimension, rx, rz)) {
+                hash_map::Entry::Occupied(entry) => entry.into_mut(),
+                hash_map::Entry::Vacant(entry) => {
+                    lock!(watcher = watcher; watcher.watch(&Region::path(world.dir().join("world"), dimension, [rx, rz]), notify::RecursiveMode::NonRecursive))?;
+                    entry.insert(HashMap::default())
+                }
+            };
+            let should_check = match reason {
+                UpdateChunksReason::Subscribe => !chunks.iter().all(|(_, cx, cy, cz)| chunk_cache.contains_key(&(cx.rem_euclid(32) as u8, *cy, cz.rem_euclid(32) as u8))),
+                UpdateChunksReason::Notify => true, // already filtered
+            };
+            if should_check {
+                if let Some(mut region) = Region::find(world.dir().join("world"), dimension, [rx, rz]).await? {
+                    for (_, cx, cy, cz) in chunks {
+                        let cx_relative = cx.rem_euclid(32) as u8;
+                        let cz_relative = cz.rem_euclid(32) as u8;
+                        let new_timestamp = region.timestamps[32 * cz_relative as usize + cx_relative as usize];
+                        let new_chunk = region.chunk_column_relative([cx_relative, cz_relative]).await?.and_then(|col| col.into_section_at(cy));
+                        match chunk_cache.entry((cx_relative, cy, cz_relative)) {
+                            hash_map::Entry::Occupied(mut entry) => {
+                                let old_timestamp = entry.get_mut();
+                                if old_timestamp.is_none_or(|old_timestamp| new_timestamp != old_timestamp) {
+                                    *old_timestamp = Some(new_timestamp);
+                                    version.write_chunk(sink, dimension, cx, cy, cz, new_chunk).await?;
                                 }
                             }
-                        } else {
-                            for (_, cx, cy, cz) in chunks {
-                                let cx_relative = cx.rem_euclid(32) as u8;
-                                let cz_relative = cz.rem_euclid(32) as u8;
-                                match chunk_cache.entry((cx_relative, cy, cz_relative)) {
-                                    hash_map::Entry::Occupied(mut entry) => {
-                                        let old_timestamp = entry.get_mut();
-                                        if old_timestamp.is_some() {
-                                            *old_timestamp = None;
-                                            version.write_chunk(sink, dimension, cx, cy, cz, None).await?;
-                                        }
-                                    }
-                                    hash_map::Entry::Vacant(entry) => {
-                                        entry.insert(None);
-                                        version.write_chunk(sink, dimension, cx, cy, cz, None).await?;
-                                    }
-                                }
+                            hash_map::Entry::Vacant(entry) => {
+                                entry.insert(Some(new_timestamp));
+                                version.write_chunk(sink, dimension, cx, cy, cz, new_chunk).await?;
                             }
                         }
                     }
-                });
-                Ok::<_, WsError>(())
-            })
-            .await?;
+                } else {
+                    for (_, cx, cy, cz) in chunks {
+                        let cx_relative = cx.rem_euclid(32) as u8;
+                        let cz_relative = cz.rem_euclid(32) as u8;
+                        match chunk_cache.entry((cx_relative, cy, cz_relative)) {
+                            hash_map::Entry::Occupied(mut entry) => {
+                                let old_timestamp = entry.get_mut();
+                                if old_timestamp.is_some() {
+                                    *old_timestamp = None;
+                                    version.write_chunk(sink, dimension, cx, cy, cz, None).await?;
+                                }
+                            }
+                            hash_map::Entry::Vacant(entry) => {
+                                entry.insert(None);
+                                version.write_chunk(sink, dimension, cx, cy, cz, None).await?;
+                            }
+                        }
+                    }
+                }
+            }
+        });
         Ok(())
     }
 
@@ -442,6 +434,13 @@ async fn client_session(mut rocket_shutdown: rocket::Shutdown, version: WsApiVer
                 for event in res? {
                     if event.kind.is_modify() {
                         paths.extend(event.event.paths);
+                    }
+                }
+                while let Ok(res) = watch_rx.try_recv() {
+                    for event in res? {
+                        if event.kind.is_modify() {
+                            paths.extend(event.event.paths);
+                        }
                     }
                 }
                 for region_path in paths {
