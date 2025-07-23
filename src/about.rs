@@ -272,7 +272,7 @@ pub(crate) async fn get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
         }
         p {
             : "Now for the actual invitation process, just ask one of our members to invite you. See ";
-            a(href = uri!(crate::http::index).to_string()) : "the main page";
+            a(href = uri!(crate::http::index)) : "the main page";
             : " for ways to contact us.";
         }
         h2(id = "starter") : "Getting started";
@@ -293,7 +293,7 @@ pub(crate) async fn get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
             : " or whatever, please try to ask around some of the other people who may or may not have already started preparations for such builds. It's not about ";
             em : "owning";
             : " a community project, it's just about coordination and not stepping on people's toes. However, experience shows that you probably won't be murdered in your sleep if you build at spawn without discussing every minor detail with everyone. Hanging around on Discord and/or checking out the ";
-            a(href = uri!(wiki::index).to_string()) : "wiki";
+            a(href = uri!(wiki::index)) : "wiki";
             : " should give a start as to what's currently going on. And sometimes it doesn't.";
         }
         p : "As I was saying, it's about community. As long as you're being reasonable and remember you're not alone on this server (both for your and everybody else's benefit), everything's fine.";
@@ -381,7 +381,7 @@ pub(crate) async fn get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
             }
         } else {
             p {
-                a(href = uri!(auth::discord_login(Some(&uri))).to_string()) : "Log in";
+                a(href = uri!(auth::discord_login(Some(&uri)))) : "Log in";
                 : " to view ways to contribute.";
             }
         }

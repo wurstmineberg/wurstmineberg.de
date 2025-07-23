@@ -9,7 +9,6 @@ import wurstminebot # https://github.com/wurstmineberg/wurstminebot-discord
 
 import wurstmineberg_web
 import wurstmineberg_web.auth
-import wurstmineberg_web.forms
 import wurstmineberg_web.models
 import wurstmineberg_web.util
 

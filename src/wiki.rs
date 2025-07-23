@@ -1,4 +1,5 @@
 use {
+    chrono::prelude::*,
     lazy_regex::regex_captures,
     rocket::{
         FromForm,
@@ -52,6 +53,10 @@ use {
             Tab,
             base_uri,
             page,
+        },
+        time::{
+            DateTimeFormat,
+            format_datetime,
         },
         user::User,
     },
@@ -136,7 +141,7 @@ pub(crate) async fn index(db_pool: &State<PgPool>, me: Option<User>, uri: Origin
                     } else {
                         @for article in articles {
                             li {
-                                a(href = if namespace == "wiki" { uri!(main_article(&article)) } else { uri!(namespaced_article(&article, &namespace)) }.to_string()) : article;
+                                a(href = if namespace == "wiki" { uri!(main_article(&article)) } else { uri!(namespaced_article(&article, &namespace)) }) : article;
                             }
                         }
                     }
@@ -207,7 +212,7 @@ pub(crate) async fn main_article(db_pool: &State<PgPool>, me: Option<User>, uri:
             : title;
             : " — Wurstmineberg Wiki ";
             a(href = uri!(edit_get(title, "wiki")), class = "btn btn-primary") : "Edit";
-            a(href = format!("/wiki/{title}/wiki/history"), class = "btn btn-link") : "History";
+            a(href = uri!(history(title, "wiki")), class = "btn btn-link") : "History";
         }
         : render_wiki_page(db_pool, &source).await?;
     }))
@@ -223,7 +228,7 @@ pub(crate) async fn namespaced_article(db_pool: &State<PgPool>, me: Option<User>
             : namespace;
             : ") — Wurstmineberg Wiki ";
             a(href = uri!(edit_get(title, namespace)), class = "btn btn-primary") : "Edit";
-            a(href = format!("/wiki/{title}/{namespace}/history"), class = "btn btn-link") : "History";
+            a(href = uri!(history(title, namespace)), class = "btn btn-link") : "History";
         }
         : render_wiki_page(db_pool, &source).await?;
     }))
@@ -272,7 +277,7 @@ fn edit_form(me: User, uri: Origin<'_>, csrf: Option<&CsrfToken>, title: &str, n
             : " (";
             : namespace;
             : ") — Wurstmineberg Wiki ";
-            a(href = if namespace == "wiki" { uri!(main_article(title)) } else { uri!(namespaced_article(title, namespace)) }.to_string(), class = "btn btn-danger") : "Cancel";
+            a(href = if namespace == "wiki" { uri!(main_article(title)) } else { uri!(namespaced_article(title, namespace)) }, class = "btn btn-danger") : "Cancel";
         }
         : full_form(uri!(edit_post(title, namespace)), csrf, html! {
             : form_field("source", &mut errors, "Text", html! {
@@ -336,13 +341,63 @@ pub(crate) async fn edit_post(discord_ctx: &State<RwFuture<DiscordCtx>>, db_pool
     })
 }
 
+#[rocket::get("/wiki/<title>/<namespace>/history")]
+pub(crate) async fn history(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str) -> Result<RawHtml<String>, StatusOrError<Error>> {
+    let revisions = sqlx::query!(r#"SELECT id, timestamp AS "timestamp: DateTime<Utc>", author AS "author: PgSnowflake<UserId>", summary FROM wiki WHERE title = $1 AND namespace = $2 ORDER BY timestamp DESC"#, title, namespace).fetch_all(&**db_pool).await?;
+    if revisions.is_empty() { return Err(StatusOrError::Status(Status::NotFound)) }
+    Ok(page(&me, &uri, PageStyle::default(), &format!("history of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
+        h1 {
+            : "History of ";
+            : title;
+            @if namespace != "wiki" {
+                : " (";
+                : namespace;
+                : ")";
+            }
+            : " — Wurstmineberg Wiki";
+        }
+        table(class = "table table-responsive") {
+            thead {
+                tr {
+                    th : "Time";
+                    th : "Author";
+                    th : "Summary";
+                }
+            }
+            tbody {
+                @for revision in revisions {
+                    tr {
+                        td {
+                            a(href = uri!(revision(title, namespace, revision.id))) {
+                                : format_datetime(revision.timestamp, DateTimeFormat { long: false, running_text: false });
+                            }
+                        }
+                        td {
+                            @if let Some(PgSnowflake(author)) = revision.author {
+                                @if let Some(author) = User::from_discord(&**db_pool, author).await? {
+                                    : author;
+                                } else {
+                                    : "not found";
+                                }
+                            } else {
+                                : "unknown";
+                            }
+                        }
+                        td : revision.summary;
+                    }
+                }
+            }
+        }
+    }))
+}
+
 #[rocket::get("/wiki/<title>/<namespace>/history/<rev>")]
 pub(crate) async fn revision(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str, rev: Option<i32>) -> Result<RawHtml<String>, StatusOrError<Error>> {
     let Some(rev) = rev else { return Err(StatusOrError::Status(Status::NotFound)) }; // don't forward to Flask on wrong revision format, prevents an internal server error
     let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 AND id = $3", title, namespace, rev).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
     Ok(page(&me, &uri, PageStyle::default(), &format!("revision of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
         h1 {
-            : "revision of ";
+            : "Revision of ";
             : title;
             @if namespace != "wiki" {
                 : " (";
@@ -350,8 +405,8 @@ pub(crate) async fn revision(db_pool: &State<PgPool>, me: Option<User>, uri: Ori
                 : ")";
             }
             : " — Wurstmineberg Wiki ";
-            a(href = if namespace == "wiki" { uri!(main_article(title)) } else { uri!(namespaced_article(title, namespace)) }.to_string(), class = "btn btn-primary") : "View latest revision";
-            a(href = format!("/wiki/{title}/{namespace}/history"), class = "btn btn-link") : "History";
+            a(href = if namespace == "wiki" { uri!(main_article(title)) } else { uri!(namespaced_article(title, namespace)) }, class = "btn btn-primary") : "View latest revision";
+            a(href = uri!(history(title, namespace)), class = "btn btn-link") : "History";
         }
         : render_wiki_page(db_pool, &source).await?;
     }))

@@ -25,6 +25,7 @@ mod http;
 mod lang;
 mod log;
 #[cfg(not(target_os = "linux"))] mod systemd_minecraft;
+mod time;
 mod twitch;
 mod user;
 mod wiki;

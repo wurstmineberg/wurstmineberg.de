@@ -120,6 +120,7 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                 link(rel = "stylesheet", href = asset("/css/common.css"));
                 link(rel = "stylesheet", href = asset("/css/responsive.css"));
                 link(rel = "stylesheet", href = asset("/css/dark.css"));
+                script(defer, src = static_url!("common.js"));
             }
             body {
                 nav(class = "navbar navbar-inverse navbar-fixed-top") {
@@ -131,7 +132,7 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                             span(class = "icon-bar");
                             span(class = "icon-bar");
                         }
-                        a(class = "navbar-brand", href = uri!(index).to_string()) : "Wurstmineberg";
+                        a(class = "navbar-brand", href = uri!(index)) : "Wurstmineberg";
                     }
                     // Collect the nav links, forms, and other content for toggling
                     div(class = "collapse navbar-collapse navbar-ex1-collapse") {
@@ -143,7 +144,7 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                                 }
                             }
                             li(class? = matches!(tab, Tab::About).then_some("active")) {
-                                a(href = uri!(crate::about::get).to_string()) {
+                                a(href = uri!(crate::about::get)) {
                                     span(class = "fa fa-info-circle");
                                     : "About";
                                 }
@@ -161,7 +162,7 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                                 }
                             }
                             li(class? = matches!(tab, Tab::Wiki).then_some("active")) {
-                                a(href = uri!(crate::wiki::index).to_string()) {
+                                a(href = uri!(crate::wiki::index)) {
                                     span(class = "fa fa-book");
                                     : "Wiki";
                                 }
@@ -180,7 +181,7 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                                         a(href = format!("https://alltheitems.{HOST}/")) : "All The Items";
                                     }
                                     li {
-                                        a(href = uri!(map).to_string()) : "Map";
+                                        a(href = uri!(map)) : "Map";
                                     }
                                 }
                             }
@@ -279,7 +280,7 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>) -> Re
                 }
                 p {
                     : "If you're interested in playing with us, we have some ";
-                    a(href = uri!(_, crate::about::get, "#joining").to_string()) : "requirements";
+                    a(href = uri!(_, crate::about::get, "#joining")) : "requirements";
                     : ". In the meantime, you can check out the Discord section below.";
                 }
             }
@@ -343,7 +344,7 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>) -> Re
                     a(href = "https://github.com/wurstmineberg/wurstmapberg") : "our own tool";
                     : " to generate a daily overview map of our main world. It works with current Minecraft versions, but it's still kind of experimental.";
                 }
-                a(class = "btn btn-default", href = uri!(map).to_string()) {
+                a(class = "btn btn-default", href = uri!(map)) {
                     : "View map ";
                     i(class = "fa fa-chevron-right");
                 }
@@ -397,7 +398,7 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>) -> Re
                 }
                 p : "Since we're running on an actual server that requires actual monies to run, we decided to try a “donate if you will, or don't but it would be pretty dandy if you would” model.";
                 //TODO explain auto resizing, display summary of current status
-                a(class = "btn btn-default", href = uri!(_, crate::about::get, "#finance").to_string()) {
+                a(class = "btn btn-default", href = uri!(_, crate::about::get, "#finance")) {
                     : "More info ";
                     i(class = "fa fa-chevron-right");
                 }
@@ -443,7 +444,7 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>) -> Re
                     abbr(title = "like redlinks, templates, revision diffs, and a working Markdown preview") : "some important features";
                     : " so it might take a while for things to be back to normal.";
                 }
-                a(class = "btn btn-default", href = uri!(crate::wiki::index).to_string()) {
+                a(class = "btn btn-default", href = uri!(crate::wiki::index)) {
                     : "Visit Wiki ";
                     i(class = "fa fa-chevron-right");
                 }
@@ -458,7 +459,7 @@ fn map(me: Option<User>, uri: Origin<'_>) -> RawHtml<String> {
         div(id = "map", style = "height: calc(100vh - 91px);");
         link(rel = "stylesheet", href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css", integrity = "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=", crossorigin = "");
         script(src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js", integrity = "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=", crossorigin = "");
-        script(src = static_url!("map.js").to_string());
+        script(src = static_url!("map.js"));
     })
 }
 
@@ -659,6 +660,7 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             crate::wiki::namespaced_article,
             crate::wiki::edit_get,
             crate::wiki::edit_post,
+            crate::wiki::history,
             crate::wiki::revision,
         ])
         .mount("/static", FileServer::new({

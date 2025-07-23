@@ -5,15 +5,8 @@ Wurstmineberg website
 
 import flask # PyPI: Flask
 import flask_bootstrap # PyPI: Flask-Bootstrap
-import flask_pagedown # PyPI: Flask-PageDown
 import flask_sqlalchemy # Flask-SQLAlchemy
-import flaskext.markdown # PyPI: Flask-Markdown
 import jinja2 # PyPI: jinja2
-import pymdownx.emoji # PyPI: pymdown-extensions
-import pymdownx.extra # PyPI: pymdown-extensions
-import pymdownx.tilde # PyPI: pymdown-extensions
-
-import flask_wiki # https://github.com/fenhl/flask-wiki
 
 import wurstmineberg_web.util
 
@@ -45,36 +38,8 @@ def create_app(production):
     import wurstmineberg_web.api
     import wurstmineberg_web.error
     import wurstmineberg_web.models
-    import wurstmineberg_web.wiki
     # set up Bootstrap
     flask_bootstrap.Bootstrap(app)
-    # set up Markdown and wiki
-    md = flaskext.markdown.Markdown(app, extensions=['toc'], extension_configs={
-        'toc': {
-            'marker': ''
-        }
-    })
-    md.register_extension(wurstmineberg_web.wiki.WmbidMentionExtension)
-    emoji_ext = pymdownx.emoji.EmojiExtension()
-    emoji_ext.setConfig('emoji_generator', pymdownx.emoji.to_alt)
-    emoji_ext.setConfig('emoji_index', pymdownx.emoji.twemoji)
-    md._instance.registerExtensions([emoji_ext], {})
-    md.register_extension(pymdownx.extra.ExtraExtension)
-    md.register_extension(pymdownx.tilde.DeleteSubExtension)
-    flask_wiki.child(
-        wurstmineberg_web.views.index,
-        db=db,
-        edit_decorators=[wurstmineberg_web.auth.member_required],
-        md=md,
-        mentions_to_tags=wurstmineberg_web.wiki.mentions_to_tags,
-        save_hook=wurstmineberg_web.wiki.save_hook,
-        tags_to_mentions=wurstmineberg_web.wiki.tags_to_mentions,
-        user_class=wurstmineberg_web.models.Person,
-        user_class_constructor=wurstmineberg_web.models.Person.from_snowflake_or_wmbid,
-        wiki_name='Wurstmineberg Wiki'
-    )
-    # set up Markdown preview
-    flask_pagedown.PageDown(app)
 
     if not production:
         import os

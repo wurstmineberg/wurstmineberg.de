@@ -71,7 +71,7 @@ pub(crate) fn form_checkbox(name: &str, errors: &mut Vec<&form::Error<'_>>, labe
 
 pub(crate) fn full_form(uri: Origin<'_>, csrf: Option<&CsrfToken>, content: impl ToHtml, errors: Vec<&form::Error<'_>>, submit_text: &str) -> RawHtml<String> {
     html! {
-        form(class = "form-horizontal", role = "form", action = uri.to_string(), method = "post") {
+        form(class = "form-horizontal", role = "form", action = uri, method = "post") {
             : csrf;
             @for error in errors {
                 : render_form_error(error);
