@@ -3215,6 +3215,15 @@ dependencies = [
 
 [[package]]
 name = "itertools"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186"
+dependencies = [
+ "either",
+]
+
+[[package]]
+name = "itertools"
 version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285"
@@ -4639,7 +4648,7 @@ dependencies = [
 [[package]]
 name = "rocket-util"
 version = "0.2.15"
-source = "git+https://github.com/fenhl/rocket-util?branch=main#54753ef89fdaf95e2cb212d702f9abe33b77a43f"
+source = "git+https://github.com/fenhl/rocket-util?branch=main#e7e3c7d2a00077fccc7ae0115f511111aa0ac760"
 dependencies = [
  "futures",
  "ics",
@@ -4654,7 +4663,7 @@ dependencies = [
 [[package]]
 name = "rocket-util-derive"
 version = "0.2.15"
-source = "git+https://github.com/fenhl/rocket-util?branch=main#54753ef89fdaf95e2cb212d702f9abe33b77a43f"
+source = "git+https://github.com/fenhl/rocket-util?branch=main#e7e3c7d2a00077fccc7ae0115f511111aa0ac760"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -6233,6 +6242,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "twitch_helix"
+version = "0.5.0"
+source = "git+https://github.com/fenhl/rust-twitch-helix?branch=main#49e51a509b68568248b5c4ad9d54996ea031df33"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "futures",
+ "itertools 0.13.0",
+ "reqwest 0.12.22",
+ "serde",
+ "serde_json_path_to_error",
+ "thiserror 1.0.69",
+ "tokio",
+ "url",
+]
+
+[[package]]
 name = "typemap_rev"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7099,6 +7125,7 @@ dependencies = [
  "tokio-stream",
  "tokio-util",
  "twitch-irc",
+ "twitch_helix",
  "url",
  "uuid 1.17.0",
  "wheel",

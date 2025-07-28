@@ -1,4 +1,5 @@
 use {
+    std::fmt,
     chrono::prelude::*,
     chrono_tz::Europe,
     rocket::response::content::RawHtml,
@@ -8,6 +9,15 @@ use {
 pub(crate) struct DateTimeFormat {
     pub(crate) long: bool,
     pub(crate) running_text: bool,
+}
+
+pub(crate) fn format_date<Z: TimeZone>(date: DateTime<Z>) -> RawHtml<String>
+where Z::Offset: fmt::Display {
+    html! {
+        span(class = "date", data_timestamp = date.timestamp_millis()) {
+            : date.format("%B %-d, %Y").to_string();
+        }
+    }
 }
 
 pub(crate) fn format_datetime<Z: TimeZone>(datetime: DateTime<Z>, format: DateTimeFormat) -> RawHtml<String> {

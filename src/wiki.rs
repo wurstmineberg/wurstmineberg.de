@@ -10,7 +10,6 @@ use {
             Contextual,
             Form,
         },
-        http::Status,
         response::{
             Redirect,
             content::RawHtml,
@@ -49,7 +48,6 @@ use {
         http::{
             PageStyle,
             RedirectOrContent,
-            StatusOrError,
             Tab,
             base_uri,
             page,
@@ -70,12 +68,6 @@ pub(crate) enum Error {
     #[error(transparent)] Serenity(#[from] serenity::Error),
     #[error(transparent)] Sql(#[from] sqlx::Error),
     #[error(transparent)] Url(#[from] url::ParseError),
-}
-
-impl<E: Into<Error>> From<E> for StatusOrError<Error> {
-    fn from(e: E) -> Self {
-        Self::Err(e.into())
-    }
 }
 
 async fn mentions_to_tags(db_pool: &PgPool, mut text: String) -> sqlx::Result<String> {
@@ -151,7 +143,7 @@ pub(crate) async fn index(db_pool: &State<PgPool>, me: Option<User>, uri: Origin
     }))
 }
 
-struct Markdown<'a>(Vec<pulldown_cmark::Event<'a>>);
+pub(crate) struct Markdown<'a>(Vec<pulldown_cmark::Event<'a>>);
 
 impl<'a> ToHtml for Markdown<'a> {
     fn to_html(&self) -> RawHtml<String> {
@@ -165,7 +157,7 @@ impl<'a> ToHtml for Markdown<'a> {
     }
 }
 
-async fn render_wiki_page<'a>(db_pool: &PgPool, source: &'a str) -> Result<Markdown<'a>, Error> {
+pub(crate) async fn render_markdown<'a>(db_pool: &PgPool, source: &'a str) -> Result<Markdown<'a>, Error> {
     let mut events = Vec::default();
     let mut parser = pulldown_cmark::Parser::new_ext(
         &source,
@@ -205,23 +197,23 @@ async fn render_wiki_page<'a>(db_pool: &PgPool, source: &'a str) -> Result<Markd
 }
 
 #[rocket::get("/wiki/<title>")]
-pub(crate) async fn main_article(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str) -> Result<RawHtml<String>, StatusOrError<Error>> {
-    let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = 'wiki' ORDER BY timestamp DESC LIMIT 1", title).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
-    Ok(page(&me, &uri, PageStyle::default(), &format!("{title} — Wurstmineberg Wiki"), Tab::Wiki, html! {
+pub(crate) async fn main_article(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str) -> Result<Option<RawHtml<String>>, Error> {
+    let Some(source) = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = 'wiki' ORDER BY timestamp DESC LIMIT 1", title).fetch_optional(&**db_pool).await? else { return Ok(None) };
+    Ok(Some(page(&me, &uri, PageStyle::default(), &format!("{title} — Wurstmineberg Wiki"), Tab::Wiki, html! {
         h1 {
             : title;
             : " — Wurstmineberg Wiki ";
             a(href = uri!(edit_get(title, "wiki")), class = "btn btn-primary") : "Edit";
             a(href = uri!(history(title, "wiki")), class = "btn btn-link") : "History";
         }
-        : render_wiki_page(db_pool, &source).await?;
-    }))
+        : render_markdown(db_pool, &source).await?;
+    })))
 }
 
 #[rocket::get("/wiki/<title>/<namespace>")]
-pub(crate) async fn namespaced_article(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str) -> Result<RawHtml<String>, StatusOrError<Error>> {
-    let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 ORDER BY timestamp DESC LIMIT 1", title, namespace).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
-    Ok(page(&me, &uri, PageStyle::default(), &format!("{title} ({namespace}) — Wurstmineberg Wiki"), Tab::Wiki, html! {
+pub(crate) async fn namespaced_article(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str) -> Result<Option<RawHtml<String>>, Error> {
+    let Some(source) = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 ORDER BY timestamp DESC LIMIT 1", title, namespace).fetch_optional(&**db_pool).await? else { return Ok(None) };
+    Ok(Some(page(&me, &uri, PageStyle::default(), &format!("{title} ({namespace}) — Wurstmineberg Wiki"), Tab::Wiki, html! {
         h1 {
             : title;
             : " (";
@@ -230,8 +222,8 @@ pub(crate) async fn namespaced_article(db_pool: &State<PgPool>, me: Option<User>
             a(href = uri!(edit_get(title, namespace)), class = "btn btn-primary") : "Edit";
             a(href = uri!(history(title, namespace)), class = "btn btn-link") : "History";
         }
-        : render_wiki_page(db_pool, &source).await?;
-    }))
+        : render_markdown(db_pool, &source).await?;
+    })))
 }
 
 enum EditFormDefaults<'v> {
@@ -342,10 +334,10 @@ pub(crate) async fn edit_post(discord_ctx: &State<RwFuture<DiscordCtx>>, db_pool
 }
 
 #[rocket::get("/wiki/<title>/<namespace>/history")]
-pub(crate) async fn history(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str) -> Result<RawHtml<String>, StatusOrError<Error>> {
+pub(crate) async fn history(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str) -> Result<Option<RawHtml<String>>, Error> {
     let revisions = sqlx::query!(r#"SELECT id, timestamp AS "timestamp: DateTime<Utc>", author AS "author: PgSnowflake<UserId>", summary FROM wiki WHERE title = $1 AND namespace = $2 ORDER BY timestamp DESC"#, title, namespace).fetch_all(&**db_pool).await?;
-    if revisions.is_empty() { return Err(StatusOrError::Status(Status::NotFound)) }
-    Ok(page(&me, &uri, PageStyle::default(), &format!("history of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
+    if revisions.is_empty() { return Ok(None) }
+    Ok(Some(page(&me, &uri, PageStyle::default(), &format!("history of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
         h1 {
             : "History of ";
             : title;
@@ -388,14 +380,14 @@ pub(crate) async fn history(db_pool: &State<PgPool>, me: Option<User>, uri: Orig
                 }
             }
         }
-    }))
+    })))
 }
 
 #[rocket::get("/wiki/<title>/<namespace>/history/<rev>")]
-pub(crate) async fn revision(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str, rev: Option<i32>) -> Result<RawHtml<String>, StatusOrError<Error>> {
-    let Some(rev) = rev else { return Err(StatusOrError::Status(Status::NotFound)) }; // don't forward to Flask on wrong revision format, prevents an internal server error
-    let source = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 AND id = $3", title, namespace, rev).fetch_optional(&**db_pool).await?.ok_or_else(|| StatusOrError::Status(Status::NotFound))?;
-    Ok(page(&me, &uri, PageStyle::default(), &format!("revision of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
+pub(crate) async fn revision(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str, rev: Option<i32>) -> Result<Option<RawHtml<String>>, Error> {
+    let Some(rev) = rev else { return Ok(None) }; // don't forward to Flask on wrong revision format, prevents an internal server error
+    let Some(source) = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 AND id = $3", title, namespace, rev).fetch_optional(&**db_pool).await? else { return Ok(None) };
+    Ok(Some(page(&me, &uri, PageStyle::default(), &format!("revision of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
         h1 {
             : "Revision of ";
             : title;
@@ -408,6 +400,6 @@ pub(crate) async fn revision(db_pool: &State<PgPool>, me: Option<User>, uri: Ori
             a(href = if namespace == "wiki" { uri!(main_article(title)) } else { uri!(namespaced_article(title, namespace)) }, class = "btn btn-primary") : "View latest revision";
             a(href = uri!(history(title, namespace)), class = "btn btn-link") : "History";
         }
-        : render_wiki_page(db_pool, &source).await?;
-    }))
+        : render_markdown(db_pool, &source).await?;
+    })))
 }

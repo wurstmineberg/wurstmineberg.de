@@ -30,6 +30,7 @@ use {
     sqlx::PgPool,
     wheel::traits::ReqwestResponseExt as _,
     crate::{
+        config::Config,
         discord::PgSnowflake,
         user::User,
     },
@@ -45,6 +46,7 @@ macro_rules! guard_try {
 }
 
 pub(crate) enum Discord {}
+pub(crate) enum Twitch {}
 
 #[derive(Debug, thiserror::Error)]
 pub(crate) enum UserFromRequestError {
@@ -54,6 +56,7 @@ pub(crate) enum UserFromRequestError {
     #[error(transparent)] Sql(#[from] sqlx::Error),
     #[error(transparent)] Time(#[from] rocket::time::error::ConversionRange),
     #[error(transparent)] TryFromInt(#[from] std::num::TryFromIntError),
+    #[error(transparent)] Twitch(#[from] twitch_helix::Error),
     #[error(transparent)] Wheel(#[from] wheel::Error),
     #[error("invalid API key")]
     ApiKey,
@@ -88,6 +91,25 @@ async fn handle_discord_token_response(http_client: &reqwest::Client, cookies: &
         .send().await?
         .detailed_error_for_status().await?
         .json_with_text_in_error().await?)
+}
+
+async fn handle_twitch_token_response(config: &Config, cookies: &CookieJar<'_>, token: &TokenResponse<Twitch>) -> Result<twitch_helix::model::User, UserFromRequestError> {
+    let mut cookie = Cookie::build(("twitch_token", token.access_token().to_owned()))
+        .same_site(SameSite::Lax);
+    if let Some(expires_in) = token.expires_in() {
+        cookie = cookie.max_age(Duration::from_secs(u64::try_from(expires_in)?.saturating_sub(60)).try_into()?);
+    }
+    cookies.add_private(cookie);
+    if let Some(refresh_token) = token.refresh_token() {
+        cookies.add_private(Cookie::build(("twitch_refresh_token", refresh_token.to_owned()))
+            .same_site(SameSite::Lax)
+            .permanent());
+    }
+    Ok(twitch_helix::model::User::me(&twitch_helix::Client::new(
+        concat!("WurstminebergWeb/", env!("CARGO_PKG_VERSION"), " (https://github.com/wurstmineberg/wurstmineberg.de)"),
+        &config.twitch.client_id,
+        twitch_helix::Credentials::from_oauth_token(token.access_token()),
+    )?).await?)
 }
 
 #[derive(Deserialize)]
@@ -199,6 +221,17 @@ pub(crate) fn discord_login(oauth: OAuth2<Discord>, cookies: &CookieJar<'_>, red
     oauth.get_redirect(cookies, &["identify"]).map_err(rocket_util::Error)
 }
 
+#[rocket::get("/login/twitch?<redirect_to>")]
+pub(crate) fn twitch_login(me: User, oauth: OAuth2<Twitch>, cookies: &CookieJar<'_>, redirect_to: Option<Origin<'_>>) -> Result<Redirect, rocket_util::Error<rocket_oauth2::Error>> {
+    let _ = me; // we require already being signed into wurstmineberg.de to use Twitch OAuth, since it's currently only configured in order to link accounts, not as a primary login provider
+    if let Some(redirect_to) = redirect_to {
+        if redirect_to.0.path() != uri!(discord_callback).path() { // prevent showing login error page on login success
+            cookies.add(Cookie::build(("redirect_to", redirect_to)).same_site(SameSite::Lax));
+        }
+    }
+    oauth.get_redirect(cookies, &["user:read:chat"]).map_err(rocket_util::Error)
+}
+
 #[derive(Debug, thiserror::Error, rocket_util::Error)]
 pub(crate) enum DiscordCallbackError {
     #[error(transparent)] UserFromRequest(#[from] UserFromRequestError),
@@ -211,9 +244,26 @@ pub(crate) async fn discord_callback(http_client: &State<reqwest::Client>, token
     Ok(Redirect::to(redirect_uri))
 }
 
-#[rocket::get("/logout")]
-pub(crate) fn logout(cookies: &CookieJar<'_>) -> Redirect {
+#[derive(Debug, thiserror::Error, rocket_util::Error)]
+pub(crate) enum TwitchCallbackError {
+    #[error(transparent)] Sql(#[from] sqlx::Error),
+    #[error(transparent)] UserFromRequest(#[from] UserFromRequestError),
+}
+
+#[rocket::get("/login/twitch/authorized")]
+pub(crate) async fn twitch_callback(db_pool: &State<PgPool>, config: &State<Config>, mut me: User, token: TokenResponse<Twitch>, cookies: &CookieJar<'_>) -> Result<Redirect, TwitchCallbackError> {
+    let twitch_user = handle_twitch_token_response(config, cookies, &token).await?;
+    me.data.twitch = Some(crate::user::DataTwitch { login: twitch_user.login });
+    me.save_data(&**db_pool).await?;
+    let redirect_uri = cookies.get("redirect_to").and_then(|cookie| rocket::http::uri::Origin::try_from(cookie.value()).ok()).map_or_else(|| uri!(crate::http::index), |uri| uri.into_owned());
+    Ok(Redirect::to(redirect_uri))
+}
+
+#[rocket::get("/logout?<redirect_to>")]
+pub(crate) fn logout(cookies: &CookieJar<'_>, redirect_to: Option<Origin<'_>>) -> Redirect {
     cookies.remove_private(Cookie::from("discord_token"));
+    cookies.remove_private(Cookie::from("twitch_token"));
     cookies.remove_private(Cookie::from("discord_refresh_token"));
-    Redirect::to(uri!(crate::http::index))
+    cookies.remove_private(Cookie::from("twitch_refresh_token"));
+    Redirect::to(redirect_to.map_or_else(|| uri!(crate::http::index), |uri| uri.0.into_owned()))
 }

@@ -67,12 +67,6 @@ pub(crate) enum RedirectOrContent {
     Content(RawHtml<String>),
 }
 
-#[derive(Responder)]
-pub(crate) enum StatusOrError<E> {
-    Status(Status),
-    Err(E),
-}
-
 pub(crate) fn base_uri() -> rocket::http::uri::Absolute<'static> {
     uri!("https://wurstmineberg.de")
 }
@@ -83,7 +77,15 @@ pub(crate) fn asset(path: &str) -> String {
 
 #[derive(Default)]
 pub(crate) struct PageStyle {
-    full_width: bool,
+    pub(crate) full_width: bool,
+    /// Additional JavaScript code to include in the footer, after the global scripts.
+    pub(crate) extra_scripts: Vec<Script>,
+}
+
+pub(crate) enum Script {
+    External(String),
+    #[allow(unused)]
+    Embed(String),
 }
 
 #[allow(unused)] //TODO port more pages to Rust
@@ -99,7 +101,7 @@ pub(crate) enum Tab {
 }
 
 pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title: &str, tab: Tab, content: impl ToHtml) -> RawHtml<String> {
-    let PageStyle { full_width } = style;
+    let PageStyle { full_width, extra_scripts } = style;
     html! {
         : Doctype;
         html {
@@ -198,7 +200,7 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                                             a(href = uri!(crate::user::preferences_get(None::<&str>)), title = "Your preferences") : "Preferences";
                                         }
                                         li(id = "pt-logout") {
-                                            a(href = uri!(crate::auth::logout), title = "Your preferences") : "Log out";
+                                            a(href = uri!(crate::auth::logout(Some(uri))), title = "Log out") : "Log out";
                                         }
                                     }
                                 }
@@ -248,6 +250,12 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                         }}).text('[DEV]'));
                     }}
                 ", if let Some(wmbid) = me.as_ref().and_then(|me| me.wmbid()) { format!("'{wmbid}'") } else { format!("null") })); //TODO support Discord-only users
+                @for script in extra_scripts {
+                    @match script {
+                        Script::External(src) => script(src = src);
+                        Script::Embed(code) => script(type = "text/javascript") : RawHtml(code);
+                    }
+                }
             }
         }
     }
@@ -519,7 +527,7 @@ enum FlaskProxyResponse {
 
 #[rocket::get("/<path..>", rank = 100 /* prefer endpoints implemented in Rust */)]
 async fn flask_proxy_get(proxy_http_client: &State<ProxyHttpClient>, me: Option<DiscordUser>, origin: Origin<'_>, headers: Headers, path: Segments<'_, Path>) -> Result<FlaskProxyResponse, FlaskProxyError> {
-    if Segments::<Path>::get(&path, 0).map_or(true, |prefix| !matches!(prefix, "api" | "people" | "preferences" | "profile" | "stats" | "wiki")) {
+    if Segments::<Path>::get(&path, 0).map_or(true, |prefix| !matches!(prefix, "api" | "profile" | "stats")) {
         // only forward the directories that are actually served by the proxy to prevent internal server errors on malformed requests from spambots
         return Ok(FlaskProxyResponse::Status(Status::NotFound))
     }
@@ -535,7 +543,7 @@ async fn flask_proxy_get(proxy_http_client: &State<ProxyHttpClient>, me: Option<
 
 #[rocket::post("/<path..>", data = "<data>", rank = 100 /* prefer endpoints implemented in Rust */)]
 async fn flask_proxy_post(proxy_http_client: &State<ProxyHttpClient>, me: Option<DiscordUser>, origin: Origin<'_>, headers: Headers, path: Segments<'_, Path>, data: Vec<u8>) -> Result<FlaskProxyResponse, FlaskProxyError> {
-    if Segments::<Path>::get(&path, 0).map_or(true, |prefix| !matches!(prefix, "api" | "people" | "preferences" | "profile" | "stats" | "wiki")) {
+    if Segments::<Path>::get(&path, 0).map_or(true, |prefix| !matches!(prefix, "api" | "profile" | "stats")) {
         // only forward the directories that are actually served by the proxy to prevent internal server errors on malformed requests from spambots
         return Ok(FlaskProxyResponse::Status(Status::NotFound))
     }
@@ -650,8 +658,12 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             crate::api::websocket_v3,
             crate::api::websocket_v4,
             crate::auth::discord_callback,
+            crate::auth::twitch_callback,
             crate::auth::discord_login,
+            crate::auth::twitch_login,
             crate::auth::logout,
+            crate::user::list,
+            crate::user::profile,
             crate::user::preferences_get,
             crate::user::profile_post,
             crate::user::settings_post,
@@ -680,6 +692,15 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             config.wurstminebot.client_id.to_string(),
             config.wurstminebot.client_secret.to_string(),
             Some(uri!(base_uri(), crate::auth::discord_callback).to_string()),
+        )))
+        .attach(OAuth2::<crate::auth::Twitch>::custom(rocket_oauth2::HyperRustlsAdapter::default(), OAuthConfig::new(
+            rocket_oauth2::StaticProvider {
+                auth_uri: "https://id.twitch.tv/oauth2/authorize".into(),
+                token_uri: "https://id.twitch.tv/oauth2/token".into(),
+            },
+            config.twitch.client_id.to_string(),
+            config.twitch.client_secret.to_string(),
+            Some(uri!(base_uri(), crate::auth::twitch_callback).to_string()),
         )))
         .manage(config)
         .manage(PgPool::connect_with(PgConnectOptions::default().username("wurstmineberg").database("wurstmineberg").application_name("wurstmineberg-web")).await?)

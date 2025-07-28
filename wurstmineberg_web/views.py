@@ -1,11 +1,7 @@
 import flask
-import requests
 import sqlalchemy.orm.exc
-import urllib.parse
-import wtforms
 
 import flask_view_tree # https://github.com/fenhl/flask-view-tree
-import wurstminebot # https://github.com/wurstmineberg/wurstminebot-discord
 
 import wurstmineberg_web
 import wurstmineberg_web.auth
@@ -22,20 +18,12 @@ def stats():
     pass
 
 @index.child('people')
-@wurstmineberg_web.util.template()
 def people():
-    people = wurstmineberg_web.models.Person.get_people_ordered_by_status()
-    for key in ['founding', 'later', 'former', 'guest', 'invited', 'vetoed']:
-        people[key] = people.get(key, [])
-
-    people['guest'].extend(people['invited'])
-    people['former'].extend(people['vetoed'])
-    return {'people': people}
+    raise NotImplementedError('This endpoint has been ported to Rust')
 
 @people.children(wurstmineberg_web.models.Person.from_snowflake_or_wmbid)
-@wurstmineberg_web.util.template()
 def profile(person):
-    return {'person': person}
+    raise NotImplementedError('This endpoint has been ported to Rust')
 
 @profile.catch_init(sqlalchemy.orm.exc.NoResultFound)
 def profile_catch_not_found(exc, value):

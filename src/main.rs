@@ -77,7 +77,7 @@ async fn main() -> Result<(), Error> {
         default_panic_hook(info)
     }));
     let http_client = reqwest::Client::builder()
-        .user_agent(concat!("WurstminebergWeb/", env!("CARGO_PKG_VERSION")))
+        .user_agent(concat!("WurstminebergWeb/", env!("CARGO_PKG_VERSION"), " (https://github.com/wurstmineberg/wurstmineberg.de)"))
         .timeout(Duration::from_secs(30))
         .use_rustls_tls()
         .hickory_dns(true)
@@ -85,7 +85,7 @@ async fn main() -> Result<(), Error> {
         .build()?;
     let proxy_http_client = reqwest::Client::builder()
         .redirect(reqwest::redirect::Policy::none())
-        .user_agent(concat!("WurstminebergWeb/", env!("CARGO_PKG_VERSION")))
+        .user_agent(concat!("WurstminebergWeb/", env!("CARGO_PKG_VERSION"), " (https://github.com/wurstmineberg/wurstmineberg.de)"))
         .timeout(Duration::from_secs(90))
         .build()?;
     let discord_builder = serenity_utils::builder(config.wurstminebot.bot_token.clone()).await?;

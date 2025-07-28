@@ -30,6 +30,7 @@ pub(crate) enum Error {
 pub(crate) struct Config {
     pub(crate) money: Money,
     pub(crate) night: Night,
+    pub(crate) twitch: Twitch,
     pub(crate) web: Web,
     pub(crate) wurstminebot: Wurstminebot,
 }
@@ -59,6 +60,14 @@ pub(crate) struct Money {
 #[derive(Clone, Deserialize)]
 pub(crate) struct Night {
     pub(crate) password: String,
+}
+
+#[derive(Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct Twitch {
+    #[serde(rename = "clientID")]
+    pub(crate) client_id: String,
+    pub(crate) client_secret: String,
 }
 
 #[derive(Clone, Deserialize)]

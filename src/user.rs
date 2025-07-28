@@ -2,14 +2,22 @@ use {
     std::{
         borrow::Cow,
         cmp::Reverse,
-        collections::BTreeMap,
+        collections::{
+            BTreeMap,
+            HashMap,
+        },
         fmt,
         num::NonZero,
     },
+    chrono::prelude::*,
     chrono_tz::{
         Etc,
         Europe,
         Tz,
+    },
+    futures::stream::{
+        Stream,
+        TryStreamExt as _,
     },
     lazy_regex::{
         regex_captures,
@@ -67,24 +75,42 @@ use {
         },
         http::{
             PageStyle,
+            Script,
             Tab,
             asset,
             page,
         },
+        time::format_date,
+        wiki::render_markdown,
     },
 };
 
 #[derive(Debug, Clone)]
 pub(crate) struct User {
     pub(crate) id: Id,
-    data: Data,
+    pub(crate) data: Data,
     pub(crate) discorddata: Option<DiscordData>,
 }
 
 impl User {
-    pub(crate) async fn from_api_key(pool: impl PgExecutor<'_>, api_key: &str) -> sqlx::Result<Option<Self>> {
+    pub(crate) fn all<'a>(db_pool: impl PgExecutor<'a> + 'a) -> impl Stream<Item = sqlx::Result<Self>> {
+        sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people"#)
+            .fetch(db_pool)
+            .map_ok(|row| Self {
+                id: match (row.wmbid, row.snowflake) {
+                    (None, None) => unreachable!("person in database with no Wurstmineberg ID and no Discord snowflake"),
+                    (None, Some(PgSnowflake(discord_id))) => Id::Discord(discord_id),
+                    (Some(wmbid), None) => Id::Wmbid(wmbid),
+                    (Some(wmbid), Some(PgSnowflake(discord_id))) => Id::Both { wmbid, discord_id },
+                },
+                data: row.data.map(|Json(data)| data).unwrap_or_default(),
+                discorddata: row.discorddata.map(|Json(discorddata)| discorddata),
+            })
+    }
+
+    pub(crate) async fn from_api_key(db_pool: impl PgExecutor<'_>, api_key: &str) -> sqlx::Result<Option<Self>> {
         Ok(
-            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE apikey = $1"#, api_key).fetch_optional(pool).await?
+            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE apikey = $1"#, api_key).fetch_optional(db_pool).await?
             .map(|row| Self {
                 id: match (row.wmbid, row.snowflake) {
                     (None, None) => unreachable!("person in database with no Wurstmineberg ID and no Discord snowflake"),
@@ -98,10 +124,10 @@ impl User {
         )
     }
 
-    pub(crate) async fn from_wmbid(pool: impl PgExecutor<'_>, wmbid: impl Into<Cow<'_, str>>) -> sqlx::Result<Option<Self>> {
+    pub(crate) async fn from_wmbid(db_pool: impl PgExecutor<'_>, wmbid: impl Into<Cow<'_, str>>) -> sqlx::Result<Option<Self>> {
         let wmbid = wmbid.into();
         Ok(
-            sqlx::query!(r#"SELECT snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE wmbid = $1"#, &wmbid).fetch_optional(pool).await?
+            sqlx::query!(r#"SELECT snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE wmbid = $1"#, &wmbid).fetch_optional(db_pool).await?
             .map(|row| Self {
                 id: if let Some(PgSnowflake(discord_id)) = row.snowflake {
                     Id::Both { wmbid: wmbid.into_owned(), discord_id }
@@ -114,9 +140,9 @@ impl User {
         )
     }
 
-    pub(crate) async fn from_discord(pool: impl PgExecutor<'_>, discord_id: UserId) -> sqlx::Result<Option<Self>> {
+    pub(crate) async fn from_discord(db_pool: impl PgExecutor<'_>, discord_id: UserId) -> sqlx::Result<Option<Self>> {
         Ok(
-            sqlx::query!(r#"SELECT wmbid, data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE snowflake = $1"#, PgSnowflake(discord_id) as _).fetch_optional(pool).await?
+            sqlx::query!(r#"SELECT wmbid, data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE snowflake = $1"#, PgSnowflake(discord_id) as _).fetch_optional(db_pool).await?
             .map(|row| Self {
                 id: if let Some(wmbid) = row.wmbid {
                     Id::Both { wmbid, discord_id }
@@ -129,25 +155,25 @@ impl User {
         )
     }
 
-    pub(crate) async fn from_id(pool: impl PgExecutor<'_>, id: Id) -> sqlx::Result<Self> {
+    pub(crate) async fn from_id(db_pool: impl PgExecutor<'_>, id: Id) -> sqlx::Result<Self> {
         Ok(match id {
-            Id::Discord(discord_id) | Id::Both { discord_id, .. } => Self::from_discord(pool, discord_id).await?,
-            Id::Wmbid(wmbid) => Self::from_wmbid(pool, wmbid).await?,
+            Id::Discord(discord_id) | Id::Both { discord_id, .. } => Self::from_discord(db_pool, discord_id).await?,
+            Id::Wmbid(wmbid) => Self::from_wmbid(db_pool, wmbid).await?,
         }.expect("invalid user ID"))
     }
 
-    pub(crate) async fn from_discord_or_wmbid(pool: impl PgExecutor<'_>, id: impl Into<Cow<'_, str>>) -> sqlx::Result<Option<Self>> {
+    pub(crate) async fn from_discord_or_wmbid(db_pool: impl PgExecutor<'_>, id: impl Into<Cow<'_, str>>) -> sqlx::Result<Option<Self>> {
         let id = id.into();
         if let Ok(discord_id) = id.parse() {
-            Self::from_discord(pool, discord_id).await
+            Self::from_discord(db_pool, discord_id).await
         } else {
-            Self::from_wmbid(pool, id).await
+            Self::from_wmbid(db_pool, id).await
         }
     }
 
-    pub(crate) async fn from_tag(pool: impl PgExecutor<'_>, username: &str, discriminator: Option<NonZero<u16>>) -> sqlx::Result<Option<Self>> {
+    pub(crate) async fn from_tag(db_pool: impl PgExecutor<'_>, username: &str, discriminator: Option<NonZero<u16>>) -> sqlx::Result<Option<Self>> {
         Ok(if let Some(discriminator) = discriminator {
-            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake!: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata!: Json<DiscordData>" FROM people WHERE discorddata -> 'username' = $1 AND discorddata -> 'discriminator' = $2"#, Json(username) as _, Json(discriminator) as _).fetch_optional(pool).await?
+            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake!: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata!: Json<DiscordData>" FROM people WHERE discorddata -> 'username' = $1 AND discorddata -> 'discriminator' = $2"#, Json(username) as _, Json(discriminator) as _).fetch_optional(db_pool).await?
             .map(|row| Self {
                 id: if let Some(wmbid) = row.wmbid {
                     Id::Both { wmbid, discord_id: row.snowflake.0 }
@@ -158,7 +184,7 @@ impl User {
                 discorddata: Some(row.discorddata.0),
             })
         } else {
-            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake!: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata!: Json<DiscordData>" FROM people WHERE discorddata -> 'username' = $1 AND discorddata -> 'discriminator' = JSONB 'null'"#, Json(username) as _).fetch_optional(pool).await?
+            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake!: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata!: Json<DiscordData>" FROM people WHERE discorddata -> 'username' = $1 AND discorddata -> 'discriminator' = JSONB 'null'"#, Json(username) as _).fetch_optional(db_pool).await?
             .map(|row| Self {
                 id: if let Some(wmbid) = row.wmbid {
                     Id::Both { wmbid, discord_id: row.snowflake.0 }
@@ -171,9 +197,9 @@ impl User {
         })
     }
 
-    pub(crate) async fn from_minecraft_uuid(pool: impl PgExecutor<'_>, uuid: Uuid) -> sqlx::Result<Option<Self>> {
+    pub(crate) async fn from_minecraft_uuid(db_pool: impl PgExecutor<'_>, uuid: Uuid) -> sqlx::Result<Option<Self>> {
         Ok(
-            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data!: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE data -> 'minecraft' -> 'uuid' = $1"#, Json(uuid) as _).fetch_optional(pool).await?
+            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data!: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE data -> 'minecraft' -> 'uuid' = $1"#, Json(uuid) as _).fetch_optional(db_pool).await?
             .map(|row| Self {
                 id: match (row.wmbid, row.snowflake) {
                     (None, None) => unreachable!("person in database with no Wurstmineberg ID and no Discord snowflake"),
@@ -215,14 +241,30 @@ impl User {
     pub(crate) fn minecraft_uuid(&self) -> Option<Uuid> {
         self.data.minecraft.uuid
     }
+
+    pub(crate) async fn save_data(&self, db_pool: impl PgExecutor<'_>) -> sqlx::Result<()> {
+        match self.id {
+            Id::Both { discord_id, .. } | Id::Discord(discord_id) => sqlx::query!("UPDATE people SET data = $1 WHERE snowflake = $2", Json(&self.data) as _, PgSnowflake(discord_id) as _),
+            Id::Wmbid(ref wmbid) => sqlx::query!("UPDATE people SET data = $1 WHERE wmbid = $2", Json(&self.data) as _, wmbid),
+        }.execute(db_pool).await?;
+        Ok(())
+    }
 }
+
+impl PartialEq for User {
+    fn eq(&self, other: &Self) -> bool {
+        self.id == other.id
+    }
+}
+
+impl Eq for User {}
 
 /// Workaround for `FromParam` not being `async`.
 pub(crate) struct UserParam<'r>(&'r str);
 
 impl<'r> UserParam<'r> {
-    pub(crate) async fn parse(self, pool: impl PgExecutor<'_>) -> sqlx::Result<Option<User>> {
-        User::from_discord_or_wmbid(pool, self.0).await
+    pub(crate) async fn parse(self, db_pool: impl PgExecutor<'_>) -> sqlx::Result<Option<User>> {
+        User::from_discord_or_wmbid(db_pool, self.0).await
     }
 }
 
@@ -254,7 +296,7 @@ impl fmt::Display for User {
             name.fmt(f)
         } else if let Some(wmbid) = self.wmbid() {
             wmbid.fmt(f)
-        } else if let Some(nick) = self.data.minecraft.nicks.first() {
+        } else if let Some(nick) = self.data.minecraft.nicks.last() {
             nick.fmt(f)
         } else {
             //TODO get from Minecraft UUID
@@ -324,9 +366,21 @@ impl Id {
     }
 }
 
+impl PartialEq for Id {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (Self::Discord(discord_id1) | Self::Both { discord_id: discord_id1, .. }, Self::Discord(discord_id2) | Self::Both { discord_id: discord_id2, .. }) => discord_id1 == discord_id2,
+            (Self::Wmbid(wmbid1) | Self::Both { wmbid: wmbid1, .. }, Self::Wmbid(wmbid2) | Self::Both { wmbid: wmbid2, .. }) => wmbid1 == wmbid2,
+            (Self::Discord(_), Self::Wmbid(_)) | (Self::Wmbid(_), Self::Discord(_)) => false,
+        }
+    }
+}
+
+impl Eq for Id {}
+
 #[derive(Debug, Default, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-struct Data {
+pub(crate) struct Data {
     #[serde(skip_serializing_if = "Option::is_none")]
     base: Option<serde_json::Value>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -343,18 +397,26 @@ struct Data {
     options: BTreeMap<String, bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     slack: Option<serde_json::Value>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    status_history: Vec<StatusHistoryItem>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    status_history: Option<serde_json::Value>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    twitch: Option<serde_json::Value>,
+    pub(crate) twitch: Option<DataTwitch>,
     #[serde(skip_serializing_if = "Option::is_none")]
     timezone: Option<Tz>,
-    #[serde(default, skip_serializing_if = "serde_json::Map::is_empty")]
-    twitter: serde_json::Map<String, serde_json::Value>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    twitter: Option<DataTwitter>,
     #[serde(skip_serializing_if = "Option::is_none")]
     website: Option<Url>,
     #[serde(skip_serializing_if = "Option::is_none")]
     wiki: Option<String>,
+}
+
+impl Data {
+    fn join_date(&self) -> Option<DateTime<Utc>> {
+        self.status_history.iter()
+            .filter(|hist| hist.status == Status::Later)
+            .find_map(|hist| hist.date)
+    }
 }
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize)]
@@ -381,6 +443,51 @@ impl DataMinecraft {
     }
 }
 
+#[derive(Debug, Clone, Deserialize, Serialize)]
+struct StatusHistoryItem {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    by: Option<Id>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    date: Option<DateTime<Utc>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    reason: Option<String>,
+    status: Status,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+enum Status {
+    Founding,
+    Later,
+    Former,
+    Vetoed,
+    Guest,
+    Invited,
+}
+
+impl Status {
+    fn as_str(&self) -> &'static str {
+        match self {
+            Self::Founding => "founding",
+            Self::Later => "later",
+            Self::Former => "former",
+            Self::Vetoed => "vetoed",
+            Self::Guest => "guest",
+            Self::Invited => "invited",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub(crate) struct DataTwitch {
+    pub(crate) login: String,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+struct DataTwitter {
+    username: String,
+}
+
 #[derive(Debug, Clone, Deserialize)]
 pub(crate) struct DiscordData {
     avatar: Option<Url>,
@@ -394,6 +501,403 @@ pub(crate) struct DiscordData {
 pub(crate) enum Error {
     #[error(transparent)] Serenity(#[from] serenity::Error),
     #[error(transparent)] Sql(#[from] sqlx::Error),
+    #[error(transparent)] Wiki(#[from] crate::wiki::Error),
+}
+
+#[rocket::get("/people")]
+pub(crate) async fn list(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>) -> Result<RawHtml<String>, Error> {
+    async fn people_table(db_pool: &PgPool, status_groups: &HashMap<Status, Vec<User>>, id: Status, name: &str) -> Result<RawHtml<String>, Error> {
+        Ok(html! {
+            h2(id = id.as_str()) : name;
+            @if let Some(group) = status_groups.get(&id) {
+                table(class = "table table-responsive people-table") {
+                    thead {
+                        tr {
+                            th : RawHtml("&nbsp;");
+                            th : "Name";
+                            th : "Info";
+                        }
+                    }
+                    tbody {
+                        @for person in group {
+                            tr(id? = person.wmbid().map(|wmbid| format!("person-row-{wmbid}"))) {
+                                td(class = "people-avatar") {
+                                    : person.html_avatar(32);
+                                }
+                                td(class = "username") {
+                                    : person;
+                                    @if let Some(nick) = person.data.minecraft.nicks.last() {
+                                        @if !nick.eq_ignore_ascii_case(&person.to_string()) {
+                                            br;
+                                            span(class = "muted") : nick;
+                                        }
+                                    } else {
+                                        br;
+                                        span(class = "muted") : "no Minecraft account";
+                                    }
+                                }
+                                td(class = "description") {
+                                    @if let Some(description) = &person.data.description {
+                                        : render_markdown(db_pool, description).await?;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                p : "(none currently)";
+            }
+        })
+    }
+
+    let mut status_groups = HashMap::<_, Vec<User>>::default();
+    let mut all_people = User::all(&**db_pool);
+    while let Some(person) = all_people.try_next().await? {
+        if let Some(lasthistory) = person.data.status_history.last() {
+            let status = match lasthistory.status {
+                Status::Invited => Status::Guest,
+                Status::Vetoed => Status::Former,
+                status => status,
+            };
+            let group = status_groups.entry(status).or_default();
+            let sort_date = person.data.status_history.iter().find_map(|history| history.date).unwrap_or_else(|| Utc::now());
+            let idx = group.partition_point(|iter_person| iter_person.data.status_history.iter().find_map(|history| history.date).unwrap_or_else(|| Utc::now()) <= sort_date);
+            group.insert(idx, person);
+        }
+    }
+    Ok(page(&me, &uri, PageStyle::default(), "People — Wurstmineberg", Tab::People, html! {
+        div(class = "panel panel-default") {
+            div(class = "panel-heading") {
+                h3(class = "panel-title") : "All the people";
+            }
+            div(class = "panel-body") {
+                p(class = "lead") : "Here's a list of all the people who are or have been on the whitelist.";
+                p : "Players are ranked chronologically by the date they were invited or whitelisted.";
+                p {
+                    : "To keep player info updated, we kind of rely on the players themselves, so this info may be incomplete or nonsensical. If you are on the server you can use ";
+                    a(href = uri!(preferences_get(_))) : "the Preferences page";
+                    : " to update some of your info.";
+                }
+            }
+        }
+        div {
+            : people_table(db_pool, &status_groups, Status::Founding, "Founding members").await?;
+            : people_table(db_pool, &status_groups, Status::Later, "Later members").await?;
+            : people_table(db_pool, &status_groups, Status::Former, "Former members").await?;
+            : people_table(db_pool, &status_groups, Status::Guest, "Invited people and guests").await?;
+        }
+    }))
+}
+
+#[rocket::get("/people/<user>")]
+pub(crate) async fn profile(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, user: UserParam<'_>) -> Result<Option<RawHtml<String>>, Error> {
+    fn profile_stat_row(id: &str, title: impl ToHtml) -> RawHtml<String> {
+        html! {
+            tr(class = "profile-stat-row", id = format!("profile-stat-row-{id}")) {
+                td : title;
+                td(class = "value") : "(loading)";
+            }
+        }
+    }
+
+    fn profile_deathgames_stat_row(id: &str, title: impl ToHtml) -> RawHtml<String> {
+        html! {
+            tr(id = format!("minigames-stat-row-deathgames-{id}")) {
+                td : title;
+                td(class = "value") : "(loading)";
+            }
+        }
+    }
+
+    let Some(user) = user.parse(&**db_pool).await? else { return Ok(None) };
+    Ok(Some(page(&me, &uri, PageStyle { extra_scripts: vec![Script::External(asset("/js/profile.js"))], ..PageStyle::default() }, &format!("{user} on Wurstmineberg"), Tab::People, html! {
+        div(class = "panel panel-default profile-panel") {
+            div(class = "panel-heading") {
+                : user.html_avatar(32);
+                h3(id = "username", class = "panel-title panel-loading") {
+                    : user.to_string();
+                    @if let Some(nick) = user.data.minecraft.nicks.last() {
+                        @if !nick.eq_ignore_ascii_case(&user.to_string()) {
+                            br;
+                            span(class = "muted") {
+                                : "(Minecraft: ";
+                                : nick;
+                                : ")";
+                            }
+                        }
+                    } else {
+                        br;
+                        span(class = "muted") : "(no Minecraft account)";
+                    }
+                    @if me.as_ref().is_some_and(|me| user == *me) {
+                        span(style="float: right;") {
+                            a(href = uri!(preferences_get(_))) : "Edit";
+                        }
+                    }
+                }
+            }
+            div(class = "panel-body") {
+                div(class = "lead") {
+                    @if let Some(nick) = user.data.minecraft.nicks.last() {
+                        div(id = "profile-skin") {
+                            img(class = "nearest-neighbor drop-shadow", style? = user.wmbid().is_some_and(|wmbid| wmbid == "dinnerbone").then_some("transform: rotate(180deg);"), title = nick, alt = nick, src = format!("/api/v3/person/{}/skin/front.png", user.id.url_part()));
+                            img(class = "nearest-neighbor foreground-image", style? = user.wmbid().is_some_and(|wmbid| wmbid == "dinnerbone").then_some("transform: rotate(180deg);"), title = nick, alt = nick, src = format!("/api/v3/person/{}/skin/front.png", user.id.url_part()));
+                        }
+                    }
+                    div(id = "user-info") {
+                        p(id = "user-description") {
+                            @if let Some(description) = &user.data.description {
+                                : render_markdown(db_pool, description).await?;
+                            } else if me.as_ref().is_some_and(|me| user == *me) {
+                                : "You can update your description in your ";
+                                a(href = uri!(preferences_get(_))) : "preferences";
+                                : ".";
+                            }
+                        }
+                        p(id = "social-links") {
+                            @if let Some(website) = &user.data.website {
+                                a(class = "btn btn-link", href = website.to_string()) : "Website";
+                            }
+                            @if let Some(twitch) = &user.data.twitch {
+                                a(class = "btn btn-link", href = format!("https://twitch.tv/{}", twitch.login)) : "Twitch";
+                            } else if me.as_ref().is_some_and(|me| user == *me) {
+                                a(class = "btn btn-success", href = uri!(crate::auth::twitch_login(Some(&uri)))) : "Connect Twitch Account";
+                            }
+                            @if let Some(twitter_username) = user.data.twitter.as_ref().map(|twitter| &twitter.username) {
+                                a(class = "btn btn-link", href = format!("https://twitter.com/{twitter_username}")) : "Twitter";
+                            }
+                        }
+                        div(class = "inventory-container") {
+                            div(class = "inventory-opt-out pull-left") {
+                                h2(id = "inventory") : "Inventory";
+                                table(id = "main-inventory", class = "inventory-table") {
+                                    tbody {
+                                        tr(class = "loading") {
+                                            td : "loading…";
+                                        }
+                                    }
+                                }
+                                div(style = "height: 29px;");
+                                table(id = "hotbar-table", class = "inventory-table") {
+                                    tbody {
+                                        tr(class = "loading") {
+                                            td : "loading…";
+                                        }
+                                    }
+                                }
+                            }
+                            div(class = "inventory-opt-out") {
+                                h2(id = "enderchest") : "Ender chest";
+                                table(id = "ender-chest-table", class = "inventory-table") {
+                                    tbody {
+                                        tr(class = "loading") {
+                                            td : "loading…";
+                                        }
+                                    }
+                                }
+                                div(style = "height: 29px;");
+                                table(id = "offhand-slot-table", class = "inventory-table", style = "float: right;") {
+                                    tr(class = "loading") {
+                                        td : "loading…";
+                                    }
+                                }
+                                table(id = "armor-table", class = "inventory-table") {
+                                    tbody {
+                                        tr(class = "loading") {
+                                            td : "loading…";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        h2 : "Statistics";
+        ul(id = "pagination", class = "nav nav-tabs") {
+            li {
+                a(id = "tab-stats-profile", class = "tab-item", href = "#profile") : "Profile";
+            }
+            li {
+                a(id = "tab-stats-general", class = "tab-item", href = "#general") : "General";
+            }
+            li {
+                a(id = "tab-stats-blocks", class = "tab-item", href = "#blocks") : "Blocks";
+            }
+            li {
+                a(id = "tab-stats-items", class = "tab-item", href = "#items") : "Items";
+            }
+            li {
+                a(id = "tab-stats-mobs", class = "tab-item", href = "#mobs") : "Mobs";
+            }
+            li {
+                a(id = "tab-stats-achievements", class = "tab-item", href = "#achievements") : "Achievements";
+            }
+            li {
+                a(id = "tab-stats-minigames", class = "tab-item", href = "#minigames") : "Minigames";
+            }
+        }
+        div(id = "stats-profile", class = "section") {
+            table(id = "stats-profile-table", class = "table table-responsive stats-table") {
+                thead {
+                    tr {
+                        th : "Info";
+                        th : "Value";
+                    }
+                }
+                tbody {
+                    tr(class = "profile-stat-row") {
+                        td : "Date of Whitelisting";
+                        td {
+                            @if let Some(join_date) = user.data.join_date() {
+                                : format_date(join_date);
+                            } else {
+                                span(class = "muted") : "not yet";
+                            }
+                        }
+                    }
+                    : profile_stat_row("fav-color", "Favorite Color");
+                    : profile_stat_row("fav-item", "Favorite Item");
+                    : profile_stat_row("invited-by", "Invited By");
+                    : profile_stat_row("last-death", "Last Death");
+                    : profile_stat_row("last-seen", "Last Seen");
+                    : profile_stat_row("people-invited-prefreeze", html! {
+                        : "People “Invited” (pre-";
+                        : crate::wiki::link(db_pool, "freeze", "wiki", "freeze").await?;
+                        : ")";
+                    });
+                    : profile_stat_row("people-invited", "People Invited (post-freeze)");
+                    : profile_stat_row("status", "Status");
+                }
+            }
+        }
+        div(id = "stats-general", class = "section hidden") {
+            table(id = "stats-general-table", class = "table table-responsive stats-table") {
+                thead {
+                    tr {
+                        th : "Stat";
+                        th : "Value";
+                    }
+                }
+                tbody {
+                    tr(id = "loading-stat-general-table", class = "loading-stat") {
+                        td(colspan = "2") : "Loading stat data…";
+                    }
+                }
+            }
+        }
+        div(id = "stats-blocks", class = "section hidden") {
+            table(id = "stats-blocks-table", class = "table table-responsive stats-table") {
+                thead {
+                    tr {
+                        th : RawHtml("&nbsp;");
+                        th : "Block";
+                        th(style = "text-align: right;") : "Times Crafted";
+                        th(style = "text-align: right;") : "Times Used";
+                        th(style = "text-align: right;") : "Times Mined";
+                        th(style = "text-align: right;") : "Times Dropped";
+                        th(style = "text-align: right;") : "Times Picked Up";
+                    }
+                }
+                tbody {
+                    tr(id = "loading-stat-blocks-table", class = "loading-stat") {
+                        td(colspan = "5") : "Loading stat data…";
+                    }
+                }
+            }
+        }
+        div(id = "stats-items", class = "section hidden") {
+            table(id = "stats-items-table", class = "table table-responsive stats-table") {
+                thead {
+                    tr {
+                        th : RawHtml("&nbsp;");
+                        th : "Item";
+                        th(style = "text-align: right;") : "Times Crafted";
+                        th(style = "text-align: right;") : "Times Used";
+                        th(style = "text-align: right;") : "Times Depleted";
+                        th(style = "text-align: right;") : "Times Dropped";
+                        th(style = "text-align: right;") : "Times Picked Up";
+                    }
+                }
+                tbody {
+                    tr(id = "loading-stat-items-table", class = "loading-stat") {
+                        td(colspan = "5") : "Loading stat data…";
+                    }
+                }
+            }
+        }
+        div(id = "stats-mobs", class = "section hidden") {
+            table(id = "stats-mobs-table", class = "table table-responsive stats-table") {
+                thead {
+                    tr {
+                        th : "Mob";
+                        th : "Killed";
+                        th : "Killed By";
+                    }
+                }
+                tbody {
+                    tr(id = "loading-stat-mobs-table", class = "loading-stat") {
+                        td(colspan = "3") : "Loading stat data…";
+                    }
+                }
+            }
+        }
+        div(id = "stats-achievements", class = "section hidden") {
+            table(id = "stats-achievements-table", class = "table table-responsive stats-table") {
+                thead {
+                    tr {
+                        th : RawHtml("&nbsp;");
+                        th : "Achievement";
+                        th : "Value";
+                    }
+                }
+                tbody {
+                    tr(id = "loading-stat-achievements-table", class = "loading-stat") {
+                        td(colspan = "3") : "Loading stat data…";
+                    }
+                }
+            }
+        }
+        div(id = "stats-minigames", class = "section hidden") {
+            h2 : "Achievement Run";
+            table(id = "minigames-stats-table-achievementrun", class = "table table-responsive stats-table") {
+                thead {
+                    tr {
+                        th : "Stat";
+                        th : "Value";
+                    }
+                }
+                tbody {
+                    tr(id = "minigames-stat-row-achievementrun-place") {
+                        td : "Rank";
+                        td(class = "value") : "(loading)";
+                    }
+                }
+            }
+            h2 : "Death Games";
+            table(id = "minigames-stats-table-deathgames", class = "table table-responsive stats-table") {
+                thead {
+                    tr {
+                        th : "Stat";
+                        th : "Value";
+                    }
+                }
+                tbody {
+                    : profile_deathgames_stat_row("kills", "Kills");
+                    : profile_deathgames_stat_row("deaths", "Deaths");
+                    : profile_deathgames_stat_row("diamonds", "Diamonds earned (kills minus deaths)");
+                    : profile_deathgames_stat_row("attacks", "Attacks total");
+                    : profile_deathgames_stat_row("attacks-success", "Successful attacks");
+                    : profile_deathgames_stat_row("attacks-fail", "Failed attacks");
+                    : profile_deathgames_stat_row("defense", "Defenses total");
+                    : profile_deathgames_stat_row("defense-success", "Successful defenses");
+                    : profile_deathgames_stat_row("defense-fail", "Failed defenses");
+                }
+            }
+        }
+    })))
 }
 
 enum PreferencesFormDefaults<'v> {
@@ -433,7 +937,7 @@ impl<'v> PreferencesFormDefaults<'v> {
     fn twitter(&self) -> Option<&str> {
         match self {
             Self::Context(ctx) => ctx.field_value("twitter"),
-            Self::Values(user) => user.data.twitter.get("username").and_then(|username| username.as_str()),
+            Self::Values(user) => user.data.twitter.as_ref().map(|twitter| &*twitter.username),
         }
     }
 
@@ -656,17 +1160,10 @@ pub(crate) async fn profile_post(db_pool: &State<PgPool>, discord_ctx: &State<Rw
             }
             me.data.description = (!value.description.is_empty()).then(|| value.description.clone());
             me.data.mojira = (!value.mojira.is_empty()).then(|| value.mojira.clone());
-            if value.twitter.is_empty() {
-                me.data.twitter = serde_json::Map::default();
-            } else {
-                me.data.twitter.insert(format!("username"), serde_json::Value::String(value.twitter.clone()));
-            }
+            me.data.twitter = (!value.twitter.is_empty()).then(|| DataTwitter { username: value.twitter.clone() });
             me.data.website = (!value.website.is_empty()).then(|| value.website.parse().expect("validated"));
             me.data.fav_color = fav_color;
-            match me.id {
-                Id::Both { discord_id, .. } | Id::Discord(discord_id) => sqlx::query!("UPDATE people SET data = $1 WHERE snowflake = $2", Json(&me.data) as _, PgSnowflake(discord_id) as _),
-                Id::Wmbid(ref wmbid) => sqlx::query!("UPDATE people SET data = $1 WHERE wmbid = $2", Json(&me.data) as _, wmbid),
-            }.execute(&**db_pool).await?;
+            me.save_data(&**db_pool).await?;
             preferences_form(me.clone(), uri, csrf.as_ref(), true, "profile", PreferencesFormDefaults::Values(me))
         }
     } else {

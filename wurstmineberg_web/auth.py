@@ -3,7 +3,6 @@ import urllib.parse
 
 import flask # PyPI: Flask
 import flask_dance.contrib.discord # PyPI: Flask-Dance
-import flask_dance.contrib.twitch # PyPI: Flask-Dance
 import flask_login # PyPI: Flask-Login
 import jinja2 # PyPI: Jinja2
 import sqlalchemy.orm.exc # PyPI: SQLAlchemy
@@ -48,12 +47,6 @@ def setup(app):
     app.config['SECRET_KEY'] = app.config['wurstminebot']['clientSecret']
     app.config['USE_SESSION_FOR_NEXT'] = True
 
-    app.register_blueprint(flask_dance.contrib.twitch.make_twitch_blueprint(
-        client_id=app.config['twitch']['clientID'],
-        client_secret=app.config['twitch']['clientSecret'],
-        redirect_to='twitch_auth_callback'
-    ), url_prefix='/login')
-
     @app.before_request
     def global_user():
         if 'x-wurstmineberg-authorized-discord-id' in flask.request.headers:
@@ -85,27 +78,6 @@ def setup(app):
             flask.flash('Your account has not yet been whitelisted. Please schedule a server tour in #general.', 'error')
             return flask.redirect(flask.url_for('index'))
         flask.flash(jinja2.Markup('Hello {}.'.format(person.__html__())))
-        next_url = flask.session.get('next')
-        if next_url is None:
-            return flask.redirect(flask.url_for('index'))
-        elif is_safe_url(next_url):
-            return flask.redirect(next_url)
-        else:
-            return flask.abort(400)
-
-    @app.route('/auth/twitch')
-    def twitch_auth_callback():
-        if not flask.g.user.is_active:
-            flask.flash('Please sign in via Discord before linking your Twitch account.', 'error')
-            return flask.redirect(flask.url_for('index'))
-        if not flask_dance.contrib.twitch.twitch.authorized:
-            flask.flash('Twitch login failed.', 'error')
-            return flask.redirect(flask.url_for('index'))
-        response = flask_dance.contrib.twitch.twitch.get('users')
-        if not response.ok:
-            return flask.make_response(('Twitch returned error {} at {}: {}'.format(response.status_code, jinja2.escape(response.url), jinja2.escape(response.text)), response.status_code, []))
-        flask.g.user.twitch = response.json()['data'][0]
-        flask.flash('Successfully linked Twitch account.')
         next_url = flask.session.get('next')
         if next_url is None:
             return flask.redirect(flask.url_for('index'))

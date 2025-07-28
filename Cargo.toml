@@ -67,6 +67,7 @@ tokio = { version = "1.43.0", features = ["net", "process", "sync", "time"] }
 tokio-stream = { version = "0.1.17", features = ["io-util"] }
 tokio-util = { version = "0.7.15", features = ["io"] }
 twitch-irc = { version = "5", default-features = false, features = ["transport-tcp-rustls-webpki-roots"] }
+twitch_helix = { git = "https://github.com/fenhl/rust-twitch-helix", branch = "main" }
 url = "2.5.4"
 uuid = { version = "1.16.0", features = ["serde"] }
 wheel = { git = "https://github.com/fenhl/wheel", branch = "main", features = ["reqwest", "rocket", "serde_json"] }
