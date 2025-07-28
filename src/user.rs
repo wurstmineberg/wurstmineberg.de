@@ -15,7 +15,6 @@ use {
         Europe,
         Tz,
     },
-    either::Either,
     futures::stream::{
         Stream,
         TryStreamExt as _,
@@ -82,6 +81,7 @@ use {
             page,
         },
         time::{
+            DateWithOptionalTime,
             format_date,
             format_date_naive,
         },
@@ -416,7 +416,7 @@ pub(crate) struct Data {
 }
 
 impl Data {
-    fn join_date(&self) -> Option<Either<DateTime<Utc>, NaiveDate>> {
+    fn join_date(&self) -> Option<DateWithOptionalTime> {
         self.status_history.iter()
             .filter(|hist| hist.status == Status::Later)
             .find_map(|hist| hist.date)
@@ -451,8 +451,8 @@ impl DataMinecraft {
 struct StatusHistoryItem {
     #[serde(skip_serializing_if = "Option::is_none")]
     by: Option<Id>,
-    #[serde(with = "either::serde_untagged_optional", skip_serializing_if = "Option::is_none")]
-    date: Option<Either<DateTime<Utc>, NaiveDate>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    date: Option<DateWithOptionalTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
     reason: Option<String>,
     status: Status,
@@ -565,8 +565,8 @@ pub(crate) async fn list(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<
                 status => status,
             };
             let group = status_groups.entry(status).or_default();
-            let sort_date = person.data.status_history.iter().find_map(|history| history.date).map(|date| date.left_or_else(|date| date.and_hms_opt(0, 0, 0).unwrap().and_utc())).unwrap_or_else(|| Utc::now());
-            let idx = group.partition_point(|iter_person| iter_person.data.status_history.iter().find_map(|history| history.date).map(|date| date.left_or_else(|date| date.and_hms_opt(0, 0, 0).unwrap().and_utc())).unwrap_or_else(|| Utc::now()) <= sort_date);
+            let sort_date = person.data.status_history.iter().find_map(|history| history.date).map(|date| date.sort_key()).unwrap_or_else(|| Utc::now());
+            let idx = group.partition_point(|iter_person| iter_person.data.status_history.iter().find_map(|history| history.date).map(|date| date.sort_key()).unwrap_or_else(|| Utc::now()) <= sort_date);
             group.insert(idx, person);
         }
     }
@@ -756,8 +756,8 @@ pub(crate) async fn profile(db_pool: &State<PgPool>, me: Option<User>, uri: Orig
                         td : "Date of Whitelisting";
                         td {
                             @match user.data.join_date() {
-                                Some(Either::Left(join_date)) => : format_date(join_date);
-                                Some(either::Right(join_date)) => : format_date_naive(join_date);
+                                Some(DateWithOptionalTime::DateTime(join_date)) => : format_date(join_date);
+                                Some(DateWithOptionalTime::Date(join_date)) => : format_date_naive(join_date);
                                 None => span(class = "muted") : "not yet";
                             }
                         }

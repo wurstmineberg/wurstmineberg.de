@@ -1,10 +1,66 @@
 use {
-    std::fmt,
+    std::{
+        fmt,
+        str::FromStr,
+    },
     chrono::prelude::*,
     chrono_tz::Europe,
     rocket::response::content::RawHtml,
     rocket_util::html,
+    serde_with::{
+        DeserializeFromStr,
+        SerializeDisplay,
+    },
 };
+
+#[derive(Debug, Clone, Copy, DeserializeFromStr, SerializeDisplay)]
+pub(crate) enum DateWithOptionalTime {
+    DateTime(DateTime<Utc>),
+    Date(NaiveDate),
+}
+
+impl DateWithOptionalTime {
+    pub(crate) fn sort_key(&self) -> DateTime<Utc> {
+        match *self {
+            Self::DateTime(datetime) => datetime,
+            Self::Date(date) => date.and_hms_opt(0, 0, 0).expect("wrong hardcoded datetime").and_utc(),
+        }
+    }
+}
+
+#[derive(Debug, thiserror::Error)]
+#[error("failed to parse date with optional time")]
+pub(crate) struct DateWithOptionalTimeParseError {
+    rfc3339: chrono::ParseError,
+    legacy_utc: chrono::ParseError,
+    date_only: chrono::ParseError,
+}
+
+impl FromStr for DateWithOptionalTime {
+    type Err = DateWithOptionalTimeParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match DateTime::parse_from_rfc3339(s) {
+            Ok(datetime) => Ok(Self::DateTime(datetime.into())),
+            Err(rfc3339) => match NaiveDateTime::parse_from_str(s, "%F %T") {
+                Ok(datetime) => Ok(Self::DateTime(datetime.and_utc())),
+                Err(legacy_utc) => match NaiveDate::parse_from_str(s, "%F") {
+                    Ok(date) => Ok(Self::Date(date)),
+                    Err(date_only) => Err(DateWithOptionalTimeParseError { rfc3339, legacy_utc, date_only }),
+                },
+            },
+        }
+    }
+}
+
+impl fmt::Display for DateWithOptionalTime {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::DateTime(datetime) => datetime.to_rfc3339_opts(SecondsFormat::AutoSi, true).fmt(f),
+            Self::Date(date) => date.fmt(f),
+        }
+    }
+}
 
 pub(crate) struct DateTimeFormat {
     pub(crate) long: bool,
