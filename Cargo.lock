@@ -7087,6 +7087,7 @@ dependencies = [
  "craftping",
  "discord-message-parser",
  "doubloon",
+ "either",
  "futures",
  "gix",
  "hematite-nbt",

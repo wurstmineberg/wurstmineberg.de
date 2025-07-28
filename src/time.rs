@@ -20,6 +20,12 @@ where Z::Offset: fmt::Display {
     }
 }
 
+pub(crate) fn format_date_naive(date: NaiveDate) -> RawHtml<String> {
+    html! {
+        span : date.format("%B %-d, %Y").to_string();
+    }
+}
+
 pub(crate) fn format_datetime<Z: TimeZone>(datetime: DateTime<Z>, format: DateTimeFormat) -> RawHtml<String> {
     let utc = datetime.to_utc();
     let berlin = datetime.with_timezone(&Europe::Berlin);
