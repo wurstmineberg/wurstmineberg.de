@@ -21,7 +21,7 @@ warnings = "deny"
 
 [dependencies]
 async-compression = { version = "0.4.23", features = ["gzip", "tokio"] }
-async-proto = { version = "0.25.1", features = ["bitvec", "tokio-tungstenite021"] }
+async-proto = { version = "0.26", features = ["bitvec", "tokio-tungstenite021"] }
 async_zip = { version = "0.0.17", features = ["full"] }
 base64 = "0.22.1"
 bitvec = "1.0.1"
@@ -76,6 +76,6 @@ wheel = { git = "https://github.com/fenhl/wheel", branch = "main", features = ["
 systemd_minecraft = { git = "https://github.com/wurstmineberg/systemd-minecraft", branch = "riir", features = ["rocket"] }
 
 [build-dependencies]
-gix = "0.72"
+gix = "0.73"
 itertools = "0.14.0"
 thiserror = "2.0.11"

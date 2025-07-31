@@ -372,7 +372,7 @@ async fn client_session(mut rocket_shutdown: rocket::Shutdown, version: WsApiVer
                         let cx_relative = cx.rem_euclid(32) as u8;
                         let cz_relative = cz.rem_euclid(32) as u8;
                         let new_timestamp = region.timestamps[32 * cz_relative as usize + cx_relative as usize];
-                        let new_chunk = region.chunk_column_relative([cx_relative, cz_relative]).await?.and_then(|col| col.into_section_at(cy));
+                        let new_chunk = region.chunk_column_relative([cx_relative, cz_relative])?.and_then(|col| col.into_section_at(cy));
                         match chunk_cache.entry((cx_relative, cy, cz_relative)) {
                             hash_map::Entry::Occupied(mut entry) => {
                                 let old_timestamp = entry.get_mut();
