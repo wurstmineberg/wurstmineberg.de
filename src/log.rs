@@ -7,7 +7,6 @@ use {
             PathBuf,
         },
         pin::pin,
-        str::FromStr,
         sync::Arc,
         time::Duration,
     },
@@ -92,41 +91,6 @@ pub(crate) enum Error {
 impl From<Never> for Error {
     fn from(never: Never) -> Self {
         match never {}
-    }
-}
-
-enum Thread {
-    Server,
-    Unknown,
-}
-
-impl FromStr for Thread {
-    type Err = Never;
-
-    fn from_str(s: &str) -> Result<Thread, Never> {
-        Ok(match s {
-            "Server thread" => Thread::Server,
-            _ => Thread::Unknown,
-        })
-    }
-}
-
-enum Level {
-    Info,
-    Warn,
-    Error,
-}
-
-impl FromStr for Level {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Level, ()> {
-        match s {
-            "INFO" => Ok(Level::Info),
-            "WARN" => Ok(Level::Warn),
-            "ERROR" => Ok(Level::Error),
-            _ => Err(()),
-        }
     }
 }
 
@@ -267,9 +231,6 @@ impl RegularLine {
 
 enum Line {
     Regular {
-        //timestamp: DateTime<Utc>,
-        //thread: Thread,
-        //level: Level,
         content: RegularLine,
     },
     Unknown,
@@ -277,11 +238,8 @@ enum Line {
 
 impl Line {
     async fn parse(state: Arc<RwLock<FollowerState>>, s: &str) -> Result<Self, Error> {
-        Ok(if let Some((_, _ /*timestamp*/, _ /*thread*/, _ /*level*/, content)) = regex_captures!("^([0-9]+-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}) \\[([^]]+)/(INFO|WARN|ERROR)\\]: (.+)$", s) {
+        Ok(if let Some((_, content)) = regex_captures!("^[0-9]+-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} \\[[^]]+/INFO|WARN|ERROR\\]: (.+)$", s) {
             Self::Regular {
-                //timestamp: Utc.datetime_from_str(timestamp, "%Y-%m-%d %H:%M:%S").ok()?,
-                //thread: thread.parse().never_unwrap(),
-                //level: level.parse().expect("level that matches regex should parse"),
                 content: RegularLine::parse(state, content).await?,
             }
         } else {

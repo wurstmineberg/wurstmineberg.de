@@ -22,7 +22,7 @@ warnings = "deny"
 [dependencies]
 async-compression = { version = "0.4.23", features = ["gzip", "tokio"] }
 async-proto = { version = "0.26", features = ["bitvec", "tokio-tungstenite021"] }
-async_zip = { version = "0.0.17", features = ["full"] }
+async_zip = { version = "0.0.18", features = ["full"] }
 base64 = "0.22.1"
 bitvec = "1.0.1"
 chase = { git = "https://github.com/fenhl/chase-rs", branch = "wmb" }
@@ -43,7 +43,7 @@ mimalloc = "0.1.43"
 minecraft = { git = "https://github.com/wurstmineberg/rust-minecraft-types", branch = "main" }
 nonempty-collections = "1"
 notify = "8.0.0"
-notify-debouncer-full = "0.5"
+notify-debouncer-full = "0.6"
 pulldown-cmark = { git = "https://github.com/fenhl/pulldown-cmark", branch = "rocket-wiki", default-features = false, features = ["simd", "html"] }
 rand = "0.9.1"
 rcon = { version = "0.6", features = ["rt-tokio"] }
