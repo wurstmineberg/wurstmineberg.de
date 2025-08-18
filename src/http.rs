@@ -449,7 +449,7 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>) -> Re
                     : "When we made backups of everything on the old server, we sort of didn't check to make sure that the wiki backup was up to date. So now we have a wiki backup from 2014 as well as some downloads from the ";
                     a(href = "https://web.archive.org/") : "Wayback Machine";
                     : ". Since then, we wrote our own wiki software for increased actually-able-to-login-ness, but it's still missing ";
-                    abbr(title = "like redlinks, templates, revision diffs, and a working Markdown preview") : "some important features";
+                    abbr(title = "like templates, revision diffs, and a working Markdown preview") : "some important features";
                     : " so it might take a while for things to be back to normal.";
                 }
                 a(class = "btn btn-default", href = uri!(crate::wiki::index)) {
