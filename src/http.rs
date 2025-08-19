@@ -639,7 +639,7 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             log_level: rocket::config::LogLevel::Critical,
             port: 24822,
             limits: Limits::default()
-                .limit("bytes", 2.mebibytes()), // for proxied wiki edits
+                .limit("form", 2.mebibytes()), // for wiki edits
             ..rocket::Config::default()
         })
         .mount("/", rocket::routes![
