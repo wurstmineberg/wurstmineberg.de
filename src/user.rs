@@ -63,6 +63,7 @@ use {
     },
     url::Url,
     uuid::Uuid,
+    wurstmineberg_web::websocket::UserIdRequest,
     crate::{
         discord::{
             self,
@@ -164,6 +165,13 @@ impl User {
             Id::Discord(discord_id) | Id::Both { discord_id, .. } => Self::from_discord(db_pool, discord_id).await?,
             Id::Wmbid(wmbid) => Self::from_wmbid(db_pool, wmbid).await?,
         }.expect("invalid user ID"))
+    }
+
+    pub(crate) async fn from_id_request(db_pool: impl PgExecutor<'_>, id: UserIdRequest) -> sqlx::Result<Option<Self>> {
+        match id {
+            UserIdRequest::Discord(discord_id) => Self::from_discord(db_pool, discord_id).await,
+            UserIdRequest::Wmbid(wmbid) => Self::from_wmbid(db_pool, wmbid).await,
+        }
     }
 
     pub(crate) async fn from_discord_or_wmbid(db_pool: impl PgExecutor<'_>, id: impl Into<Cow<'_, str>>) -> sqlx::Result<Option<Self>> {
@@ -320,67 +328,7 @@ impl ToHtml for User {
     }
 }
 
-#[derive(Serialize)]
-#[serde(untagged)]
-enum SerializeId {
-    Wmbid(String),
-    Discord(UserId),
-}
-
-impl From<Id> for SerializeId {
-    fn from(value: Id) -> Self {
-        match value {
-            Id::Wmbid(wmbid) => Self::Wmbid(wmbid),
-            Id::Discord(discord_id) | Id::Both { discord_id, .. } => Self::Discord(discord_id),
-        }
-    }
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize)]
-#[serde(untagged, into = "SerializeId")]
-pub(crate) enum Id {
-    Wmbid(String),
-    Discord(UserId),
-    Both {
-        wmbid: String,
-        discord_id: UserId,
-    },
-}
-
-impl Id {
-    fn wmbid(&self) -> Option<&str> {
-        match self {
-            Self::Discord(_) => None,
-            Self::Wmbid(wmbid) | Self::Both { wmbid, .. } => Some(&wmbid),
-        }
-    }
-
-    fn discord_id(&self) -> Option<UserId> {
-        match self {
-            Self::Wmbid(_) => None,
-            Self::Discord(discord_id) | Self::Both { discord_id, .. } => Some(*discord_id),
-        }
-    }
-
-    pub(crate) fn url_part(&self) -> Cow<'_, str> {
-        match self {
-            Self::Wmbid(wmbid) => Cow::Borrowed(wmbid),
-            Self::Discord(discord_id) | Self::Both { discord_id, .. } => Cow::Owned(discord_id.to_string()),
-        }
-    }
-}
-
-impl PartialEq for Id {
-    fn eq(&self, other: &Self) -> bool {
-        match (self, other) {
-            (Self::Discord(discord_id1) | Self::Both { discord_id: discord_id1, .. }, Self::Discord(discord_id2) | Self::Both { discord_id: discord_id2, .. }) => discord_id1 == discord_id2,
-            (Self::Wmbid(wmbid1) | Self::Both { wmbid: wmbid1, .. }, Self::Wmbid(wmbid2) | Self::Both { wmbid: wmbid2, .. }) => wmbid1 == wmbid2,
-            (Self::Discord(_), Self::Wmbid(_)) | (Self::Wmbid(_), Self::Discord(_)) => false,
-        }
-    }
-}
-
-impl Eq for Id {}
+pub(crate) type Id = wurstmineberg_web::websocket::UserIdResponse;
 
 #[derive(Debug, Default, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]

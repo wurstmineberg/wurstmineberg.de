@@ -10,6 +10,7 @@ use {
             },
         },
         convert::Infallible as Never,
+        fmt,
         iter,
         path::Path,
         pin::pin,
@@ -275,6 +276,19 @@ enum WsApiVersion {
 }
 
 impl WsApiVersion {
+    async fn write_custom_error(&self, sink: &WsSink, debug: impl fmt::Debug, display: impl fmt::Display) -> Result<(), async_proto::WriteError> {
+        match self {
+            Self::V3 => lock!(sink = sink; ServerMessageV3::Error {
+                debug: format!("{debug:?}"),
+                display: display.to_string(),
+            }.write_ws021(&mut *sink).await),
+            Self::V4 => lock!(sink = sink; ServerMessageV4::Error {
+                debug: format!("{debug:?}"),
+                display: display.to_string(),
+            }.write_ws021(&mut *sink).await),
+        }
+    }
+
     async fn write_chunk(&self, sink: &WsSink, dimension: Dimension, cx: i32, cy: i8, cz: i32, chunk: Option<ChunkSection>) -> Result<(), async_proto::WriteError> {
         match self {
             Self::V3 => lock!(sink = sink; ServerMessageV3::ChunkData {
@@ -321,18 +335,31 @@ impl WsApiVersion {
             }
         }
     }
+
+    async fn write_player(&self, sink: &WsSink, id: user::Id, uuid: Uuid, data: Option<nbt::Blob>) -> Result<(), async_proto::WriteError> {
+        match self {
+            Self::V3 => lock!(sink = sink; ServerMessageV3::PlayerData { id, uuid, data }.write_ws021(&mut *sink).await),
+            Self::V4 => lock!(sink = sink; ServerMessageV4::PlayerData { id, uuid, data }.write_ws021(&mut *sink).await),
+        }
+    }
 }
 
 #[derive(Debug, thiserror::Error)]
 enum WsError {
     #[error(transparent)] ChunkColumnDecode(#[from] mcanvil::ChunkColumnDecodeError),
     #[error(transparent)] Elapsed(#[from] tokio::time::error::Elapsed),
+    #[error(transparent)] Nbt(#[from] nbt::Error),
     #[error(transparent)] Notify(#[from] notify::Error),
     #[error(transparent)] Read(#[from] async_proto::ReadError),
     #[error(transparent)] RegionDecode(#[from] mcanvil::RegionDecodeError),
+    #[error(transparent)] Sql(#[from] sqlx::Error),
+    #[error(transparent)] Uuid(#[from] uuid::Error),
+    #[error(transparent)] Wheel(#[from] wheel::Error),
     #[error(transparent)] Write(#[from] async_proto::WriteError),
     #[error("received empty error list from notify debouncer")]
     NotifyEmptyErrorList,
+    #[error("received unknown path from notifier")]
+    NotifyUnexpectedFile,
 }
 
 impl From<Vec<notify::Error>> for WsError {
@@ -345,14 +372,14 @@ impl From<Vec<notify::Error>> for WsError {
     }
 }
 
-async fn client_session(mut rocket_shutdown: rocket::Shutdown, version: WsApiVersion, stream: WsStream, sink: WsSink) -> Result<(), WsError> {
+async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, version: WsApiVersion, stream: WsStream, sink: WsSink) -> Result<(), WsError> {
     #[derive(Clone, Copy)]
-    enum UpdateChunksReason {
+    enum UpdateReason {
         Subscribe,
         Notify,
     }
 
-    async fn update_chunks(version: WsApiVersion, world: &systemd_minecraft::World, region_cache: &Mutex<HashMap<(Dimension, i32, i32), HashMap<(u8, i8, u8), Option<DateTime<Utc>>>>>, watcher: &Mutex<notify_debouncer_full::Debouncer<notify::RecommendedWatcher, notify_debouncer_full::RecommendedCache>>, sink: &WsSink, chunks: impl IntoIterator<Item = (Dimension, i32, i8, i32)>, reason: UpdateChunksReason) -> Result<(), WsError> {
+    async fn update_chunks(version: WsApiVersion, world: &systemd_minecraft::World, region_cache: &Mutex<HashMap<(Dimension, i32, i32), HashMap<(u8, i8, u8), Option<DateTime<Utc>>>>>, watcher: &Mutex<notify_debouncer_full::Debouncer<notify::RecommendedWatcher, notify_debouncer_full::RecommendedCache>>, sink: &WsSink, chunks: impl IntoIterator<Item = (Dimension, i32, i8, i32)>, reason: UpdateReason) -> Result<(), WsError> {
         let chunks = chunks.into_iter().into_group_map_by(|(dimension, cx, _, cz)| (*dimension, cx.div_euclid(32), cz.div_euclid(32)));
         lock!(region_cache = region_cache; for ((dimension, rx, rz), chunks) in chunks {
             let chunk_cache = match region_cache.entry((dimension, rx, rz)) {
@@ -363,8 +390,8 @@ async fn client_session(mut rocket_shutdown: rocket::Shutdown, version: WsApiVer
                 }
             };
             let should_check = match reason {
-                UpdateChunksReason::Subscribe => !chunks.iter().all(|(_, cx, cy, cz)| chunk_cache.contains_key(&(cx.rem_euclid(32) as u8, *cy, cz.rem_euclid(32) as u8))),
-                UpdateChunksReason::Notify => true, // already filtered
+                UpdateReason::Subscribe => !chunks.iter().all(|(_, cx, cy, cz)| chunk_cache.contains_key(&(cx.rem_euclid(32) as u8, *cy, cz.rem_euclid(32) as u8))),
+                UpdateReason::Notify => true, // already filtered
             };
             if should_check {
                 if let Some(mut region) = Region::find(world.dir().join("world"), dimension, [rx, rz]).await? {
@@ -411,8 +438,48 @@ async fn client_session(mut rocket_shutdown: rocket::Shutdown, version: WsApiVer
         Ok(())
     }
 
+    async fn update_player(version: WsApiVersion, world: &systemd_minecraft::World, players_cache: &Mutex<HashMap<Uuid, Option<nbt::Blob>>>, watcher: &Mutex<notify_debouncer_full::Debouncer<notify::RecommendedWatcher, notify_debouncer_full::RecommendedCache>>, sink: &WsSink, id: user::Id, uuid: Uuid, reason: UpdateReason) -> Result<(), WsError> {
+        lock!(players_cache = players_cache; {
+            let player_cache = match players_cache.entry(uuid) {
+                hash_map::Entry::Occupied(entry) => entry.into_mut(),
+                hash_map::Entry::Vacant(entry) => {
+                    lock!(watcher = watcher; watcher.watch(&world.dir().join("world").join("playerdata").join(format!("{uuid}.dat")), notify::RecursiveMode::NonRecursive))?;
+                    entry.insert(None)
+                }
+            };
+            let should_check = match reason {
+                UpdateReason::Subscribe => player_cache.is_none(),
+                UpdateReason::Notify => true, // already filtered
+            };
+            if should_check {
+                let path = world.dir().join("world").join("playerdata").join(format!("{uuid}.dat"));
+                let mut file = match File::open(&path).await {
+                    Ok(file) => Some(file),
+                    Err(wheel::Error::Io { inner, .. }) if inner.kind() == io::ErrorKind::NotFound => None,
+                    Err(e) => return Err(e.into()),
+                };
+                if let Some(mut file) = file {
+                    let mut buf = Vec::default();
+                    file.read_to_end(&mut buf).await.at(&path)?;
+                    let mut data = nbt::from_gzip_reader::<_, nbt::Blob>(&*buf)?;
+                    if player_cache.as_ref().is_none_or(|player_cache| *player_cache != data) {
+                        version.write_player(sink, id, uuid, Some(data.clone())).await?;
+                        *player_cache = Some(data);
+                    }
+                } else {
+                    if player_cache.is_some() {
+                        version.write_player(sink, id, uuid, None).await?;
+                        *player_cache = None;
+                    }
+                }
+            }
+        });
+        Ok(())
+    }
+
     let main_world = systemd_minecraft::World::default();
     let region_cache = Mutex::default();
+    let players_cache = Mutex::default();
     let (watch_tx, mut watch_rx) = mpsc::channel(1_024);
     let watcher = Mutex::new(notify_debouncer_full::new_debouncer(Duration::from_secs(45), None, move |res| watch_tx.blocking_send(res).allow_unreceived())?);
     let mut read = pin!(timeout(Duration::from_secs(60), ClientMessage::read_ws_owned021(stream)));
@@ -425,8 +492,17 @@ async fn client_session(mut rocket_shutdown: rocket::Shutdown, version: WsApiVer
                 read.set(timeout(Duration::from_secs(60), ClientMessage::read_ws_owned021(stream)));
                 match msg {
                     ClientMessage::Pong => {}
-                    ClientMessage::SubscribeToChunk { dimension, cx, cy, cz } => update_chunks(version, &main_world, &region_cache, &watcher, &sink, iter::once((dimension, cx, cy, cz)), UpdateChunksReason::Subscribe).await?,
-                    ClientMessage::SubscribeToChunks(chunks) => update_chunks(version, &main_world, &region_cache, &watcher, &sink, chunks, UpdateChunksReason::Subscribe).await?,
+                    ClientMessage::SubscribeToChunk { dimension, cx, cy, cz } => update_chunks(version, &main_world, &region_cache, &watcher, &sink, iter::once((dimension, cx, cy, cz)), UpdateReason::Subscribe).await?,
+                    ClientMessage::SubscribeToChunks(chunks) => update_chunks(version, &main_world, &region_cache, &watcher, &sink, chunks, UpdateReason::Subscribe).await?,
+                    ClientMessage::SubscribeToInventory { player } => if let Some(user) = User::from_id_request(&db_pool, player.clone()).await? {
+                        if let Some(uuid) = user.minecraft_uuid() {
+                            update_player(version, &main_world, &players_cache, &watcher, &sink, user.id, uuid, UpdateReason::Subscribe).await?;
+                        } else {
+                            version.write_custom_error(&sink, player, "the requested user does not have a Minecraft UUID").await?;
+                        }
+                    } else {
+                        version.write_custom_error(&sink, player, "the requested user ID does not exist").await?;
+                    },
                 }
             }
             Some(res) = watch_rx.recv() => {
@@ -443,10 +519,18 @@ async fn client_session(mut rocket_shutdown: rocket::Shutdown, version: WsApiVer
                         }
                     }
                 }
-                for region_path in paths {
-                    let region = Region::open(region_path).await?;
-                    if let Some(chunks) = lock!(region_cache = region_cache; region_cache.get(&(region.dimension, region.coords[0], region.coords[1])).map(|chunks| chunks.keys().map(|&(cx, cy, cz)| (region.dimension, region.coords[0] * 32 + i32::from(cx), cy, region.coords[1] * 32 + i32::from(cz))).collect_vec())) {
-                        update_chunks(version, &main_world, &region_cache, &watcher, &sink, chunks, UpdateChunksReason::Notify).await?;
+                for path in paths {
+                    if let Ok(suffix) = path.strip_prefix(main_world.dir().join("world").join("playerdata")) {
+                        let Ok(std::path::Component::Normal(name)) = suffix.components().exactly_one() else { return Err(WsError::NotifyUnexpectedFile) };
+                        let uuid = name.to_str().ok_or(WsError::NotifyUnexpectedFile)?.strip_suffix(".dat").ok_or(WsError::NotifyUnexpectedFile)?.parse()?;
+                        if let Some(user) = User::from_minecraft_uuid(&db_pool, uuid).await? {
+                            update_player(version, &main_world, &players_cache, &watcher, &sink, user.id, uuid, UpdateReason::Subscribe).await?;
+                        }
+                    } else {
+                        let region = Region::open(path).await?;
+                        if let Some(chunks) = lock!(region_cache = region_cache; region_cache.get(&(region.dimension, region.coords[0], region.coords[1])).map(|chunks| chunks.keys().map(|&(cx, cy, cz)| (region.dimension, region.coords[0] * 32 + i32::from(cx), cy, region.coords[1] * 32 + i32::from(cz))).collect_vec())) {
+                            update_chunks(version, &main_world, &region_cache, &watcher, &sink, chunks, UpdateReason::Notify).await?;
+                        }
                     }
                 }
             },
@@ -455,7 +539,8 @@ async fn client_session(mut rocket_shutdown: rocket::Shutdown, version: WsApiVer
 }
 
 #[rocket::get("/api/v3/websocket")]
-pub(crate) fn websocket_v3(me: Option<User>, uri: Origin<'_>, ws: request::Outcome<WebSocket, Never>, shutdown: rocket::Shutdown) -> Either<rocket_ws::Channel<'static>, (Status, RawHtml<String>)> {
+pub(crate) fn websocket_v3(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, ws: request::Outcome<WebSocket, Never>, shutdown: rocket::Shutdown) -> Either<rocket_ws::Channel<'static>, (Status, RawHtml<String>)> {
+    let db_pool = (**db_pool).clone();
     match ws {
         Outcome::Success(ws) => Either::Left(ws.channel(|stream| Box::pin(async move {
             let (ws_sink, ws_stream) = stream.split();
@@ -467,10 +552,10 @@ pub(crate) fn websocket_v3(me: Option<User>, uri: Origin<'_>, ws: request::Outco
                     if lock!(ping_sink = ping_sink; ServerMessageV3::Ping.write_ws021(&mut *ping_sink).await).is_err() { break } //TODO better error handling
                 }
             });
-            if let Err(e) = client_session(shutdown, WsApiVersion::V3, ws_stream, ws_sink.clone()).await {
+            if let Err(e) = client_session(db_pool, shutdown, WsApiVersion::V3, ws_stream, ws_sink.clone()).await {
                 let _ = lock!(ws_sink = ws_sink; ServerMessageV3::Error {
                     debug: format!("{e:?}"),
-                    display: String::default(),
+                    display: e.to_string(),
                 }.write_ws021(&mut *ws_sink).await);
             }
             ping_loop.abort();
@@ -493,7 +578,8 @@ pub(crate) fn websocket_v3(me: Option<User>, uri: Origin<'_>, ws: request::Outco
 }
 
 #[rocket::get("/api/v4/websocket")]
-pub(crate) fn websocket_v4(me: Option<User>, uri: Origin<'_>, ws: request::Outcome<WebSocket, Never>, shutdown: rocket::Shutdown) -> Either<rocket_ws::Channel<'static>, (Status, RawHtml<String>)> {
+pub(crate) fn websocket_v4(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, ws: request::Outcome<WebSocket, Never>, shutdown: rocket::Shutdown) -> Either<rocket_ws::Channel<'static>, (Status, RawHtml<String>)> {
+    let db_pool = (**db_pool).clone();
     match ws {
         Outcome::Success(ws) => Either::Left(ws.channel(|stream| Box::pin(async move {
             let (ws_sink, ws_stream) = stream.split();
@@ -505,10 +591,10 @@ pub(crate) fn websocket_v4(me: Option<User>, uri: Origin<'_>, ws: request::Outco
                     if lock!(ping_sink = ping_sink; ServerMessageV4::Ping.write_ws021(&mut *ping_sink).await).is_err() { break } //TODO better error handling
                 }
             });
-            if let Err(e) = client_session(shutdown, WsApiVersion::V4, ws_stream, ws_sink.clone()).await {
+            if let Err(e) = client_session(db_pool, shutdown, WsApiVersion::V4, ws_stream, ws_sink.clone()).await {
                 let _ = lock!(ws_sink = ws_sink; ServerMessageV4::Error {
                     debug: format!("{e:?}"),
-                    display: String::default(),
+                    display: e.to_string(),
                 }.write_ws021(&mut *ws_sink).await);
             }
             ping_loop.abort();

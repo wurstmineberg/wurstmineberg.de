@@ -6,7 +6,7 @@ use {
     },
     futures::stream::TryStreamExt as _,
     minecraft::chat::Chat,
-    serde::Deserialize,
+    //serde::Deserialize,
     serenity::prelude::*,
     serenity_utils::RwFuture,
     sqlx::types::Json,
@@ -27,17 +27,17 @@ pub(crate) enum Error {
     #[error(transparent)] Validate(#[from] twitch_irc::validate::Error),
 }
 
+/*
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct Config {
-    /*
     #[serde(default = "make_wurstminebot")]
     bot_username: String,
     #[serde(rename = "clientID")]
     client_id: String,
     client_secret: String,
-    */ //TODO
 }
+*/ //TODO
 
 /*
 impl Config {
