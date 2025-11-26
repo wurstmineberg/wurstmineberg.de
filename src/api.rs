@@ -229,7 +229,7 @@ pub(crate) async fn player_data_json(db_pool: &State<PgPool>, world: systemd_min
     };
     let mut buf = Vec::default();
     file.read_to_end(&mut buf).await.at(&path)?;
-    let mut data = nbt::from_gzip_reader::<_, nbt::Blob>(&*buf)?;
+    let mut data = nbt::Blob::from_gzip_reader(&mut &*buf)?;
     if data.get("apiTimeLastModified").is_none() {
         let metadata = file.metadata().await?;
         data.insert("apiTimeLastModified", metadata.modified().at(path)?.duration_since(SystemTime::UNIX_EPOCH)?.as_secs_f64())?;
@@ -461,7 +461,7 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                 if let Some(mut file) = file {
                     let mut buf = Vec::default();
                     file.read_to_end(&mut buf).await.at(&path)?;
-                    let mut data = nbt::from_gzip_reader::<_, nbt::Blob>(&*buf)?;
+                    let mut data = nbt::Blob::from_gzip_reader(&mut &*buf)?;
                     if player_cache.as_ref().is_none_or(|player_cache| *player_cache != data) {
                         version.write_player(sink, id, uuid, Some(data.clone())).await?;
                         *player_cache = Some(data);
