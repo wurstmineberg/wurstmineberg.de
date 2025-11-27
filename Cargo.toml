@@ -29,7 +29,7 @@ chase = { git = "https://github.com/fenhl/chase-rs", branch = "wmb" }
 chrono = { version = "0.4.40", features = ["serde"] }
 chrono-tz = { version = "0.10.3", features = ["serde"] }
 craftping = { version = "0.7", default-features = false, features = ["async-tokio"] }
-discord-message-parser = { git = "https://github.com/fenhl/discord-message-parser", branch = "main" }
+discord-message-parser = { git = "https://github.com/fenhl/discord-message-parser" }
 doubloon = "0.2.0"
 futures = "0.3.31"
 hematite-nbt = { version = "0.5.2", default-features = false } #TODO switch to simdnbt for performance improvements once it supports stable Rust (https://github.com/azalea-rs/simdnbt/issues/16)
@@ -37,10 +37,10 @@ ics = "0.5.8"
 itertools = "0.14.0"
 lazy-regex = "3.4.1"
 linode-rs = { git = "https://gitlab.com/fenhl/linode.git/", branch = "dev-fenhl", default-features = false }
-log-lock = { git = "https://github.com/fenhl/log-lock", branch = "main" }
-mcanvil = { git = "https://github.com/wurstmineberg/rust-anvil", branch = "main", features = ["async-proto"] }
+log-lock = { git = "https://github.com/fenhl/log-lock" }
+mcanvil = { git = "https://github.com/wurstmineberg/rust-anvil", features = ["async-proto"] }
 mimalloc = "0.1.43"
-minecraft = { git = "https://github.com/wurstmineberg/rust-minecraft-types", branch = "main" }
+minecraft = { git = "https://github.com/wurstmineberg/rust-minecraft-types" }
 nonempty-collections = "1"
 notify = "8.0.0"
 notify-debouncer-full = "0.6"
@@ -50,8 +50,8 @@ rcon = { version = "0.6", features = ["rt-tokio"] }
 regex = "1.11.1"
 reqwest = { version = "0.12", default-features = false, features = ["blocking", "charset", "hickory-dns", "http2", "macos-system-configuration", "rustls-tls"] }
 rocket = { version = "0.5.1", features = ["json", "secrets"] }
-rocket-basicauth = { git = "https://github.com/fenhl/rocket-basicauth", branch = "master" }
-rocket-util = { git = "https://github.com/fenhl/rocket-util", branch = "main", features = ["ics", "reqwest", "rocket_csrf"] }
+rocket-basicauth = { git = "https://github.com/fenhl/rocket-basicauth" }
+rocket-util = { git = "https://github.com/fenhl/rocket-util", features = ["ics", "reqwest", "rocket_csrf"] }
 rocket_csrf = { git = "https://github.com/fenhl/rocket_csrf", branch = "rocket05" }
 rocket_oauth2 = "0.5.0"
 rocket_ws = "0.1.1"
@@ -60,17 +60,17 @@ serde = { version = "1.0.217", features = ["derive"] }
 serde_json = { package = "serde_json_path_to_error", version = "0.1" }
 serde_with = "3.12.0"
 serenity = { version = "0.12.4", default-features = false, features = ["model", "rustls_backend"] }
-serenity-utils = { git = "https://github.com/fenhl/serenity-utils", branch = "main" }
+serenity-utils = { git = "https://github.com/fenhl/serenity-utils" }
 sqlx = { version = "0.8.3", features = ["chrono", "json", "macros", "postgres", "runtime-tokio-rustls", "time"] }
 thiserror = "2.0.11"
 tokio = { version = "1.43.0", features = ["net", "process", "sync", "time"] }
 tokio-stream = { version = "0.1.17", features = ["io-util"] }
 tokio-util = { version = "0.7.15", features = ["io"] }
 twitch-irc = { version = "5", default-features = false, features = ["transport-tcp-rustls-webpki-roots"] }
-twitch_helix = { git = "https://github.com/fenhl/rust-twitch-helix", branch = "main" }
+twitch_helix = { git = "https://github.com/fenhl/rust-twitch-helix" }
 url = "2.5.4"
 uuid = { version = "1.16.0", features = ["serde"] }
-wheel = { git = "https://github.com/fenhl/wheel", branch = "main", features = ["reqwest", "rocket", "serde_json"] }
+wheel = { git = "https://github.com/fenhl/wheel", features = ["reqwest", "rocket", "serde_json"] }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 systemd_minecraft = { git = "https://github.com/wurstmineberg/systemd-minecraft", branch = "riir", features = ["rocket"] }
