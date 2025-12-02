@@ -524,7 +524,7 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                         let Ok(std::path::Component::Normal(name)) = suffix.components().exactly_one() else { return Err(WsError::NotifyUnexpectedFile) };
                         let uuid = name.to_str().ok_or(WsError::NotifyUnexpectedFile)?.strip_suffix(".dat").ok_or(WsError::NotifyUnexpectedFile)?.parse()?;
                         if let Some(user) = User::from_minecraft_uuid(&db_pool, uuid).await? {
-                            update_player(version, &main_world, &players_cache, &watcher, &sink, user.id, uuid, UpdateReason::Subscribe).await?;
+                            update_player(version, &main_world, &players_cache, &watcher, &sink, user.id, uuid, UpdateReason::Notify).await?;
                         }
                     } else {
                         let region = Region::open(path).await?;
