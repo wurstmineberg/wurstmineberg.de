@@ -2,7 +2,7 @@ import functools
 import pathlib
 
 import flask # PyPI: Flask
-import jinja2 # PyPI: Jinja2
+import markupsafe # PyPI: MarkupSafe
 import simplejson # PyPI: simplejson
 
 BASE_PATH = pathlib.Path('/opt/wurstmineberg')
@@ -31,7 +31,7 @@ def render_template(template_name=None, **kwargs):
         template_path = '{}.html.j2'.format(flask.request.endpoint.replace('.', '/'))
     else:
         template_path = '{}.html.j2'.format(template_name.replace('.', '/'))
-    return jinja2.Markup(flask.render_template(template_path, **kwargs))
+    return markupsafe.Markup(flask.render_template(template_path, **kwargs))
 
 def template(template_name=None):
     def decorator(f):

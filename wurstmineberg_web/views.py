@@ -1,4 +1,5 @@
 import flask
+import markupsafe # PyPI: MarkupSafe
 import sqlalchemy.orm.exc
 
 import flask_view_tree # https://github.com/fenhl/flask-view-tree
@@ -39,7 +40,7 @@ def reset_api_key(person):
         del person.api_key
         return flask.redirect(flask.url_for('api_index'))
     else:
-        flask.flash(jinja2.Markup("You are not authorized to regenerate {}'s API key.".format(person.__html__())), 'error')
+        flask.flash(markupsafe.Markup("You are not authorized to regenerate {}'s API key.".format(person.__html__())), 'error')
         return flask.redirect(flask.url_for('api_index'))
 
 @index.redirect('profile', decorators=[wurstmineberg_web.auth.member_required])

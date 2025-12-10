@@ -145,7 +145,7 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
         return ppl
 
     def __html__(self):
-        return jinja2.Markup(f'<a title="{self}" href="{self.profile_url}">@{jinja2.escape(self.name)}</a>')
+        return markupsafe.Markup(f'<a title="{self}" href="{self.profile_url}">@{jinja2.escape(self.name)}</a>')
 
     def __repr__(self):
         if self.snowflake is None:

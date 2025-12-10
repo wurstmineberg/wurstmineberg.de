@@ -5,6 +5,7 @@ import flask # PyPI: Flask
 import flask_dance.contrib.discord # PyPI: Flask-Dance
 import flask_login # PyPI: Flask-Login
 import jinja2 # PyPI: Jinja2
+import markupsafe # PyPI: MarkupSafe
 import sqlalchemy.orm.exc # PyPI: SQLAlchemy
 
 from wurstmineberg_web import app
@@ -12,7 +13,7 @@ from wurstmineberg_web.models import Person
 
 class AnonymousUser(flask_login.AnonymousUserMixin):
     def __html__(self):
-        return jinja2.Markup('<i>anonymous</i>')
+        return markupsafe.Markup('<i>anonymous</i>')
 
     def __str__(self):
         return 'anonymous'
@@ -77,7 +78,7 @@ def setup(app):
         if not person.is_active:
             flask.flash('Your account has not yet been whitelisted. Please schedule a server tour in #general.', 'error')
             return flask.redirect(flask.url_for('index'))
-        flask.flash(jinja2.Markup('Hello {}.'.format(person.__html__())))
+        flask.flash(markupsafe.Markup('Hello {}.'.format(person.__html__())))
         next_url = flask.session.get('next')
         if next_url is None:
             return flask.redirect(flask.url_for('index'))
