@@ -609,6 +609,16 @@ async fn internal_server_error(request: &Request<'_>) -> RawHtml<String> {
     })
 }
 
+#[rocket::catch(502)]
+async fn bad_gateway(request: &Request<'_>) -> RawHtml<String> {
+    let me = request.guard::<User>().await.succeeded();
+    let uri = request.guard::<Origin<'_>>().await.succeeded().unwrap_or_else(|| Origin(uri!(index)));
+    page(&me, &uri, PageStyle::default(), "Bad Gateway — Wurstmineberg", Tab::None, html! {
+        h1 : "Error 502: Not Found";
+        p : "Sorry, there was a network error. Please try again. If this error persists, please report it to the Wurstmineberg site admins.";
+    })
+}
+
 #[rocket::catch(default)]
 async fn fallback_catcher(status: Status, request: &Request<'_>) -> RawHtml<String> {
     let config = request.guard::<&State<Config>>().await.expect("missing config");
@@ -684,6 +694,7 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             unauthorized,
             not_found,
             internal_server_error,
+            bad_gateway,
             fallback_catcher,
         ])
         .attach(rocket_csrf::Fairing::default())

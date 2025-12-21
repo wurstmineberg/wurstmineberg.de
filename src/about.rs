@@ -11,7 +11,9 @@ use {
     },
     linode_rs::*,
     rocket::{
+        Request,
         State,
+        http::Status,
         response::content::RawHtml,
         uri,
     },
@@ -33,7 +35,10 @@ use {
         serde_as,
     },
     sqlx::PgPool,
-    wheel::traits::ReqwestResponseExt as _,
+    wheel::traits::{
+        IsNetworkError,
+        ReqwestResponseExt as _,
+    },
     crate::{
         auth,
         http::{
@@ -48,12 +53,37 @@ use {
 };
 #[cfg(not(target_os = "linux"))] use crate::systemd_minecraft;
 
-#[derive(Debug, thiserror::Error, rocket_util::Error)]
+#[derive(Debug, thiserror::Error)]
 pub(crate) enum Error {
     #[error(transparent)] Minecraft(#[from] systemd_minecraft::Error),
     #[error(transparent)] Reqwest(#[from] reqwest::Error),
     #[error(transparent)] Sql(#[from] sqlx::Error),
     #[error(transparent)] Wheel(#[from] wheel::Error),
+}
+
+impl IsNetworkError for Error {
+    fn is_network_error(&self) -> bool {
+        match self {
+            Self::Minecraft(_) => false,
+            Self::Reqwest(e) => e.is_network_error(),
+            Self::Sql(_) => false,
+            Self::Wheel(e) => e.is_network_error(),
+        }
+    }
+}
+
+impl<'r> rocket::response::Responder<'r, 'static> for Error {
+    fn respond_to(self, request: &'r Request<'_>) -> rocket::response::Result<'static> {
+        let status = if self.is_network_error() {
+            Status::BadGateway //TODO different status codes (e.g. GatewayTimeout for timeout errors)?
+        } else {
+            Status::InternalServerError
+        };
+        eprintln!("responded with {status} to request to {}", request.uri());
+        eprintln!("display: {self}");
+        eprintln!("debug: {self:?}");
+        Err(status)
+    }
 }
 
 trait StaticCurrency: Currency + Copy + Sized {
