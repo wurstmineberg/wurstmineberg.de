@@ -39,6 +39,7 @@ use {
         Dimension,
         Region,
     },
+    notify::Watcher as _,
     rocket::{
         Either,
         State,
@@ -379,7 +380,7 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
         Notify,
     }
 
-    async fn update_chunks(version: WsApiVersion, world: &systemd_minecraft::World, region_cache: &Mutex<HashMap<(Dimension, i32, i32), HashMap<(u8, i8, u8), Option<DateTime<Utc>>>>>, watcher: &Mutex<notify_debouncer_full::Debouncer<notify::RecommendedWatcher, notify_debouncer_full::RecommendedCache>>, sink: &WsSink, chunks: impl IntoIterator<Item = (Dimension, i32, i8, i32)>, reason: UpdateReason) -> Result<(), WsError> {
+    async fn update_chunks(version: WsApiVersion, world: &systemd_minecraft::World, region_cache: &Mutex<HashMap<(Dimension, i32, i32), HashMap<(u8, i8, u8), Option<DateTime<Utc>>>>>, watcher: &Mutex<notify::RecommendedWatcher>, sink: &WsSink, chunks: impl IntoIterator<Item = (Dimension, i32, i8, i32)>, reason: UpdateReason) -> Result<(), WsError> {
         let chunks = chunks.into_iter().into_group_map_by(|(dimension, cx, _, cz)| (*dimension, cx.div_euclid(32), cz.div_euclid(32)));
         lock!(region_cache = region_cache; for ((dimension, rx, rz), chunks) in chunks {
             let chunk_cache = match region_cache.entry((dimension, rx, rz)) {
@@ -438,7 +439,7 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
         Ok(())
     }
 
-    async fn update_player(version: WsApiVersion, world: &systemd_minecraft::World, players_cache: &Mutex<HashMap<Uuid, Option<nbt::Blob>>>, watcher: &Mutex<notify_debouncer_full::Debouncer<notify::RecommendedWatcher, notify_debouncer_full::RecommendedCache>>, sink: &WsSink, id: user::Id, uuid: Uuid, reason: UpdateReason) -> Result<(), WsError> {
+    async fn update_player(version: WsApiVersion, world: &systemd_minecraft::World, players_cache: &Mutex<HashMap<Uuid, Option<nbt::Blob>>>, watcher: &Mutex<notify::RecommendedWatcher>, sink: &WsSink, id: user::Id, uuid: Uuid, reason: UpdateReason) -> Result<(), WsError> {
         lock!(players_cache = players_cache; {
             let player_cache = match players_cache.entry(uuid) {
                 hash_map::Entry::Occupied(entry) => entry.into_mut(),
@@ -481,7 +482,7 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
     let region_cache = Mutex::default();
     let players_cache = Mutex::default();
     let (watch_tx, mut watch_rx) = mpsc::channel(1_024);
-    let watcher = Mutex::new(notify_debouncer_full::new_debouncer(Duration::from_secs(45), None, move |res| watch_tx.blocking_send(res).allow_unreceived())?);
+    let watcher = Mutex::new(notify::recommended_watcher(move |res| watch_tx.blocking_send(res).allow_unreceived())?);
     let mut read = pin!(timeout(Duration::from_secs(60), ClientMessage::read_ws_owned021(stream)));
     loop {
         select! {
@@ -507,16 +508,14 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
             }
             Some(res) = watch_rx.recv() => {
                 let mut paths = HashSet::new();
-                for event in res? {
-                    if event.kind.is_modify() {
-                        paths.extend(event.event.paths);
-                    }
+                let event = res?;
+                if event.kind.is_modify() {
+                    paths.extend(event.paths);
                 }
                 while let Ok(res) = watch_rx.try_recv() {
-                    for event in res? {
-                        if event.kind.is_modify() {
-                            paths.extend(event.event.paths);
-                        }
+                    let event = res?;
+                    if event.kind.is_modify() {
+                        paths.extend(event.paths);
                     }
                 }
                 for path in paths {

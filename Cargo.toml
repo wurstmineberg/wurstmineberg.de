@@ -43,7 +43,6 @@ mimalloc = "0.1.43"
 minecraft = { git = "https://github.com/wurstmineberg/rust-minecraft-types" }
 nonempty-collections = "1"
 notify = "8.0.0"
-notify-debouncer-full = "0.6"
 pulldown-cmark = { git = "https://github.com/fenhl/pulldown-cmark", branch = "rocket-wiki", default-features = false, features = ["simd", "html"] }
 rand = "0.9.1"
 rcon = { version = "0.6", features = ["rt-tokio"] }
