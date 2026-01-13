@@ -238,7 +238,7 @@ enum Line {
 
 impl Line {
     async fn parse(state: Arc<RwLock<FollowerState>>, s: &str) -> Result<Self, Error> {
-        Ok(if let Some((_, content)) = regex_captures!("^[0-9]+-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} \\[[^]]+/INFO|WARN|ERROR\\]: (.+)$", s) {
+        Ok(if let Some((_, content)) = regex_captures!("^[0-9]+-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} \\[[^]]+/(?:INFO|WARN|ERROR)\\]: (.+)$", s) {
             Self::Regular {
                 content: RegularLine::parse(state, content).await?,
             }
