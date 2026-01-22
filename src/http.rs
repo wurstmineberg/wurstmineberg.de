@@ -227,7 +227,6 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                 script(src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js");
                 script(src = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js");
                 script(src = "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js");
-                script(src = "https://raw.githubusercontent.com/alexei/sprintf.js/master/dist/sprintf.min.js");
                 script(src = asset("/js/common.js"));
                 script(type = "text/javascript") : RawHtml(format!("
                     // expose current user to js, if logged in

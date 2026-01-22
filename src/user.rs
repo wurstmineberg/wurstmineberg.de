@@ -563,7 +563,10 @@ pub(crate) async fn profile(db_pool: &State<PgPool>, me: Option<User>, uri: Orig
     }
 
     let Some(user) = user.parse(&**db_pool).await? else { return Ok(None) };
-    Ok(Some(page(&me, &uri, PageStyle { extra_scripts: vec![Script::External(asset("/js/profile.js"))], ..PageStyle::default() }, &format!("{user} on Wurstmineberg"), Tab::People, html! {
+    Ok(Some(page(&me, &uri, PageStyle { extra_scripts: vec![
+        Script::External(format!("https://raw.githubusercontent.com/alexei/sprintf.js/master/dist/sprintf.min.js")), //TODO this doesn't load properly, remove dependency or vendor
+        Script::External(asset("/js/profile.js")),
+    ], ..PageStyle::default() }, &format!("{user} on Wurstmineberg"), Tab::People, html! {
         div(class = "panel panel-default profile-panel") {
             div(class = "panel-heading") {
                 : user.html_avatar(32);
