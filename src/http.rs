@@ -235,7 +235,6 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                     linkifyHeaders();
                     configureNavigation();
                     setAnchorHeight();
-                    displayFundingData();
                     initializeTooltips();
                     // mark as dev.wurstmineberg.de
                     if (isDev) {{
