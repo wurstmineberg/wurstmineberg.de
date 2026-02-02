@@ -118,7 +118,7 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                 link(rel = "icon", type = "image/png", href = asset("/img/logo/wurstpick_128.png"), sizes = "128x128");
                 link(rel = "icon", type = "image/png", href = asset("/img/logo/wurstpick_256.png"), sizes = "256x256");
                 link(rel = "stylesheet", href = "https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
-                link(rel = "stylesheet", href = "https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext");
+                link(rel = "stylesheet", href = "https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext&display=swap");
                 link(rel = "stylesheet", href = asset("/css/common.css"));
                 link(rel = "stylesheet", href = asset("/css/responsive.css"));
                 link(rel = "stylesheet", href = asset("/css/dark.css"));
