@@ -76,6 +76,7 @@ async fn main() -> Result<(), Error> {
         let _ = night_report_sync(&panic_config, &format!("/dev/gharch/webError"), Some("thread panic"));
         default_panic_hook(info)
     }));
+    let _ = rustls::crypto::ring::default_provider().install_default();
     let http_client = reqwest::Client::builder()
         .user_agent(concat!("WurstminebergWeb/", env!("CARGO_PKG_VERSION"), " (https://github.com/wurstmineberg/wurstmineberg.de)"))
         .timeout(Duration::from_secs(30))

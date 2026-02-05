@@ -9,6 +9,7 @@ use {
             USD,
         },
     },
+    icu_locale::locale,
     linode_rs::*,
     rocket::{
         Request,
@@ -129,12 +130,7 @@ fn format_eur(money: Money<EUR>) -> String {
 */
 
 fn format_usd(money: Money<USD>) -> String {
-    money.format(&doubloon::formatter::Formatter {
-        digit_group_separator: " ", // thin space
-        positive_template: "US${a}",
-        negative_template: "−US${a}",
-        ..doubloon::formatter::Formatter::default()
-    }).expect("invalid money formatter")
+    money.format(&locale!("en-DE"))
 }
 
 #[allow(unused)]

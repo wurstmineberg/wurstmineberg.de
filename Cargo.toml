@@ -30,10 +30,11 @@ chrono = { version = "0.4.40", features = ["serde"] }
 chrono-tz = { version = "0.10.3", features = ["serde"] }
 craftping = { version = "0.7", default-features = false, features = ["async-tokio"] }
 discord-message-parser = { git = "https://github.com/fenhl/discord-message-parser" }
-doubloon = "0.2.0"
+doubloon = { version = "3", features = ["formatting"] }
 futures = "0.3.31"
 hematite-nbt = { version = "0.5.2", default-features = false } #TODO switch to simdnbt for performance improvements once it supports stable Rust (https://github.com/azalea-rs/simdnbt/issues/16)
 ics = "0.5.8"
+icu_locale = "2.1.1"
 itertools = "0.14.0"
 lazy-regex = "3.4.1"
 linode-rs = { git = "https://gitlab.com/fenhl/linode.git/", branch = "dev-fenhl", default-features = false }
@@ -47,7 +48,7 @@ pulldown-cmark = { git = "https://github.com/fenhl/pulldown-cmark", branch = "ro
 rand = "0.9.1"
 rcon = { version = "0.6", features = ["rt-tokio"] }
 regex = "1.11.1"
-reqwest = { version = "0.12", default-features = false, features = ["blocking", "charset", "hickory-dns", "http2", "macos-system-configuration", "rustls-tls"] }
+reqwest = { version = "0.13", default-features = false, features = ["blocking", "charset", "form", "gzip", "hickory-dns", "http2", "rustls-no-provider", "system-proxy", "zstd"] }
 rocket = { version = "0.5.1", features = ["json", "secrets"] }
 rocket-basicauth = { git = "https://github.com/fenhl/rocket-basicauth" }
 rocket-util = { git = "https://github.com/fenhl/rocket-util", features = ["ics", "reqwest", "rocket_csrf"] }
@@ -55,6 +56,7 @@ rocket_csrf = { git = "https://github.com/fenhl/rocket_csrf", branch = "rocket05
 rocket_oauth2 = "0.5.0"
 rocket_ws = "0.1.1"
 rust_decimal = { version = "1.36.0", features = ["serde-with-str"] }
+rustls = { version = "0.23.36", default-features = false, features = ["ring"] }
 serde = { version = "1.0.217", features = ["derive"] }
 serde_json = { package = "serde_json_path_to_error", version = "0.1" }
 serde_with = "3.12.0"
@@ -75,7 +77,7 @@ wheel = { git = "https://github.com/fenhl/wheel", features = ["reqwest", "rocket
 systemd_minecraft = { git = "https://github.com/wurstmineberg/systemd-minecraft", branch = "riir", features = ["rocket"] }
 
 [build-dependencies]
-gix = "0.76" # much slower than git2 but avoids a C dependency on openssl-sys
+gix = "0.78" # much slower than git2 but avoids a C dependency on openssl-sys
 itertools = "0.14.0"
 jiff = "0.2.16"
 thiserror = "2.0.11"
