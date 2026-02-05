@@ -7,6 +7,7 @@
 }
 
 wurstmineberg.de {
+    header Access-Control-Allow-Origin time.wurstmineberg.de
     header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
     encode
     handle /static/* {
