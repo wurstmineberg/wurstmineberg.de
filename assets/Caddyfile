@@ -1,0 +1,62 @@
+{
+    email fenhl@fenhl.net
+    grace_period 10s # ensure reloads on config changes can't be delayed indefinitely by open connections
+    log {
+        level ERROR
+    }
+}
+
+wurstmineberg.de {
+    header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+    encode
+    handle /static/* {
+        root /opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets
+        file_server
+    }
+    reverse_proxy :24822
+}
+
+assets.wurstmineberg.de {
+    header Access-Control-Allow-Origin wurstmineberg.de
+    header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+    encode
+    root /opt/git/github.com/wurstmineberg/assets.wurstmineberg.de/main
+    file_server browse
+}
+
+gharch.wurstmineberg.de {
+    header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+    encode
+    redir https://wurstmineberg.de{uri}
+}
+
+graphql.wurstmineberg.de {
+    header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+    encode
+    reverse_proxy :24811
+}
+
+mgmt.wurstmineberg.de {
+    header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+    encode
+    reverse_proxy :24825
+}
+
+time.wurstmineberg.de {
+    header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+    encode
+    root /opt/git/github.com/wurstmineberg/time.wurstmineberg.de/main
+    file_server
+}
+
+www.wurstmineberg.de {
+    header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+    encode
+    redir https://wurstmineberg.de{uri}
+}
+
+http://127.0.0.1:24823 {
+    reverse_proxy unix//run/uwsgi/app/wurstmineberg/socket {
+        transport uwsgi
+    }
+}
