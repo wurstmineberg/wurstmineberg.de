@@ -7,9 +7,9 @@ if [[ x"$(hostname -f)" == x'gharch.wurstmineberg.de' ]]; then
     echo 'deploying wurstmineberg.de'
     cd /opt/git/github.com/wurstmineberg/wurstmineberg.de/main
     git --git-dir=/opt/git/github.com/wurstmineberg/wurstmineberg.de/main/.git pull
-    # restart nginx (since nginx config is tracked by git) and uWSGI
+    # reload caddy (since caddy config is tracked by git) and uWSGI
     sudo systemctl daemon-reload
-    sudo systemctl reload nginx
+    sudo systemctl reload caddy
     sudo systemctl reload uwsgi
 else
     git push
