@@ -10,6 +10,7 @@ use {
             Contextual,
             Form,
         },
+        http::Status,
         response::{
             Redirect,
             content::RawHtml,
@@ -197,33 +198,65 @@ pub(crate) async fn render_markdown<'a>(db_pool: &PgPool, source: &'a str) -> Re
 }
 
 #[rocket::get("/wiki/<title>")]
-pub(crate) async fn main_article(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str) -> Result<Option<RawHtml<String>>, Error> {
-    let Some(source) = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = 'wiki' ORDER BY timestamp DESC LIMIT 1", title).fetch_optional(&**db_pool).await? else { return Ok(None) };
-    Ok(Some(page(&me, &uri, PageStyle::default(), &format!("{title} — Wurstmineberg Wiki"), Tab::Wiki, html! {
-        h1 {
-            : title;
-            : " — Wurstmineberg Wiki ";
-            a(href = uri!(edit_get(title, "wiki")), class = "btn btn-primary") : "Edit";
-            a(href = uri!(history(title, "wiki")), class = "btn btn-link") : "History";
-        }
-        : render_markdown(db_pool, &source).await?;
-    })))
+pub(crate) async fn main_article(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str) -> Result<(Status, RawHtml<String>), Error> {
+    Ok(if let Some(source) = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = 'wiki' ORDER BY timestamp DESC LIMIT 1", title).fetch_optional(&**db_pool).await? {
+        (Status::Ok, page(&me, &uri, PageStyle::default(), &format!("{title} — Wurstmineberg Wiki"), Tab::Wiki, html! {
+            h1 {
+                : title;
+                : " — Wurstmineberg Wiki ";
+                a(href = uri!(edit_get(title, "wiki")), class = "btn btn-primary") : "Edit";
+                a(href = uri!(history(title, "wiki")), class = "btn btn-link") : "History";
+            }
+            : render_markdown(db_pool, &source).await?;
+        }))
+    } else {
+        (Status::NotFound, page(&me, &uri, PageStyle::default(), "Not Found — Wurstmineberg Wiki", Tab::Wiki, html! {
+            h1 : "Error 404: Not Found";
+            p {
+                : "There is no article called “";
+                bdi : title;
+                : "” in the wiki namespace “wiki”.";
+            }
+            p {
+                a(href = uri!(edit_get(title, "wiki"))) : "Create this article";
+                : " • ";
+                a(href = uri!(index)) : "Wurstmineberg Wiki main page";
+            }
+        }))
+    })
 }
 
 #[rocket::get("/wiki/<title>/<namespace>")]
-pub(crate) async fn namespaced_article(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str) -> Result<Option<RawHtml<String>>, Error> {
-    let Some(source) = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 ORDER BY timestamp DESC LIMIT 1", title, namespace).fetch_optional(&**db_pool).await? else { return Ok(None) };
-    Ok(Some(page(&me, &uri, PageStyle::default(), &format!("{title} ({namespace}) — Wurstmineberg Wiki"), Tab::Wiki, html! {
-        h1 {
-            : title;
-            : " (";
-            : namespace;
-            : ") — Wurstmineberg Wiki ";
-            a(href = uri!(edit_get(title, namespace)), class = "btn btn-primary") : "Edit";
-            a(href = uri!(history(title, namespace)), class = "btn btn-link") : "History";
-        }
-        : render_markdown(db_pool, &source).await?;
-    })))
+pub(crate) async fn namespaced_article(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str) -> Result<(Status, RawHtml<String>), Error> {
+    Ok(if let Some(source) = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 ORDER BY timestamp DESC LIMIT 1", title, namespace).fetch_optional(&**db_pool).await? {
+        (Status::Ok, page(&me, &uri, PageStyle::default(), &format!("{title} ({namespace}) — Wurstmineberg Wiki"), Tab::Wiki, html! {
+            h1 {
+                : title;
+                : " (";
+                : namespace;
+                : ") — Wurstmineberg Wiki ";
+                a(href = uri!(edit_get(title, namespace)), class = "btn btn-primary") : "Edit";
+                a(href = uri!(history(title, namespace)), class = "btn btn-link") : "History";
+            }
+            : render_markdown(db_pool, &source).await?;
+        }))
+    } else {
+        (Status::NotFound, page(&me, &uri, PageStyle::default(), "Not Found — Wurstmineberg Wiki", Tab::Wiki, html! {
+            h1 : "Error 404: Not Found";
+            p {
+                : "There is no article called “";
+                bdi : title;
+                : "” in the wiki namespace “";
+                bdi : namespace;
+                : "”.";
+            }
+            p {
+                a(href = uri!(edit_get(title, namespace))) : "Create this article";
+                : " • ";
+                a(href = uri!(index)) : "Wurstmineberg Wiki main page";
+            }
+        }))
+    })
 }
 
 enum EditFormDefaults<'v> {
@@ -334,10 +367,26 @@ pub(crate) async fn edit_post(discord_ctx: &State<RwFuture<DiscordCtx>>, db_pool
 }
 
 #[rocket::get("/wiki/<title>/<namespace>/history")]
-pub(crate) async fn history(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str) -> Result<Option<RawHtml<String>>, Error> {
+pub(crate) async fn history(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str) -> Result<(Status, RawHtml<String>), Error> {
     let revisions = sqlx::query!(r#"SELECT id, timestamp AS "timestamp: DateTime<Utc>", author AS "author: PgSnowflake<UserId>", summary FROM wiki WHERE title = $1 AND namespace = $2 ORDER BY timestamp DESC"#, title, namespace).fetch_all(&**db_pool).await?;
-    if revisions.is_empty() { return Ok(None) }
-    Ok(Some(page(&me, &uri, PageStyle::default(), &format!("history of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
+    if revisions.is_empty() {
+        return Ok((Status::NotFound, page(&me, &uri, PageStyle::default(), "Not Found — Wurstmineberg Wiki", Tab::Wiki, html! {
+            h1 : "Error 404: Not Found";
+            p {
+                : "There is no article called “";
+                bdi : title;
+                : "” in the wiki namespace “";
+                bdi : namespace;
+                : "”.";
+            }
+            p {
+                a(href = uri!(edit_get(title, namespace))) : "Create this article";
+                : " • ";
+                a(href = uri!(index)) : "Wurstmineberg Wiki main page";
+            }
+        })))
+    }
+    Ok((Status::Ok, page(&me, &uri, PageStyle::default(), &format!("history of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
         h1 {
             : "History of ";
             : title;
@@ -384,22 +433,45 @@ pub(crate) async fn history(db_pool: &State<PgPool>, me: Option<User>, uri: Orig
 }
 
 #[rocket::get("/wiki/<title>/<namespace>/history/<rev>")]
-pub(crate) async fn revision(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str, rev: Option<i32>) -> Result<Option<RawHtml<String>>, Error> {
+pub(crate) async fn revision(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, title: &str, namespace: &str, rev: Option<i32>) -> Result<Option<(Status, RawHtml<String>)>, Error> {
     let Some(rev) = rev else { return Ok(None) }; // don't forward to Flask on wrong revision format, prevents an internal server error
-    let Some(source) = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 AND id = $3", title, namespace, rev).fetch_optional(&**db_pool).await? else { return Ok(None) };
-    Ok(Some(page(&me, &uri, PageStyle::default(), &format!("revision of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
-        h1 {
-            : "Revision of ";
-            : title;
-            @if namespace != "wiki" {
-                : " (";
-                : namespace;
-                : ")";
+    Ok(if let Some(source) = sqlx::query_scalar!("SELECT text FROM wiki WHERE title = $1 AND namespace = $2 AND id = $3", title, namespace, rev).fetch_optional(&**db_pool).await? {
+        Some((Status::Ok, page(&me, &uri, PageStyle::default(), &format!("revision of {title}{} — Wurstmineberg Wiki", if namespace == "wiki" { String::default() } else { format!(" ({namespace})") }), Tab::Wiki, html! {
+            h1 {
+                : "Revision of ";
+                : title;
+                @if namespace != "wiki" {
+                    : " (";
+                    : namespace;
+                    : ")";
+                }
+                : " — Wurstmineberg Wiki ";
+                a(href = if namespace == "wiki" { uri!(main_article(title)) } else { uri!(namespaced_article(title, namespace)) }, class = "btn btn-primary") : "View latest revision";
+                a(href = uri!(history(title, namespace)), class = "btn btn-link") : "History";
             }
-            : " — Wurstmineberg Wiki ";
-            a(href = if namespace == "wiki" { uri!(main_article(title)) } else { uri!(namespaced_article(title, namespace)) }, class = "btn btn-primary") : "View latest revision";
-            a(href = uri!(history(title, namespace)), class = "btn btn-link") : "History";
+            : render_markdown(db_pool, &source).await?;
+        })))
+    } else {
+        if sqlx::query_scalar!(r#"SELECT EXISTS (SELECT 1 FROM wiki WHERE title = $1 AND namespace = $2) AS "exists!""#, title, namespace).fetch_one(&**db_pool).await? {
+            // article exists but revision does not, respond with generic 404 page
+            None
+        } else {
+            // article does not exist, offer creating it
+            Some((Status::NotFound, page(&me, &uri, PageStyle::default(), "Not Found — Wurstmineberg Wiki", Tab::Wiki, html! {
+                h1 : "Error 404: Not Found";
+                p {
+                    : "There is no article called “";
+                    bdi : title;
+                    : "” in the wiki namespace “";
+                    bdi : namespace;
+                    : "”.";
+                }
+                p {
+                    a(href = uri!(edit_get(title, namespace))) : "Create this article";
+                    : " • ";
+                    a(href = uri!(index)) : "Wurstmineberg Wiki main page";
+                }
+            })))
         }
-        : render_markdown(db_pool, &source).await?;
-    })))
+    })
 }
