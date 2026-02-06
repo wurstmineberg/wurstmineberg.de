@@ -7,7 +7,6 @@ server {
     listen [::1]:24823 default_server;
 
     location / {
-        add_header Access-Control-Allow-Origin *;
         include uwsgi_params;
         uwsgi_pass _wurstmineberg_inner;
     }
