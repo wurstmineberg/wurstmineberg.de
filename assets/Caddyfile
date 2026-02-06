@@ -55,9 +55,3 @@ www.wurstmineberg.de {
     encode
     redir https://wurstmineberg.de{uri}
 }
-
-http://127.0.0.1:24823 {
-    reverse_proxy unix//run/uwsgi/app/wurstmineberg/socket {
-        transport uwsgi
-    }
-}
