@@ -50,7 +50,10 @@ use {
         },
         outcome::Outcome,
         request,
-        response::content::RawHtml,
+        response::{
+            Redirect,
+            content::RawHtml,
+        },
         serde::json::Json,
     },
     rocket_util::{
@@ -117,6 +120,11 @@ pub(crate) enum CalendarError {
 
 fn ics_datetime<Tz: TimeZone>(datetime: DateTime<Tz>) -> String {
     format!("{}", datetime.with_timezone(&Utc).format("%Y%m%dT%H%M%SZ"))
+}
+
+#[rocket::get("/api")]
+pub(crate) fn index() -> Redirect {
+    Redirect::temporary("/api/v3") //TODO ensure this always points to the latest version
 }
 
 #[rocket::get("/api/v3/calendar.ics")]

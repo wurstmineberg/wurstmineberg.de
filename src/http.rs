@@ -177,7 +177,7 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                                 }
                                 ul(class = "dropdown-menu") {
                                     li {
-                                        a(href = "/api") : "API";
+                                        a(href = uri!(crate::api::index)) : "API";
                                     }
                                     li {
                                         a(href = format!("https://alltheitems.{HOST}/")) : "All The Items";
@@ -428,7 +428,7 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>) -> Re
                     : " (";
                     abbr(title = "Seriously. We need Javascript for nearly everything. We're working on reducing that though.") : "Javascript required";
                     : "). There's also the ";
-                    a(href = "/api") : "Wurstmineberg API";
+                    a(href = uri!(crate::api::index)) : "Wurstmineberg API";
                     : ", which makes a lot of cool stuff possible, like our ";
                     a(href = "/stats") : "statistics page";
                     : ".";
@@ -659,6 +659,7 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             flask_proxy_get,
             flask_proxy_post,
             crate::about::get,
+            crate::api::index,
             crate::api::calendar,
             crate::api::discord_voice_state,
             crate::api::worlds,

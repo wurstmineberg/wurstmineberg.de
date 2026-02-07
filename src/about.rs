@@ -41,6 +41,7 @@ use {
         ReqwestResponseExt as _,
     },
     crate::{
+        api,
         auth,
         http::{
             PageStyle,
@@ -287,7 +288,7 @@ pub(crate) async fn get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
             }
             li {
                 : "We think of a lot of stuff as public which you might expect to be treated differently. For example, we have a tradition of “leaking” parts of the chatlog to social media, and all sorts of in-game data like your inventory and statistics are publicly available through ";
-                a(href = "/api") : "our API";
+                a(href = uri!(api::index)) : "our API";
                 : ".";
             }
             li {
