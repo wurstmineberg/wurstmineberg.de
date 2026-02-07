@@ -612,7 +612,7 @@ async fn gone(request: &Request<'_>) -> RawHtml<String> {
         h1 : "Error 410: Gone";
         p : "This API version is no longer available.";
         p {
-            a(href = uri!(index)) : "View latest version's documentation";
+            a(href = uri!(crate::api::index)) : "View latest version's documentation";
         }
     })
 }
