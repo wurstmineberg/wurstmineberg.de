@@ -67,6 +67,18 @@ pub(crate) enum RedirectOrContent {
     Content(RawHtml<String>),
 }
 
+#[derive(Responder)]
+pub(crate) enum StatusOrError<E> {
+    Status(Status),
+    Err(E),
+}
+
+impl<E> From<Status> for StatusOrError<E> {
+    fn from(status: Status) -> Self {
+        Self::Status(status)
+    }
+}
+
 pub(crate) fn base_uri() -> rocket::http::uri::Absolute<'static> {
     uri!("https://wurstmineberg.de")
 }
@@ -667,8 +679,7 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             crate::api::player_data,
             crate::api::player_data_json,
             crate::api::world_status,
-            crate::api::websocket_v3,
-            crate::api::websocket_v4,
+            crate::api::websocket,
             crate::auth::discord_callback,
             crate::auth::twitch_callback,
             crate::auth::discord_login,

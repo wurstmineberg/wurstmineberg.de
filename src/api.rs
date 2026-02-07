@@ -49,7 +49,10 @@ use {
             Status,
         },
         outcome::Outcome,
-        request,
+        request::{
+            self,
+            FromParam,
+        },
         response::{
             Redirect,
             content::RawHtml,
@@ -100,6 +103,7 @@ use {
         },
         http::{
             PageStyle,
+            StatusOrError,
             Tab,
             page,
         },
@@ -112,14 +116,59 @@ use {
 };
 #[cfg(not(target_os = "linux"))] use crate::systemd_minecraft;
 
-#[derive(Debug, thiserror::Error, rocket_util::Error)]
-pub(crate) enum CalendarError {
-    #[error(transparent)] Io(#[from] io::Error),
-    #[error(transparent)] Sql(#[from] sqlx::Error),
+pub(crate) enum Version {
+    V1,
+    V2,
+    V3,
+    V4,
 }
 
-fn ics_datetime<Tz: TimeZone>(datetime: DateTime<Tz>) -> String {
-    format!("{}", datetime.with_timezone(&Utc).format("%Y%m%dT%H%M%SZ"))
+#[derive(Debug, thiserror::Error)]
+pub(crate) enum VersionFromParamError {
+    #[error(transparent)] ParseInt(#[from] std::num::ParseIntError),
+    #[error("API version {0} does not exist yet")]
+    Future(u8),
+    #[error("API version path segment should start with “v”")]
+    Prefix,
+    #[error("API version 0 never existed")]
+    V0,
+}
+
+impl FromParam<'_> for Version {
+    type Error = VersionFromParamError;
+
+    fn from_param(param: &str) -> Result<Self, Self::Error> {
+        if let Some(v) = param.strip_prefix('v') {
+            match v.parse()? {
+                0 => Err(VersionFromParamError::V0),
+                1 => Ok(Self::V1),
+                2 => Ok(Self::V2),
+                3 => Ok(Self::V3),
+                4 => Ok(Self::V4),
+                v => Err(VersionFromParamError::Future(v)),
+            }
+        } else {
+            Err(VersionFromParamError::Prefix)
+        }
+    }
+}
+
+impl TryFrom<Version> for ActiveVersion {
+    type Error = Status;
+
+    fn try_from(v: Version) -> Result<Self, Self::Error> {
+        match v {
+            Version::V1 | Version::V2 => Err(Status::Gone),
+            Version::V3 => Ok(Self::V3),
+            Version::V4 => Ok(Self::V4),
+        }
+    }
+}
+
+#[derive(Clone, Copy)]
+enum ActiveVersion {
+    V3,
+    V4,
 }
 
 #[rocket::get("/api")]
@@ -127,8 +176,25 @@ pub(crate) fn index() -> Redirect {
     Redirect::temporary("/api/v3") //TODO ensure this always points to the latest version
 }
 
-#[rocket::get("/api/v3/calendar.ics")]
-pub(crate) async fn calendar(db_pool: &State<PgPool>) -> Result<Response<ICalendar<'_>>, CalendarError> {
+#[derive(Debug, thiserror::Error, rocket_util::Error)]
+pub(crate) enum CalendarError {
+    #[error(transparent)] Io(#[from] io::Error),
+    #[error(transparent)] Sql(#[from] sqlx::Error),
+}
+
+impl<E: Into<CalendarError>> From<E> for StatusOrError<CalendarError> {
+    fn from(e: E) -> Self {
+        Self::Err(e.into())
+    }
+}
+
+#[rocket::get("/api/<version>/calendar.ics")]
+pub(crate) async fn calendar(db_pool: &State<PgPool>, version: Version) -> Result<Response<ICalendar<'_>>, StatusOrError<CalendarError>> {
+    fn ics_datetime<Tz: TimeZone>(datetime: DateTime<Tz>) -> String {
+        format!("{}", datetime.with_timezone(&Utc).format("%Y%m%dT%H%M%SZ"))
+    }
+
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
     let mut cal = ICalendar::new("2.0", concat!("wurstmineberg.de/", env!("CARGO_PKG_VERSION")));
     let mut events = sqlx::query_as!(Event, r#"SELECT id, start_time AS "start_time: DateTime<Utc>", end_time AS "end_time: DateTime<Utc>", kind as "kind: PgJson<EventKind>" FROM calendar"#).fetch(&**db_pool);
     while let Some(event) = events.try_next().await? {
@@ -144,10 +210,11 @@ pub(crate) async fn calendar(db_pool: &State<PgPool>) -> Result<Response<ICalend
     Ok(Response(cal))
 }
 
-#[rocket::get("/api/v3/discord/voice-state.json")]
-pub(crate) async fn discord_voice_state(me: User) -> io::Result<NamedFile> {
+#[rocket::get("/api/<version>/discord/voice-state.json")]
+pub(crate) async fn discord_voice_state(me: User, version: Version) -> Result<NamedFile, StatusOrError<io::Error>> {
     let _ = me; // only required for authorization
-    NamedFile::open(Path::new(BASE_PATH).join("discord").join("voice-state.json")).await
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
+    Ok(NamedFile::open(Path::new(BASE_PATH).join("discord").join("voice-state.json")).await.map_err(StatusOrError::Err)?) //TODO take voice state directly from wurstminebot task
 }
 
 #[derive(Debug, thiserror::Error, rocket_util::Error)]
@@ -163,6 +230,12 @@ pub(crate) enum Error {
     UnknownMinecraftUuid(Uuid),
 }
 
+impl<E: Into<Error>> From<E> for StatusOrError<Error> {
+    fn from(e: E) -> Self {
+        Self::Err(e.into())
+    }
+}
+
 #[derive(Serialize)]
 pub(crate) struct WorldInfo {
     main: bool,
@@ -172,8 +245,9 @@ pub(crate) struct WorldInfo {
     list: Option<Vec<user::Id>>,
 }
 
-#[rocket::get("/api/v3/server/worlds.json")]
-pub(crate) async fn worlds() -> Result<Json<BTreeMap<String, WorldInfo>>, Error> {
+#[rocket::get("/api/<version>/server/worlds.json")]
+pub(crate) async fn worlds(version: Version) -> Result<Json<BTreeMap<String, WorldInfo>>, StatusOrError<Error>> {
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
     stream::iter(systemd_minecraft::World::all().await?)
         .map(Ok)
         .and_then(async |world| Ok((world.to_string(), WorldInfo {
@@ -186,8 +260,9 @@ pub(crate) async fn worlds() -> Result<Json<BTreeMap<String, WorldInfo>>, Error>
         .map(Json)
 }
 
-#[rocket::get("/api/v3/server/worlds.json?list")]
-pub(crate) async fn worlds_with_players(db_pool: &State<PgPool>) -> Result<Json<BTreeMap<String, WorldInfo>>, Error> {
+#[rocket::get("/api/<version>/server/worlds.json?list")]
+pub(crate) async fn worlds_with_players(db_pool: &State<PgPool>, version: Version) -> Result<Json<BTreeMap<String, WorldInfo>>, StatusOrError<Error>> {
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
     stream::iter(systemd_minecraft::World::all().await?)
         .map(Ok)
         .and_then(async |world| Ok((world.to_string(), WorldInfo {
@@ -216,8 +291,9 @@ pub(crate) async fn worlds_with_players(db_pool: &State<PgPool>) -> Result<Json<
         .map(Json)
 }
 
-#[rocket::get("/api/v3/world/<world>/player/<player>/playerdata.dat")]
-pub(crate) async fn player_data(db_pool: &State<PgPool>, world: systemd_minecraft::World, player: UserParam<'_>) -> Result<Option<(ContentType, File)>, Error> {
+#[rocket::get("/api/<version>/world/<world>/player/<player>/playerdata.dat")]
+pub(crate) async fn player_data(db_pool: &State<PgPool>, version: Version, world: systemd_minecraft::World, player: UserParam<'_>) -> Result<Option<(ContentType, File)>, StatusOrError<Error>> {
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
     let Some(player) = player.parse(&**db_pool).await? else { return Ok(None) };
     let Some(uuid) = player.minecraft_uuid() else { return Ok(None) };
     Ok(Some((
@@ -226,8 +302,9 @@ pub(crate) async fn player_data(db_pool: &State<PgPool>, world: systemd_minecraf
     )))
 }
 
-#[rocket::get("/api/v3/world/<world>/player/<player>/playerdata.json")]
-pub(crate) async fn player_data_json(db_pool: &State<PgPool>, world: systemd_minecraft::World, player: UserParam<'_>) -> Result<Option<Json<nbt::Blob>>, Error> {
+#[rocket::get("/api/<version>/world/<world>/player/<player>/playerdata.json")]
+pub(crate) async fn player_data_json(db_pool: &State<PgPool>, version: Version, world: systemd_minecraft::World, player: UserParam<'_>) -> Result<Option<Json<nbt::Blob>>, StatusOrError<Error>> {
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
     let Some(player) = player.parse(&**db_pool).await? else { return Ok(None) };
     let Some(uuid) = player.minecraft_uuid() else { return Ok(None) };
     let path = world.dir().join("world").join("playerdata").join(format!("{uuid}.dat"));
@@ -249,8 +326,9 @@ pub(crate) async fn player_data_json(db_pool: &State<PgPool>, world: systemd_min
     Ok(Some(Json(data)))
 }
 
-#[rocket::get("/api/v3/world/<world>/status.json")]
-pub(crate) async fn world_status(db_pool: &State<PgPool>, world: systemd_minecraft::World) -> Result<Json<WorldInfo>, Error> {
+#[rocket::get("/api/<version>/world/<world>/status.json")]
+pub(crate) async fn world_status(db_pool: &State<PgPool>, version: Version, world: systemd_minecraft::World) -> Result<Json<WorldInfo>, StatusOrError<Error>> {
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
     Ok(Json(WorldInfo {
         main: world == systemd_minecraft::World::default(),
         running: world.is_running().await?,
@@ -278,13 +356,8 @@ pub(crate) async fn world_status(db_pool: &State<PgPool>, world: systemd_minecra
 type WsStream = SplitStream<rocket_ws::stream::DuplexStream>;
 type WsSink = Arc<Mutex<SplitSink<rocket_ws::stream::DuplexStream, rocket_ws::Message>>>;
 
-#[derive(Clone, Copy)]
-enum WsApiVersion {
-    V3,
-    V4,
-}
-
-impl WsApiVersion {
+/// WebSocket API differences
+impl ActiveVersion {
     async fn write_custom_error(&self, sink: &WsSink, debug: impl fmt::Debug, display: impl fmt::Display) -> Result<(), async_proto::WriteError> {
         match self {
             Self::V3 => lock!(sink = sink; ServerMessageV3::Error {
@@ -381,14 +454,14 @@ impl From<Vec<notify::Error>> for WsError {
     }
 }
 
-async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, version: WsApiVersion, stream: WsStream, sink: WsSink) -> Result<(), WsError> {
+async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, version: ActiveVersion, stream: WsStream, sink: WsSink) -> Result<(), WsError> {
     #[derive(Clone, Copy)]
     enum UpdateReason {
         Subscribe,
         Notify,
     }
 
-    async fn update_chunks(version: WsApiVersion, world: &systemd_minecraft::World, region_cache: &Mutex<HashMap<(Dimension, i32, i32), HashMap<(u8, i8, u8), Option<DateTime<Utc>>>>>, watcher: &Mutex<notify::RecommendedWatcher>, sink: &WsSink, chunks: impl IntoIterator<Item = (Dimension, i32, i8, i32)>, reason: UpdateReason) -> Result<(), WsError> {
+    async fn update_chunks(version: ActiveVersion, world: &systemd_minecraft::World, region_cache: &Mutex<HashMap<(Dimension, i32, i32), HashMap<(u8, i8, u8), Option<DateTime<Utc>>>>>, watcher: &Mutex<notify::RecommendedWatcher>, sink: &WsSink, chunks: impl IntoIterator<Item = (Dimension, i32, i8, i32)>, reason: UpdateReason) -> Result<(), WsError> {
         let chunks = chunks.into_iter().into_group_map_by(|(dimension, cx, _, cz)| (*dimension, cx.div_euclid(32), cz.div_euclid(32)));
         lock!(region_cache = region_cache; for ((dimension, rx, rz), chunks) in chunks {
             let chunk_cache = match region_cache.entry((dimension, rx, rz)) {
@@ -447,7 +520,7 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
         Ok(())
     }
 
-    async fn update_player(version: WsApiVersion, world: &systemd_minecraft::World, players_cache: &Mutex<HashMap<Uuid, Option<nbt::Blob>>>, watcher: &Mutex<notify::RecommendedWatcher>, sink: &WsSink, id: user::Id, uuid: Uuid, reason: UpdateReason) -> Result<(), WsError> {
+    async fn update_player(version: ActiveVersion, world: &systemd_minecraft::World, players_cache: &Mutex<HashMap<Uuid, Option<nbt::Blob>>>, watcher: &Mutex<notify::RecommendedWatcher>, sink: &WsSink, id: user::Id, uuid: Uuid, reason: UpdateReason) -> Result<(), WsError> {
         lock!(players_cache = players_cache; {
             let player_cache = match players_cache.entry(uuid) {
                 hash_map::Entry::Occupied(entry) => entry.into_mut(),
@@ -545,25 +618,40 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
     }
 }
 
-#[rocket::get("/api/v3/websocket")]
-pub(crate) fn websocket_v3(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, ws: request::Outcome<WebSocket, Never>, shutdown: rocket::Shutdown) -> Either<rocket_ws::Channel<'static>, (Status, RawHtml<String>)> {
+#[rocket::get("/api/<version>/websocket")]
+pub(crate) fn websocket(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, ws: request::Outcome<WebSocket, Never>, shutdown: rocket::Shutdown, version: Version) -> Result<Either<rocket_ws::Channel<'static>, (Status, RawHtml<String>)>, Status> {
+    let version = ActiveVersion::try_from(version)?;
     let db_pool = (**db_pool).clone();
-    match ws {
-        Outcome::Success(ws) => Either::Left(ws.channel(|stream| Box::pin(async move {
+    Ok(match ws {
+        Outcome::Success(ws) => Either::Left(ws.channel(move |stream| Box::pin(async move {
             let (ws_sink, ws_stream) = stream.split();
             let ws_sink = WsSink::new(Mutex::new(ws_sink));
             let ping_sink = ws_sink.clone();
-            let ping_loop = tokio::spawn(async move {
-                loop {
-                    sleep(Duration::from_secs(30)).await;
-                    if lock!(ping_sink = ping_sink; ServerMessageV3::Ping.write_ws021(&mut *ping_sink).await).is_err() { break } //TODO better error handling
-                }
-            });
-            if let Err(e) = client_session(db_pool, shutdown, WsApiVersion::V3, ws_stream, ws_sink.clone()).await {
-                let _ = lock!(ws_sink = ws_sink; ServerMessageV3::Error {
-                    debug: format!("{e:?}"),
-                    display: e.to_string(),
-                }.write_ws021(&mut *ws_sink).await);
+            let ping_loop = match version {
+                ActiveVersion::V3 => tokio::spawn(async move {
+                    loop {
+                        sleep(Duration::from_secs(30)).await;
+                        if lock!(ping_sink = ping_sink; ServerMessageV3::Ping.write_ws021(&mut *ping_sink).await).is_err() { break } //TODO better error handling
+                    }
+                }),
+                ActiveVersion::V4 => tokio::spawn(async move {
+                    loop {
+                        sleep(Duration::from_secs(30)).await;
+                        if lock!(ping_sink = ping_sink; ServerMessageV4::Ping.write_ws021(&mut *ping_sink).await).is_err() { break } //TODO better error handling
+                    }
+                }),
+            };
+            if let Err(e) = client_session(db_pool, shutdown, version, ws_stream, ws_sink.clone()).await {
+                let _ = lock!(ws_sink = ws_sink; match version {
+                    ActiveVersion::V3 => ServerMessageV3::Error {
+                        debug: format!("{e:?}"),
+                        display: e.to_string(),
+                    }.write_ws021(&mut *ws_sink).await,
+                    ActiveVersion::V4 => ServerMessageV4::Error {
+                        debug: format!("{e:?}"),
+                        display: e.to_string(),
+                    }.write_ws021(&mut *ws_sink).await,
+                });
             }
             ping_loop.abort();
             Ok(())
@@ -581,44 +669,5 @@ pub(crate) fn websocket_v3(db_pool: &State<PgPool>, me: Option<User>, uri: Origi
                 : " for the protocol.";
             }
         }))),
-    }
-}
-
-#[rocket::get("/api/v4/websocket")]
-pub(crate) fn websocket_v4(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, ws: request::Outcome<WebSocket, Never>, shutdown: rocket::Shutdown) -> Either<rocket_ws::Channel<'static>, (Status, RawHtml<String>)> {
-    let db_pool = (**db_pool).clone();
-    match ws {
-        Outcome::Success(ws) => Either::Left(ws.channel(|stream| Box::pin(async move {
-            let (ws_sink, ws_stream) = stream.split();
-            let ws_sink = WsSink::new(Mutex::new(ws_sink));
-            let ping_sink = ws_sink.clone();
-            let ping_loop = tokio::spawn(async move {
-                loop {
-                    sleep(Duration::from_secs(30)).await;
-                    if lock!(ping_sink = ping_sink; ServerMessageV4::Ping.write_ws021(&mut *ping_sink).await).is_err() { break } //TODO better error handling
-                }
-            });
-            if let Err(e) = client_session(db_pool, shutdown, WsApiVersion::V4, ws_stream, ws_sink.clone()).await {
-                let _ = lock!(ws_sink = ws_sink; ServerMessageV4::Error {
-                    debug: format!("{e:?}"),
-                    display: e.to_string(),
-                }.write_ws021(&mut *ws_sink).await);
-            }
-            ping_loop.abort();
-            Ok(())
-        }))),
-        Outcome::Error(never) => match never {},
-        Outcome::Forward(status) => Either::Right((status, page(&me, &uri, PageStyle::default(), "Bad Request — Wurstmineberg", Tab::More, html! {
-            h1 : "Error 400: Bad Request";
-            p {
-                : "This API endpoint requires a ";
-                a(href = "https://en.wikipedia.org/wiki/WebSocket") : "WebSocket";
-                : " client. See ";
-                a(href = "https://docs.rs/async-proto") : "https://docs.rs/async-proto";
-                : " and ";
-                a(href = "https://github.com/wurstmineberg/wurstmineberg.de/blob/main/src/websocket.rs") : "https://github.com/wurstmineberg/wurstmineberg.de/blob/main/src/websocket.rs";
-                : " for the protocol.";
-            }
-        }))),
-    }
+    })
 }
