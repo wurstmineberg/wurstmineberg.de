@@ -604,6 +604,19 @@ async fn not_found(request: &Request<'_>) -> RawHtml<String> {
     })
 }
 
+#[rocket::catch(410)]
+async fn gone(request: &Request<'_>) -> RawHtml<String> {
+    let me = request.guard::<User>().await.succeeded();
+    let uri = request.guard::<Origin<'_>>().await.succeeded().unwrap_or_else(|| Origin(uri!(index)));
+    page(&me, &uri, PageStyle::default(), "Gone — Wurstmineberg", Tab::None, html! {
+        h1 : "Error 410: Gone";
+        p : "This API version is no longer available.";
+        p {
+            a(href = uri!(index)) : "View latest version's documentation";
+        }
+    })
+}
+
 #[rocket::catch(500)]
 async fn internal_server_error(request: &Request<'_>) -> RawHtml<String> {
     let config = request.guard::<&State<Config>>().await.expect("missing config");
@@ -706,6 +719,7 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             bad_request,
             unauthorized,
             not_found,
+            gone,
             internal_server_error,
             bad_gateway,
             fallback_catcher,
