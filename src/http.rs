@@ -497,6 +497,7 @@ impl<'r> FromRequest<'r> for Headers {
 
 #[derive(Debug, thiserror::Error, rocket_util::Error)]
 enum FlaskProxyError {
+    #[error(transparent)] NightReport(crate::Error),
     #[error(transparent)] InvalidHeaderName(#[from] reqwest::header::InvalidHeaderName),
     #[error(transparent)] InvalidHeaderValue(#[from] reqwest::header::InvalidHeaderValue),
     #[error(transparent)] Reqwest(#[from] reqwest::Error),
@@ -524,7 +525,7 @@ enum FlaskProxyResponse {
 }
 
 #[rocket::get("/<path..>", rank = 100 /* prefer endpoints implemented in Rust */)]
-async fn flask_proxy_get(proxy_http_client: &State<ProxyHttpClient>, me: Option<DiscordUser>, origin: Origin<'_>, headers: Headers, path: Segments<'_, Path>) -> Result<FlaskProxyResponse, FlaskProxyError> {
+async fn flask_proxy_get(config: &State<Config>, http_client: &State<reqwest::Client>, proxy_http_client: &State<ProxyHttpClient>, me: Option<DiscordUser>, origin: Origin<'_>, headers: Headers, path: Segments<'_, Path>) -> Result<FlaskProxyResponse, FlaskProxyError> {
     if Segments::<Path>::get(&path, 0).map_or(true, |prefix| !matches!(prefix, "api" | "profile" | "stats")) {
         // only forward the directories that are actually served by the proxy to prevent internal server errors on malformed requests from spambots
         return Ok(FlaskProxyResponse::Status(Status::NotFound))
@@ -532,6 +533,7 @@ async fn flask_proxy_get(proxy_http_client: &State<ProxyHttpClient>, me: Option<
     let mut url = Url::parse("http://127.0.0.1:24823/")?;
     url.path_segments_mut().expect("proxy URL is cannot-be-a-base").extend(path);
     url.set_query(origin.0.query().map(|query| query.as_str()));
+    night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("GET {url} forwarded to Flask"))).await.map_err(FlaskProxyError::NightReport)?;
     let response = proxy_http_client.0.get(url).headers(proxy_headers(headers, me)?).send().await?;
     if response.status() == reqwest::StatusCode::INTERNAL_SERVER_ERROR {
         return Err(FlaskProxyError::InternalServerError(response.text().await?))
@@ -540,7 +542,7 @@ async fn flask_proxy_get(proxy_http_client: &State<ProxyHttpClient>, me: Option<
 }
 
 #[rocket::post("/<path..>", data = "<data>", rank = 100 /* prefer endpoints implemented in Rust */)]
-async fn flask_proxy_post(proxy_http_client: &State<ProxyHttpClient>, me: Option<DiscordUser>, origin: Origin<'_>, headers: Headers, path: Segments<'_, Path>, data: Vec<u8>) -> Result<FlaskProxyResponse, FlaskProxyError> {
+async fn flask_proxy_post(config: &State<Config>, http_client: &State<reqwest::Client>, proxy_http_client: &State<ProxyHttpClient>, me: Option<DiscordUser>, origin: Origin<'_>, headers: Headers, path: Segments<'_, Path>, data: Vec<u8>) -> Result<FlaskProxyResponse, FlaskProxyError> {
     if Segments::<Path>::get(&path, 0).map_or(true, |prefix| !matches!(prefix, "api" | "profile" | "stats")) {
         // only forward the directories that are actually served by the proxy to prevent internal server errors on malformed requests from spambots
         return Ok(FlaskProxyResponse::Status(Status::NotFound))
@@ -548,6 +550,7 @@ async fn flask_proxy_post(proxy_http_client: &State<ProxyHttpClient>, me: Option
     let mut url = Url::parse("http://127.0.0.1:24823/")?;
     url.path_segments_mut().expect("proxy URL is cannot-be-a-base").extend(path);
     url.set_query(origin.0.query().map(|query| query.as_str()));
+    night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("POST {url} forwarded to Flask"))).await.map_err(FlaskProxyError::NightReport)?;
     let response = proxy_http_client.0.post(url).headers(proxy_headers(headers, me)?).body(data).send().await?;
     if response.status() == reqwest::StatusCode::INTERNAL_SERVER_ERROR {
         return Err(FlaskProxyError::InternalServerError(response.text().await?))
