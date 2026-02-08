@@ -687,6 +687,7 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             crate::api::index,
             crate::api::calendar,
             crate::api::discord_voice_state,
+            crate::api::people,
             crate::api::worlds,
             crate::api::worlds_with_players,
             crate::api::player_data,

@@ -12,6 +12,7 @@ use {
         convert::Infallible as Never,
         fmt,
         iter,
+        num::NonZero,
         path::Path,
         pin::pin,
         sync::Arc,
@@ -23,6 +24,7 @@ use {
     async_proto::Protocol as _,
     bitvec::prelude::*,
     chrono::prelude::*,
+    chrono_tz::Tz,
     futures::stream::{
         self,
         SplitSink,
@@ -66,6 +68,7 @@ use {
     },
     rocket_ws::WebSocket,
     serde::Serialize,
+    serenity::model::prelude::*,
     sqlx::{
         PgPool,
         types::Json as PgJson,
@@ -82,6 +85,7 @@ use {
             timeout,
         },
     },
+    url::Url,
     uuid::Uuid,
     wheel::{
         fs::File,
@@ -165,10 +169,20 @@ impl TryFrom<Version> for ActiveVersion {
     }
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Serialize)]
+#[serde(into = "NonZero<u8>")]
 enum ActiveVersion {
     V3,
     V4,
+}
+
+impl From<ActiveVersion> for NonZero<u8> {
+    fn from(version: ActiveVersion) -> Self {
+        match version {
+            ActiveVersion::V3 => Self::new(3),
+            ActiveVersion::V4 => Self::new(4),
+        }.unwrap()
+    }
 }
 
 #[rocket::get("/api")]
@@ -215,6 +229,97 @@ pub(crate) async fn discord_voice_state(me: User, version: Version) -> Result<Na
     let _ = me; // only required for authorization
     let _ /* no version differences */ = ActiveVersion::try_from(version)?;
     Ok(NamedFile::open(Path::new(BASE_PATH).join("discord").join("voice-state.json")).await.map_err(StatusOrError::Err)?) //TODO take voice state directly from wurstminebot task
+}
+
+#[derive(Serialize)]
+struct DiscordData {
+    snowflake: UserId,
+    avatar: Option<Url>,
+    joined: DateTime<Utc>,
+    nick: Option<String>,
+    roles: Vec<RoleId>,
+    username: String,
+    discriminator: Option<NonZero<u16>>,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct Person {
+    // can't use #[serde(flatten)] because it can't be combined with deny_unknown_fields on the flattened field
+    #[serde(skip_serializing_if = "Option::is_none")]
+    base: Option<serde_json::Value>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    discord: Option<DiscordData>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    fav_color: Option<user::Color>,
+    #[serde(default, skip_serializing_if = "user::DataMinecraft::is_default")]
+    minecraft: user::DataMinecraft,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    mojira: Option<String>,
+    name: String,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    options: BTreeMap<String, bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    slack: Option<serde_json::Value>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    status_history: Vec<user::StatusHistoryItem>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    twitch: Option<user::DataTwitch>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    timezone: Option<Tz>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    twitter: Option<user::DataTwitter>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    website: Option<Url>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    wiki: Option<String>,
+}
+
+#[derive(Serialize)]
+pub(crate) struct People {
+    version: ActiveVersion,
+    people: HashMap<user::Id, Person>,
+}
+
+#[rocket::get("/api/<version>/people.json")]
+pub(crate) async fn people(db_pool: &State<PgPool>, version: Version) -> Result<Json<People>, StatusOrError<Error>> {
+    let version = ActiveVersion::try_from(version)?;
+    let mut people = People {
+        people: HashMap::default(),
+        version,
+    };
+    let mut all_people = User::all(&**db_pool);
+    while let Some(person) = all_people.try_next().await? {
+        let name = person.to_string();
+        people.people.insert(person.id.clone(), Person {
+            base: person.data.base,
+            description: person.data.description,
+            discord: person.id.discord_id().and_then(|snowflake| Some((snowflake, person.discorddata?))).map(|(snowflake, discorddata)| DiscordData {
+                avatar: discorddata.avatar,
+                joined: discorddata.joined,
+                nick: discorddata.nick,
+                roles: discorddata.roles,
+                username: discorddata.username,
+                discriminator: discorddata.discriminator,
+                snowflake,
+            }),
+            fav_color: person.data.fav_color,
+            minecraft: person.data.minecraft,
+            mojira: person.data.mojira,
+            options: person.data.options,
+            slack: person.data.slack,
+            status_history: person.data.status_history,
+            twitch: person.data.twitch,
+            timezone: person.data.timezone,
+            twitter: person.data.twitter,
+            website: person.data.website,
+            wiki: person.data.wiki,
+            name,
+        });
+    }
+    Ok(Json(people))
 }
 
 #[derive(Debug, thiserror::Error, rocket_util::Error)]

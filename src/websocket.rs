@@ -1,5 +1,11 @@
 use {
-    std::borrow::Cow,
+    std::{
+        borrow::Cow,
+        hash::{
+            Hash,
+            Hasher,
+        },
+    },
     async_proto::Protocol,
     bitvec::prelude::*,
     mcanvil::{
@@ -154,3 +160,12 @@ impl PartialEq for UserIdResponse {
 }
 
 impl Eq for UserIdResponse {}
+
+impl Hash for UserIdResponse {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        match self {
+            Self::Discord(discord_id) | Self::Both { discord_id, .. } => discord_id.hash(state),
+            Self::Wmbid(wmbid) => wmbid.hash(state),
+        }
+    }
+}

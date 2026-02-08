@@ -334,33 +334,33 @@ pub(crate) type Id = wurstmineberg_web::websocket::UserIdResponse;
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub(crate) struct Data {
     #[serde(skip_serializing_if = "Option::is_none")]
-    base: Option<serde_json::Value>,
+    pub(crate) base: Option<serde_json::Value>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    description: Option<String>,
+    pub(crate) description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    fav_color: Option<Color>,
+    pub(crate) fav_color: Option<Color>,
     #[serde(default, skip_serializing_if = "DataMinecraft::is_default")]
-    minecraft: DataMinecraft,
+    pub(crate) minecraft: DataMinecraft,
     #[serde(skip_serializing_if = "Option::is_none")]
-    mojira: Option<String>,
+    pub(crate) mojira: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    name: Option<String>,
+    pub(crate) name: Option<String>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
-    options: BTreeMap<String, bool>,
+    pub(crate) options: BTreeMap<String, bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    slack: Option<serde_json::Value>,
+    pub(crate) slack: Option<serde_json::Value>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    status_history: Vec<StatusHistoryItem>,
+    pub(crate) status_history: Vec<StatusHistoryItem>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) twitch: Option<DataTwitch>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    timezone: Option<Tz>,
+    pub(crate) timezone: Option<Tz>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    twitter: Option<DataTwitter>,
+    pub(crate) twitter: Option<DataTwitter>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    website: Option<Url>,
+    pub(crate) website: Option<Url>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    wiki: Option<String>,
+    pub(crate) wiki: Option<String>,
 }
 
 impl Data {
@@ -373,7 +373,7 @@ impl Data {
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
-struct Color {
+pub(crate) struct Color {
     red: u8,
     green: u8,
     blue: u8,
@@ -381,7 +381,7 @@ struct Color {
 
 #[derive(Debug, Default, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
-struct DataMinecraft {
+pub(crate) struct DataMinecraft {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     nicks: Vec<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -389,14 +389,14 @@ struct DataMinecraft {
 }
 
 impl DataMinecraft {
-    fn is_default(&self) -> bool {
+    pub(crate) fn is_default(&self) -> bool {
         let Self { nicks, uuid } = self;
         nicks.is_empty() && uuid.is_none()
     }
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
-struct StatusHistoryItem {
+pub(crate) struct StatusHistoryItem {
     #[serde(skip_serializing_if = "Option::is_none")]
     by: Option<Id>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -436,15 +436,17 @@ pub(crate) struct DataTwitch {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
-struct DataTwitter {
+pub(crate) struct DataTwitter {
     username: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub(crate) struct DiscordData {
-    avatar: Option<Url>,
-    nick: Option<String>,
-    roles: Vec<RoleId>,
+    pub(crate) avatar: Option<Url>,
+    pub(crate) joined: DateTime<Utc>,
+    pub(crate) nick: Option<String>,
+    pub(crate) roles: Vec<RoleId>,
     pub(crate) username: String,
     pub(crate) discriminator: Option<NonZero<u16>>,
 }
