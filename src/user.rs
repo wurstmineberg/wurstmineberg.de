@@ -248,7 +248,7 @@ impl User {
     pub(crate) fn html_avatar(&self, size: u16) -> RawHtml<String> {
         let (url, pixelate) = if let Some(avatar) = self.discorddata.as_ref().and_then(|discorddata| discorddata.avatar.as_ref()) {
             (avatar.to_string(), false)
-        } else if !self.data.minecraft.uuid.is_some() {
+        } else if self.data.minecraft.uuid.is_some() {
             (uri!(api::player_head(Version::default(), &self.id)).to_string(), true)
         } else {
             (asset("/img/grid-unknown.png"), true)
