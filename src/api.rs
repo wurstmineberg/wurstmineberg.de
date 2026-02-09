@@ -10,7 +10,10 @@ use {
             },
         },
         convert::Infallible as Never,
-        fmt,
+        fmt::{
+            self,
+            Write as _,
+        },
         iter,
         num::NonZero,
         path::Path,
@@ -49,6 +52,11 @@ use {
         http::{
             ContentType,
             Status,
+            impl_from_uri_param_identity,
+            uri::{
+                self,
+                fmt::UriDisplay,
+            },
         },
         outcome::Outcome,
         request::{
@@ -121,10 +129,12 @@ use {
 };
 #[cfg(not(target_os = "linux"))] use crate::systemd_minecraft;
 
+#[derive(Default)]
 pub(crate) enum Version {
     V1,
     V2,
     V3,
+    #[default]
     V4,
 }
 
@@ -157,6 +167,19 @@ impl FromParam<'_> for Version {
         }
     }
 }
+
+impl UriDisplay<uri::fmt::Path> for Version {
+    fn fmt(&self, f: &mut uri::fmt::Formatter<'_, uri::fmt::Path>) -> fmt::Result {
+        match self {
+            Self::V1 => write!(f, "v1"),
+            Self::V2 => write!(f, "v2"),
+            Self::V3 => write!(f, "v3"),
+            Self::V4 => write!(f, "v4"),
+        }
+    }
+}
+
+impl_from_uri_param_identity!([uri::fmt::Path] Version);
 
 impl TryFrom<Version> for ActiveVersion {
     type Error = Status;

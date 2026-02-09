@@ -32,6 +32,10 @@ use {
             Contextual,
             Form,
         },
+        http::uri::{
+            self,
+            fmt::FromUriParam,
+        },
         request::FromParam,
         response::content::RawHtml,
         uri,
@@ -65,6 +69,10 @@ use {
     uuid::Uuid,
     wurstmineberg_web::websocket::UserIdRequest,
     crate::{
+        api::{
+            self,
+            Version,
+        },
         discord::{
             self,
             PgSnowflake,
@@ -293,6 +301,14 @@ impl<'r> FromParam<'r> for UserParam<'r> {
         } else {
             Err(UserParamError)
         }
+    }
+}
+
+impl<'a> FromUriParam<uri::fmt::Path, &'a Id> for UserParam<'_> {
+    type Target = Cow<'a, str>;
+
+    fn from_uri_param(param: &'a Id) -> Self::Target {
+        param.url_part()
     }
 }
 
@@ -598,8 +614,8 @@ pub(crate) async fn profile(db_pool: &State<PgPool>, me: Option<User>, uri: Orig
                 div(class = "lead") {
                     @if let Some(nick) = user.data.minecraft.nicks.last() {
                         div(id = "profile-skin") {
-                            img(class = "nearest-neighbor drop-shadow", style? = user.wmbid().is_some_and(|wmbid| wmbid == "dinnerbone").then_some("transform: rotate(180deg);"), title = nick, alt = nick, src = format!("/api/v3/person/{}/skin/front.png", user.id.url_part()));
-                            img(class = "nearest-neighbor foreground-image", style? = user.wmbid().is_some_and(|wmbid| wmbid == "dinnerbone").then_some("transform: rotate(180deg);"), title = nick, alt = nick, src = format!("/api/v3/person/{}/skin/front.png", user.id.url_part()));
+                            img(class = "nearest-neighbor drop-shadow", style? = user.wmbid().is_some_and(|wmbid| wmbid == "dinnerbone").then_some("transform: rotate(180deg);"), title = nick, alt = nick, src = uri!(api::player_skin_front(Version::default(), &user.id)));
+                            img(class = "nearest-neighbor foreground-image", style? = user.wmbid().is_some_and(|wmbid| wmbid == "dinnerbone").then_some("transform: rotate(180deg);"), title = nick, alt = nick, src = uri!(api::player_skin_front(Version::default(), &user.id)));
                         }
                     }
                     div(id = "user-info") {

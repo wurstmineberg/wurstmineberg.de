@@ -4407,8 +4407,8 @@ checksum = "7edddbd0b52d732b21ad9a5fab5c704c14cd949e5e9a1ec5929a24fded1b904c"
 
 [[package]]
 name = "playerhead"
-version = "2.0.0"
-source = "git+https://github.com/wurstmineberg/playerhead#062d006e0a35d54354e658ec1f0f042c0bc56d36"
+version = "2.0.1"
+source = "git+https://github.com/wurstmineberg/playerhead#57d9f8a3e804117dc7356b273038fec7e3049dfd"
 dependencies = [
  "itertools 0.14.0",
  "png",
