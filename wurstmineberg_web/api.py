@@ -13,7 +13,6 @@ import wrapt # PyPI: wrapt
 
 import flask_view_tree # https://github.com/fenhl/flask-view-tree
 import mcanvil # https://github.com/wurstmineberg/python-anvil
-import playerhead # https://github.com/wurstmineberg/playerhead
 
 import wurstmineberg_web
 import wurstmineberg_web.auth
@@ -283,11 +282,13 @@ def api_player_skins(person):
 
 @image_child(api_player_skins, 'front')
 def api_player_skin_front(person):
-    return playerhead.body(person.minecraft_uuid)
+    """Returns a 16×32 image showing a front view of the player's skin (with hat layer)."""
+    raise NotImplementedError('This endpoint has been ported to Rust')
 
 @image_child(api_player_skins, 'head')
 def api_player_head(person):
-    return playerhead.head(person.minecraft_uuid)
+    """Returns an 8×8 image showing the player's head (with hat layer)."""
+    raise NotImplementedError('This endpoint has been ported to Rust')
 
 @api_v3_index.child('server')
 def api_server_index():

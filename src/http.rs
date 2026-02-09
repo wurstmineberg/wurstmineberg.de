@@ -688,6 +688,8 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             crate::api::calendar,
             crate::api::discord_voice_state,
             crate::api::people,
+            crate::api::player_skin_front,
+            crate::api::player_head,
             crate::api::worlds,
             crate::api::worlds_with_players,
             crate::api::player_data,

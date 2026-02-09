@@ -73,6 +73,7 @@ use {
         PgPool,
         types::Json as PgJson,
     },
+    tiny_skia::Pixmap,
     tokio::{
         io::{
             self,
@@ -283,6 +284,26 @@ pub(crate) struct People {
     people: HashMap<user::Id, Person>,
 }
 
+#[derive(Debug, thiserror::Error, rocket_util::Error)]
+pub(crate) enum Error {
+    #[error(transparent)] Minecraft(#[from] systemd_minecraft::Error),
+    #[error(transparent)] Nbt(#[from] nbt::Error),
+    #[error(transparent)] Ping(#[from] craftping::Error),
+    #[error(transparent)] PlayerHead(#[from] playerhead::Error),
+    #[error(transparent)] Sql(#[from] sqlx::Error),
+    #[error(transparent)] SystemTime(#[from] std::time::SystemTimeError),
+    #[error(transparent)] Uuid(#[from] uuid::Error),
+    #[error(transparent)] Wheel(#[from] wheel::Error),
+    #[error("unknown Minecraft UUID: {0}")]
+    UnknownMinecraftUuid(Uuid),
+}
+
+impl<E: Into<Error>> From<E> for StatusOrError<Error> {
+    fn from(e: E) -> Self {
+        Self::Err(e.into())
+    }
+}
+
 #[rocket::get("/api/<version>/people.json")]
 pub(crate) async fn people(db_pool: &State<PgPool>, version: Version) -> Result<Json<People>, StatusOrError<Error>> {
     let version = ActiveVersion::try_from(version)?;
@@ -322,23 +343,20 @@ pub(crate) async fn people(db_pool: &State<PgPool>, version: Version) -> Result<
     Ok(Json(people))
 }
 
-#[derive(Debug, thiserror::Error, rocket_util::Error)]
-pub(crate) enum Error {
-    #[error(transparent)] Minecraft(#[from] systemd_minecraft::Error),
-    #[error(transparent)] Nbt(#[from] nbt::Error),
-    #[error(transparent)] Ping(#[from] craftping::Error),
-    #[error(transparent)] Sql(#[from] sqlx::Error),
-    #[error(transparent)] SystemTime(#[from] std::time::SystemTimeError),
-    #[error(transparent)] Uuid(#[from] uuid::Error),
-    #[error(transparent)] Wheel(#[from] wheel::Error),
-    #[error("unknown Minecraft UUID: {0}")]
-    UnknownMinecraftUuid(Uuid),
+#[rocket::get("/api/<version>/person/<user>/skin/front.png")]
+pub(crate) async fn player_skin_front(db_pool: &State<PgPool>, http_client: &State<reqwest::Client>, version: Version, user: UserParam<'_>) -> Result<Option<Response<Pixmap>>, StatusOrError<Error>> {
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
+    let Some(user) = user.parse(&**db_pool).await? else { return Ok(None) };
+    let Some(uuid) = user.minecraft_uuid() else { return Ok(None) };
+    Ok(Some(Response(playerhead::front(http_client, uuid).await?)))
 }
 
-impl<E: Into<Error>> From<E> for StatusOrError<Error> {
-    fn from(e: E) -> Self {
-        Self::Err(e.into())
-    }
+#[rocket::get("/api/<version>/person/<user>/skin/head.png")]
+pub(crate) async fn player_head(db_pool: &State<PgPool>, http_client: &State<reqwest::Client>, version: Version, user: UserParam<'_>) -> Result<Option<Response<Pixmap>>, StatusOrError<Error>> {
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
+    let Some(user) = user.parse(&**db_pool).await? else { return Ok(None) };
+    let Some(uuid) = user.minecraft_uuid() else { return Ok(None) };
+    Ok(Some(Response(playerhead::head(http_client, uuid).await?)))
 }
 
 #[derive(Serialize)]
