@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT wmbid, snowflake AS \"snowflake: PgSnowflake<UserId>\", data AS \"data!: Json<Data>\", discorddata AS \"discorddata: Json<DiscordData>\" FROM people WHERE data -> 'minecraft' -> 'uuid' = $1",
+  "query": "SELECT wmbid, snowflake AS \"snowflake: PgSnowflake<UserId>\", data AS \"data: Json<Data>\", apikey, discorddata AS \"discorddata: Json<DiscordData>\" FROM people",
   "describe": {
     "columns": [
       {
@@ -15,26 +15,30 @@
       },
       {
         "ordinal": 2,
-        "name": "data!: Json<Data>",
+        "name": "data: Json<Data>",
         "type_info": "Jsonb"
       },
       {
         "ordinal": 3,
+        "name": "apikey",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
         "name": "discorddata: Json<DiscordData>",
         "type_info": "Jsonb"
       }
     ],
     "parameters": {
-      "Left": [
-        "Jsonb"
-      ]
+      "Left": []
     },
     "nullable": [
       true,
       true,
       true,
+      false,
       true
     ]
   },
-  "hash": "656dc1e4d3d723e575d771bf828554f962d8eb7db04023858c783fca86d3c287"
+  "hash": "ffe5c335615c0fde2126fe12cee6fe9c5bf981f4e0ac34c809273e73d241aee1"
 }

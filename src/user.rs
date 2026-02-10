@@ -101,13 +101,14 @@ use {
 #[derive(Debug, Clone)]
 pub(crate) struct User {
     pub(crate) id: Id,
+    pub(crate) api_key: String,
     pub(crate) data: Data,
     pub(crate) discorddata: Option<DiscordData>,
 }
 
 impl User {
     pub(crate) fn all<'a>(db_pool: impl PgExecutor<'a> + 'a) -> impl Stream<Item = sqlx::Result<Self>> {
-        sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people"#)
+        sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data: Json<Data>", apikey, discorddata AS "discorddata: Json<DiscordData>" FROM people"#)
             .fetch(db_pool)
             .map_ok(|row| Self {
                 id: match (row.wmbid, row.snowflake) {
@@ -116,6 +117,7 @@ impl User {
                     (Some(wmbid), None) => Id::Wmbid(wmbid),
                     (Some(wmbid), Some(PgSnowflake(discord_id))) => Id::Both { wmbid, discord_id },
                 },
+                api_key: row.apikey,
                 data: row.data.map(|Json(data)| data).unwrap_or_default(),
                 discorddata: row.discorddata.map(|Json(discorddata)| discorddata),
             })
@@ -131,6 +133,7 @@ impl User {
                     (Some(wmbid), None) => Id::Wmbid(wmbid),
                     (Some(wmbid), Some(PgSnowflake(discord_id))) => Id::Both { wmbid, discord_id },
                 },
+                api_key: api_key.to_owned(),
                 data: row.data.map(|Json(data)| data).unwrap_or_default(),
                 discorddata: row.discorddata.map(|Json(discorddata)| discorddata),
             })
@@ -140,13 +143,14 @@ impl User {
     pub(crate) async fn from_wmbid(db_pool: impl PgExecutor<'_>, wmbid: impl Into<Cow<'_, str>>) -> sqlx::Result<Option<Self>> {
         let wmbid = wmbid.into();
         Ok(
-            sqlx::query!(r#"SELECT snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE wmbid = $1"#, &wmbid).fetch_optional(db_pool).await?
+            sqlx::query!(r#"SELECT snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data: Json<Data>", apikey, discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE wmbid = $1"#, &wmbid).fetch_optional(db_pool).await?
             .map(|row| Self {
                 id: if let Some(PgSnowflake(discord_id)) = row.snowflake {
                     Id::Both { wmbid: wmbid.into_owned(), discord_id }
                 } else {
                     Id::Wmbid(wmbid.into_owned())
                 },
+                api_key: row.apikey,
                 data: row.data.map(|Json(data)| data).unwrap_or_default(),
                 discorddata: row.discorddata.map(|Json(discorddata)| discorddata),
             })
@@ -155,13 +159,14 @@ impl User {
 
     pub(crate) async fn from_discord(db_pool: impl PgExecutor<'_>, discord_id: UserId) -> sqlx::Result<Option<Self>> {
         Ok(
-            sqlx::query!(r#"SELECT wmbid, data AS "data: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE snowflake = $1"#, PgSnowflake(discord_id) as _).fetch_optional(db_pool).await?
+            sqlx::query!(r#"SELECT wmbid, data AS "data: Json<Data>", apikey, discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE snowflake = $1"#, PgSnowflake(discord_id) as _).fetch_optional(db_pool).await?
             .map(|row| Self {
                 id: if let Some(wmbid) = row.wmbid {
                     Id::Both { wmbid, discord_id }
                 } else {
                     Id::Discord(discord_id)
                 },
+                api_key: row.apikey,
                 data: row.data.map(|Json(data)| data).unwrap_or_default(),
                 discorddata: row.discorddata.map(|Json(discorddata)| discorddata),
             })
@@ -193,24 +198,26 @@ impl User {
 
     pub(crate) async fn from_tag(db_pool: impl PgExecutor<'_>, username: &str, discriminator: Option<NonZero<u16>>) -> sqlx::Result<Option<Self>> {
         Ok(if let Some(discriminator) = discriminator {
-            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake!: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata!: Json<DiscordData>" FROM people WHERE discorddata -> 'username' = $1 AND discorddata -> 'discriminator' = $2"#, Json(username) as _, Json(discriminator) as _).fetch_optional(db_pool).await?
+            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake!: PgSnowflake<UserId>", data AS "data: Json<Data>", apikey, discorddata AS "discorddata!: Json<DiscordData>" FROM people WHERE discorddata -> 'username' = $1 AND discorddata -> 'discriminator' = $2"#, Json(username) as _, Json(discriminator) as _).fetch_optional(db_pool).await?
             .map(|row| Self {
                 id: if let Some(wmbid) = row.wmbid {
                     Id::Both { wmbid, discord_id: row.snowflake.0 }
                 } else {
                     Id::Discord(row.snowflake.0)
                 },
+                api_key: row.apikey,
                 data: row.data.map(|Json(data)| data).unwrap_or_default(),
                 discorddata: Some(row.discorddata.0),
             })
         } else {
-            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake!: PgSnowflake<UserId>", data AS "data: Json<Data>", discorddata AS "discorddata!: Json<DiscordData>" FROM people WHERE discorddata -> 'username' = $1 AND discorddata -> 'discriminator' = JSONB 'null'"#, Json(username) as _).fetch_optional(db_pool).await?
+            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake!: PgSnowflake<UserId>", data AS "data: Json<Data>", apikey, discorddata AS "discorddata!: Json<DiscordData>" FROM people WHERE discorddata -> 'username' = $1 AND discorddata -> 'discriminator' = JSONB 'null'"#, Json(username) as _).fetch_optional(db_pool).await?
             .map(|row| Self {
                 id: if let Some(wmbid) = row.wmbid {
                     Id::Both { wmbid, discord_id: row.snowflake.0 }
                 } else {
                     Id::Discord(row.snowflake.0)
                 },
+                api_key: row.apikey,
                 data: row.data.map(|Json(data)| data).unwrap_or_default(),
                 discorddata: Some(row.discorddata.0),
             })
@@ -219,7 +226,7 @@ impl User {
 
     pub(crate) async fn from_minecraft_uuid(db_pool: impl PgExecutor<'_>, uuid: Uuid) -> sqlx::Result<Option<Self>> {
         Ok(
-            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data!: Json<Data>", discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE data -> 'minecraft' -> 'uuid' = $1"#, Json(uuid) as _).fetch_optional(db_pool).await?
+            sqlx::query!(r#"SELECT wmbid, snowflake AS "snowflake: PgSnowflake<UserId>", data AS "data!: Json<Data>", apikey, discorddata AS "discorddata: Json<DiscordData>" FROM people WHERE data -> 'minecraft' -> 'uuid' = $1"#, Json(uuid) as _).fetch_optional(db_pool).await?
             .map(|row| Self {
                 id: match (row.wmbid, row.snowflake) {
                     (None, None) => unreachable!("person in database with no Wurstmineberg ID and no Discord snowflake"),
@@ -227,6 +234,7 @@ impl User {
                     (Some(wmbid), None) => Id::Wmbid(wmbid),
                     (Some(wmbid), Some(PgSnowflake(discord_id))) => Id::Both { wmbid, discord_id },
                 },
+                api_key: row.apikey,
                 data: row.data.0,
                 discorddata: row.discorddata.map(|Json(discorddata)| discorddata),
             })

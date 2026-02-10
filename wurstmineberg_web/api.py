@@ -220,9 +220,8 @@ def api_index():
     raise NotImplementedError('This endpoint is implemented in Rust')
 
 @api_index.child('v3', 'version 3', decorators=[wurstmineberg_web.util.redirect_empty(lambda view_node: flask.url_for('api_index'))])
-@wurstmineberg_web.util.template('api-index')
 def api_v3_index():
-    pass
+    raise NotImplementedError('This endpoint is implemented in Rust')
 
 @api_v3_index.child('calendar.ics')
 def api_calendar():
@@ -249,16 +248,11 @@ def api_money_index():
 
 @json_child(api_money_index, 'overview')
 def money_overview():
-    response = requests.get('https://night.fenhl.net/wurstmineberg/money/overview.json', headers={'Authorization': f'Bearer {wurstmineberg_web.app.config["night"]["password"]}'})
-    response.raise_for_status()
-    return response.json()
+    raise NotImplementedError('This endpoint is implemented in Rust')
 
 @json_child(api_money_index, 'transactions')
 def money_transactions():
-    #TODO show which transactions are mine
-    response = requests.get('https://night.fenhl.net/wurstmineberg/money/transactions.json', headers={'Authorization': f'Bearer {wurstmineberg_web.app.config["night"]["password"]}'})
-    response.raise_for_status()
-    return response.json()
+    raise NotImplementedError('This endpoint is implemented in Rust')
 
 @json_child(api_v3_index, 'people')
 def api_people():

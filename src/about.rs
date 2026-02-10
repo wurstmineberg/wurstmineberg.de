@@ -208,7 +208,6 @@ struct LinodeTier {
 pub(crate) async fn get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>, config: &State<Config>, http_client: &State<reqwest::Client>) -> Result<RawHtml<String>, Error> {
     let money_overview = http_client
         .get("https://night.fenhl.net/wurstmineberg/money/overview.json")
-        .bearer_auth(&config.night.password)
         .send().await?
         .detailed_error_for_status().await?
         .json_with_text_in_error::<MoneyOverview>().await?;

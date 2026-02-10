@@ -55,7 +55,10 @@ use {
             impl_from_uri_param_identity,
             uri::{
                 self,
-                fmt::UriDisplay,
+                fmt::{
+                    FromUriParam,
+                    UriDisplay,
+                },
             },
         },
         outcome::Outcome,
@@ -68,6 +71,7 @@ use {
             content::RawHtml,
         },
         serde::json::Json,
+        uri,
     },
     rocket_util::{
         Origin,
@@ -110,6 +114,8 @@ use {
     },
     crate::{
         BASE_PATH,
+        about,
+        auth,
         cal::{
             Event,
             EventKind,
@@ -153,14 +159,14 @@ impl FromParam<'_> for Version {
     type Error = VersionFromParamError;
 
     fn from_param(param: &str) -> Result<Self, Self::Error> {
-        if let Some(v) = param.strip_prefix('v') {
-            match v.parse()? {
+        if let Some(version) = param.strip_prefix('v') {
+            match version.parse()? {
                 0 => Err(VersionFromParamError::V0),
                 1 => Ok(Self::V1),
                 2 => Ok(Self::V2),
                 3 => Ok(Self::V3),
                 4 => Ok(Self::V4),
-                v => Err(VersionFromParamError::Future(v)),
+                version => Err(VersionFromParamError::Future(version)),
             }
         } else {
             Err(VersionFromParamError::Prefix)
@@ -184,11 +190,20 @@ impl_from_uri_param_identity!([uri::fmt::Path] Version);
 impl TryFrom<Version> for ActiveVersion {
     type Error = Status;
 
-    fn try_from(v: Version) -> Result<Self, Self::Error> {
-        match v {
+    fn try_from(version: Version) -> Result<Self, Self::Error> {
+        match version {
             Version::V1 | Version::V2 => Err(Status::Gone),
             Version::V3 => Ok(Self::V3),
             Version::V4 => Ok(Self::V4),
+        }
+    }
+}
+
+impl From<ActiveVersion> for Version {
+    fn from(version: ActiveVersion) -> Self {
+        match version {
+            ActiveVersion::V3 => Self::V3,
+            ActiveVersion::V4 => Self::V4,
         }
     }
 }
@@ -209,9 +224,256 @@ impl From<ActiveVersion> for NonZero<u8> {
     }
 }
 
+impl FromUriParam<uri::fmt::Path, ActiveVersion> for Version {
+    type Target = Version;
+
+    fn from_uri_param(param: ActiveVersion) -> Self::Target {
+        param.into()
+    }
+}
+
 #[rocket::get("/api")]
 pub(crate) fn index() -> Redirect {
-    Redirect::temporary("/api/v3") //TODO ensure this always points to the latest version
+    Redirect::temporary(uri!(docs(Version::default())))
+}
+
+#[rocket::get("/api/<version>")]
+pub(crate) fn docs(me: Option<User>, uri: Origin<'_>, version: Version) -> Result<RawHtml<String>, Status> {
+    let version = ActiveVersion::try_from(version)?;
+    Ok(page(&me, &uri, PageStyle::default(), "Wurstmineberg API", Tab::More, html! {
+        p {
+            : "The ";
+            strong : "Wurstmineberg API";
+            : " is a part of the website intended to be used with apps other than web browsers. Some endpoints are only available for Wurstmineberg members; using your API key, you can access these without signing into Discord. If asked for login credentials, enter ";
+            code : "api";
+            : " as the username and your API key as the password.";
+        }
+        @if let Some(me) = &me {
+            p {
+                : "Your API key: ";
+                code(class = "spoiler") : me.api_key;
+            }
+            p {
+                : "If your API key falls into the wrong hands, please ";
+                a(class = "btn btn-primary", href = format!("/people/{}/reset-key", me.id.url_part())) : "generate a new API key";
+                : ". You will then have to sign in with the new key anywhere you're using the old one.";
+            }
+        } else {
+            p {
+                a(href = uri!(auth::discord_login(Some(uri!(docs(Version::V3)))))) : "Log in";
+                : " to view your API key.";
+            }
+        }
+        h1 : "Endpoints";
+        h2 {
+            a(href = uri!(calendar(version))) {
+                code : uri!(calendar(version));
+            }
+        }
+        p {
+            : "Our special events calendar in ";
+            a(href = "https://en.wikipedia.org/wiki/ICalendar") : "iCalendar";
+            : " format. To subscribe:";
+        }
+        ul {
+            li {
+                : "In Google Calendar, select ";
+                a(href = "https://calendar.google.com/calendar/u/0/r/settings/addbyurl") : "Add calendar → From URL";
+            }
+            li {
+                : "In Apple Calendar, press ";
+                kbd : "⌥";
+                kbd : "⌘";
+                kbd : "S";
+                : " or select File → New Calendar Subscription";
+            }
+            li : "In Mozilla Thunderbird, select New Calendar → On the Network. Paste the link into the “Location” field and click “Find Calendars”, then “Properties”. Enable “Read Only” and click “OK”, then “Subscribe”.";
+        }
+        h2 {
+            a(href = uri!(discord_voice_state(version))) {
+                code : uri!(discord_voice_state(version));
+            }
+        }
+        p : "Info about who is currently in which voice channels. API key required."; //TODO document JSON schema
+        h2 {
+            a(href = uri!(websocket(version))) {
+                code : uri!(websocket(version));
+            }
+        }
+        p {
+            : "See ";
+            a(href = "https://docs.rs/async-proto") : "https://docs.rs/async-proto";
+            : " and ";
+            a(href = "https://github.com/wurstmineberg/wurstmineberg.de/blob/main/src/websocket.rs") : "https://github.com/wurstmineberg/wurstmineberg.de/blob/main/src/websocket.rs";
+            : " for the protocol.";
+        } //TODO better docs
+        h2 {
+            a(href = uri!(money_overview(version))) {
+                code : uri!(money_overview(version));
+            }
+        }
+        p {
+            : "Summary of the current financial situation, see ";
+            a(href = uri!(_, about::get, "#finance")) : "our about page";
+            : " for details.";
+        } //TODO document JSON schema
+        h2 {
+            a(href = uri!(money_transactions(version))) {
+                code : uri!(money_transactions(version));
+            }
+        }
+        p {
+            : "Anonymized history of financial transactions, see ";
+            a(href = uri!(_, about::get, "#finance")) : "our about page";
+            : " for details.";
+        } //TODO document JSON schema
+        h2 {
+            a(href = uri!(people(version))) {
+                code : uri!(people(version));
+            }
+        }
+        p : "Information about the People of Wurstmineberg (current and former server members as well as guests)."; //TODO document JSON schema
+        h2 {
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/person/<user>/avatar.json";
+            }
+        }
+        p : "Information about available profile pictures of the given Person."; //TODO document JSON schema
+        h2 {
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/person/<user>/skin/front.png";
+            }
+        }
+        p : "A 16×32 image showing a front view of the player's skin (with hat layer).";
+        h2 {
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/person/<user>/skin/head.png";
+            }
+        }
+        p : "An 8×8 image showing the player's head (with hat layer).";
+        h2 {
+            a(href = uri!(worlds(version))) {
+                code : uri!(worlds(version));
+            }
+        }
+        p {
+            : "An object mapping existing world names to short status summaries (like those returned by ";
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/world/<world>/status.json";
+            }
+            : " but the lists of online players are omitted unless specified using ";
+            code : "?list=1";
+            : ").";
+        }
+        h2 {
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/world/<world>/dim/<dimension>/chunk/<x>/<y>/<z>.json";
+            }
+        }
+        p : "A JSON representation of a chunk section."; //TODO JSON schema
+        h2 {
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/world/<world>/dim/<dimension>/chunk-column/<x>/<z>.json";
+            }
+        }
+        p : "A JSON representation of a chunk column."; //TODO JSON schema
+        h2 {
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/world/<world>/dim/<dimension>/region/<x>/<z>.mca";
+            }
+        }
+        p {
+            : "A raw region file in ";
+            a(href = "https://minecraft.wiki/w/Anvil_file_format") : "Anvil";
+            : " format.";
+        }
+        h2 {
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/world/<world>/level.json";
+            }
+        }
+        p {
+            : "A JSON representation of the ";
+            a(href = "https://minecraft.wiki/w/Java_Edition_level_format#level.dat_format") {
+                code : "level.dat";
+            }
+            : " file.";
+        }
+        h2 {
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/world/<world>/level.dat";
+            }
+        }
+        p {
+            : "The raw ";
+            a(href = "https://minecraft.wiki/w/Java_Edition_level_format#level.dat_format") {
+                code : "level.dat";
+            }
+            : " file in ";
+            a(href = "https://minecraft.wiki/w/NBT_format") : "NBT";
+            : " format.";
+        }
+        h2 {
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/world/<world>/player/<user>/playerdata.json";
+            }
+        }
+        p {
+            : "A JSON representation of the given Person's ";
+            a(href = "https://minecraft.wiki/w/Player.dat_format") : "player state file";
+            : ".";
+        }
+        h2 {
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/world/<world>/player/<user>/playerdata.dat";
+            }
+        }
+        p {
+            : "The raw ";
+            a(href = "https://minecraft.wiki/w/NBT_format") : "NBT";
+            : " version of the given Person's ";
+            a(href = "https://minecraft.wiki/w/Player.dat_format") : "player state file";
+            : ".";
+        }
+        h2 {
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/world/<world>/player/<user>/stats.json";
+            }
+        }
+        p : "The player's stats formatted as JSON with stats grouped into objects by category."; //TODO JSON schema
+        h2 {
+            code {
+                : "/api/v";
+                : NonZero::<u8>::from(version);
+                : "/world/<world>/status.json";
+            }
+        }
+        p : "A short status summary for this world."; //TODO JSON schema
+    }))
 }
 
 #[derive(Debug, thiserror::Error, rocket_util::Error)]
@@ -253,6 +515,19 @@ pub(crate) async fn discord_voice_state(me: User, version: Version) -> Result<Na
     let _ = me; // only required for authorization
     let _ /* no version differences */ = ActiveVersion::try_from(version)?;
     Ok(NamedFile::open(Path::new(BASE_PATH).join("discord").join("voice-state.json")).await.map_err(StatusOrError::Err)?) //TODO take voice state directly from wurstminebot task
+}
+
+#[rocket::get("/api/<version>/money/overview.json")]
+pub(crate) fn money_overview(version: Version) -> Result<Redirect, Status> {
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
+    Ok(Redirect::temporary("https://night.fenhl.net/wurstmineberg/money/overview.json")) // temporary redirect in case the schema changes on the backend or someone else takes over bookkeeping
+}
+
+#[rocket::get("/api/<version>/money/transactions.json")]
+pub(crate) fn money_transactions(version: Version) -> Result<Redirect, Status> {
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
+    //TODO deanonymize own transactions
+    Ok(Redirect::temporary("https://night.fenhl.net/wurstmineberg/money/transactions.json")) // temporary redirect in case the schema changes on the backend or someone else takes over bookkeeping
 }
 
 #[derive(Serialize)]
