@@ -356,11 +356,6 @@ class World(metaclass=WorldMeta):
             for player in (status.players.sample or [])
         ]
 
-    def player_data(self, player):
-        import wurstmineberg_web.api
-
-        return wurstmineberg_web.api.api_player_data(self, player)
-
     def region_path(self, dimension):
         return self.world_path / {
             Dimension.OVERWORLD: 'region',

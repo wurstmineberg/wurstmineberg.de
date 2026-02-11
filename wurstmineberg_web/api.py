@@ -223,41 +223,6 @@ def api_index():
 def api_v3_index():
     raise NotImplementedError('This endpoint is implemented in Rust')
 
-@api_v3_index.child('calendar.ics')
-def api_calendar():
-    """Our special events calendar you can subscribe to."""
-    raise NotImplementedError('This endpoint is implemented in Rust')
-
-@api_v3_index.child('discord')
-def api_discord_index():
-    pass
-
-@api_discord_index.child('voice-state.json', decorators=[wurstmineberg_web.auth.member_required])
-def discord_voice_state():
-    """Info about who is currently in which voice channels. API key required."""
-    raise NotImplementedError('This endpoint has been ported to Rust')
-
-@api_v3_index.child('websocket')
-def websocket_api():
-    """See https://docs.rs/async-proto and https://github.com/wurstmineberg/wurstmineberg.de/blob/main/src/websocket.rs for the protocol."""
-    raise NotImplementedError('This endpoint is implemented in Rust')
-
-@api_v3_index.child('money')
-def api_money_index():
-    pass
-
-@json_child(api_money_index, 'overview')
-def money_overview():
-    raise NotImplementedError('This endpoint is implemented in Rust')
-
-@json_child(api_money_index, 'transactions')
-def money_transactions():
-    raise NotImplementedError('This endpoint is implemented in Rust')
-
-@json_child(api_v3_index, 'people')
-def api_people():
-    raise NotImplementedError('This endpoint is implemented in Rust')
-
 @api_v3_index.child('person')
 def api_people_index():
     pass
@@ -274,11 +239,6 @@ def api_avatars(person):
 def api_player_skins(person):
     pass
 
-@image_child(api_player_skins, 'front')
-def api_player_skin_front(person):
-    """Returns a 16×32 image showing a front view of the player's skin (with hat layer)."""
-    raise NotImplementedError('This endpoint has been ported to Rust')
-
 @image_child(api_player_skins, 'head')
 def api_player_head(person):
     """Returns an 8×8 image showing the player's head (with hat layer)."""
@@ -287,11 +247,6 @@ def api_player_head(person):
 @api_v3_index.child('server')
 def api_server_index():
     pass
-
-@json_child(api_server_index, 'worlds')
-def api_worlds():
-    """Returns an object mapping existing world names to short status summaries (like those returned by /world/<world>/status.json but the lists of online players are omitted unless specified using ?list=1)"""
-    raise NotImplementedError('This endpoint has been ported to Rust')
 
 @api_v3_index.child('world')
 def api_worlds_index():
@@ -503,10 +458,6 @@ def api_world_players_index(world):
 def api_world_player(world, player):
     pass
 
-@nbt_child(api_world_player, 'playerdata')
-def api_player_data(world, player):
-    raise NotImplementedError('This endpoint has been ported to Rust')
-
 @json_child(api_world_player, 'stats')
 def api_player_stats(world, player):
     """Returns the player's stats formatted as JSON with stats grouped into objects by category"""
@@ -527,8 +478,3 @@ def api_player_stats(world, player):
         else:
             parent[key_path[-1]] = value
     return result
-
-@json_child(api_world_index, 'status')
-def api_world_status(world):
-    """Returns a short status summary for this world"""
-    raise NotImplementedError('This endpoint has been ported to Rust')
