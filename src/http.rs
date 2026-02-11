@@ -545,10 +545,11 @@ async fn flask_proxy_get(config: &State<Config>, http_client: &State<reqwest::Cl
     let mut url = Url::parse("http://127.0.0.1:24823/")?;
     url.path_segments_mut().expect("proxy URL is cannot-be-a-base").extend(path);
     url.set_query(origin.0.query().map(|query| query.as_str()));
-    night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("GET {url} forwarded to Flask"))).await.map_err(FlaskProxyError::NightReport)?;
-    let response = proxy_http_client.0.get(url).headers(proxy_headers(headers, me)?).send().await?;
-    if response.status() == reqwest::StatusCode::INTERNAL_SERVER_ERROR {
-        return Err(FlaskProxyError::InternalServerError(response.text().await?))
+    let response = proxy_http_client.0.get(url.clone()).headers(proxy_headers(headers, me)?).send().await?;
+    match response.status() {
+        reqwest::StatusCode::NOT_FOUND => {}
+        reqwest::StatusCode::INTERNAL_SERVER_ERROR => return Err(FlaskProxyError::InternalServerError(response.text().await?)),
+        _ => night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("GET {url} forwarded to Flask"))).await.map_err(FlaskProxyError::NightReport)?,
     }
     Ok(FlaskProxyResponse::Proxied(Response(response)))
 }
@@ -562,10 +563,11 @@ async fn flask_proxy_post(config: &State<Config>, http_client: &State<reqwest::C
     let mut url = Url::parse("http://127.0.0.1:24823/")?;
     url.path_segments_mut().expect("proxy URL is cannot-be-a-base").extend(path);
     url.set_query(origin.0.query().map(|query| query.as_str()));
-    night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("POST {url} forwarded to Flask"))).await.map_err(FlaskProxyError::NightReport)?;
-    let response = proxy_http_client.0.post(url).headers(proxy_headers(headers, me)?).body(data).send().await?;
-    if response.status() == reqwest::StatusCode::INTERNAL_SERVER_ERROR {
-        return Err(FlaskProxyError::InternalServerError(response.text().await?))
+    let response = proxy_http_client.0.post(url.clone()).headers(proxy_headers(headers, me)?).body(data).send().await?;
+    match response.status() {
+        reqwest::StatusCode::NOT_FOUND => {}
+        reqwest::StatusCode::INTERNAL_SERVER_ERROR => return Err(FlaskProxyError::InternalServerError(response.text().await?)),
+        _ => night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("POST {url} forwarded to Flask"))).await.map_err(FlaskProxyError::NightReport)?,
     }
     Ok(FlaskProxyResponse::Proxied(Response(response)))
 }
