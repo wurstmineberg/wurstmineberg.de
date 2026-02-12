@@ -549,7 +549,7 @@ async fn flask_proxy_get(config: &State<Config>, http_client: &State<reqwest::Cl
     match response.status() {
         reqwest::StatusCode::NOT_FOUND => {}
         reqwest::StatusCode::INTERNAL_SERVER_ERROR => return Err(FlaskProxyError::InternalServerError(response.text().await?)),
-        _ => night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("GET {url} forwarded to Flask"))).await.map_err(FlaskProxyError::NightReport)?,
+        _ => night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("GET {url} forwarded to Flask")), 0.0).await.map_err(FlaskProxyError::NightReport)?,
     }
     Ok(FlaskProxyResponse::Proxied(Response(response)))
 }
@@ -567,7 +567,7 @@ async fn flask_proxy_post(config: &State<Config>, http_client: &State<reqwest::C
     match response.status() {
         reqwest::StatusCode::NOT_FOUND => {}
         reqwest::StatusCode::INTERNAL_SERVER_ERROR => return Err(FlaskProxyError::InternalServerError(response.text().await?)),
-        _ => night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("POST {url} forwarded to Flask"))).await.map_err(FlaskProxyError::NightReport)?,
+        _ => night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("POST {url} forwarded to Flask")), 0.0).await.map_err(FlaskProxyError::NightReport)?,
     }
     Ok(FlaskProxyResponse::Proxied(Response(response)))
 }
@@ -625,7 +625,7 @@ async fn internal_server_error(request: &Request<'_>) -> RawHtml<String> {
     let http_client = request.guard::<&State<reqwest::Client>>().await.expect("missing HTTP client");
     let me = request.guard::<User>().await.succeeded();
     let uri = request.guard::<Origin<'_>>().await.succeeded().unwrap_or_else(|| Origin(uri!(index)));
-    let is_reported = night_report(config, http_client, "/dev/gharch/webError", Some("internal server error")).await.is_ok();
+    let is_reported = night_report(config, http_client, "/dev/gharch/webError", Some("internal server error"), 29.0).await.is_ok();
     page(&me, &uri, PageStyle::default(), "Internal Server Error — Wurstmineberg", Tab::None, html! {
         h1 : "Error 500: Internal Server Error";
         p : "This is a sad time. An error occured.";
@@ -653,7 +653,7 @@ async fn fallback_catcher(status: Status, request: &Request<'_>) -> RawHtml<Stri
     let http_client = request.guard::<&State<reqwest::Client>>().await.expect("missing HTTP client");
     let me = request.guard::<User>().await.succeeded();
     let uri = request.guard::<Origin<'_>>().await.succeeded().unwrap_or_else(|| Origin(uri!(index)));
-    let is_reported = night_report(config, http_client, "/dev/gharch/webError", Some("responding with unexpected HTTP status code")).await.is_ok();
+    let is_reported = night_report(config, http_client, "/dev/gharch/webError", Some("responding with unexpected HTTP status code"), 29.0).await.is_ok();
     page(&me, &uri, PageStyle::default(), &format!("{} — Wurstmineberg", status.reason_lossy()), Tab::None, html! {
         h1 {
             : "Error ";

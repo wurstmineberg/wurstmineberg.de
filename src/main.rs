@@ -2,10 +2,7 @@
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
 use {
-    std::{
-        iter,
-        time::Duration,
-    },
+    std::time::Duration,
     futures::future::FutureExt as _,
     itertools::Itertools as _,
     rocket::Rocket,
@@ -34,21 +31,21 @@ include!(concat!(env!("OUT_DIR"), "/build_output.rs"));
 
 const BASE_PATH: &str = "/opt/wurstmineberg";
 
-async fn night_report(config: &Config, http_client: &reqwest::Client, path: &str, extra: Option<&str>) -> Result<(), Error> {
+async fn night_report(config: &Config, http_client: &reqwest::Client, path: &str, extra: Option<&str>, base_priority: f64) -> Result<(), Error> {
     http_client
         .post("https://night.fenhl.net/dev/gharch/report")
         .bearer_auth(&config.night.password)
-        .form(&iter::once(("path", path)).chain(extra.map(|extra| ("extra", extra))).collect_vec())
+        .form(&[("path", path), ("base_priority", &base_priority.to_string())].into_iter().chain(extra.map(|extra| ("extra", extra))).collect_vec())
         .send().await?
         .detailed_error_for_status().await?;
     Ok(())
 }
 
-fn night_report_sync(config: &Config, path: &str, extra: Option<&str>) -> Result<(), Error> {
+fn night_report_sync(config: &Config, path: &str, extra: Option<&str>, base_priority: f64) -> Result<(), Error> {
     reqwest::blocking::Client::new()
         .post("https://night.fenhl.net/dev/gharch/report")
         .bearer_auth(&config.night.password)
-        .form(&iter::once(("path", path)).chain(extra.map(|extra| ("extra", extra))).collect_vec())
+        .form(&[("path", path), ("base_priority", &base_priority.to_string())].into_iter().chain(extra.map(|extra| ("extra", extra))).collect_vec())
         .send()?
         .error_for_status()?;
     Ok(())
@@ -73,7 +70,7 @@ async fn main() -> Result<(), Error> {
     let panic_config = config.clone();
     let default_panic_hook = std::panic::take_hook();
     std::panic::set_hook(Box::new(move |info| {
-        let _ = night_report_sync(&panic_config, &format!("/dev/gharch/webError"), Some("thread panic"));
+        let _ = night_report_sync(&panic_config, &format!("/dev/gharch/webError"), Some("thread panic"), 29.0);
         default_panic_hook(info)
     }));
     let _ = rustls::crypto::ring::default_provider().install_default();
