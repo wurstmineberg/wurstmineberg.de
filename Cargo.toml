@@ -79,7 +79,7 @@ wheel = { git = "https://github.com/fenhl/wheel", features = ["reqwest", "rocket
 systemd_minecraft = { git = "https://github.com/wurstmineberg/systemd-minecraft", branch = "riir", features = ["rocket"] }
 
 [build-dependencies]
-gix = "0.78" # much slower than git2 but avoids a C dependency on openssl-sys
+gix = "0.79" # much slower than git2 but avoids a C dependency on openssl-sys
 itertools = "0.14"
 jiff = "0.2"
 thiserror = "2"
