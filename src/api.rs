@@ -124,6 +124,8 @@ use {
             PageStyle,
             StatusOrError,
             Tab,
+            asset,
+            base_uri,
             page,
         },
         user::{
@@ -590,6 +592,7 @@ pub(crate) enum Error {
     #[error(transparent)] PlayerHead(#[from] playerhead::Error),
     #[error(transparent)] Sql(#[from] sqlx::Error),
     #[error(transparent)] SystemTime(#[from] std::time::SystemTimeError),
+    #[error(transparent)] Url(#[from] url::ParseError),
     #[error(transparent)] Uuid(#[from] uuid::Error),
     #[error(transparent)] Wheel(#[from] wheel::Error),
     #[error("unknown Minecraft UUID: {0}")]
@@ -639,6 +642,48 @@ pub(crate) async fn people(db_pool: &State<PgPool>, version: Version) -> Result<
         });
     }
     Ok(Json(people))
+}
+
+#[derive(Serialize)]
+pub(crate) struct AvatarInfo {
+    url: Url,
+    pixelate: bool,
+    fallbacks: Vec<AvatarFallback>,
+}
+
+#[derive(Serialize)]
+struct AvatarFallback {
+    url: Url,
+    pixelate: bool,
+}
+
+#[rocket::get("/api/<version>/person/<user>/avatar.json")]
+pub(crate) async fn user_avatar(db_pool: &State<PgPool>, version: Version, user: UserParam<'_>) -> Result<Option<Json<AvatarInfo>>, StatusOrError<Error>> {
+    let version = ActiveVersion::try_from(version)?;
+    let Some(user) = user.parse(&**db_pool).await? else { return Ok(None) };
+    let mut fallbacks = Vec::default();
+    // Discord avatar
+    if let Some(discorddata) = user.discorddata && let Some(avatar) = discorddata.avatar {
+        fallbacks.push(AvatarFallback {
+            url: avatar,
+            pixelate: false,
+        });
+    }
+    // player head
+    if user.data.minecraft.uuid.is_some() {
+        fallbacks.push(AvatarFallback {
+            url: uri!(base_uri(), player_head(version, &user.id)).to_string().parse()?,
+            pixelate: true,
+        });
+    }
+    // placeholder
+    fallbacks.push(AvatarFallback {
+        url: asset("/img/grid-unknown.png").parse()?,
+        pixelate: true,
+    });
+    // API format
+    let AvatarFallback { url, pixelate } = fallbacks.remove(0);
+    Ok(Some(Json(AvatarInfo { url, pixelate, fallbacks })))
 }
 
 #[rocket::get("/api/<version>/person/<user>/skin/front.png")]

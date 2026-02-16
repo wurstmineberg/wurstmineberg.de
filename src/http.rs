@@ -693,6 +693,7 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             crate::api::money_overview,
             crate::api::money_transactions,
             crate::api::people,
+            crate::api::user_avatar,
             crate::api::player_skin_front,
             crate::api::player_head,
             crate::api::worlds,

@@ -223,27 +223,6 @@ def api_index():
 def api_v3_index():
     raise NotImplementedError('This endpoint is implemented in Rust')
 
-@api_v3_index.child('person')
-def api_people_index():
-    pass
-
-@api_people_index.children(wurstmineberg_web.models.Person.from_snowflake_or_wmbid)
-def api_person(person):
-    pass
-
-@json_child(api_person, 'avatar')
-def api_avatars(person):
-    return person.avatar
-
-@api_person.child('skin')
-def api_player_skins(person):
-    pass
-
-@image_child(api_player_skins, 'head')
-def api_player_head(person):
-    """Returns an 8×8 image showing the player's head (with hat layer)."""
-    raise NotImplementedError('This endpoint has been ported to Rust')
-
 @api_v3_index.child('server')
 def api_server_index():
     pass

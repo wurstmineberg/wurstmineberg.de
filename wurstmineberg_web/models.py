@@ -264,7 +264,7 @@ class Person(wurstmineberg_web.db.Model, flask_login.UserMixin):
 
     @property
     def playerhead_url(self):
-        return flask.url_for('api_player_head', person=str(self.snowflake_or_wmbid), _external=True)
+        return f'https://{flask.g.host}/api/v4/person/{self.snowflake_or_wmbid}/skin/head.png'
 
     @property
     def profile_url(self):

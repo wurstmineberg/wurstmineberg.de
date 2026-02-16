@@ -409,7 +409,7 @@ pub(crate) struct DataMinecraft {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     nicks: Vec<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    uuid: Option<Uuid>,
+    pub(crate) uuid: Option<Uuid>,
 }
 
 impl DataMinecraft {
