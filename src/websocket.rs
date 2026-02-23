@@ -9,6 +9,7 @@ use {
     async_proto::Protocol,
     bitvec::prelude::*,
     mcanvil::{
+        BlockEntity,
         BlockState,
         Dimension,
     },
@@ -42,6 +43,12 @@ pub enum ServerMessageV3 {
         uuid: Uuid,
         data: Option<nbt::Blob>,
     },
+    BlockEntities {
+        dimension: Dimension,
+        cx: i32,
+        cz: i32,
+        data: Vec<BlockEntity>,
+    },
 }
 
 #[derive(Protocol)]
@@ -69,6 +76,12 @@ pub enum ServerMessageV4 {
         uuid: Uuid,
         data: Option<nbt::Blob>,
     },
+    BlockEntities {
+        dimension: Dimension,
+        cx: i32,
+        cz: i32,
+        data: Vec<BlockEntity>,
+    },
 }
 
 #[derive(Debug, Protocol)]
@@ -77,7 +90,7 @@ pub enum ClientMessage {
     /// If the client fails to do so within 30 seconds, the server may close the connection.
     Pong,
     /// Request to receive the current state of the chunk at the given position in the main world, and also receive state updates whenever the chunk changes.
-    /// The chunk is read from disk, so data does not update in real time but rather only once every few minutes.
+    /// The chunk is read from disk, so data does not update in real time but rather only when Minecraft saves.
     SubscribeToChunk {
         dimension: Dimension,
         /// The chunk x coordinate, equivalent to the block x coordinates of the blocks in the chunk divided by 16
@@ -90,6 +103,15 @@ pub enum ClientMessage {
     SubscribeToChunks(Vec<(Dimension, i32, i8, i32)>),
     SubscribeToInventory {
         player: UserIdRequest,
+    },
+    /// Request to receive the current set of block entities in the chunk column at the given position in the main world, and also receive state updates whenever the chunk changes.
+    /// The chunk is read from disk, so data does not update in real time but rather only when Minecraft saves.
+    SubscribeToBlockEntities {
+        dimension: Dimension,
+        /// The chunk x coordinate, equivalent to the block x coordinates of the blocks in the chunk divided by 16
+        cx: i32,
+        /// The chunk z coordinate, equivalent to the block z coordinates of the blocks in the chunk divided by 16
+        cz: i32,
     },
 }
 

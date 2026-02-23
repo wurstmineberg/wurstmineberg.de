@@ -39,6 +39,7 @@ use {
     itertools::Itertools as _,
     log_lock::*,
     mcanvil::{
+        BlockEntity,
         BlockState,
         ChunkSection,
         Dimension,
@@ -837,7 +838,7 @@ impl ActiveVersion {
         }
     }
 
-    async fn write_chunk(&self, sink: &WsSink, dimension: Dimension, cx: i32, cy: i8, cz: i32, chunk: Option<ChunkSection>) -> Result<(), async_proto::WriteError> {
+    async fn write_chunk(&self, sink: &WsSink, dimension: Dimension, cx: i32, cy: i8, cz: i32, chunk: Option<&ChunkSection>) -> Result<(), async_proto::WriteError> {
         match self {
             Self::V3 => lock!(sink = sink; ServerMessageV3::ChunkData {
                 data: chunk.map(|chunk| array::from_fn(|y|
@@ -890,6 +891,13 @@ impl ActiveVersion {
             Self::V4 => lock!(sink = sink; ServerMessageV4::PlayerData { id, uuid, data }.write_ws021(&mut *sink).await),
         }
     }
+
+    async fn write_block_entities(&self, sink: &WsSink, dimension: Dimension, cx: i32, cz: i32, data: Vec<BlockEntity>) -> Result<(), async_proto::WriteError> {
+        match self {
+            Self::V3 => lock!(sink = sink; ServerMessageV3::BlockEntities { dimension, cx, cz, data }.write_ws021(&mut *sink).await),
+            Self::V4 => lock!(sink = sink; ServerMessageV4::BlockEntities { dimension, cx, cz, data }.write_ws021(&mut *sink).await),
+        }
+    }
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -921,13 +929,36 @@ impl From<Vec<notify::Error>> for WsError {
 }
 
 async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, version: ActiveVersion, stream: WsStream, sink: WsSink) -> Result<(), WsError> {
+    #[derive(Default, Clone, Copy)]
+    struct Subscriptions {
+        block_states: bool,
+        block_entities: bool,
+    }
+
+    impl Subscriptions {
+        fn add(&mut self, reason: ChunkUpdateReason) {
+            match reason {
+                ChunkUpdateReason::SubscribeBlockStates => self.block_states = true,
+                ChunkUpdateReason::SubscribeBlockEntities => self.block_entities = true,
+                ChunkUpdateReason::Notify => {}
+            }
+        }
+    }
+
     #[derive(Clone, Copy)]
-    enum UpdateReason {
+    enum ChunkUpdateReason {
+        SubscribeBlockStates,
+        SubscribeBlockEntities,
+        Notify,
+    }
+
+    #[derive(Clone, Copy)]
+    enum PlayerUpdateReason {
         Subscribe,
         Notify,
     }
 
-    async fn update_chunks(version: ActiveVersion, world: &systemd_minecraft::World, region_cache: &Mutex<HashMap<(Dimension, i32, i32), HashMap<(u8, i8, u8), Option<DateTime<Utc>>>>>, watcher: &Mutex<notify::RecommendedWatcher>, sink: &WsSink, chunks: impl IntoIterator<Item = (Dimension, i32, i8, i32)>, reason: UpdateReason) -> Result<(), WsError> {
+    async fn update_chunks(version: ActiveVersion, world: &systemd_minecraft::World, region_cache: &Mutex<HashMap<(Dimension, i32, i32), HashMap<(u8, i8, u8), (Subscriptions, Option<DateTime<Utc>>)>>>, watcher: &Mutex<notify::RecommendedWatcher>, sink: &WsSink, chunks: impl IntoIterator<Item = (Dimension, i32, i8, i32)>, reason: ChunkUpdateReason) -> Result<(), WsError> {
         let chunks = chunks.into_iter().into_group_map_by(|(dimension, cx, _, cz)| (*dimension, cx.div_euclid(32), cz.div_euclid(32)));
         lock!(region_cache = region_cache; for ((dimension, rx, rz), chunks) in chunks {
             let chunk_cache = match region_cache.entry((dimension, rx, rz)) {
@@ -938,8 +969,9 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                 }
             };
             let should_check = match reason {
-                UpdateReason::Subscribe => !chunks.iter().all(|(_, cx, cy, cz)| chunk_cache.contains_key(&(cx.rem_euclid(32) as u8, *cy, cz.rem_euclid(32) as u8))),
-                UpdateReason::Notify => true, // already filtered
+                ChunkUpdateReason::SubscribeBlockStates => !chunks.iter().all(|(_, cx, cy, cz)| chunk_cache.get(&(cx.rem_euclid(32) as u8, *cy, cz.rem_euclid(32) as u8)).is_some_and(|(subscriptions, _)| subscriptions.block_states)),
+                ChunkUpdateReason::SubscribeBlockEntities => !chunks.iter().all(|(_, cx, cy, cz)| chunk_cache.get(&(cx.rem_euclid(32) as u8, *cy, cz.rem_euclid(32) as u8)).is_some_and(|(subscriptions, _)| subscriptions.block_entities)),
+                ChunkUpdateReason::Notify => true, // already filtered
             };
             if should_check {
                 if let Some(mut region) = Region::find(world.dir().join("world"), dimension, [rx, rz]).await? {
@@ -947,18 +979,34 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                         let cx_relative = cx.rem_euclid(32) as u8;
                         let cz_relative = cz.rem_euclid(32) as u8;
                         let new_timestamp = region.timestamps[32 * cz_relative as usize + cx_relative as usize];
-                        let new_chunk = region.chunk_column_relative([cx_relative, cz_relative])?.and_then(|col| col.into_section_at(cy));
                         match chunk_cache.entry((cx_relative, cy, cz_relative)) {
                             hash_map::Entry::Occupied(mut entry) => {
-                                let old_timestamp = entry.get_mut();
+                                let (subscriptions, old_timestamp) = entry.get_mut();
+                                subscriptions.add(reason);
                                 if old_timestamp.is_none_or(|old_timestamp| new_timestamp != old_timestamp) {
                                     *old_timestamp = Some(new_timestamp);
-                                    version.write_chunk(sink, dimension, cx, cy, cz, new_chunk).await?;
+                                    let col = region.chunk_column_relative([cx_relative, cz_relative])?;
+                                    if subscriptions.block_states {
+                                        let new_chunk = col.as_ref().and_then(|col| col.section_at(cy));
+                                        version.write_chunk(sink, dimension, cx, cy, cz, new_chunk).await?;
+                                    }
+                                    if subscriptions.block_entities {
+                                        version.write_block_entities(sink, dimension, cx, cz, col.map(|col| col.block_entities).unwrap_or_default()).await?;
+                                    }
                                 }
                             }
                             hash_map::Entry::Vacant(entry) => {
-                                entry.insert(Some(new_timestamp));
-                                version.write_chunk(sink, dimension, cx, cy, cz, new_chunk).await?;
+                                let mut subscriptions = Subscriptions::default();
+                                subscriptions.add(reason);
+                                entry.insert((subscriptions, Some(new_timestamp)));
+                                let col = region.chunk_column_relative([cx_relative, cz_relative])?;
+                                if subscriptions.block_states {
+                                    let new_chunk = col.as_ref().and_then(|col| col.section_at(cy));
+                                    version.write_chunk(sink, dimension, cx, cy, cz, new_chunk).await?;
+                                }
+                                if subscriptions.block_entities {
+                                    version.write_block_entities(sink, dimension, cx, cz, col.map(|col| col.block_entities).unwrap_or_default()).await?;
+                                }
                             }
                         }
                     }
@@ -968,15 +1016,28 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                         let cz_relative = cz.rem_euclid(32) as u8;
                         match chunk_cache.entry((cx_relative, cy, cz_relative)) {
                             hash_map::Entry::Occupied(mut entry) => {
-                                let old_timestamp = entry.get_mut();
+                                let (subscriptions, old_timestamp) = entry.get_mut();
+                                subscriptions.add(reason);
                                 if old_timestamp.is_some() {
                                     *old_timestamp = None;
-                                    version.write_chunk(sink, dimension, cx, cy, cz, None).await?;
+                                    if subscriptions.block_states {
+                                        version.write_chunk(sink, dimension, cx, cy, cz, None).await?;
+                                    }
+                                    if subscriptions.block_entities {
+                                        version.write_block_entities(sink, dimension, cx, cz, Vec::default()).await?;
+                                    }
                                 }
                             }
                             hash_map::Entry::Vacant(entry) => {
-                                entry.insert(None);
-                                version.write_chunk(sink, dimension, cx, cy, cz, None).await?;
+                                let mut subscriptions = Subscriptions::default();
+                                subscriptions.add(reason);
+                                entry.insert((subscriptions, None));
+                                if subscriptions.block_states {
+                                    version.write_chunk(sink, dimension, cx, cy, cz, None).await?;
+                                }
+                                if subscriptions.block_entities {
+                                    version.write_block_entities(sink, dimension, cx, cz, Vec::default()).await?;
+                                }
                             }
                         }
                     }
@@ -986,7 +1047,7 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
         Ok(())
     }
 
-    async fn update_player(version: ActiveVersion, world: &systemd_minecraft::World, players_cache: &Mutex<HashMap<Uuid, Option<nbt::Blob>>>, watcher: &Mutex<notify::RecommendedWatcher>, sink: &WsSink, id: user::Id, uuid: Uuid, reason: UpdateReason) -> Result<(), WsError> {
+    async fn update_player(version: ActiveVersion, world: &systemd_minecraft::World, players_cache: &Mutex<HashMap<Uuid, Option<nbt::Blob>>>, watcher: &Mutex<notify::RecommendedWatcher>, sink: &WsSink, id: user::Id, uuid: Uuid, reason: PlayerUpdateReason) -> Result<(), WsError> {
         lock!(players_cache = players_cache; {
             let player_cache = match players_cache.entry(uuid) {
                 hash_map::Entry::Occupied(entry) => entry.into_mut(),
@@ -996,8 +1057,8 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                 }
             };
             let should_check = match reason {
-                UpdateReason::Subscribe => player_cache.is_none(),
-                UpdateReason::Notify => true, // already filtered
+                PlayerUpdateReason::Subscribe => player_cache.is_none(),
+                PlayerUpdateReason::Notify => true, // already filtered
             };
             if should_check {
                 let path = world.dir().join("world").join("playerdata").join(format!("{uuid}.dat"));
@@ -1040,17 +1101,18 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                 read.set(timeout(Duration::from_secs(60), ClientMessage::read_ws_owned021(stream)));
                 match msg {
                     ClientMessage::Pong => {}
-                    ClientMessage::SubscribeToChunk { dimension, cx, cy, cz } => update_chunks(version, &main_world, &region_cache, &watcher, &sink, iter::once((dimension, cx, cy, cz)), UpdateReason::Subscribe).await?,
-                    ClientMessage::SubscribeToChunks(chunks) => update_chunks(version, &main_world, &region_cache, &watcher, &sink, chunks, UpdateReason::Subscribe).await?,
+                    ClientMessage::SubscribeToChunk { dimension, cx, cy, cz } => update_chunks(version, &main_world, &region_cache, &watcher, &sink, iter::once((dimension, cx, cy, cz)), ChunkUpdateReason::SubscribeBlockStates).await?,
+                    ClientMessage::SubscribeToChunks(chunks) => update_chunks(version, &main_world, &region_cache, &watcher, &sink, chunks, ChunkUpdateReason::SubscribeBlockStates).await?,
                     ClientMessage::SubscribeToInventory { player } => if let Some(user) = User::from_id_request(&db_pool, player.clone()).await? {
                         if let Some(uuid) = user.minecraft_uuid() {
-                            update_player(version, &main_world, &players_cache, &watcher, &sink, user.id, uuid, UpdateReason::Subscribe).await?;
+                            update_player(version, &main_world, &players_cache, &watcher, &sink, user.id, uuid, PlayerUpdateReason::Subscribe).await?;
                         } else {
                             version.write_custom_error(&sink, player, "the requested user does not have a Minecraft UUID").await?;
                         }
                     } else {
                         version.write_custom_error(&sink, player, "the requested user ID does not exist").await?;
                     },
+                    ClientMessage::SubscribeToBlockEntities { dimension, cx, cz } => update_chunks(version, &main_world, &region_cache, &watcher, &sink, iter::once((dimension, cx, 0, cz)), ChunkUpdateReason::SubscribeBlockEntities).await?,
                 }
             }
             Some(res) = watch_rx.recv() => {
@@ -1070,12 +1132,12 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                         let Ok(std::path::Component::Normal(name)) = suffix.components().exactly_one() else { return Err(WsError::NotifyUnexpectedFile) };
                         let uuid = name.to_str().ok_or(WsError::NotifyUnexpectedFile)?.strip_suffix(".dat").ok_or(WsError::NotifyUnexpectedFile)?.parse()?;
                         if let Some(user) = User::from_minecraft_uuid(&db_pool, uuid).await? {
-                            update_player(version, &main_world, &players_cache, &watcher, &sink, user.id, uuid, UpdateReason::Notify).await?;
+                            update_player(version, &main_world, &players_cache, &watcher, &sink, user.id, uuid, PlayerUpdateReason::Notify).await?;
                         }
                     } else {
                         let region = Region::open(path).await?;
                         if let Some(chunks) = lock!(region_cache = region_cache; region_cache.get(&(region.dimension, region.coords[0], region.coords[1])).map(|chunks| chunks.keys().map(|&(cx, cy, cz)| (region.dimension, region.coords[0] * 32 + i32::from(cx), cy, region.coords[1] * 32 + i32::from(cz))).collect_vec())) {
-                            update_chunks(version, &main_world, &region_cache, &watcher, &sink, chunks, UpdateReason::Notify).await?;
+                            update_chunks(version, &main_world, &region_cache, &watcher, &sink, chunks, ChunkUpdateReason::Notify).await?;
                         }
                     }
                 }
