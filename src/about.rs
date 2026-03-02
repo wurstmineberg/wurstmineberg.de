@@ -49,6 +49,7 @@ use {
             page,
         },
         config::Config,
+        stats,
         user::User,
         wiki,
     },
@@ -274,7 +275,7 @@ pub(crate) async fn get(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
         ul {
             li {
                 : "We're pretty much end-game on the main world, as far as ";
-                a(href = "/stats#achievements") : "the achievement progress";
+                a(href = uri!(_, stats::get, "#advancements")) : "the advancement progress";
                 : " is concerned. The original dragon has been dead for ages and the ";
                 : wiki::link(db_pool, "end", "wiki", "End").await?;
                 : " has been turned into ";

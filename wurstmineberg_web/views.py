@@ -13,11 +13,6 @@ import wurstmineberg_web.util
 def index():
     raise NotImplementedError('This endpoint has been ported to Rust')
 
-@index.child('stats')
-@wurstmineberg_web.util.template()
-def stats():
-    pass
-
 @index.child('people')
 def people():
     raise NotImplementedError('This endpoint has been ported to Rust')

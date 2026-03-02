@@ -152,7 +152,7 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                     div(class = "collapse navbar-collapse navbar-ex1-collapse") {
                         ul(id = "navbar-list", class = "nav navbar-nav") {
                             li(class? = matches!(tab, Tab::Home).then_some("active")) {
-                                a(href = "/") {
+                                a(href = uri!(index)) {
                                     span(class = "fa fa-home");
                                     : "Home";
                                 }
@@ -164,13 +164,13 @@ pub(crate) fn page(me: &Option<User>, uri: &Origin<'_>, style: PageStyle, title:
                                 }
                             }
                             li(class? = matches!(tab, Tab::People).then_some("active")) {
-                                a(href = "/people") {
+                                a(href = uri!(crate::user::list)) {
                                     span(class = "fa fa-users");
                                     : "People";
                                 }
                             }
                             li(class? = matches!(tab, Tab::Stats).then_some("active")) {
-                                a(href = "/stats") {
+                                a(href = uri!(crate::stats::get)) {
                                     span(class = "fa fa-table");
                                     : "Statistics";
                                 }
@@ -442,7 +442,7 @@ async fn index(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'_>) -> Re
                     : "). There's also the ";
                     a(href = uri!(crate::api::index)) : "Wurstmineberg API";
                     : ", which makes a lot of cool stuff possible, like our ";
-                    a(href = "/stats") : "statistics page";
+                    a(href = uri!(crate::stats::get)) : "statistics page";
                     : ".";
                 }
                 a(class = "btn btn-default", href = "https://github.com/wurstmineberg") {
@@ -707,6 +707,7 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             crate::auth::discord_login,
             crate::auth::twitch_login,
             crate::auth::logout,
+            crate::stats::get,
             crate::user::list,
             crate::user::profile,
             crate::user::preferences_get,
