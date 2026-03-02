@@ -549,7 +549,7 @@ async fn flask_proxy_get(config: &State<Config>, http_client: &State<reqwest::Cl
     match response.status() {
         reqwest::StatusCode::NOT_FOUND => {}
         reqwest::StatusCode::INTERNAL_SERVER_ERROR => return Err(FlaskProxyError::InternalServerError(response.text().await?)),
-        _ => night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("GET {url} forwarded to Flask")), 0.0).await.map_err(FlaskProxyError::NightReport)?,
+        _ => night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("GET {url} forwarded to Flask (response status: {})", response.status())), 0.0).await.map_err(FlaskProxyError::NightReport)?,
     }
     Ok(FlaskProxyResponse::Proxied(Response(response)))
 }
@@ -567,7 +567,7 @@ async fn flask_proxy_post(config: &State<Config>, http_client: &State<reqwest::C
     match response.status() {
         reqwest::StatusCode::NOT_FOUND => {}
         reqwest::StatusCode::INTERNAL_SERVER_ERROR => return Err(FlaskProxyError::InternalServerError(response.text().await?)),
-        _ => night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("POST {url} forwarded to Flask")), 0.0).await.map_err(FlaskProxyError::NightReport)?,
+        _ => night_report(config, http_client, "/dev/gharch/flaskProxy", Some(&format!("POST {url} forwarded to Flask (response status: {})", response.status())), 0.0).await.map_err(FlaskProxyError::NightReport)?,
     }
     Ok(FlaskProxyResponse::Proxied(Response(response)))
 }
