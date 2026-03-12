@@ -71,19 +71,7 @@ if (-not $?)
     throw 'Native Failure'
 }
 
-ssh wurstmineberg.de sudo systemctl reload nginx
-if (-not $?)
-{
-    throw 'Native Failure'
-}
-
-ssh wurstmineberg.de sudo systemctl reload caddy
-if (-not $?)
-{
-    throw 'Native Failure'
-}
-
-ssh wurstmineberg.de sudo systemctl reload uwsgi
+ssh wurstmineberg.de sudo systemctl reload caddy nginx uwsgi
 if (-not $?)
 {
     throw 'Native Failure'

@@ -9,9 +9,7 @@ if [[ x"$(hostname -f)" == x'gharch.wurstmineberg.de' ]]; then
     git --git-dir=/opt/git/github.com/wurstmineberg/wurstmineberg.de/main/.git pull
     # reload caddy (since caddy config is tracked by git) and uWSGI
     sudo systemctl daemon-reload
-    sudo systemctl reload nginx
-    sudo systemctl reload caddy
-    sudo systemctl reload uwsgi
+    sudo systemctl reload caddy nginx uwsgi
 else
     git push
     cargo build --release --target=x86_64-unknown-linux-musl
