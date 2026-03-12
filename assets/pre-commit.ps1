@@ -6,6 +6,12 @@ if (-not $?)
     throw 'Native Failure'
 }
 
+cargo msrv verify
+if (-not $?)
+{
+    throw 'Native Failure'
+}
+
 cargo sqlx prepare --check
 if (-not $?)
 {
