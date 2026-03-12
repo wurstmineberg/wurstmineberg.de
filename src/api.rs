@@ -902,7 +902,7 @@ impl ActiveVersion {
 
 #[derive(Debug, thiserror::Error)]
 enum WsError {
-    #[error(transparent)] ChunkColumnDecode(#[from] mcanvil::ChunkColumnDecodeError),
+    #[error(transparent)] ChunkColumnDecode(mcanvil::ChunkColumnDecodeError),
     #[error(transparent)] Elapsed(#[from] tokio::time::error::Elapsed),
     #[error(transparent)] Nbt(#[from] nbt::Error),
     #[error(transparent)] Notify(#[from] notify::Error),
@@ -985,7 +985,11 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                                 subscriptions.add(reason);
                                 if old_timestamp.is_none_or(|old_timestamp| new_timestamp != old_timestamp) {
                                     *old_timestamp = Some(new_timestamp);
-                                    let col = region.chunk_column_relative([cx_relative, cz_relative])?;
+                                    let col = match region.chunk_column_relative([cx_relative, cz_relative]) {
+                                        Ok(col) => col,
+                                        Err(mcanvil::ChunkColumnDecodeError { kind: mcanvil::ChunkColumnDecodeErrorKind::Range, .. }) => continue, // attempted to read region file that was still being written
+                                        Err(e) => return Err(WsError::ChunkColumnDecode(e)),
+                                    };
                                     if subscriptions.block_states {
                                         let new_chunk = col.as_ref().and_then(|col| col.section_at(cy));
                                         version.write_chunk(sink, dimension, cx, cy, cz, new_chunk).await?;
@@ -999,7 +1003,11 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                                 let mut subscriptions = Subscriptions::default();
                                 subscriptions.add(reason);
                                 entry.insert((subscriptions, Some(new_timestamp)));
-                                let col = region.chunk_column_relative([cx_relative, cz_relative])?;
+                                let col = match region.chunk_column_relative([cx_relative, cz_relative]) {
+                                    Ok(col) => col,
+                                    Err(mcanvil::ChunkColumnDecodeError { kind: mcanvil::ChunkColumnDecodeErrorKind::Range, .. }) => continue, // attempted to read region file that was still being written
+                                    Err(e) => return Err(WsError::ChunkColumnDecode(e)),
+                                };
                                 if subscriptions.block_states {
                                     let new_chunk = col.as_ref().and_then(|col| col.section_at(cy));
                                     version.write_chunk(sink, dimension, cx, cy, cz, new_chunk).await?;
