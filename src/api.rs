@@ -1099,14 +1099,14 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
     let players_cache = Mutex::default();
     let (watch_tx, mut watch_rx) = mpsc::channel(1_024);
     let watcher = Mutex::new(notify::recommended_watcher(move |res| watch_tx.blocking_send(res).allow_unreceived())?);
-    let mut read = pin!(timeout(Duration::from_secs(60), ClientMessage::read_ws_owned021(stream)));
+    let mut read = pin!(timeout(Duration::from_mins(1), ClientMessage::read_ws_owned021(stream)));
     loop {
         select! {
             biased;
             () = &mut rocket_shutdown => break Ok(()),
             res = &mut read => {
                 let (stream, msg) = res??;
-                read.set(timeout(Duration::from_secs(60), ClientMessage::read_ws_owned021(stream)));
+                read.set(timeout(Duration::from_mins(1), ClientMessage::read_ws_owned021(stream)));
                 match msg {
                     ClientMessage::Pong => {}
                     ClientMessage::SubscribeToChunk { dimension, cx, cy, cz } => update_chunks(version, &main_world, &region_cache, &watcher, &sink, iter::once((dimension, cx, cy, cz)), ChunkUpdateReason::SubscribeBlockStates).await?,

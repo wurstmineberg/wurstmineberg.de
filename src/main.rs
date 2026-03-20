@@ -32,11 +32,11 @@ include!(concat!(env!("OUT_DIR"), "/build_output.rs"));
 
 const BASE_PATH: &str = "/opt/wurstmineberg";
 
-async fn night_report(config: &Config, http_client: &reqwest::Client, path: &str, extra: Option<&str>, base_priority: f64) -> Result<(), Error> {
+async fn night_report(config: &Config, http_client: &reqwest::Client, path: &str, extra: Option<&str>, base_priority: f64, priority_delta: f64) -> Result<(), Error> {
     http_client
         .post("https://night.fenhl.net/dev/gharch/report")
         .bearer_auth(&config.night.password)
-        .form(&[("path", path), ("base_priority", &base_priority.to_string())].into_iter().chain(extra.map(|extra| ("extra", extra))).collect_vec())
+        .form(&[("path", path), ("base_priority", &base_priority.to_string()), ("priority_delta", &priority_delta.to_string())].into_iter().chain(extra.map(|extra| ("extra", extra))).collect_vec())
         .send().await?
         .detailed_error_for_status().await?;
     Ok(())

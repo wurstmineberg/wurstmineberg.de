@@ -566,7 +566,7 @@ pub(crate) async fn configure_builder(discord_builder: serenity_utils::Builder, 
                     Ok(never) => match never {},
                     Err(e) => e,
                 };
-                if last_crash.elapsed() >= Duration::from_secs(60 * 60 * 24) {
+                if last_crash.elapsed() >= Duration::from_hours(24) {
                     wait_time = Duration::from_secs(1); // reset wait time after no crash for a day
                 } else {
                     wait_time *= 2; // exponential backoff

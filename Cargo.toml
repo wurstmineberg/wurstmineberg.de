@@ -47,7 +47,7 @@ nonempty-collections = "1"
 notify = "8"
 playerhead = { git = "https://github.com/wurstmineberg/playerhead" }
 pulldown-cmark = { git = "https://github.com/fenhl/pulldown-cmark", branch = "rocket-wiki", default-features = false, features = ["simd", "html"] }
-rand = "0.9"
+rand = "0.10"
 rcon = { version = "0.6", features = ["rt-tokio"] }
 regex = "1"
 reqwest = { version = "0.13", default-features = false, features = ["blocking", "charset", "form", "gzip", "hickory-dns", "http2", "rustls-no-provider", "system-proxy", "zstd"] }
@@ -80,7 +80,7 @@ wheel = { git = "https://github.com/fenhl/wheel", features = ["reqwest", "rocket
 systemd_minecraft = { git = "https://github.com/wurstmineberg/systemd-minecraft", branch = "riir", features = ["rocket"] }
 
 [build-dependencies]
-gix = "0.79" # much slower than git2 but avoids a C dependency on openssl-sys
+gix = "0.80" # much slower than git2 but avoids a C dependency on openssl-sys
 itertools = "0.14"
 jiff = "0.2"
 thiserror = "2"
