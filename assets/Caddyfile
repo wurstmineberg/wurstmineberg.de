@@ -1,3 +1,5 @@
+#TODO this has been copied to flake.nix for caturday, delete this copy after server move
+
 {
     email fenhl@fenhl.net
     grace_period 10s # ensure reloads on config changes can't be delayed indefinitely by open connections

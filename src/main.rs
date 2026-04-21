@@ -52,7 +52,6 @@ fn night_report_sync(config: &Config, path: &str, extra: Option<&str>, base_prio
     Ok(())
 }
 
-
 #[derive(Debug, thiserror::Error)]
 enum Error {
     #[error(transparent)] Base64(#[from] base64::DecodeError),

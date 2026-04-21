@@ -32,23 +32,3 @@ def render_template(template_name=None, **kwargs):
     else:
         template_path = '{}.html.j2'.format(template_name.replace('.', '/'))
     return markupsafe.Markup(flask.render_template(template_path, **kwargs))
-
-def template(template_name=None):
-    def decorator(f):
-        @functools.wraps(f)
-        def wrapper(*args, **kwargs):
-            context = f(*args, **kwargs)
-            if context is None:
-                context = {}
-            elif not isinstance(context, dict):
-                return context
-            return render_template(template_name, **context)
-
-        return wrapper
-
-    return decorator
-
-def setup(app):
-    @app.template_filter()
-    def ymd(value):
-        return f'{value:%Y-%m-%d}'
