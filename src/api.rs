@@ -758,6 +758,41 @@ pub(crate) async fn worlds_with_players(db_pool: &State<PgPool>, version: Versio
         .map(Json)
 }
 
+#[rocket::get("/api/<version>/world/<world>/level.dat")]
+pub(crate) async fn world_level(version: Version, world: systemd_minecraft::World) -> Result<Option<(ContentType, File)>, StatusOrError<wheel::Error>> {
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
+    Ok(Some((
+        ContentType::new("application", "prs.nbt"), // as suggested at https://old.reddit.com/r/AskProgramming/comments/1eldcjt/mime_type_of_minecraft_nbt/lgrs5p4/
+        match File::open(world.dir().join("world").join("level.dat")).await {
+            Ok(file) => file,
+            Err(wheel::Error::Io { inner, .. }) if inner.kind() == io::ErrorKind::NotFound => return Ok(None),
+            Err(e) => return Err(StatusOrError::Err(e)),
+        },
+    )))
+}
+
+#[rocket::get("/api/<version>/world/<world>/level.json")]
+pub(crate) async fn world_level_json(version: Version, world: systemd_minecraft::World) -> Result<Option<Json<nbt::Blob>>, StatusOrError<Error>> {
+    let _ /* no version differences */ = ActiveVersion::try_from(version)?;
+    let path = world.dir().join("world").join("level.dat");
+    let mut file = match File::open(&path).await {
+        Ok(file) => file,
+        Err(wheel::Error::Io { inner, .. }) if inner.kind() == io::ErrorKind::NotFound => return Ok(None),
+        Err(e) => return Err(e.into()),
+    };
+    let mut buf = Vec::default();
+    file.read_to_end(&mut buf).await.at(&path)?;
+    let mut data = nbt::Blob::from_gzip_reader(&mut &*buf)?;
+    if data.get("apiTimeLastModified").is_none() {
+        let metadata = file.metadata().await?;
+        data.insert("apiTimeLastModified", metadata.modified().at(path)?.duration_since(SystemTime::UNIX_EPOCH)?.as_secs_f64())?;
+    }
+    if data.get("apiTimeResultFetched").is_none() {
+        data.insert("apiTimeResultFetched", SystemTime::now().duration_since(SystemTime::UNIX_EPOCH)?.as_secs_f64())?;
+    }
+    Ok(Some(Json(data)))
+}
+
 #[rocket::get("/api/<version>/world/<world>/player/<player>/playerdata.dat")]
 pub(crate) async fn player_data(db_pool: &State<PgPool>, version: Version, world: systemd_minecraft::World, player: UserParam<'_>) -> Result<Option<(ContentType, File)>, StatusOrError<Error>> {
     let _ /* no version differences */ = ActiveVersion::try_from(version)?;
@@ -765,7 +800,11 @@ pub(crate) async fn player_data(db_pool: &State<PgPool>, version: Version, world
     let Some(uuid) = player.minecraft_uuid() else { return Ok(None) };
     Ok(Some((
         ContentType::new("application", "prs.nbt"), // as suggested at https://old.reddit.com/r/AskProgramming/comments/1eldcjt/mime_type_of_minecraft_nbt/lgrs5p4/
-        File::open(world.dir().join("world").join("playerdata").join(format!("{uuid}.dat"))).await?,
+        match File::open(world.dir().join("world").join("playerdata").join(format!("{uuid}.dat"))).await {
+            Ok(file) => file,
+            Err(wheel::Error::Io { inner, .. }) if inner.kind() == io::ErrorKind::NotFound => return Ok(None),
+            Err(e) => return Err(e.into()),
+        },
     )))
 }
 

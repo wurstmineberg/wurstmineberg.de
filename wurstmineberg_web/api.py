@@ -113,27 +113,6 @@ def mca_children(node, var_converter=flask_view_tree.identity, *args, **kwargs):
 
     return decorator
 
-def nbtfile_to_dict(filename, *, add_metadata=True):
-    """Generates a JSON-serializable value from a path (string or pathlib.Path) representing a NBT file.
-    Keyword-only arguments:
-    add_metadata -- If true, converts the result to a dict and adds the .apiTimeLastModified and .apiTimeResultFetched fields.
-    """
-    if isinstance(filename, pathlib.Path):
-        path = filename
-        filename = str(filename)
-    else:
-        path = pathlib.Path(filename)
-    nbt_file = nbt.nbt.NBTFile(filename)
-    nbt_dict = nbt_to_dict(nbt_file)
-    if add_metadata:
-        if not isinstance(nbt_dict, dict):
-            nbt_dict = {'data': nbt_dict}
-        if 'apiTimeLastModified' not in nbt_dict:
-            nbt_dict['apiTimeLastModified'] = path.stat().st_mtime
-        if 'apiTimeResultFetched' not in nbt_dict:
-            nbt_dict['apiTimeResultFetched'] = time.time()
-    return nbt_dict
-
 def nbt_to_dict(nbt_file):
     """Generates a JSON-serializable value from an nbt.nbt.NBTFile object."""
     dict = {}
@@ -164,56 +143,6 @@ def nbt_to_dict(nbt_file):
         return dict
     else:
         return collection
-
-def nbt_child(node, name, *args, **kwargs):
-    def decorator(f):
-        @functools.wraps(f)
-        def nbt_filed(*args, **kwargs):
-            result = f(*args, **kwargs)
-            if isinstance(result, pathlib.Path):
-                return nbt.nbt.NBTFile(str(result))
-            elif isinstance(result, nbt.nbt.NBTFile):
-                return result
-            else:
-                raise NotImplementedError('Cannot convert value of type {} to NBTFile'.format(type(result)))
-
-        @functools.wraps(f)
-        def dict_encoded(*args, **kwargs):
-            result = f(*args, **kwargs)
-            if isinstance(result, pathlib.Path):
-                return nbtfile_to_dict(result)
-            elif isinstance(result, nbt.nbt.NBTFile):
-                return nbt_to_dict(result)
-            else:
-                raise NotImplementedError('Cannot convert value of type {} to JSON'.format(type(result)))
-
-        @node.child(name + '.json', view_name='{}_json'.format(f.__name__), *args, **kwargs)
-        @functools.wraps(f)
-        def json_encoded(*args, **kwargs):
-            result = simplejson.dumps(dict_encoded(*args, **kwargs), sort_keys=True, indent=4)
-            return flask.Response(result, mimetype='application/json')
-
-        @node.child(name + '.dat', *args, **kwargs)
-        @functools.wraps(f)
-        def raw_nbt(*args, **kwargs):
-            result = f(*args, **kwargs)
-            if isinstance(result, pathlib.Path):
-                result = nbt.nbt.NBTFile(str(result)) #TODO static file optimization
-            if isinstance(result, nbt.nbt.NBTFile):
-                buf = io.BytesIO()
-                result.write_file(fileobj=buf)
-                return flask.Response(buf, mimetype='application/x-minecraft-nbt')
-            else:
-                raise NotImplementedError('Cannot convert value of type {} to NBT'.format(type(result)))
-
-        pass #TODO add HTML view endpoint
-
-        nbt_filed.dict = dict_encoded # make Python-dict-encoded NBT available for Python code
-        nbt_filed.json = json_encoded # make JSON-encoded NBT available for Python code
-        nbt_filed.dat = raw_nbt # make raw NBT available for Python code
-        return nbt_filed
-
-    return decorator
 
 @wurstmineberg_web.views.index.child('api', 'API')
 def api_index():
@@ -424,10 +353,6 @@ def api_regions_x(world, dimension, x):
 @mca_children(api_regions_x, int)
 def api_region(world, dimension, x, z):
     return world.region_path(dimension) / f'r.{x}.{z}.mca'
-
-@nbt_child(api_world_index, 'level')
-def api_world_level(world):
-    return world.world_path / 'level.dat'
 
 @api_world_index.child('player')
 def api_world_players_index(world):
