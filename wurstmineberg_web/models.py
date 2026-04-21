@@ -18,7 +18,6 @@ import sqlalchemy.dialects.postgresql # PyPI: SQLAlchemy
 import sqlalchemy.orm.attributes # PyPI: SQLAlchemy
 
 import people # https://github.com/wurstmineberg/people
-import wurstminebot # https://github.com/wurstmineberg/wurstminebot-discord
 
 import wurstmineberg_web
 import wurstmineberg_web.util
