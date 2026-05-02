@@ -3816,7 +3816,7 @@ dependencies = [
 [[package]]
 name = "linode-rs"
 version = "0.2.0"
-source = "git+https://gitlab.com/fenhl/linode.git/?branch=dev-fenhl#0ea71092967b6c9e4e9cd9e488ce2d480b780907"
+source = "git+https://gitlab.com/fenhl/linode#0ea71092967b6c9e4e9cd9e488ce2d480b780907"
 dependencies = [
  "doubloon",
  "reqwest 0.13.3",

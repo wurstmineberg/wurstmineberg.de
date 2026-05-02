@@ -44,7 +44,7 @@ ics = "0.5"
 icu_locale = "2"
 itertools = "0.14"
 lazy-regex = "3"
-linode-rs = { git = "https://gitlab.com/fenhl/linode.git/", branch = "dev-fenhl", default-features = false }
+linode-rs = { git = "https://gitlab.com/fenhl/linode", default-features = false }
 log-lock = { git = "https://github.com/fenhl/log-lock" }
 mcanvil = { git = "https://github.com/wurstmineberg/rust-anvil", features = ["async-proto"] }
 mimalloc = "0.1"
