@@ -20,6 +20,12 @@ unused_lifetimes = "deny"
 unused_qualifications = "deny"
 warnings = "deny"
 
+[build-dependencies]
+gix = "0.83" # much slower than git2 but avoids a C dependency on openssl-sys
+itertools = "0.14"
+jiff = "0.2"
+thiserror = "2"
+
 [dependencies]
 async-compression = { version = "0.4", features = ["gzip", "tokio"] }
 async-proto = { version = "0.26", features = ["bitvec", "hematite-nbt", "serenity", "tokio-tungstenite021", "uuid"] }
@@ -78,9 +84,3 @@ wheel = { git = "https://github.com/fenhl/wheel", features = ["reqwest", "rocket
 
 [target.'cfg(target_os = "linux")'.dependencies]
 systemd_minecraft = { git = "https://github.com/wurstmineberg/systemd-minecraft", branch = "riir", features = ["rocket"] }
-
-[build-dependencies]
-gix = "0.81" # much slower than git2 but avoids a C dependency on openssl-sys
-itertools = "0.14"
-jiff = "0.2"
-thiserror = "2"
