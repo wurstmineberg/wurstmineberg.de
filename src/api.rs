@@ -800,7 +800,7 @@ pub(crate) async fn player_data(db_pool: &State<PgPool>, version: Version, world
     let Some(uuid) = player.minecraft_uuid() else { return Ok(None) };
     Ok(Some((
         ContentType::new("application", "prs.nbt"), // as suggested at https://old.reddit.com/r/AskProgramming/comments/1eldcjt/mime_type_of_minecraft_nbt/lgrs5p4/
-        match File::open(world.dir().join("world").join("playerdata").join(format!("{uuid}.dat"))).await {
+        match File::open(world.dir().join("world").join("players").join("data").join(format!("{uuid}.dat"))).await {
             Ok(file) => file,
             Err(wheel::Error::Io { inner, .. }) if inner.kind() == io::ErrorKind::NotFound => return Ok(None),
             Err(e) => return Err(e.into()),
@@ -813,7 +813,7 @@ pub(crate) async fn player_data_json(db_pool: &State<PgPool>, version: Version, 
     let _ /* no version differences */ = ActiveVersion::try_from(version)?;
     let Some(player) = player.parse(&**db_pool).await? else { return Ok(None) };
     let Some(uuid) = player.minecraft_uuid() else { return Ok(None) };
-    let path = world.dir().join("world").join("playerdata").join(format!("{uuid}.dat"));
+    let path = world.dir().join("world").join("players").join("data").join(format!("{uuid}.dat"));
     let mut file = match File::open(&path).await {
         Ok(file) => file,
         Err(wheel::Error::Io { inner, .. }) if inner.kind() == io::ErrorKind::NotFound => return Ok(None),
@@ -1099,7 +1099,7 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
             let player_cache = match players_cache.entry(uuid) {
                 hash_map::Entry::Occupied(entry) => entry.into_mut(),
                 hash_map::Entry::Vacant(entry) => {
-                    lock!(watcher = watcher; watcher.watch(&world.dir().join("world").join("playerdata").join(format!("{uuid}.dat")), notify::RecursiveMode::NonRecursive))?;
+                    lock!(watcher = watcher; watcher.watch(&world.dir().join("world").join("players").join("data").join(format!("{uuid}.dat")), notify::RecursiveMode::NonRecursive))?;
                     entry.insert(None)
                 }
             };
@@ -1108,7 +1108,7 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                 PlayerUpdateReason::Notify => true, // already filtered
             };
             if should_check {
-                let path = world.dir().join("world").join("playerdata").join(format!("{uuid}.dat"));
+                let path = world.dir().join("world").join("players").join("data").join(format!("{uuid}.dat"));
                 let mut file = match File::open(&path).await {
                     Ok(file) => Some(file),
                     Err(wheel::Error::Io { inner, .. }) if inner.kind() == io::ErrorKind::NotFound => None,
@@ -1175,7 +1175,7 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                     }
                 }
                 for path in paths {
-                    if let Ok(suffix) = path.strip_prefix(main_world.dir().join("world").join("playerdata")) {
+                    if let Ok(suffix) = path.strip_prefix(main_world.dir().join("world").join("players").join("data")) {
                         let Ok(std::path::Component::Normal(name)) = suffix.components().exactly_one() else { return Err(WsError::NotifyUnexpectedFile) };
                         let uuid = name.to_str().ok_or(WsError::NotifyUnexpectedFile)?.strip_suffix(".dat").ok_or(WsError::NotifyUnexpectedFile)?.parse()?;
                         if let Some(user) = User::from_minecraft_uuid(&db_pool, uuid).await? {
