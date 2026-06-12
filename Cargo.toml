@@ -59,6 +59,8 @@ bin = [
     "rustls",
     "serde_json",
     "serde_with",
+    "serenity/model",
+    "serenity/rustls_backend",
     "serenity-utils",
     "sqlx",
     "systemd_minecraft",
@@ -121,7 +123,7 @@ rustls = { version = "0.23", default-features = false, features = ["ring"], opti
 serde = { version = "1", features = ["derive"] }
 serde_json = { package = "serde_json_path_to_error", version = "0.1", optional = true }
 serde_with = { version = "3", optional = true }
-serenity = { version = "0.12", default-features = false, features = ["model", "rustls_backend"] }
+serenity = { version = "0.12", default-features = false }
 serenity-utils = { git = "https://github.com/fenhl/serenity-utils", optional = true }
 sqlx = { version = "0.8", features = ["chrono", "json", "macros", "postgres", "runtime-tokio-rustls", "time"], optional = true }
 thiserror = { version = "2", optional = true }
