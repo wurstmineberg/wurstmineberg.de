@@ -2,7 +2,7 @@
 
 set -e
 
-if [[ x"$(hostname -f)" == x'gharch.wurstmineberg.de' ]]; then
+if [ x"$(hostname -f)" = x'gharch.wurstmineberg.de' ]; then
     # deploy wurstmineberg.de
     echo 'deploying wurstmineberg.de'
     rustup update stable
