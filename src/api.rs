@@ -1180,7 +1180,7 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                     println!(
                         "received inotify for {num_region_paths} region file{}{}",
                         if num_region_paths == 1 { "" } else { "s" },
-                        if num_region_paths < 10 { paths.iter().filter(|path| !path.starts_with(&playerdata_dir)).filter_map(|path| path.file_stem()).map(|file_stem| file_stem.to_string_lossy()).join(", ") } else { String::default() },
+                        if num_region_paths < 10 { format!(": {}", paths.iter().filter(|path| !path.starts_with(&playerdata_dir)).filter_map(|path| path.file_stem()).map(|file_stem| file_stem.to_string_lossy()).format(", ")) } else { String::default() },
                     );
                 }
                 for path in paths {
