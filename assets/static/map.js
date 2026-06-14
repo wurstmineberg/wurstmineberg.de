@@ -10,6 +10,7 @@ L.tileLayer('https://map.wurstmineberg.de/r.{x}.{y}.png', {
     minNativeZoom: 0,
     maxNativeZoom: 0,
 }).addTo(map);
+new L.hash(map); // configure syncing with URL fragment
 var coordsClass = L.Control.extend({
     options: {
         position: 'bottomleft',
