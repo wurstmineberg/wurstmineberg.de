@@ -1177,7 +1177,11 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                 let playerdata_dir = main_world.dir().join("world").join("players").join("data");
                 let num_region_paths = paths.iter().filter(|path| !path.starts_with(&playerdata_dir)).count();
                 if num_region_paths > 0 {
-                    println!("received inotify for {num_region_paths} region file{}", if num_region_paths == 1 { "" } else { "s" });
+                    println!(
+                        "received inotify for {num_region_paths} region file{}{}",
+                        if num_region_paths == 1 { "" } else { "s" },
+                        if num_region_paths < 10 { paths.iter().filter(|path| !path.starts_with(&playerdata_dir)).filter_map(|path| path.file_stem()).map(|file_stem| file_stem.to_string_lossy()).join(", ") } else { String::default() },
+                    );
                 }
                 for path in paths {
                     if let Ok(suffix) = path.strip_prefix(&playerdata_dir) {
