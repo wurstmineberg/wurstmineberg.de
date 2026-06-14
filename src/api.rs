@@ -1174,8 +1174,13 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                         paths.extend(event.paths);
                     }
                 }
+                let playerdata_dir = main_world.dir().join("world").join("players").join("data");
+                let num_region_paths = paths.iter().filter(|path| !path.starts_with(&playerdata_dir)).count();
+                if num_region_paths > 0 {
+                    println!("received inotify for {num_region_paths} region file{}", if num_region_paths == 1 { "" } else { "s" });
+                }
                 for path in paths {
-                    if let Ok(suffix) = path.strip_prefix(main_world.dir().join("world").join("players").join("data")) {
+                    if let Ok(suffix) = path.strip_prefix(&playerdata_dir) {
                         let Ok(std::path::Component::Normal(name)) = suffix.components().exactly_one() else { return Err(WsError::NotifyUnexpectedFile) };
                         let uuid = name.to_str().ok_or(WsError::NotifyUnexpectedFile)?.strip_suffix(".dat").ok_or(WsError::NotifyUnexpectedFile)?.parse()?;
                         if let Some(user) = User::from_minecraft_uuid(&db_pool, uuid).await? {
