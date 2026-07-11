@@ -643,7 +643,7 @@ async fn bad_gateway(request: &Request<'_>) -> RawHtml<String> {
     let me = request.guard::<User>().await.succeeded();
     let uri = request.guard::<Origin<'_>>().await.succeeded().unwrap_or_else(|| Origin(uri!(index)));
     page(&me, &uri, PageStyle::default(), "Bad Gateway — Wurstmineberg", Tab::None, html! {
-        h1 : "Error 502: Not Found";
+        h1 : "Error 502: Bad Gateway";
         p : "Sorry, there was a network error. Please try again. If this error persists, please report it to the Wurstmineberg site admins.";
     })
 }
