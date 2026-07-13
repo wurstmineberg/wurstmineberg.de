@@ -1175,6 +1175,14 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                     }
                 }
                 let playerdata_dir = main_world.dir().join("world").join("players").join("data");
+                let num_player_paths = paths.iter().filter(|path| path.starts_with(&playerdata_dir)).count();
+                if num_player_paths > 0 {
+                    println!(
+                        "received inotify for {num_player_paths} player file{}{}",
+                        if num_player_paths == 1 { "" } else { "s" },
+                        if num_player_paths < 10 { format!(": {}", paths.iter().filter(|path| path.starts_with(&playerdata_dir)).filter_map(|path| path.file_stem()).map(|file_stem| file_stem.to_string_lossy()).format(", ")) } else { String::default() },
+                    );
+                }
                 let num_region_paths = paths.iter().filter(|path| !path.starts_with(&playerdata_dir)).count();
                 if num_region_paths > 0 {
                     println!(
