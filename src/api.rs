@@ -211,7 +211,7 @@ impl From<ActiveVersion> for Version {
     }
 }
 
-#[derive(Clone, Copy, Serialize)]
+#[derive(Debug, Clone, Copy, Serialize)]
 #[serde(into = "NonZero<u8>")]
 enum ActiveVersion {
     V3,
@@ -865,6 +865,7 @@ type WsSink = Arc<Mutex<SplitSink<rocket_ws::stream::DuplexStream, rocket_ws::Me
 /// WebSocket API differences
 impl ActiveVersion {
     async fn write_custom_error(&self, sink: &WsSink, debug: impl fmt::Debug, display: impl fmt::Display) -> Result<(), async_proto::WriteError> {
+        println!("sending custom error to WebSocket client ({self:?})");
         match self {
             Self::V3 => lock!(sink = sink; ServerMessageV3::Error {
                 debug: format!("{debug:?}"),
@@ -878,6 +879,7 @@ impl ActiveVersion {
     }
 
     async fn write_chunk(&self, sink: &WsSink, dimension: Dimension, cx: i32, cy: i8, cz: i32, chunk: Option<&ChunkSection>) -> Result<(), async_proto::WriteError> {
+        println!("sending chunk {cx} {cy} {cz} ({dimension:?}) to WebSocket client ({self:?})");
         match self {
             Self::V3 => lock!(sink = sink; ServerMessageV3::ChunkData {
                 data: chunk.map(|chunk| array::from_fn(|y|
@@ -925,6 +927,7 @@ impl ActiveVersion {
     }
 
     async fn write_player(&self, sink: &WsSink, id: user::Id, uuid: Uuid, data: Option<nbt::Blob>) -> Result<(), async_proto::WriteError> {
+        println!("sending player data to WebSocket client ({self:?})");
         match self {
             Self::V3 => lock!(sink = sink; ServerMessageV3::PlayerData { id, uuid, data }.write_ws021(&mut *sink).await),
             Self::V4 => lock!(sink = sink; ServerMessageV4::PlayerData { id, uuid, data }.write_ws021(&mut *sink).await),
@@ -932,6 +935,7 @@ impl ActiveVersion {
     }
 
     async fn write_block_entities(&self, sink: &WsSink, dimension: Dimension, cx: i32, cz: i32, data: Vec<BlockEntity>) -> Result<(), async_proto::WriteError> {
+        println!("sending block entities for chunk column {cx} {cz} ({dimension:?}) to WebSocket client ({self:?})");
         match self {
             Self::V3 => lock!(sink = sink; ServerMessageV3::BlockEntities { dimension, cx, cz, data }.write_ws021(&mut *sink).await),
             Self::V4 => lock!(sink = sink; ServerMessageV4::BlockEntities { dimension, cx, cz, data }.write_ws021(&mut *sink).await),
@@ -1148,9 +1152,16 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                 read.set(timeout(Duration::from_mins(1), ClientMessage::read_ws_owned021(stream)));
                 match msg {
                     ClientMessage::Pong => {}
-                    ClientMessage::SubscribeToChunk { dimension, cx, cy, cz } => update_chunks(version, &main_world, &region_cache, &watcher, &sink, iter::once((dimension, cx, cy, cz)), ChunkUpdateReason::SubscribeBlockStates).await?,
-                    ClientMessage::SubscribeToChunks(chunks) => update_chunks(version, &main_world, &region_cache, &watcher, &sink, chunks, ChunkUpdateReason::SubscribeBlockStates).await?,
+                    ClientMessage::SubscribeToChunk { dimension, cx, cy, cz } => {
+                        println!("WebSocket client ({version:?}) subscribed to chunk {cx} {cy} {cz} ({dimension:?})");
+                        update_chunks(version, &main_world, &region_cache, &watcher, &sink, iter::once((dimension, cx, cy, cz)), ChunkUpdateReason::SubscribeBlockStates).await?;
+                    }
+                    ClientMessage::SubscribeToChunks(chunks) => {
+                        println!("WebSocket client ({version:?}) subscribed to {} chunks: {}", chunks.len(), chunks.iter().map(|(dim, cx, cy, cz)| format!("{cx} {cy} {cz} ({dim:?})")).format(", "));
+                        update_chunks(version, &main_world, &region_cache, &watcher, &sink, chunks, ChunkUpdateReason::SubscribeBlockStates).await?;
+                    }
                     ClientMessage::SubscribeToInventory { player } => if let Some(user) = User::from_id_request(&db_pool, player.clone()).await? {
+                        println!("WebSocket client ({version:?}) subscribed to inventory for {user}");
                         if let Some(uuid) = user.minecraft_uuid() {
                             update_player(version, &main_world, &players_cache, &watcher, &sink, user.id, uuid, PlayerUpdateReason::Subscribe).await?;
                         } else {
@@ -1159,7 +1170,10 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
                     } else {
                         version.write_custom_error(&sink, player, "the requested user ID does not exist").await?;
                     },
-                    ClientMessage::SubscribeToBlockEntities { dimension, cx, cz } => update_chunks(version, &main_world, &region_cache, &watcher, &sink, iter::once((dimension, cx, 0, cz)), ChunkUpdateReason::SubscribeBlockEntities).await?,
+                    ClientMessage::SubscribeToBlockEntities { dimension, cx, cz } => {
+                        println!("WebSocket client ({version:?}) subscribed to block entities for chunk column {cx} {cz} ({dimension:?})");
+                        update_chunks(version, &main_world, &region_cache, &watcher, &sink, iter::once((dimension, cx, 0, cz)), ChunkUpdateReason::SubscribeBlockEntities).await?;
+                    }
                 }
             }
             Some(res) = watch_rx.recv() => {
