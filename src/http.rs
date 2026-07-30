@@ -673,14 +673,13 @@ async fn fallback_catcher(status: Status, request: &Request<'_>) -> RawHtml<Stri
 
 pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, http_client: reqwest::Client, proxy_http_client: reqwest::Client) -> Result<Rocket<rocket::Ignite>, crate::Error> {
     Ok(
-        rocket::custom(rocket::Config {
+        rocket::custom(rocket::Config::figment().merge(rocket::Config {
             secret_key: SecretKey::from(&BASE64.decode(&config.web.secret_key)?),
-            log_level: rocket::config::LogLevel::Critical,
-            port: 24822,
+            log_level: Some(rocket::config::Level::ERROR),
             limits: Limits::default()
                 .limit("form", 2.mebibytes()), // for wiki edits
             ..rocket::Config::default()
-        })
+        }).merge(("port", 24822))) //TODO report issue for lack of typed interface to set port, see https://github.com/rwf2/Rocket/commit/fd294049c784cb52680a423616fadc29d57fa25b
         .mount("/", rocket::routes![
             index,
             map,
@@ -724,10 +723,10 @@ pub(crate) async fn rocket(config: Config, discord_ctx: RwFuture<DiscordCtx>, ht
             crate::wiki::history,
             crate::wiki::revision,
         ])
-        .mount("/static", FileServer::new({
+        .mount("/static", FileServer::without_index({
             #[cfg(windows)] { rocket::fs::relative!("assets/static") }
             #[cfg(not(windows))] { "/opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets/static" }
-        }, rocket::fs::Options::None))
+        }))
         .register("/", rocket::catchers![
             bad_request,
             unauthorized,

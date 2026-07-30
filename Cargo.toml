@@ -2,7 +2,7 @@
 name = "wurstmineberg-web"
 version = "2.0.0"
 edition = "2024"
-rust-version = "1.91" # nixpkgs stable
+rust-version = "1.95" # nixpkgs stable
 publish = false
 
 [profile.release]
@@ -32,6 +32,7 @@ bin = [
     "craftping",
     "discord-message-parser",
     "doubloon",
+    "either",
     "futures",
     "ics",
     "icu_locale",
@@ -76,16 +77,16 @@ bin = [
 ]
 
 [build-dependencies]
-gix = "0.84" # much slower than git2 but avoids a C dependency on openssl-sys
-itertools = "0.14"
+gix = "0.86" # much slower than git2 but avoids a C dependency on openssl-sys
+itertools = "0.15"
 jiff = "0.2"
 thiserror = "2"
 
 [dependencies]
 async-compression = { version = "0.4", features = ["gzip", "tokio"], optional = true }
-async-proto = { version = "0.26", features = ["bitvec", "hematite-nbt", "serenity", "tokio-tungstenite021", "uuid"] }
+async-proto = { version = "0.26", features = ["bitvec", "hematite-nbt", "serenity", "tokio-tungstenite024", "uuid"] }
 async_zip = { version = "0.0.18", features = ["full"], optional = true }
-base64 = { version = "0.22", optional = true }
+base64 = { version = "0.23", optional = true }
 bitvec = "1"
 chase = { git = "https://github.com/fenhl/chase-rs", branch = "wmb", optional = true }
 chrono = { version = "0.4", features = ["serde"], optional = true }
@@ -93,11 +94,12 @@ chrono-tz = { version = "0.10", features = ["serde"], optional = true }
 craftping = { version = "0.7", default-features = false, features = ["async-tokio"], optional = true }
 discord-message-parser = { git = "https://github.com/fenhl/discord-message-parser", optional = true }
 doubloon = { version = "3", features = ["formatting"], optional = true }
+either = { version = "1", optional = true }
 futures = { version = "0.3", optional = true }
 hematite-nbt = { version = "0.5", default-features = false } #TODO switch to simdnbt for performance improvements once it supports stable Rust (https://github.com/azalea-rs/simdnbt/issues/16)
 ics = { version = "0.5", optional = true }
 icu_locale = { version = "2", optional = true }
-itertools = { version = "0.14", optional = true }
+itertools = { version = "0.15", optional = true }
 lazy-regex = { version = "3", optional = true }
 linode-rs = { git = "https://gitlab.com/fenhl/linode", default-features = false, optional = true }
 log-lock = { git = "https://github.com/fenhl/log-lock", optional = true }
@@ -112,12 +114,12 @@ rand = { version = "0.10", optional = true }
 rcon = { version = "0.6", features = ["rt-tokio"], optional = true }
 regex = { version = "1", optional = true }
 reqwest = { version = "0.13", default-features = false, features = ["blocking", "charset", "form", "gzip", "hickory-dns", "http2", "rustls-no-provider", "system-proxy", "zstd"], optional = true }
-rocket = { version = "0.5", features = ["json", "secrets"], optional = true }
-rocket-basicauth = { git = "https://github.com/fenhl/rocket-basicauth", optional = true }
+rocket = { git = "https://github.com/fenhl/Rocket", branch = "forms", features = ["json", "secrets"], optional = true }
+rocket-basicauth = { git = "https://github.com/fenhl/rocket-basicauth", branch = "forms", optional = true }
 rocket-util = { git = "https://github.com/fenhl/rocket-util", features = ["ics", "reqwest", "rocket_csrf", "tiny-skia"], optional = true }
-rocket_csrf = { git = "https://github.com/fenhl/rocket_csrf", branch = "rocket05", optional = true }
-rocket_oauth2 = { version = "0.5", optional = true }
-rocket_ws = { version = "0.1", optional = true }
+rocket_csrf = { git = "https://github.com/fenhl/rocket_csrf", branch = "forms", optional = true }
+rocket_oauth2 = { git = "https://github.com/fenhl/rocket_oauth2", branch = "forms", optional = true }
+rocket_ws = { git = "https://github.com/fenhl/Rocket", branch = "forms", optional = true }
 rust_decimal = { version = "1", features = ["serde-with-str"], optional = true }
 rustls = { version = "0.23", default-features = false, features = ["ring"], optional = true }
 serde = { version = "1", features = ["derive"] }

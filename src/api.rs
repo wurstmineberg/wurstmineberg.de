@@ -28,6 +28,7 @@ use {
     bitvec::prelude::*,
     chrono::prelude::*,
     chrono_tz::Tz,
+    either::Either,
     futures::stream::{
         self,
         SplitSink,
@@ -47,7 +48,6 @@ use {
     },
     notify::Watcher as _,
     rocket::{
-        Either,
         State,
         fs::NamedFile,
         http::{
@@ -870,11 +870,11 @@ impl ActiveVersion {
             Self::V3 => lock!(sink = sink; ServerMessageV3::Error {
                 debug: format!("{debug:?}"),
                 display: display.to_string(),
-            }.write_ws021(&mut *sink).await),
+            }.write_ws024(&mut *sink).await),
             Self::V4 => lock!(sink = sink; ServerMessageV4::Error {
                 debug: format!("{debug:?}"),
                 display: display.to_string(),
-            }.write_ws021(&mut *sink).await),
+            }.write_ws024(&mut *sink).await),
         }
     }
 
@@ -890,7 +890,7 @@ impl ActiveVersion {
                     ))
                 )),
                 dimension, cx, cy, cz,
-            }.write_ws021(&mut *sink).await),
+            }.write_ws024(&mut *sink).await),
             Self::V4 => {
                 let mut palette = Vec::default();
                 let mut entries = Vec::default();
@@ -921,7 +921,7 @@ impl ActiveVersion {
                 }
                 lock!(sink = sink; ServerMessageV4::ChunkData {
                     dimension, cx, cy, cz, palette, data,
-                }.write_ws021(&mut *sink).await)
+                }.write_ws024(&mut *sink).await)
             }
         }
     }
@@ -929,16 +929,16 @@ impl ActiveVersion {
     async fn write_player(&self, sink: &WsSink, id: user::Id, uuid: Uuid, data: Option<nbt::Blob>) -> Result<(), async_proto::WriteError> {
         println!("sending player data to WebSocket client ({self:?})");
         match self {
-            Self::V3 => lock!(sink = sink; ServerMessageV3::PlayerData { id, uuid, data }.write_ws021(&mut *sink).await),
-            Self::V4 => lock!(sink = sink; ServerMessageV4::PlayerData { id, uuid, data }.write_ws021(&mut *sink).await),
+            Self::V3 => lock!(sink = sink; ServerMessageV3::PlayerData { id, uuid, data }.write_ws024(&mut *sink).await),
+            Self::V4 => lock!(sink = sink; ServerMessageV4::PlayerData { id, uuid, data }.write_ws024(&mut *sink).await),
         }
     }
 
     async fn write_block_entities(&self, sink: &WsSink, dimension: Dimension, cx: i32, cz: i32, data: Vec<BlockEntity>) -> Result<(), async_proto::WriteError> {
         println!("sending block entities for chunk column {cx} {cz} ({dimension:?}) to WebSocket client ({self:?})");
         match self {
-            Self::V3 => lock!(sink = sink; ServerMessageV3::BlockEntities { dimension, cx, cz, data }.write_ws021(&mut *sink).await),
-            Self::V4 => lock!(sink = sink; ServerMessageV4::BlockEntities { dimension, cx, cz, data }.write_ws021(&mut *sink).await),
+            Self::V3 => lock!(sink = sink; ServerMessageV3::BlockEntities { dimension, cx, cz, data }.write_ws024(&mut *sink).await),
+            Self::V4 => lock!(sink = sink; ServerMessageV4::BlockEntities { dimension, cx, cz, data }.write_ws024(&mut *sink).await),
         }
     }
 }
@@ -1142,14 +1142,14 @@ async fn client_session(db_pool: PgPool, mut rocket_shutdown: rocket::Shutdown, 
     let players_cache = Mutex::default();
     let (watch_tx, mut watch_rx) = mpsc::channel(1_024);
     let watcher = Mutex::new(notify::recommended_watcher(move |res| watch_tx.blocking_send(res).allow_unreceived())?);
-    let mut read = pin!(timeout(Duration::from_mins(1), ClientMessage::read_ws_owned021(stream)));
+    let mut read = pin!(timeout(Duration::from_mins(1), ClientMessage::read_ws_owned024(stream)));
     loop {
         select! {
             biased;
             () = &mut rocket_shutdown => break Ok(()),
             res = &mut read => {
                 let (stream, msg) = res??;
-                read.set(timeout(Duration::from_mins(1), ClientMessage::read_ws_owned021(stream)));
+                read.set(timeout(Duration::from_mins(1), ClientMessage::read_ws_owned024(stream)));
                 match msg {
                     ClientMessage::Pong => {}
                     ClientMessage::SubscribeToChunk { dimension, cx, cy, cz } => {
@@ -1237,28 +1237,30 @@ pub(crate) fn websocket(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
                 ActiveVersion::V3 => tokio::spawn(async move {
                     loop {
                         sleep(Duration::from_secs(30)).await;
-                        if lock!(ping_sink = ping_sink; ServerMessageV3::Ping.write_ws021(&mut *ping_sink).await).is_err() { break } //TODO better error handling
+                        if lock!(ping_sink = ping_sink; ServerMessageV3::Ping.write_ws024(&mut *ping_sink).await).is_err() { break } //TODO better error handling
                     }
                 }),
                 ActiveVersion::V4 => tokio::spawn(async move {
                     loop {
                         sleep(Duration::from_secs(30)).await;
-                        if lock!(ping_sink = ping_sink; ServerMessageV4::Ping.write_ws021(&mut *ping_sink).await).is_err() { break } //TODO better error handling
+                        if lock!(ping_sink = ping_sink; ServerMessageV4::Ping.write_ws024(&mut *ping_sink).await).is_err() { break } //TODO better error handling
                     }
                 }),
             };
+            println!("start of WebSocket client session ({version:?})");
             if let Err(e) = client_session(db_pool, shutdown, version, ws_stream, ws_sink.clone()).await {
                 let _ = lock!(ws_sink = ws_sink; match version {
                     ActiveVersion::V3 => ServerMessageV3::Error {
                         debug: format!("{e:?}"),
                         display: e.to_string(),
-                    }.write_ws021(&mut *ws_sink).await,
+                    }.write_ws024(&mut *ws_sink).await,
                     ActiveVersion::V4 => ServerMessageV4::Error {
                         debug: format!("{e:?}"),
                         display: e.to_string(),
-                    }.write_ws021(&mut *ws_sink).await,
+                    }.write_ws024(&mut *ws_sink).await,
                 });
             }
+            println!("end of WebSocket client session ({version:?})");
             ping_loop.abort();
             Ok(())
         }))),
