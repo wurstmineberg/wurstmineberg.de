@@ -1249,6 +1249,8 @@ pub(crate) fn websocket(db_pool: &State<PgPool>, me: Option<User>, uri: Origin<'
             };
             println!("start of WebSocket client session ({version:?})");
             if let Err(e) = client_session(db_pool, shutdown, version, ws_stream, ws_sink.clone()).await {
+                println!("WebSocket client session errored: {e}");
+                println!("debug info: {e:?}");
                 let _ = lock!(ws_sink = ws_sink; match version {
                     ActiveVersion::V3 => ServerMessageV3::Error {
                         debug: format!("{e:?}"),
