@@ -77,7 +77,7 @@ bin = [
 ]
 
 [build-dependencies]
-gix = "0.86" # much slower than git2 but avoids a C dependency on openssl-sys
+gix = "0.87" # much slower than git2 but avoids a C dependency on openssl-sys
 itertools = "0.15"
 jiff = "0.2"
 thiserror = "2"
