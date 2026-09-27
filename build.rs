@@ -53,12 +53,7 @@ fn check_static_dir(cache: &mut HashMap<PathBuf, ObjectId>, repo: &Repository, r
 
 #[derive(Debug, thiserror::Error)]
 enum Error {
-    #[error(transparent)] GitCommit(#[from] gix::object::commit::Error),
-    #[error(transparent)] GitDiff(#[from] gix::repository::diff_tree_to_tree::Error),
-    #[error(transparent)] GitFind(#[from] gix::object::find::existing::Error),
-    #[error(transparent)] GitHeadCommit(#[from] gix::reference::head_commit::Error),
-    #[error(transparent)] GitOpen(#[from] gix::open::Error),
-    #[error(transparent)] GitPeel(#[from] gix::object::peel::to_kind::Error),
+    #[error(transparent)] Git(#[from] gix::Error),
     #[error(transparent)] Io(#[from] std::io::Error),
     #[error(transparent)] Jiff(#[from] jiff::Error),
 }
