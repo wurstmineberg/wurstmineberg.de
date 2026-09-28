@@ -7,8 +7,8 @@ use {
     itertools::Itertools as _,
     rocket::Rocket,
     wheel::traits::ReqwestResponseExt as _,
+    whoami as _, // workaround for https://github.com/transact-rs/sqlx/issues/4277
     crate::config::Config,
-
 };
 
 mod about;

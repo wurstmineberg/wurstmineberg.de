@@ -74,6 +74,7 @@ bin = [
     "twitch_helix",
     "url",
     "wheel",
+    "whoami",
 ]
 
 [build-dependencies]
@@ -138,6 +139,7 @@ twitch_helix = { git = "https://github.com/fenhl/rust-twitch-helix", optional = 
 url = { version = "2", optional = true }
 uuid = { version = "1", features = ["serde"] }
 wheel = { git = "https://github.com/fenhl/wheel", features = ["reqwest", "rocket", "serde_json"], optional = true }
+whoami = { version = "2", default-features = false, features = ["std"], optional = true }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 systemd_minecraft = { git = "https://github.com/wurstmineberg/systemd-minecraft", branch = "riir", features = ["rocket"], optional = true }
